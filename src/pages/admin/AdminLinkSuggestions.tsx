@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, X, ExternalLink, Loader2, Filter } from "lucide-react";
 import { toast } from "sonner";
+import { validateLinkEntry } from "@/seo/linkValidation";
 
 type Row = {
   id: string;
@@ -66,13 +67,30 @@ export default function AdminLinkSuggestions() {
     try {
       const e = getEdit(r);
       const { data: userRes } = await supabase.auth.getUser();
-      // 1) update suggestion row
+
+      // 1) Read current links for this language so we can validate dedupe + length.
+      const col = r.lang === "en" ? "internal_links_en" : "internal_links_es";
+      const { data: post, error: postErr } = await supabase
+        .from("blog_posts").select(`id,${col}`).eq("id", r.post_id).single();
+      if (postErr) throw postErr;
+      const current: any[] = ((post as any)[col] as any[]) ?? [];
+
+      // Dedupe-aware validation: if the same href already exists we'll update
+      // its label rather than reject — so only block on length / format.
+      const sameHref = current.find(l => (l.href ?? "").trim().toLowerCase().replace(/\/+$/, "") === e.href.trim().toLowerCase().replace(/\/+$/, ""));
+      const v = validateLinkEntry(
+        { label: e.label, href: e.href },
+        sameHref ? current.filter(l => l !== sameHref) : current,
+      );
+      if (v.ok === false) { toast.error(`${r.lang.toUpperCase()}: ${v.error}`); setBusy(null); return; }
+
+      // 2) Update suggestion row.
       const { error: upErr } = await supabase
         .from("internal_link_suggestions")
         .update({
           status: "approved",
-          label: e.label,
-          href: e.href,
+          label: e.label.trim(),
+          href: e.href.trim(),
           review_notes: e.notes || null,
           reviewed_by: userRes.user?.id ?? null,
           reviewed_at: new Date().toISOString(),
@@ -81,16 +99,10 @@ export default function AdminLinkSuggestions() {
         .eq("id", r.id);
       if (upErr) throw upErr;
 
-      // 2) merge into blog_posts.internal_links_<lang>
-      const col = r.lang === "en" ? "internal_links_en" : "internal_links_es";
-      const { data: post, error: postErr } = await supabase
-        .from("blog_posts").select(`id,${col}`).eq("id", r.post_id).single();
-      if (postErr) throw postErr;
-      const current: any[] = ((post as any)[col] as any[]) ?? [];
-      const exists = current.some(l => (l.href ?? "").trim() === e.href.trim());
-      const next = exists
-        ? current.map(l => (l.href ?? "").trim() === e.href.trim() ? { label: e.label, href: e.href, reason: r.reason ?? undefined } : l)
-        : [...current, { label: e.label, href: e.href, reason: r.reason ?? undefined }];
+      // 3) Merge into blog_posts.internal_links_<lang>.
+      const next = sameHref
+        ? current.map(l => l === sameHref ? { label: e.label.trim(), href: e.href.trim(), reason: r.reason ?? undefined } : l)
+        : [...current, { label: e.label.trim(), href: e.href.trim(), reason: r.reason ?? undefined }];
       const update: any = { [col]: next };
       const { error: writeErr } = await supabase.from("blog_posts").update(update).eq("id", r.post_id);
       if (writeErr) throw writeErr;
