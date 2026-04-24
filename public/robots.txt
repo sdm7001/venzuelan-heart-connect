@@ -12,3 +12,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /onboarding
+Disallow: /messages
+Disallow: /gifts/
+Disallow: /profile
+
+Sitemap: https://www.matchvenezulan.com/sitemap.xml
