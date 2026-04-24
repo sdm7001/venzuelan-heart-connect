@@ -61,6 +61,11 @@ export default function AdminPolicyAcceptance() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [pageSize, setPageSize] = useState(50);
+  // Filter members by their profile.created_at relative to the most recent
+  // policy_version_bumped audit event. The server resolves the cutoff so the
+  // UI doesn't have to know when the bump happened.
+  const [onboardedFilter, setOnboardedFilter] = useState<"all" | "before" | "after">("all");
+  const [bumpedAt, setBumpedAt] = useState<string | null>(null);
 
   const [blockedState, setBlockedState] = useState({
     page: 1, sortField: "missing_count" as SortField, sortDir: "desc" as SortDir,
