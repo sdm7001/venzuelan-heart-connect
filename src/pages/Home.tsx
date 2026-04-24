@@ -48,7 +48,7 @@ export default function Home() {
               <Button asChild size="lg" variant="romance"><Link to="/auth?mode=join">{t.hero.ctaPrimary}</Link></Button>
               <Button asChild size="lg" variant="outline"><Link to="/how-it-works">{t.hero.ctaSecondary}</Link></Button>
             </div>
-            <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
+            <div className="mt-10 grid grid-cols-2 gap-3 max-w-md sm:grid-cols-3 sm:gap-4">
               <TrustChip icon={<ShieldCheck className="h-4 w-4" />} label={t.hero.trustA} />
               <TrustChip icon={<Users className="h-4 w-4" />} label={t.hero.trustB} />
               <TrustChip icon={<Globe2 className="h-4 w-4" />} label={t.hero.trustC} />
