@@ -120,10 +120,12 @@ export function PolicyReacceptanceGate() {
     toast.success(t.policyReaccept.confirmed);
   }
 
-  if (!needsReaccept || checking) return null;
+  // Render nothing until the first check has fully resolved — eliminates
+  // any chance of a flash on initial auth/config fetches.
+  if (!ready || !needsReaccept) return null;
 
   return (
-    <Dialog open={needsReaccept}>
+    <Dialog open>
       <DialogContent
         className="max-w-lg"
         // Block close on overlay/escape — must explicitly accept or sign out.
