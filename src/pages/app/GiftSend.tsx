@@ -161,12 +161,16 @@ export default function GiftSend() {
         : {},
     };
 
-    const { error } = await supabase.from("gift_orders").insert(payload);
+    const { data: inserted, error } = await supabase
+      .from("gift_orders")
+      .insert(payload)
+      .select("id, created_at, kind, credit_cost, message")
+      .single();
     setSending(false);
 
-    if (error) {
+    if (error || !inserted) {
       // RLS will block if eligibility regressed between load & send.
-      toast.error(error.message);
+      toast.error(error?.message ?? "Failed to create gift order");
       return;
     }
 
@@ -175,8 +179,21 @@ export default function GiftSend() {
         ? "Virtual gift sent"
         : "Physical gift order created — admin will process fulfillment"
     );
+
+    setConfirmation({
+      orderId: inserted.id,
+      createdAt: inserted.created_at,
+      kind,
+      gift: selected,
+      message: inserted.message ?? null,
+      creditCost: inserted.credit_cost ?? null,
+    });
     setMessage("");
     setSelectedId(null);
+  }
+
+  function startNewGift() {
+    setConfirmation(null);
   }
 
   return (
