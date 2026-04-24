@@ -19,6 +19,7 @@ import Dashboard from "./pages/app/Dashboard";
 import Profile from "./pages/app/Profile";
 import Messages from "./pages/app/Messages";
 import GiftSend from "./pages/app/GiftSend";
+import GiftOrderDetail from "./pages/app/GiftOrderDetail";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminReports from "./pages/admin/AdminReports";
@@ -63,6 +64,7 @@ const App = () => (
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
               <Route path="/messages" element={<RequireAuth><Messages /></RequireAuth>} />
               <Route path="/gifts/send" element={<RequireAuth><GiftSend /></RequireAuth>} />
+              <Route path="/gifts/:orderId" element={<RequireAuth><GiftOrderDetail /></RequireAuth>} />
 
               {/* Admin */}
               <Route path="/admin" element={<RequireStaff><AdminOverview /></RequireStaff>} />
