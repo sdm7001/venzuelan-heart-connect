@@ -252,11 +252,40 @@ export default function AdminPolicyAcceptance() {
         </TabsList>
 
         <TabsContent value="blocked" className="mt-4">
+          {blocked.length > 0 && (
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+              <div className="flex items-center gap-3 text-sm">
+                <Checkbox
+                  checked={selected.size > 0 && selected.size === blocked.length}
+                  // Indeterminate isn't a real boolean in shadcn's Checkbox API,
+                  // so we just toggle between "all" and "none" based on count.
+                  onCheckedChange={(v) => toggleAllVisible(v === true)}
+                  aria-label="Select all blocked members"
+                />
+                <span className="text-muted-foreground">
+                  {selected.size === 0
+                    ? `Select members to send a re-acceptance reminder`
+                    : `${selected.size} of ${blocked.length} selected`}
+                </span>
+              </div>
+              <Button
+                size="sm"
+                variant="romance"
+                onClick={sendReminders}
+                disabled={selected.size === 0 || sending}
+              >
+                <BellRing className="h-4 w-4 mr-1" />
+                {sending ? "Sending…" : `Send reminder${selected.size > 1 ? "s" : ""}`}
+              </Button>
+            </div>
+          )}
           <UserTable
             rows={blocked}
             loading={loading}
             mode="blocked"
             activeVersion={config.policy_version}
+            selected={selected}
+            onToggleSelected={toggleSelected}
           />
         </TabsContent>
 
