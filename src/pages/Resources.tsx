@@ -201,6 +201,10 @@ export default function Resources() {
       path: CANONICAL_PATH,
       lang,
       type: "website",
+      feeds: [
+        { title: "MatchVenezuelan — Resources (EN)", href: "/rss.xml" },
+        { title: "MatchVenezuelan — Recursos (ES)", href: "/rss-es.xml" },
+      ],
       jsonLd: [
         blogLd,
         breadcrumbLd([
