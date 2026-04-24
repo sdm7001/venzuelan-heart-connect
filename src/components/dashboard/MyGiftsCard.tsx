@@ -122,6 +122,23 @@ export function MyGiftsCard() {
 
       const col = tab === "sent" ? "sender_id" : "recipient_id";
 
+      // If a name search is active, resolve matching gift IDs first.
+      let allowedGiftIds: string[] | null = null;
+      if (debouncedSearch) {
+        const { data: matched } = await supabase
+          .from("gifts")
+          .select("id, name")
+          .ilike("name", `%${debouncedSearch}%`);
+        allowedGiftIds = (matched ?? []).map((g: any) => g.id);
+        if (allowedGiftIds.length === 0) {
+          setOrders(reset ? [] : prev => prev);
+          setHasMore(false);
+          if (reset) setLoading(false);
+          else setLoadingMore(false);
+          return;
+        }
+      }
+
       // Keyset cursor: last-loaded created_at (only when paging further)
       const cursor = reset ? null : orders[orders.length - 1]?.created_at ?? null;
 
@@ -133,6 +150,8 @@ export function MyGiftsCard() {
         .order("id", { ascending: false })
         .limit(PAGE_SIZE);
 
+      if (statusFilter !== "all") q = q.eq("status", statusFilter);
+      if (allowedGiftIds) q = q.in("gift_id", allowedGiftIds);
       if (cursor) q = q.lt("created_at", cursor);
 
       const { data: o, error } = await q;
