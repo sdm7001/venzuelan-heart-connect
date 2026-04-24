@@ -95,7 +95,7 @@ async function ensureUser(admin: any, u: DemoUser): Promise<string> {
   if (error || !userId) {
     for (let page = 1; page <= 5 && !userId; page++) {
       const { data: list } = await admin.auth.admin.listUsers({ page, perPage: 200 });
-      const match = list?.users.find((x) => x.email?.toLowerCase() === u.email.toLowerCase());
+      const match = list?.users.find((x: any) => x.email?.toLowerCase() === u.email.toLowerCase());
       if (match) userId = match.id;
       if (!list || list.users.length < 200) break;
     }
