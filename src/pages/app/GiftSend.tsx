@@ -353,3 +353,112 @@ function GiftGrid({
     </div>
   );
 }
+
+function RecipientStatusCard({
+  recipient, eligible, trust, aBlocksB, bBlocksA,
+}: {
+  recipient: any;
+  eligible: boolean | null;
+  trust: TrustState | null;
+  aBlocksB: boolean;
+  bBlocksA: boolean;
+}) {
+  const blocked = aBlocksB || bBlocksA;
+  const ok = eligible === true && !blocked;
+
+  const reasons: string[] = [];
+  if (aBlocksB) reasons.push("You have blocked this user. Unblock them to send a gift.");
+  if (bBlocksA) reasons.push("This user has blocked you.");
+  if (eligible === false) {
+    if (trust?.account_status && trust.account_status !== "active") {
+      reasons.push(`Recipient account is ${trust.account_status}.`);
+    }
+    if ((trust?.badge_count ?? 0) < 1) {
+      reasons.push("Recipient has no active trust badge yet.");
+    }
+    if ((trust?.recent_severe_flags ?? 0) > 0) {
+      reasons.push("Recipient has recent serious moderation flags.");
+    }
+    if (reasons.length === 0) reasons.push("Recipient is not eligible to receive gifts right now.");
+  }
+
+  return (
+    <div
+      className={cn(
+        "mb-6 rounded-lg border p-4",
+        ok
+          ? "border-emerald-500/30 bg-emerald-500/10"
+          : blocked
+            ? "border-destructive/30 bg-destructive/10"
+            : "border-amber-500/30 bg-amber-500/10",
+      )}
+    >
+      <div className="flex items-start gap-3">
+        {ok ? (
+          <BadgeCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mt-0.5" />
+        ) : blocked ? (
+          <Ban className="h-5 w-5 text-destructive mt-0.5" />
+        ) : (
+          <UserX className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+        )}
+        <div className="text-sm flex-1">
+          <div className="font-medium">
+            Recipient status
+            {recipient?.display_name && (
+              <span className="text-muted-foreground font-normal"> · {recipient.display_name}</span>
+            )}
+          </div>
+
+          <div className="mt-2 flex flex-wrap gap-2">
+            <Badge
+              variant="outline"
+              className={cn(
+                "text-xs",
+                eligible
+                  ? "border-emerald-500/40 text-emerald-700 dark:text-emerald-400"
+                  : "border-destructive/40 text-destructive",
+              )}
+            >
+              {eligible ? "Eligible to receive gifts" : "Not eligible"}
+            </Badge>
+            <Badge
+              variant="outline"
+              className={cn(
+                "text-xs",
+                blocked
+                  ? "border-destructive/40 text-destructive"
+                  : "border-emerald-500/40 text-emerald-700 dark:text-emerald-400",
+              )}
+            >
+              {blocked ? "Blocked" : "No blocks"}
+            </Badge>
+            {trust && (
+              <Badge variant="outline" className="text-xs">
+                {trust.badge_count} trust badge{trust.badge_count === 1 ? "" : "s"}
+                {trust.concierge_verified ? " · Concierge" : ""}
+              </Badge>
+            )}
+            {trust?.account_status && (
+              <Badge variant="outline" className="text-xs">
+                Account: {trust.account_status}
+              </Badge>
+            )}
+          </div>
+
+          {reasons.length > 0 && (
+            <ul className="mt-3 text-muted-foreground list-disc pl-5 space-y-0.5">
+              {reasons.map((r, i) => (
+                <li key={i}>{r}</li>
+              ))}
+            </ul>
+          )}
+
+          <div className="mt-2 text-[11px] text-muted-foreground">
+            Server-verified via <code>is_eligible_for_gifting</code> and{" "}
+            <code>is_blocked_between</code>.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
