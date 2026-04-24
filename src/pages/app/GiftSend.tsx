@@ -43,6 +43,8 @@ export default function GiftSend() {
   const [gifts, setGifts] = useState<GiftRow[]>([]);
   const [eligibility, setEligibility] = useState<Eligibility | null>(null);
   const [recipientEligible, setRecipientEligible] = useState<boolean | null>(null);
+  const [recipientTrust, setRecipientTrust] = useState<TrustState | null>(null);
+  const [blockState, setBlockState] = useState<{ a_blocks_b: boolean; b_blocks_a: boolean } | null>(null);
   const [loading, setLoading] = useState(true);
   const [kind, setKind] = useState<"virtual" | "physical">("virtual");
   const [selectedId, setSelectedId] = useState<string | null>(null);
