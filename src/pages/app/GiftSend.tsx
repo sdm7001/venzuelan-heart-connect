@@ -276,7 +276,7 @@ export default function GiftSend() {
               placeholder="A short note to send with the gift…"
               rows={3}
               maxLength={500}
-              disabled={!eligibility?.eligible}
+              disabled={!eligibility?.eligible || recipientEligible === false || isBlocked}
             />
           </div>
 
