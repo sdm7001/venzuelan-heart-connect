@@ -11,7 +11,7 @@ export default function Safety() {
       <section className="container py-20 md:py-28">
         <div className="mx-auto max-w-3xl text-center">
           <span className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card px-3 py-1 text-xs font-medium text-burgundy">
-            <ShieldCheck className="h-3.5 w-3.5 text-primary" /> Safety
+            <ShieldCheck className="h-3.5 w-3.5 text-primary" /> {t.safety.eyebrow}
           </span>
           <h1 className="font-display text-4xl font-semibold text-burgundy md:text-5xl text-balance">{t.safety.title}</h1>
           <p className="mt-4 text-muted-foreground">{t.safety.sub}</p>
