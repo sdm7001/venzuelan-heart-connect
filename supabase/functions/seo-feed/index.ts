@@ -5,7 +5,7 @@
 // Pulls live data from blog_posts (published=true) so updates appear
 // automatically. Cached at the edge for 5 minutes.
 
-const SITE_URL = "https://www.matchvenezulan.com";
+const SITE_URL = "https://www.matchvenezuelan.com";
 const SITE_NAME = "MatchVenezuelan";
 
 const STATIC_ROUTES: { path: string; changefreq: string; priority: string }[] = [
