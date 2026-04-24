@@ -1,13 +1,32 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Gift, Package, Sparkles, ArrowRight, Clock, Loader2 } from "lucide-react";
+import { Gift, Package, Sparkles, ArrowRight, Clock, Loader2, Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 const PAGE_SIZE = 20;
+
+const STATUS_OPTIONS = [
+  "created",
+  "paid",
+  "blocked_by_moderation",
+  "fulfilled",
+  "refunded",
+  "canceled",
+  "failed",
+] as const;
+type StatusFilter = "all" | (typeof STATUS_OPTIONS)[number];
 
 type Order = {
   id: string;
@@ -65,6 +84,16 @@ export function MyGiftsCard() {
   });
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
+  // Filters
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    return () => window.clearTimeout(t);
+  }, [search]);
+
   // Mark "visited now" when the card mounts with a user, so the next visit
   // compares against this moment.
   useEffect(() => {
@@ -72,16 +101,15 @@ export function MyGiftsCard() {
     window.localStorage.setItem(LAST_VISIT_KEY, String(Date.now()));
   }, [user]);
 
-  // Reset & load first page when user/tab changes
+  // Reset & load first page when user/tab/filters change
   useEffect(() => {
     if (!user) return;
     setOrders([]);
     setEventsByOrder({});
-    setGiftNames({});
     setHasMore(true);
     void loadPage({ reset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, tab]);
+  }, [user, tab, debouncedSearch, statusFilter]);
 
   const loadPage = useCallback(
     async ({ reset = false }: { reset?: boolean } = {}) => {
@@ -90,6 +118,23 @@ export function MyGiftsCard() {
       else setLoadingMore(true);
 
       const col = tab === "sent" ? "sender_id" : "recipient_id";
+
+      // If a name search is active, resolve matching gift IDs first.
+      let allowedGiftIds: string[] | null = null;
+      if (debouncedSearch) {
+        const { data: matched } = await supabase
+          .from("gifts")
+          .select("id, name")
+          .ilike("name", `%${debouncedSearch}%`);
+        allowedGiftIds = (matched ?? []).map((g: any) => g.id);
+        if (allowedGiftIds.length === 0) {
+          if (reset) setOrders([]);
+          setHasMore(false);
+          if (reset) setLoading(false);
+          else setLoadingMore(false);
+          return;
+        }
+      }
 
       // Keyset cursor: last-loaded created_at (only when paging further)
       const cursor = reset ? null : orders[orders.length - 1]?.created_at ?? null;
@@ -102,6 +147,8 @@ export function MyGiftsCard() {
         .order("id", { ascending: false })
         .limit(PAGE_SIZE);
 
+      if (statusFilter !== "all") q = q.eq("status", statusFilter);
+      if (allowedGiftIds) q = q.in("gift_id", allowedGiftIds);
       if (cursor) q = q.lt("created_at", cursor);
 
       const { data: o, error } = await q;
@@ -224,11 +271,63 @@ export function MyGiftsCard() {
         </div>
       </div>
 
+      {/* Filters */}
+      <div className="mb-4 flex flex-col sm:flex-row gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search by gift name…"
+            className="pl-8 pr-8 h-9"
+          />
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              aria-label="Clear search"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+        <Select value={statusFilter} onValueChange={v => setStatusFilter(v as StatusFilter)}>
+          <SelectTrigger className="h-9 w-full sm:w-48">
+            <SelectValue placeholder="All statuses" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All statuses</SelectItem>
+            {STATUS_OPTIONS.map(s => (
+              <SelectItem key={s} value={s} className="capitalize">
+                {s.replace(/_/g, " ")}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {(debouncedSearch || statusFilter !== "all") && (
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={() => {
+              setSearch("");
+              setStatusFilter("all");
+            }}
+            className="h-9"
+          >
+            Clear
+          </Button>
+        )}
+      </div>
+
       {loading ? (
         <div className="text-sm text-muted-foreground">Loading…</div>
       ) : orders.length === 0 ? (
         <div className="text-sm text-muted-foreground py-6 text-center">
-          {tab === "sent" ? (
+          {debouncedSearch || statusFilter !== "all" ? (
+            <>No {tab} gifts match your filters.</>
+          ) : tab === "sent" ? (
             <>
               You haven't sent any gifts yet.{" "}
               <Link to="/messages" className="text-primary underline">Open a chat</Link> to send one.
