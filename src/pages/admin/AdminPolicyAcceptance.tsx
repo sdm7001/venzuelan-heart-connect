@@ -136,6 +136,7 @@ export default function AdminPolicyAcceptance() {
           sortField: state.sortField,
           sortDir: state.sortDir,
           policyVersion: config.policy_version,
+          onboardedFilter,
         },
       });
       if (error || data?.error) {
@@ -151,9 +152,10 @@ export default function AdminPolicyAcceptance() {
         loading: false,
       }));
       if (data.totals) setTotals(data.totals);
+      if (typeof data.bumpedAt !== "undefined") setBumpedAt(data.bumpedAt);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pageSize, debouncedSearch, config.policy_version,
+    [pageSize, debouncedSearch, config.policy_version, onboardedFilter,
      blockedState.page, blockedState.sortField, blockedState.sortDir,
      completedState.page, completedState.sortField, completedState.sortDir],
   );
@@ -161,11 +163,29 @@ export default function AdminPolicyAcceptance() {
   // Refetch the active tab whenever its inputs change.
   useEffect(() => { loadPage(activeTab); }, [activeTab, loadPage]);
 
-  // Reset to page 1 when search or page size changes.
+  // When the policy version changes (e.g. an admin in another tab bumps it),
+  // refetch *both* tabs and the audit timeline so totals/charts stay accurate
+  // without the user needing to click Refresh.
   useEffect(() => {
     setBlockedState((s) => ({ ...s, page: 1 }));
     setCompletedState((s) => ({ ...s, page: 1 }));
-  }, [debouncedSearch, pageSize]);
+    loadPage("blocked");
+    loadPage("completed");
+    supabase
+      .from("audit_events")
+      .select("id, actor_id, subject_id, action, metadata, created_at")
+      .eq("category", "policy")
+      .order("created_at", { ascending: false })
+      .limit(200)
+      .then(({ data }) => setAudit((data as AuditRow[]) ?? []));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config.policy_version]);
+
+  // Reset to page 1 when search, page size, or onboarding filter changes.
+  useEffect(() => {
+    setBlockedState((s) => ({ ...s, page: 1 }));
+    setCompletedState((s) => ({ ...s, page: 1 }));
+  }, [debouncedSearch, pageSize, onboardedFilter]);
 
   function refresh() {
     loadPage(activeTab);
