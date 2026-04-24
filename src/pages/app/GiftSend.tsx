@@ -504,3 +504,189 @@ function RecipientStatusCard({
     </div>
   );
 }
+
+function GiftConfirmation({
+  confirmation, recipient, threadId, onSendAnother,
+}: {
+  confirmation: {
+    orderId: string;
+    createdAt: string;
+    kind: "virtual" | "physical";
+    gift: GiftRow;
+    message: string | null;
+    creditCost: number | null;
+  };
+  recipient: any;
+  threadId: string | null;
+  onSendAnother: () => void;
+}) {
+  const { orderId, createdAt, kind, gift, message, creditCost } = confirmation;
+  const shortId = orderId.slice(0, 8).toUpperCase();
+  const created = new Date(createdAt);
+
+  async function copyId() {
+    try {
+      await navigator.clipboard.writeText(orderId);
+      toast.success("Order ID copied");
+    } catch {
+      toast.error("Could not copy");
+    }
+  }
+
+  const physicalSteps = [
+    { icon: CheckCircle2, label: "Order received", done: true,
+      desc: "We've recorded your order and notified our concierge team." },
+    { icon: Clock, label: "Eligibility & payment review", done: false,
+      desc: "Our team confirms eligibility and processes payment within 1 business day." },
+    { icon: Package, label: "Sourcing & packing", done: false,
+      desc: "We source the gift locally in Venezuela and prepare it for delivery." },
+    { icon: Truck, label: "Hand-delivered", done: false,
+      desc: "A vetted courier delivers the gift and shares a delivery confirmation." },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-5 flex items-start gap-3">
+        <CheckCircle2 className="h-6 w-6 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
+        <div className="text-sm flex-1">
+          <div className="font-medium text-base">
+            {kind === "virtual" ? "Virtual gift sent" : "Physical gift order created"}
+          </div>
+          <div className="text-muted-foreground mt-1">
+            {kind === "virtual"
+              ? "Your recipient will see it in their gift inbox right away."
+              : "Our concierge team will take it from here. You'll get updates as the order progresses."}
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-lg border border-border bg-card p-5">
+        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-3">
+          Order details
+        </div>
+        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+          <div>
+            <dt className="text-muted-foreground">Order ID</dt>
+            <dd className="mt-0.5 flex items-center gap-2">
+              <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">{shortId}</code>
+              <button
+                onClick={copyId}
+                className="text-xs text-primary hover:underline"
+                type="button"
+              >
+                Copy full ID
+              </button>
+            </dd>
+          </div>
+          <div>
+            <dt className="text-muted-foreground">Created</dt>
+            <dd className="mt-0.5">{created.toLocaleString()}</dd>
+          </div>
+          <div>
+            <dt className="text-muted-foreground">Type</dt>
+            <dd className="mt-0.5">
+              <Badge variant="outline" className="text-xs">
+                {kind === "virtual" ? (
+                  <><Sparkles className="h-3 w-3 mr-1" /> Virtual</>
+                ) : (
+                  <><Package className="h-3 w-3 mr-1" /> Physical</>
+                )}
+              </Badge>
+            </dd>
+          </div>
+          <div>
+            <dt className="text-muted-foreground">Gift</dt>
+            <dd className="mt-0.5 font-medium">{gift.name}</dd>
+          </div>
+          {gift.description && (
+            <div className="sm:col-span-2">
+              <dt className="text-muted-foreground">Description</dt>
+              <dd className="mt-0.5 text-muted-foreground">{gift.description}</dd>
+            </div>
+          )}
+          {kind === "virtual" && creditCost !== null && (
+            <div>
+              <dt className="text-muted-foreground">Cost</dt>
+              <dd className="mt-0.5">{creditCost} credits</dd>
+            </div>
+          )}
+          <div>
+            <dt className="text-muted-foreground">Recipient</dt>
+            <dd className="mt-0.5">{recipient?.display_name ?? "—"}</dd>
+          </div>
+          {message && (
+            <div className="sm:col-span-2">
+              <dt className="text-muted-foreground">Your message</dt>
+              <dd className="mt-0.5 italic text-foreground">"{message}"</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+
+      {kind === "physical" && (
+        <div className="rounded-lg border border-border bg-card p-5">
+          <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-4">
+            What happens next
+          </div>
+          <ol className="space-y-4">
+            {physicalSteps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <li key={i} className="flex items-start gap-3">
+                  <div
+                    className={cn(
+                      "mt-0.5 grid h-7 w-7 place-items-center rounded-full border shrink-0",
+                      step.done
+                        ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
+                        : "bg-muted border-border text-muted-foreground",
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                  </div>
+                  <div className="text-sm">
+                    <div className={cn("font-medium", !step.done && "text-muted-foreground")}>
+                      {i + 1}. {step.label}
+                    </div>
+                    <div className="text-muted-foreground text-xs mt-0.5">{step.desc}</div>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+          <div className="mt-4 text-xs text-muted-foreground border-t border-border pt-3">
+            You'll get in-app notifications at each step. Track this order anytime from{" "}
+            <Link to="/dashboard" className="text-primary hover:underline">My gifts</Link> on your dashboard.
+          </div>
+        </div>
+      )}
+
+      {kind === "virtual" && (
+        <div className="rounded-lg border border-border bg-card p-5 text-sm">
+          <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2">
+            What happens next
+          </div>
+          <p className="text-muted-foreground">
+            The gift is already visible in your recipient's inbox. They'll receive an in-app
+            notification. You can keep the conversation going from your messages.
+          </p>
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2 pt-2">
+        <Button onClick={onSendAnother} variant="default">
+          <Gift className="h-4 w-4 mr-1.5" /> Send another gift
+        </Button>
+        {threadId && (
+          <Button asChild variant="outline">
+            <Link to={`/messages?thread=${threadId}`}>
+              <MessageCircle className="h-4 w-4 mr-1.5" /> Back to chat
+            </Link>
+          </Button>
+        )}
+        <Button asChild variant="ghost">
+          <Link to="/dashboard">View My gifts</Link>
+        </Button>
+      </div>
+    </div>
+  );
+}
