@@ -17,12 +17,21 @@ const POLICIES: { key: PolicyKey; labelKey: "tos" | "privacy" | "aup" | "antiSol
 ];
 
 type AckRow = { policy_key: string; policy_version: string; accepted_at: string };
+type ReacceptEvent = {
+  created_at: string;
+  metadata: {
+    policy_version?: string;
+    newly_acknowledged?: string[];
+    already_acknowledged?: string[];
+  } | null;
+};
 
 export function ComplianceCard() {
   const { t } = useI18n();
   const { user } = useAuth();
   const { config, loading: cfgLoading } = usePolicyConfig();
   const [acks, setAcks] = useState<AckRow[] | null>(null);
+  const [lastReaccept, setLastReaccept] = useState<ReacceptEvent | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -33,6 +42,19 @@ export function ComplianceCard() {
       .eq("user_id", user.id)
       .order("accepted_at", { ascending: false })
       .then(({ data }) => { if (active) setAcks((data as AckRow[]) ?? []); });
+    supabase
+      .from("audit_events")
+      .select("created_at, metadata")
+      .eq("subject_id", user.id)
+      .eq("category", "policy")
+      .eq("action", "policy_reaccepted")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .then(({ data }) => {
+        if (!active) return;
+        const row = (data ?? [])[0] as ReacceptEvent | undefined;
+        setLastReaccept(row ?? null);
+      });
     return () => { active = false; };
   }, [user?.id]);
 
@@ -104,6 +126,65 @@ export function ComplianceCard() {
               "{keys}",
               missingRows.map(r => t.legal[r.labelKey]).join(" · ")
             )}
+          </div>
+        </div>
+      )}
+
+      {ready && lastReaccept && (
+        <div className="mt-3 rounded-lg border border-border bg-muted/40 p-3 text-xs">
+          <div className="flex items-center gap-2 font-medium text-foreground">
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+            <span>{t.compliance.lastReacceptTitle}</span>
+            {lastReaccept.metadata?.policy_version && (
+              <span className="font-mono text-[10px] text-muted-foreground">
+                v{lastReaccept.metadata.policy_version}
+              </span>
+            )}
+          </div>
+          <div className="mt-1 text-muted-foreground">
+            {t.compliance.lastReacceptAt}: {format(new Date(lastReaccept.created_at), "PP p")}
+          </div>
+          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
+                {t.compliance.newlyAcknowledged}
+              </div>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {(lastReaccept.metadata?.newly_acknowledged ?? []).length === 0 ? (
+                  <span className="text-muted-foreground">{t.compliance.noKeys}</span>
+                ) : (
+                  (lastReaccept.metadata!.newly_acknowledged ?? []).map((k) => (
+                    <Badge
+                      key={k}
+                      variant="outline"
+                      className="border-emerald-300 bg-emerald-50 text-emerald-800 text-[10px] font-mono"
+                    >
+                      {k}
+                    </Badge>
+                  ))
+                )}
+              </div>
+            </div>
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {t.compliance.alreadyAcknowledged}
+              </div>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {(lastReaccept.metadata?.already_acknowledged ?? []).length === 0 ? (
+                  <span className="text-muted-foreground">{t.compliance.noKeys}</span>
+                ) : (
+                  (lastReaccept.metadata!.already_acknowledged ?? []).map((k) => (
+                    <Badge
+                      key={k}
+                      variant="outline"
+                      className="border-border text-muted-foreground text-[10px] font-mono"
+                    >
+                      {k}
+                    </Badge>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -142,6 +142,11 @@ const _translations = {
       missingSummary: "Missing for current version: {keys}",
       lastAcknowledged: "Last acknowledged",
       neverAcknowledged: "Never acknowledged",
+      lastReacceptTitle: "Last re-acceptance",
+      lastReacceptAt: "Re-accepted on",
+      newlyAcknowledged: "Newly acknowledged",
+      alreadyAcknowledged: "Already up to date",
+      noKeys: "None",
     },
     dashboard: {
       welcome: "Welcome back",
@@ -315,6 +320,11 @@ const _translations = {
       missingSummary: "Faltantes para la versión actual: {keys}",
       lastAcknowledged: "Última aceptación",
       neverAcknowledged: "Nunca aceptada",
+      lastReacceptTitle: "Última re-aceptación",
+      lastReacceptAt: "Re-aceptada el",
+      newlyAcknowledged: "Aceptadas por primera vez",
+      alreadyAcknowledged: "Ya estaban al día",
+      noKeys: "Ninguna",
     },
     messages: {
       title: "Mensajes",
