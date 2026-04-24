@@ -36,6 +36,8 @@ export type SeoOptions = {
   robots?: string;
   /** hreflang alternates. Defaults to en/es/x-default pointing to canonical. */
   alternates?: SeoAlternate[];
+  /** RSS/Atom feed alternates exposed via <link rel="alternate" type="application/rss+xml">. */
+  feeds?: { title: string; href: string; type?: string }[];
   /** One or more JSON-LD blocks. Each gets a unique <script> tag. */
   jsonLd?: JsonLd | JsonLd[];
   /** Article-only metadata. */
