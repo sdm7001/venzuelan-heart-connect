@@ -19,6 +19,7 @@ export function PublicHeader() {
     { to: "/how-it-works", label: t.nav.how },
     { to: "/safety", label: t.nav.safety },
     { to: "/faq", label: t.nav.faq },
+    { to: "/resources", label: t.nav.resources },
   ];
 
   return (
