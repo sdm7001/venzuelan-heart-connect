@@ -196,6 +196,23 @@ export default function GiftSend() {
     setConfirmation(null);
   }
 
+  if (confirmation) {
+    return (
+      <AppLayout>
+        <PageHeader
+          title="Gift order confirmed"
+          sub={recipient ? `To ${recipient.display_name ?? "this user"}` : undefined}
+        />
+        <GiftConfirmation
+          confirmation={confirmation}
+          recipient={recipient}
+          threadId={threadId}
+          onSendAnother={startNewGift}
+        />
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       <PageHeader
