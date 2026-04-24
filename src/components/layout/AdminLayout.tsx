@@ -18,6 +18,7 @@ const items = [
   { to: "/admin/audit", label: "Audit log", icon: Activity },
   { to: "/admin/policies", label: "Policies", icon: FileText },
   { to: "/admin/policy-acceptance", label: "Policy acceptance", icon: ClipboardCheck },
+  { to: "/admin/policy-reaccepts", label: "Re-accept events", icon: History },
 ];
 
 export function AdminLayout({ children }: { children: ReactNode }) {
