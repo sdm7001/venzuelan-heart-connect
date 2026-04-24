@@ -3,6 +3,7 @@ const _translations = {
     brand: { name: "MatchVenezuelan", tagline: "Where serious hearts meet across borders." },
     nav: {
       home: "Home", how: "How it works", safety: "Safety", faq: "FAQ",
+      resources: "Resources",
       signin: "Sign in", join: "Join free", dashboard: "Dashboard",
       profile: "Profile", messages: "Messages", admin: "Admin", logout: "Sign out",
     },
@@ -325,6 +326,7 @@ const _translations = {
     brand: { name: "MatchVenezuelan", tagline: "Donde se encuentran corazones serios sin fronteras." },
     nav: {
       home: "Inicio", how: "Cómo funciona", safety: "Seguridad", faq: "Preguntas",
+      resources: "Recursos",
       signin: "Iniciar sesión", join: "Únete gratis", dashboard: "Panel",
       profile: "Perfil", messages: "Mensajes", admin: "Admin", logout: "Cerrar sesión",
     },
