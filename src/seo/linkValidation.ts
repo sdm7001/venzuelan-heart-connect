@@ -74,11 +74,11 @@ export function validateBilingualAccept(input: {
 
   if (input.en) {
     const r = validateLinkEntry({ label: input.en.label, href: input.href }, input.en.existing);
-    if (!r.ok) return { ok: false, error: `EN: ${r.error}` };
+    if (r.ok === false) return { ok: false, error: `EN: ${r.error}` };
   }
   if (input.es) {
     const r = validateLinkEntry({ label: input.es.label, href: input.href }, input.es.existing);
-    if (!r.ok) return { ok: false, error: `ES: ${r.error}` };
+    if (r.ok === false) return { ok: false, error: `ES: ${r.error}` };
   }
   return { ok: true };
 }
