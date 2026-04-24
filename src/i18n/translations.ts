@@ -72,6 +72,15 @@ const _translations = {
         billing: "Gifts, credits & billing",
         privacy: "Privacy & data",
       },
+      supportCtas: {
+        safety: { label: "Report a safety issue", subject: "Safety report" },
+        billing: { label: "Get help with billing", subject: "Billing help" },
+        privacy: { label: "Contact our privacy team", subject: "Privacy request" },
+        verification: { label: "Ask about verification", subject: "Verification help" },
+        account: { label: "Contact account support", subject: "Account help" },
+        general: { label: "Contact support", subject: "FAQ follow-up" },
+      },
+      stillNeedHelp: "Still need help?",
       entries: [
         {
           q: "Is MatchVenezuelan an escort, sugar, or adult site?",
