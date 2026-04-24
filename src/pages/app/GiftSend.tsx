@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Gift, ShieldAlert, BadgeCheck, Sparkles, Package } from "lucide-react";
+import { Gift, ShieldAlert, BadgeCheck, Sparkles, Package, Ban, UserX } from "lucide-react";
 import { AppLayout, EmptyState, PageHeader } from "@/components/layout/AppLayout";
 import { useAuth } from "@/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
