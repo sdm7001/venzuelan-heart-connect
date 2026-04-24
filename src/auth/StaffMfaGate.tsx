@@ -1,3 +1,7 @@
+// Backwards-compat re-export. Prefer importing StaffOtpGate directly.
+export { StaffOtpGate as StaffMfaGate } from "./StaffOtpGate";
+
+// --- Legacy password-only gate kept below for reference; no longer rendered. ---
 import { ReactNode, useEffect, useState } from "react";
 import { ShieldCheck, LogOut } from "lucide-react";
 import { toast } from "sonner";
@@ -19,7 +23,7 @@ const VALIDITY_MS = VALIDITY_HOURS * 60 * 60 * 1000;
  * with an Email-OTP variant (same props/contract) once email infra is ready
  * to upgrade to a true second factor.
  */
-export function StaffMfaGate({ children }: { children: ReactNode }) {
+function _LegacyStaffMfaGate({ children }: { children: ReactNode }) {
   const { user, signOut } = useAuth();
   const [checked, setChecked] = useState(false);
   const [verified, setVerified] = useState(false);
