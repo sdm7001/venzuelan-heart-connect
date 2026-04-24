@@ -28,9 +28,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-lg">
         <div className="container flex h-16 items-center justify-between gap-4">
           <Link to="/dashboard" className="flex items-center gap-2 font-display text-lg font-semibold text-burgundy">
-            <span className="grid h-8 w-8 place-items-center rounded-full gradient-romance">
-              <Heart className="h-4 w-4 text-primary-foreground" fill="currentColor" />
-            </span>
+            <img src={logo} alt="MatchVenezuelan" className="h-9 w-9 object-contain" />
             MatchVenezuelan
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
