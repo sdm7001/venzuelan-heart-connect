@@ -75,7 +75,7 @@ const SHIPPING_STATES = new Set(["processing", "shipped", "delivered", "complete
 export default function GiftOrderDetail() {
   const { orderId } = useParams<{ orderId: string }>();
   const { user } = useAuth();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -146,8 +146,8 @@ export default function GiftOrderDetail() {
     return "other";
   }, [order, user]);
 
-  const refundSummary = useMemo(() => summarizeRefund(order, events), [order, events]);
-  const shippingSummary = useMemo(() => summarizeShipping(order, events), [order, events]);
+  const refundSummary = useMemo(() => summarizeRefund(order, events, lang), [order, events, lang]);
+  const shippingSummary = useMemo(() => summarizeShipping(order, events, lang), [order, events, lang]);
 
   function copyId() {
     if (!order) return;
@@ -226,10 +226,10 @@ export default function GiftOrderDetail() {
                 </div>
               </Field>
               <Field label={tg.created}>
-                {new Date(order.created_at).toLocaleString()}
+                {formatDateTime(order.created_at, lang)}
               </Field>
               <Field label={tg.updated}>
-                {new Date(order.updated_at).toLocaleString()}
+                {formatDateTime(order.updated_at, lang)}
               </Field>
               <Field label={tg.cost}>
                 {order.kind === "virtual" && order.credit_cost != null
@@ -310,7 +310,7 @@ export default function GiftOrderDetail() {
               <div className="text-sm text-muted-foreground">
                 {tg.noEvents}{" "}
                 <span>
-                  {tg.createdOn} {new Date(order.created_at).toLocaleString()}
+                  {tg.createdOn} {formatDateTime(order.created_at, lang)}
                 </span>
               </div>
             ) : (
@@ -339,7 +339,7 @@ export default function GiftOrderDetail() {
                         {e.status.replace(/_/g, " ")}
                       </span>
                       <span className="text-xs text-muted-foreground">
-                        {new Date(e.created_at).toLocaleString()}
+                        {formatDateTime(e.created_at, lang)}
                       </span>
                     </div>
                     {e.notes && (
@@ -464,14 +464,14 @@ function SummaryBlock({
 
 type Summary = { tone: "neutral" | "positive" | "warning" | "info"; label: string; detail: string };
 
-function summarizeRefund(order: Order | null, events: EventRow[]): Summary {
+function summarizeRefund(order: Order | null, events: EventRow[], lang: Lang): Summary {
   if (!order) return { tone: "neutral", label: "—", detail: "" };
   const refundEv = [...events].reverse().find(e => REFUND_STATES.has(e.status));
   if (order.status === "refunded" || refundEv?.status === "refunded") {
     return {
       tone: "warning",
       label: "Refunded",
-      detail: refundEv ? `On ${new Date(refundEv.created_at).toLocaleString()}` : "Order amount returned.",
+      detail: refundEv ? `On ${formatDateTime(refundEv.created_at, lang)}` : "Order amount returned.",
     };
   }
   if (order.status === "failed" || order.status === "canceled") {
@@ -484,7 +484,7 @@ function summarizeRefund(order: Order | null, events: EventRow[]): Summary {
   return { tone: "positive", label: "No refund issued", detail: "Order is in good standing." };
 }
 
-function summarizeShipping(order: Order | null, events: EventRow[]): Summary {
+function summarizeShipping(order: Order | null, events: EventRow[], lang: Lang): Summary {
   if (!order) return { tone: "neutral", label: "—", detail: "" };
   if (order.kind === "virtual") {
     return {
@@ -498,7 +498,7 @@ function summarizeShipping(order: Order | null, events: EventRow[]): Summary {
     return {
       tone: "positive",
       label: "Delivered",
-      detail: lastShipEv ? `On ${new Date(lastShipEv.created_at).toLocaleString()}` : "Confirmed by courier.",
+      detail: lastShipEv ? `On ${formatDateTime(lastShipEv.created_at, lang)}` : "Confirmed by courier.",
     };
   }
   if (order.status === "shipped") {
