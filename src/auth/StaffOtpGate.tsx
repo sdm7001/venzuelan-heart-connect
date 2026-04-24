@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { ShieldCheck, LogOut, Mail, KeyRound } from "lucide-react";
+import { ShieldCheck, LogOut, Mail, KeyRound, LifeBuoy } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./AuthProvider";
@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { sha256Hex, normalizeRecoveryCode } from "./mfaCrypto";
 
 const VALIDITY_HOURS = 12;
 const VALIDITY_MS = VALIDITY_HOURS * 60 * 60 * 1000;
 
-type Step = "password" | "request_code" | "enter_code";
+type Step = "password" | "request_code" | "enter_code" | "recovery";
 
 /**
  * Staff MFA gate: every 12h, require BOTH a password re-auth AND an emailed
