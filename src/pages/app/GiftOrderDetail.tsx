@@ -86,6 +86,13 @@ export default function GiftOrderDetail() {
   const [sender, setSender] = useState<ProfileLite | null>(null);
   const [recipient, setRecipient] = useState<ProfileLite | null>(null);
 
+  // Ticks every 30s so relative timestamps ("5 minutes ago") stay fresh.
+  const [, setNowTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setNowTick((n) => n + 1), 30_000);
+    return () => clearInterval(id);
+  }, []);
+
   useEffect(() => {
     if (!user || !orderId) return;
     void load();
@@ -338,8 +345,15 @@ export default function GiftOrderDetail() {
                       >
                         {e.status.replace(/_/g, " ")}
                       </span>
-                      <span className="text-xs text-muted-foreground">
-                        {formatDateTime(e.created_at, lang)}
+                      <span
+                        className="text-xs text-muted-foreground"
+                        title={formatDateTime(e.created_at, lang)}
+                      >
+                        {formatRelative(e.created_at, lang)}
+                        <span className="mx-1.5 opacity-50">·</span>
+                        <span className="opacity-70">
+                          {formatDateTime(e.created_at, lang)}
+                        </span>
                       </span>
                     </div>
                     {e.notes && (
