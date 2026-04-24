@@ -9,6 +9,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { LifeBuoy, Mail } from "lucide-react";
+
+const SUPPORT_EMAIL = "support@matchvenezuelan.com";
+
+type CtaKind = "safety" | "billing" | "privacy" | "verification" | "account" | "general" | "none";
 
 type CategoryKey = "about" | "verification" | "messaging" | "safety" | "billing" | "privacy";
 
@@ -37,6 +42,19 @@ const ENTRY_CATEGORIES: CategoryKey[] = [
   "about",        // 18 multiple accounts
   "about",        // 19 contact support
 ];
+
+// Per-entry CTA. Defaults to the entry's category when omitted; "none" hides
+// the CTA (e.g. for the "how do I contact support" entry itself).
+const ENTRY_CTAS: Partial<Record<number, CtaKind>> = {
+  4: "verification",
+  5: "verification",
+  6: "account",       // messaging questions go to account support
+  8: "safety",        // post-block/report follow-up is a safety matter
+  13: "account",      // cancel / delete account
+  17: "account",      // onboarding stuck
+  18: "account",      // duplicate accounts
+  19: "none",         // already explains how to contact support
+};
 
 const CATEGORY_ORDER: CategoryKey[] = [
   "about",
@@ -177,20 +195,59 @@ export default function FAQ() {
                   </span>
                 </header>
                 <Accordion type="single" collapsible>
-                  {items.map(({ entry, idx }) => (
-                    <AccordionItem
-                      key={idx}
-                      value={`item-${idx}`}
-                      className="border-border"
-                    >
-                      <AccordionTrigger className="text-left font-display text-base font-medium text-foreground hover:no-underline">
-                        {entry.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed">
-                        {entry.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
+                  {items.map(({ entry, idx }) => {
+                    const explicit = ENTRY_CTAS[idx];
+                    const ctaKind: CtaKind =
+                      explicit ?? (ENTRY_CATEGORIES[idx] as CtaKind) ?? "general";
+                    const cta =
+                      ctaKind === "none" ? null : t.faq.supportCtas[ctaKind] ?? t.faq.supportCtas.general;
+                    const mailto = cta
+                      ? `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(cta.subject)}`
+                      : null;
+                    const tone =
+                      ctaKind === "safety"
+                        ? "border-destructive/30 bg-destructive/5 text-destructive hover:bg-destructive/10"
+                        : ctaKind === "billing"
+                          ? "border-amber-500/30 bg-amber-500/5 text-amber-700 hover:bg-amber-500/10 dark:text-amber-400"
+                          : "border-burgundy/30 bg-burgundy/5 text-burgundy hover:bg-burgundy/10";
+                    return (
+                      <AccordionItem
+                        key={idx}
+                        value={`item-${idx}`}
+                        className="border-border"
+                      >
+                        <AccordionTrigger className="text-left font-display text-base font-medium text-foreground hover:no-underline">
+                          {entry.q}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground leading-relaxed">
+                          <p>{entry.a}</p>
+                          {cta && mailto && (
+                            <div className="mt-4 flex items-start gap-3 rounded-md border border-dashed border-border bg-muted/30 p-3">
+                              {ctaKind === "safety" ? (
+                                <LifeBuoy className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+                              ) : (
+                                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-burgundy" />
+                              )}
+                              <div className="flex flex-1 flex-wrap items-center justify-between gap-2">
+                                <span className="text-xs text-muted-foreground">
+                                  {t.faq.stillNeedHelp}
+                                </span>
+                                <a
+                                  href={mailto}
+                                  className={cn(
+                                    "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+                                    tone,
+                                  )}
+                                >
+                                  {cta.label}
+                                </a>
+                              </div>
+                            </div>
+                          )}
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
                 </Accordion>
               </section>
             ))}
