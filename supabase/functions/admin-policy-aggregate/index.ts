@@ -142,8 +142,19 @@ Deno.serve(async (req) => {
       };
     });
 
+    // Apply onboarded-relative-to-bump filter against the *full* aggregated
+    // set so the totals reflect the same lens the table is showing.
+    const onboardingFiltered = (() => {
+      if (onboardedFilter === "all" || !bumpedAt) return aggregated;
+      const cutoff = new Date(bumpedAt).getTime();
+      return aggregated.filter((r) => {
+        const t = new Date(r.created_at).getTime();
+        return onboardedFilter === "before" ? t < cutoff : t >= cutoff;
+      });
+    })();
+
     // Filter by mode + search.
-    let filtered = aggregated.filter((r) =>
+    let filtered = onboardingFiltered.filter((r) =>
       mode === "blocked" ? !r.has_current : r.has_current
     );
     if (search) {
