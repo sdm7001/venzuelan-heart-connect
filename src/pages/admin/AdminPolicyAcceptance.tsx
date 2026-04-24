@@ -338,6 +338,13 @@ export default function AdminPolicyAcceptance() {
                           {a.action === "policy_reaccepted" && a.metadata?.policy_version && (
                             <>Re-accepted v{a.metadata.policy_version}</>
                           )}
+                          {a.action === "policy_reminder_sent" && (
+                            <>
+                              Reminder for v{a.metadata?.policy_version ?? "?"} ·{" "}
+                              <span className="font-mono">{(a.metadata?.missing_keys ?? []).join(", ") || "—"}</span>
+                              {a.metadata?.channel ? <> · {a.metadata.channel}</> : null}
+                            </>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
