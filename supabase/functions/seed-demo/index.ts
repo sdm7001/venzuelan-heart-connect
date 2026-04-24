@@ -77,7 +77,7 @@ const REPORT_DESCRIPTIONS: Record<string, string> = {
   spam: "Same copy-pasted opening message sent dozens of times.",
 };
 
-async function ensureUser(admin: ReturnType<typeof createClient>, u: DemoUser): Promise<string> {
+async function ensureUser(admin: any, u: DemoUser): Promise<string> {
   const { data: created, error } = await admin.auth.admin.createUser({
     email: u.email,
     password: DEMO_PASSWORD,
@@ -151,7 +151,7 @@ Deno.serve(async (req) => {
     }
     const callerId = userData.user.id;
 
-    const admin = createClient(SUPABASE_URL, SERVICE_KEY);
+    const admin: any = createClient(SUPABASE_URL, SERVICE_KEY);
 
     const { data: roles } = await admin.from("user_roles").select("role").eq("user_id", callerId);
     const isAdmin = (roles ?? []).some((r: any) => r.role === "admin");
@@ -163,7 +163,7 @@ Deno.serve(async (req) => {
 
     const idsByEmail: Record<string, string> = {};
     for (const u of DEMO_USERS) {
-      idsByEmail[u.email] = await ensureUser(admin as any, u);
+      idsByEmail[u.email] = await ensureUser(admin, u);
     }
 
     const adminId       = idsByEmail["demo.admin@matchvenezuelan.test"];
