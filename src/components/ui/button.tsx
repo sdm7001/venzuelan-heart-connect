@@ -18,7 +18,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline pointer-coarse:min-h-0 pointer-coarse:min-w-0",
         romance: "gradient-romance text-primary-foreground shadow-soft hover:shadow-elegant hover:brightness-105",
-        burgundy: "bg-burgundy text-burgundy-foreground hover:bg-burgundy/90",
+        burgundy: "bg-primary text-primary-foreground hover:bg-primary/90",
         soft: "bg-primary-soft text-burgundy hover:bg-primary-soft/80",
       },
       size: {
