@@ -329,16 +329,74 @@ export default function Resources() {
             </div>
           </div>
 
-          {filtered.length === 0 ? (
+          {total === 0 ? (
             <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-sm text-muted-foreground">
               {copy.noResults}
             </div>
           ) : (
-            <ul className="grid gap-4 md:grid-cols-2">
-              {filtered.map(p => (
-                <FeedCard key={p.slug} post={p} lang={lang} copy={copy} />
-              ))}
-            </ul>
+            <>
+              <ul className="grid gap-4 md:grid-cols-2">
+                {filtered.map(p => (
+                  <FeedCard key={p.slug} post={p} lang={lang} copy={copy} />
+                ))}
+              </ul>
+
+              {totalPages > 1 && (
+                <nav
+                  aria-label={lang === "en" ? "Pagination" : "Paginación"}
+                  className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between"
+                >
+                  <p className="text-xs text-muted-foreground" aria-live="polite">
+                    {copy.showing(fromIdx + 1, toIdx, total)}
+                  </p>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-8"
+                      disabled={safePage <= 1}
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    >
+                      <ChevronLeft className="mr-1 h-3.5 w-3.5" />
+                      {copy.prev}
+                    </Button>
+                    {Array.from({ length: totalPages }).map((_, i) => {
+                      const n = i + 1;
+                      const active = n === safePage;
+                      return (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => setPage(n)}
+                          aria-current={active ? "page" : undefined}
+                          aria-label={lang === "en" ? `Go to page ${n}` : `Ir a la página ${n}`}
+                          className={
+                            "h-8 min-w-8 rounded-md border px-2 text-xs transition-colors " +
+                            (active
+                              ? "border-primary bg-primary text-primary-foreground"
+                              : "border-border bg-background text-muted-foreground hover:text-foreground")
+                          }
+                        >
+                          {n}
+                        </button>
+                      );
+                    })}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-8"
+                      disabled={safePage >= totalPages}
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    >
+                      {copy.next}
+                      <ChevronRight className="ml-1 h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </nav>
+              )}
+            </>
           )}
         </div>
       </section>
