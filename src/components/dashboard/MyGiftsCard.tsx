@@ -1,13 +1,35 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Gift, Package, Sparkles, ArrowRight, Clock, Loader2 } from "lucide-react";
+import { Gift, Package, Sparkles, ArrowRight, Clock, Loader2, Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 const PAGE_SIZE = 20;
+
+const STATUS_OPTIONS = [
+  "created",
+  "pending_payment",
+  "paid",
+  "processing",
+  "shipped",
+  "delivered",
+  "completed",
+  "failed",
+  "refunded",
+  "canceled",
+] as const;
+type StatusFilter = "all" | (typeof STATUS_OPTIONS)[number];
 
 type Order = {
   id: string;
