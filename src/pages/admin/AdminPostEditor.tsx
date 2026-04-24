@@ -159,6 +159,10 @@ export default function AdminPostEditor() {
       toast.error("Slug + EN + ES titles are required.");
       return;
     }
+    if (form.published && pendingCount > 0) {
+      toast.error(`Resolve ${pendingCount} pending link suggestion(s) before publishing.`);
+      return;
+    }
     setSaving(true);
     try {
       const payload = {
