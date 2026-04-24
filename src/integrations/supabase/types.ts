@@ -241,6 +241,110 @@ export type Database = {
         }
         Relationships: []
       }
+      gift_order_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          notes: string | null
+          order_id: string
+          status: Database["public"]["Enums"]["gift_order_status"]
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          order_id: string
+          status: Database["public"]["Enums"]["gift_order_status"]
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          order_id?: string
+          status?: Database["public"]["Enums"]["gift_order_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_order_events_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "gift_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gift_orders: {
+        Row: {
+          amount_cents: number | null
+          created_at: string
+          credit_cost: number | null
+          currency: string | null
+          gift_id: string
+          id: string
+          kind: Database["public"]["Enums"]["gift_order_kind"]
+          message: string | null
+          metadata: Json
+          recipient_id: string
+          sender_id: string
+          status: Database["public"]["Enums"]["gift_order_status"]
+          thread_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_cents?: number | null
+          created_at?: string
+          credit_cost?: number | null
+          currency?: string | null
+          gift_id: string
+          id?: string
+          kind: Database["public"]["Enums"]["gift_order_kind"]
+          message?: string | null
+          metadata?: Json
+          recipient_id: string
+          sender_id: string
+          status?: Database["public"]["Enums"]["gift_order_status"]
+          thread_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number | null
+          created_at?: string
+          credit_cost?: number | null
+          currency?: string | null
+          gift_id?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["gift_order_kind"]
+          message?: string | null
+          metadata?: Json
+          recipient_id?: string
+          sender_id?: string
+          status?: Database["public"]["Enums"]["gift_order_status"]
+          thread_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_orders_gift_id_fkey"
+            columns: ["gift_id"]
+            isOneToOne: false
+            referencedRelation: "gifts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_orders_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "chat_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gifts: {
         Row: {
           active: boolean
@@ -642,6 +746,42 @@ export type Database = {
         }
         Relationships: []
       }
+      risk_events: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          metadata: Json
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: Database["public"]["Enums"]["report_severity"]
+          source: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: Database["public"]["Enums"]["report_severity"]
+          source?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: Database["public"]["Enums"]["report_severity"]
+          source?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           canceled_at: string | null
@@ -825,6 +965,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      award_badge_from_verification: {
+        Args: { _verification_id: string }
+        Returns: string
+      }
+      has_active_badge: {
+        Args: {
+          _kind: Database["public"]["Enums"]["trust_badge_kind"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       has_completed_onboarding: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
@@ -833,8 +984,18 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_eligible_for_gifting: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       recompute_trust_state: { Args: { _user_id: string }; Returns: undefined }
+      user_trust_state: {
+        Args: { _user_id: string }
+        Returns: {
+          account_status: Database["public"]["Enums"]["account_status"]
+          badge_count: number
+          concierge_verified: boolean
+          recent_severe_flags: number
+        }[]
+      }
     }
     Enums: {
       account_status:
@@ -867,6 +1028,15 @@ export type Database = {
         | "text_moderation"
         | "image_moderation"
       gender: "female" | "male" | "other"
+      gift_order_kind: "virtual" | "physical"
+      gift_order_status:
+        | "created"
+        | "paid"
+        | "blocked_by_moderation"
+        | "fulfilled"
+        | "refunded"
+        | "canceled"
+        | "failed"
       language_code: "en" | "es"
       moderation_status: "pending" | "approved" | "rejected" | "flagged"
       moderator_action:
@@ -1098,6 +1268,16 @@ export const Constants = {
         "image_moderation",
       ],
       gender: ["female", "male", "other"],
+      gift_order_kind: ["virtual", "physical"],
+      gift_order_status: [
+        "created",
+        "paid",
+        "blocked_by_moderation",
+        "fulfilled",
+        "refunded",
+        "canceled",
+        "failed",
+      ],
       language_code: ["en", "es"],
       moderation_status: ["pending", "approved", "rejected", "flagged"],
       moderator_action: [
