@@ -21,7 +21,8 @@ import Messages from "./pages/app/Messages";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminReports from "./pages/admin/AdminReports";
-import { AdminFlags, AdminVerification, AdminBilling, AdminAudit, AdminPolicies } from "./pages/admin/AdminPlaceholders";
+import { AdminFlags, AdminVerification, AdminBilling, AdminAudit } from "./pages/admin/AdminPlaceholders";
+import AdminPolicies from "./pages/admin/AdminPolicies";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

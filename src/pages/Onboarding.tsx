@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { Heart, ExternalLink } from "lucide-react";
+import { usePolicyConfig, PolicyKey } from "@/lib/policyConfig";
 
 const schema = z.object({
   country: z.string().trim().min(2).max(60),
@@ -18,19 +19,17 @@ const schema = z.object({
   bio: z.string().trim().max(500).optional(),
 });
 
-const POLICY_VERSION = "2025-01-01";
-type PolicyKey = "tos" | "privacy" | "aup" | "anti_solicitation";
-
-const POLICIES: { key: PolicyKey; href: string; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti" }[] = [
-  { key: "tos", href: "/legal/terms", labelKey: "acceptTos" },
-  { key: "privacy", href: "/legal/privacy", labelKey: "acceptPrivacy" },
-  { key: "aup", href: "/legal/acceptable-use", labelKey: "acceptAup" },
-  { key: "anti_solicitation", href: "/legal/anti-solicitation", labelKey: "acceptAnti" },
+const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti" }[] = [
+  { key: "tos", labelKey: "acceptTos" },
+  { key: "privacy", labelKey: "acceptPrivacy" },
+  { key: "aup", labelKey: "acceptAup" },
+  { key: "anti_solicitation", labelKey: "acceptAnti" },
 ];
 
 export default function Onboarding() {
   const { t } = useI18n();
   const { user, refreshProfile } = useAuth();
+  const { config: policyConfig } = usePolicyConfig();
   const nav = useNavigate();
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -56,7 +55,7 @@ export default function Onboarding() {
     const ackRows = POLICIES.map(p => ({
       user_id: user.id,
       policy_key: p.key,
-      policy_version: POLICY_VERSION,
+      policy_version: policyConfig.policy_version,
     }));
     const { error: ackError } = await supabase.from("policy_acknowledgements").insert(ackRows);
     if (ackError) {
@@ -121,7 +120,7 @@ export default function Onboarding() {
                         {t.onboarding[p.labelKey]}
                       </Label>
                       <Link
-                        to={p.href}
+                        to={policyConfig.urls[p.key]}
                         target="_blank"
                         rel="noreferrer"
                         className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
