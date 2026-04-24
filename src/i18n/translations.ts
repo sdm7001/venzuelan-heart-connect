@@ -249,4 +249,4 @@ const _translations = {
 
 export type Lang = "en" | "es";
 export type Dict = typeof _translations.en;
-export const translations: Record<Lang, Dict> = _translations as Record<Lang, Dict>;
+export const translations: Record<Lang, Dict> = _translations as unknown as Record<Lang, Dict>;
