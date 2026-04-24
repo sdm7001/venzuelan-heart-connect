@@ -1,6 +1,6 @@
 import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { EmptyState } from "@/components/layout/AppLayout";
-import { ShieldAlert, BadgeCheck, CreditCard, Activity, FileText } from "lucide-react";
+import { ShieldAlert, BadgeCheck, CreditCard, Activity } from "lucide-react";
 
 export function AdminFlags() {
   return (
@@ -38,11 +38,3 @@ export function AdminAudit() {
   );
 }
 
-export function AdminPolicies() {
-  return (
-    <AdminLayout>
-      <AdminPageHeader title="Policies & content" sub="Versioned policy editor (placeholder)" />
-      <EmptyState icon={<FileText className="h-5 w-5" />} title="Editor coming in P1" body="Policy text is rendered from translations today. The versioned editor with publish workflow ships in the next phase. Member acknowledgements are already recorded." />
-    </AdminLayout>
-  );
-}
