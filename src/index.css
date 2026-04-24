@@ -54,15 +54,15 @@
 
     /* Header layout tokens — keep logo + nav aligned across breakpoints.
        Header height = logo size + 2 * vertical padding. Update together. */
-    --header-h: 3.5rem;          /* 56px mobile  (h-8 logo + py-3) */
-    --header-h-sm: 4rem;         /* 64px sm      (h-9 logo + py-3.5) */
-    --header-h-md: 4.5rem;       /* 72px md+     (h-10 logo + py-4) */
+    --header-h: 5.5rem;          /* 88px mobile  (64px logo + py-3) */
+    --header-h-sm: 6.25rem;      /* 100px sm     (72px logo + py-3.5) */
+    --header-h-md: 7rem;         /* 112px md+    (80px logo + py-4) */
     --header-py: 0.75rem;        /* py-3 */
     --header-py-sm: 0.875rem;    /* py-3.5 */
     --header-py-md: 1rem;        /* py-4 */
-    --header-logo: 2rem;         /* 32px */
-    --header-logo-sm: 2.25rem;   /* 36px */
-    --header-logo-md: 2.5rem;    /* 40px */
+    --header-logo: 4rem;         /* 64px (2x) */
+    --header-logo-sm: 4.5rem;    /* 72px (2x) */
+    --header-logo-md: 5rem;      /* 80px (2x) */
     --header-gap: 0.75rem;
     --header-gap-sm: 1rem;
 
