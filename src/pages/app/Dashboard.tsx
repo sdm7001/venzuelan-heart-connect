@@ -7,6 +7,7 @@ import { useAuth } from "@/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { ComplianceCard } from "@/components/dashboard/ComplianceCard";
 
 export default function Dashboard() {
   const { t } = useI18n();
