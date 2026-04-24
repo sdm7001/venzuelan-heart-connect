@@ -271,6 +271,56 @@ export function MyGiftsCard() {
         </div>
       </div>
 
+      {/* Filters */}
+      <div className="mb-4 flex flex-col sm:flex-row gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search by gift name…"
+            className="pl-8 pr-8 h-9"
+          />
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              aria-label="Clear search"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+        <Select value={statusFilter} onValueChange={v => setStatusFilter(v as StatusFilter)}>
+          <SelectTrigger className="h-9 w-full sm:w-48">
+            <SelectValue placeholder="All statuses" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All statuses</SelectItem>
+            {STATUS_OPTIONS.map(s => (
+              <SelectItem key={s} value={s} className="capitalize">
+                {s.replace(/_/g, " ")}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {(debouncedSearch || statusFilter !== "all") && (
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={() => {
+              setSearch("");
+              setStatusFilter("all");
+            }}
+            className="h-9"
+          >
+            Clear
+          </Button>
+        )}
+      </div>
+
       {loading ? (
         <div className="text-sm text-muted-foreground">Loading…</div>
       ) : orders.length === 0 ? (
