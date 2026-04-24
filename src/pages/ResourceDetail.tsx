@@ -136,10 +136,9 @@ export default function ResourceDetail() {
     );
   }
 
-  const title = lang === "en" ? post.title_en : post.title_es;
   const excerpt = lang === "en" ? post.excerpt_en : post.excerpt_es;
   const body = lang === "en" ? post.body_en : post.body_es;
-  const faq = lang === "en" ? post.faq_en : post.faq_es;
+  const faq = faqList;
   const links = lang === "en" ? post.internal_links_en : post.internal_links_es;
   const catLabel = CAT_LABEL[post.category]?.[lang] ?? post.category;
 
