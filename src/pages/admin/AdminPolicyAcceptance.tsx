@@ -86,7 +86,8 @@ export default function AdminPolicyAcceptance() {
     return () => clearTimeout(t);
   }, [search]);
 
-  // Load policy config + audit once.
+  // Load policy config + audit, and subscribe to app_settings changes so a
+  // version bump auto-refreshes the page.
   useEffect(() => {
     fetchPolicyConfig().then(setConfig);
     supabase
@@ -96,6 +97,29 @@ export default function AdminPolicyAcceptance() {
       .order("created_at", { ascending: false })
       .limit(200)
       .then(({ data }) => setAudit((data as AuditRow[]) ?? []));
+
+    // Realtime: refetch the policy config the moment the row changes. Falls
+    // back to a 60s poll for environments where realtime isn't enabled on
+    // app_settings (the publication membership is opt-in).
+    const channel = supabase
+      .channel("admin-policy-config")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "app_settings", filter: "key=eq.policy_config" },
+        () => fetchPolicyConfig().then(setConfig),
+      )
+      .subscribe();
+    const poll = setInterval(() => {
+      fetchPolicyConfig().then((next) => {
+        setConfig((prev) =>
+          prev.policy_version === next.policy_version ? prev : next,
+        );
+      });
+    }, 60_000);
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(poll);
+    };
   }, []);
 
   const loadPage = useCallback(
