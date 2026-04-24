@@ -70,6 +70,7 @@ const App = () => (
               <Route path="/admin/audit" element={<RequireStaff><AdminAudit /></RequireStaff>} />
               <Route path="/admin/policies" element={<RequireStaff><AdminPolicies /></RequireStaff>} />
               <Route path="/admin/policy-acceptance" element={<RequireStaff><AdminPolicyAcceptance /></RequireStaff>} />
+              <Route path="/admin/policy-reaccepts" element={<RequireStaff><AdminPolicyReaccepts /></RequireStaff>} />
 
               <Route path="*" element={<NotFound />} />
               </Routes>
