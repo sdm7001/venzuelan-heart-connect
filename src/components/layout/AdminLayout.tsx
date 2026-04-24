@@ -20,6 +20,7 @@ const items = [
   { to: "/admin/policies", label: "Policies", icon: FileText },
   { to: "/admin/policy-acceptance", label: "Policy acceptance", icon: ClipboardCheck },
   { to: "/admin/policy-reaccepts", label: "Re-accept events", icon: History },
+  { to: "/admin/rls-tests", label: "RLS tests", icon: ShieldCheck },
 ];
 
 export function AdminLayout({ children }: { children: ReactNode }) {
