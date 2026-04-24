@@ -911,6 +911,27 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_step_up: {
+        Row: {
+          method: string
+          updated_at: string
+          user_id: string
+          verified_at: string
+        }
+        Insert: {
+          method?: string
+          updated_at?: string
+          user_id: string
+          verified_at?: string
+        }
+        Update: {
+          method?: string
+          updated_at?: string
+          user_id?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           canceled_at: string | null
