@@ -74,7 +74,7 @@ export function PublicHeader() {
             )}
           >
             <img src={logo} alt="" aria-hidden="true" className="size-header-logo shrink-0 object-contain" />
-            <span className="text-white whitespace-nowrap leading-none">MatchVenezuelan</span>
+            <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
           </Link>
 
           <nav aria-label={a.primaryNav} className="hidden h-header-row items-center gap-1 md:flex">
@@ -87,8 +87,8 @@ export function PublicHeader() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "inline-flex h-header-row items-center rounded-md px-3 text-sm font-medium leading-none transition-smooth",
-                    "text-white/80 hover:text-white",
-                    active && "text-white",
+                    "text-muted-foreground hover:text-foreground",
+                    active && "text-foreground",
                     focusRing,
                   )}
                 >
