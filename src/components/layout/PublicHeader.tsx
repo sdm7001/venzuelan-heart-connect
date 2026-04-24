@@ -74,7 +74,7 @@ export function PublicHeader() {
             )}
           >
             <img src={logo} alt="" aria-hidden="true" className="size-header-logo shrink-0 object-contain" />
-            <span className="text-white whitespace-nowrap leading-none">MatchVenezuelan</span>
+            <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
           </Link>
 
           <nav aria-label={a.primaryNav} className="hidden h-header-row items-center gap-1 md:flex">
