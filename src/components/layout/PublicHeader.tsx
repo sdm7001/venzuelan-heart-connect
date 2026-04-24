@@ -128,7 +128,7 @@ export function PublicHeader() {
                 aria-haspopup="dialog"
                 aria-controls="mobile-primary-nav"
                 className={cn(
-                  "inline-flex size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent",
+                  "inline-flex size-header-logo touch-manipulation items-center justify-center rounded-md text-foreground hover:bg-accent pointer-coarse:min-h-[44px] pointer-coarse:min-w-[44px]",
                   focusRing,
                 )}
               >
