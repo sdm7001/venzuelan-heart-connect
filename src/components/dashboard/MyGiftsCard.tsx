@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Gift, Package, Sparkles, ArrowRight, Clock } from "lucide-react";
+import { Gift, Package, Sparkles, ArrowRight, Clock, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+
+const PAGE_SIZE = 20;
 
 type Order = {
   id: string;
@@ -50,58 +52,117 @@ export function MyGiftsCard() {
   const [eventsByOrder, setEventsByOrder] = useState<Record<string, EventRow[]>>({});
   const [giftNames, setGiftNames] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
+  // Reset & load first page when user/tab changes
   useEffect(() => {
     if (!user) return;
-    void load();
+    setOrders([]);
+    setEventsByOrder({});
+    setGiftNames({});
+    setHasMore(true);
+    void loadPage({ reset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, tab]);
 
-  async function load() {
-    setLoading(true);
+  const loadPage = useCallback(
+    async ({ reset = false }: { reset?: boolean } = {}) => {
+      if (!user) return;
+      if (reset) setLoading(true);
+      else setLoadingMore(true);
 
-    const col = tab === "sent" ? "sender_id" : "recipient_id";
-    const { data: o } = await supabase
-      .from("gift_orders")
-      .select("*")
-      .eq(col, user!.id)
-      .order("created_at", { ascending: false })
-      .limit(20);
+      const col = tab === "sent" ? "sender_id" : "recipient_id";
 
-    const orderRows = (o ?? []) as Order[];
-    setOrders(orderRows);
+      // Keyset cursor: last-loaded created_at (only when paging further)
+      const cursor = reset ? null : orders[orders.length - 1]?.created_at ?? null;
 
-    if (orderRows.length === 0) {
-      setEventsByOrder({});
-      setGiftNames({});
-      setLoading(false);
-      return;
-    }
+      let q = supabase
+        .from("gift_orders")
+        .select("*")
+        .eq(col, user.id)
+        .order("created_at", { ascending: false })
+        .order("id", { ascending: false })
+        .limit(PAGE_SIZE);
 
-    const orderIds = orderRows.map(r => r.id);
-    const giftIds = Array.from(new Set(orderRows.map(r => r.gift_id)));
+      if (cursor) q = q.lt("created_at", cursor);
 
-    const [{ data: ev }, { data: gs }] = await Promise.all([
-      supabase
-        .from("gift_order_events")
-        .select("id, order_id, status, notes, created_at")
-        .in("order_id", orderIds)
-        .order("created_at", { ascending: false }),
-      supabase.from("gifts").select("id, name").in("id", giftIds),
-    ]);
+      const { data: o, error } = await q;
+      if (error) {
+        console.error("MyGiftsCard load error", error);
+        if (reset) setLoading(false);
+        else setLoadingMore(false);
+        return;
+      }
 
-    const grouped: Record<string, EventRow[]> = {};
-    (ev ?? []).forEach((e: any) => {
-      (grouped[e.order_id] ||= []).push(e as EventRow);
-    });
-    setEventsByOrder(grouped);
+      const newRows = (o ?? []) as Order[];
+      setHasMore(newRows.length === PAGE_SIZE);
 
-    const nameMap: Record<string, string> = {};
-    (gs ?? []).forEach((g: any) => { nameMap[g.id] = g.name; });
-    setGiftNames(nameMap);
+      // Hydrate events + gift names for the new batch
+      if (newRows.length > 0) {
+        const orderIds = newRows.map(r => r.id);
+        const newGiftIds = Array.from(
+          new Set(newRows.map(r => r.gift_id).filter(id => !giftNames[id])),
+        );
 
-    setLoading(false);
-  }
+        const [{ data: ev }, { data: gs }] = await Promise.all([
+          supabase
+            .from("gift_order_events")
+            .select("id, order_id, status, notes, created_at")
+            .in("order_id", orderIds)
+            .order("created_at", { ascending: false }),
+          newGiftIds.length > 0
+            ? supabase.from("gifts").select("id, name").in("id", newGiftIds)
+            : Promise.resolve({ data: [] as any[] }),
+        ]);
+
+        setEventsByOrder(prev => {
+          const next = reset ? {} : { ...prev };
+          (ev ?? []).forEach((e: any) => {
+            (next[e.order_id] ||= []).push(e as EventRow);
+          });
+          return next;
+        });
+
+        if ((gs ?? []).length > 0) {
+          setGiftNames(prev => {
+            const next = reset ? {} : { ...prev };
+            (gs ?? []).forEach((g: any) => {
+              next[g.id] = g.name;
+            });
+            return next;
+          });
+        } else if (reset) {
+          setGiftNames({});
+        }
+      } else if (reset) {
+        setEventsByOrder({});
+        setGiftNames({});
+      }
+
+      setOrders(prev => (reset ? newRows : [...prev, ...newRows]));
+
+      if (reset) setLoading(false);
+      else setLoadingMore(false);
+    },
+    [user, tab, orders, giftNames],
+  );
+
+  // Infinite scroll: observe sentinel
+  useEffect(() => {
+    const node = sentinelRef.current;
+    if (!node || loading || loadingMore || !hasMore || orders.length === 0) return;
+
+    const io = new IntersectionObserver(
+      entries => {
+        if (entries[0]?.isIntersecting) void loadPage();
+      },
+      { rootMargin: "200px" },
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, [loadPage, loading, loadingMore, hasMore, orders.length]);
 
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
