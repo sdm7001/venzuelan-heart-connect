@@ -153,7 +153,7 @@ export default function FAQ() {
                         className={cn(
                           "group flex w-full items-center gap-2 rounded-full border px-3 py-1.5 text-left text-sm transition-colors lg:rounded-md lg:border-0 lg:border-l-2 lg:px-3 lg:py-2",
                           isActive
-                            ? "border-burgundy bg-burgundy/10 text-burgundy lg:border-burgundy lg:bg-burgundy/5"
+                            ? "border-primary bg-primary/15 text-foreground lg:border-primary lg:bg-primary/10"
                             : "border-border bg-card text-muted-foreground hover:text-foreground lg:border-transparent lg:bg-transparent lg:hover:border-border",
                         )}
                         aria-current={isActive ? "true" : undefined}
@@ -162,7 +162,7 @@ export default function FAQ() {
                         <span
                           className={cn(
                             "ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular-nums",
-                            isActive && "bg-burgundy/15 text-burgundy",
+                            isActive && "bg-primary/20 text-foreground",
                           )}
                         >
                           {items.length}
