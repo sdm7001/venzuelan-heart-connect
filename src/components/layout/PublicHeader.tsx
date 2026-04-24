@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { LanguageToggle } from "./LanguageToggle";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 export function PublicHeader() {
   const { t } = useI18n();
@@ -24,9 +25,7 @@ export function PublicHeader() {
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
       <div className="container flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-          <span className="grid h-8 w-8 place-items-center rounded-full gradient-romance shadow-soft">
-            <Heart className="h-4 w-4 text-primary-foreground" fill="currentColor" />
-          </span>
+          <img src={logo} alt="MatchVenezuelan" className="h-9 w-9 object-contain" />
           <span className="text-burgundy">MatchVenezuelan</span>
         </Link>
 

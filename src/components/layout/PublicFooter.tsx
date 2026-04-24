@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
+import logo from "@/assets/logo.png";
 
 export function PublicFooter() {
   const { t } = useI18n();
@@ -10,9 +10,7 @@ export function PublicFooter() {
         <div className="grid gap-10 md:grid-cols-4">
           <div>
             <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold">
-              <span className="grid h-8 w-8 place-items-center rounded-full gradient-romance">
-                <Heart className="h-4 w-4 text-primary-foreground" fill="currentColor" />
-              </span>
+              <img src={logo} alt="MatchVenezuelan" className="h-9 w-9 object-contain" />
               <span className="text-burgundy">MatchVenezuelan</span>
             </Link>
             <p className="mt-3 text-sm text-muted-foreground">{t.footer.tagline}</p>

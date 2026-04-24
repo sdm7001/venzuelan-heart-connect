@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Heart, LayoutDashboard, User, MessageCircle, ShieldAlert, LogOut, ChevronRight } from "lucide-react";
+import { LayoutDashboard, User, MessageCircle, ShieldAlert, LogOut, ChevronRight } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
 import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { t } = useI18n();
@@ -27,9 +28,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-lg">
         <div className="container flex h-16 items-center justify-between gap-4">
           <Link to="/dashboard" className="flex items-center gap-2 font-display text-lg font-semibold text-burgundy">
-            <span className="grid h-8 w-8 place-items-center rounded-full gradient-romance">
-              <Heart className="h-4 w-4 text-primary-foreground" fill="currentColor" />
-            </span>
+            <img src={logo} alt="MatchVenezuelan" className="h-9 w-9 object-contain" />
             MatchVenezuelan
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
