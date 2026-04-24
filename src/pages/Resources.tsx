@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/i18n/datetime";
+import { supabase } from "@/integrations/supabase/client";
 import type { Lang } from "@/i18n/translations";
 
 type Post = {
@@ -18,132 +19,9 @@ type Post = {
   i18n: Record<Lang, { title: string; excerpt: string; keywords: string[] }>;
 };
 
-// Editorial content lives here (no CMS yet) — bilingual & versioned in code.
-const POSTS: Post[] = [
-  {
-    slug: "venezuelan-dating-trust-guide",
-    category: "trust",
-    publishedAt: "2026-04-10",
-    readMin: 7,
-    featured: true,
-    i18n: {
-      en: {
-        title: "The trust-first guide to dating Venezuelan women online",
-        excerpt:
-          "Verified profiles, concierge reviews, and the small signals that separate serious connections from noise.",
-        keywords: ["verified dating", "Venezuelan women", "trust badges", "online safety"],
-      },
-      es: {
-        title: "Guía de citas con confianza primero para conocer mujeres venezolanas en línea",
-        excerpt:
-          "Perfiles verificados, revisiones concierge y las pequeñas señales que distinguen conexiones serias del ruido.",
-        keywords: ["citas verificadas", "mujeres venezolanas", "insignias de confianza", "seguridad"],
-      },
-    },
-  },
-  {
-    slug: "bilingual-conversations-101",
-    category: "culture",
-    publishedAt: "2026-03-22",
-    readMin: 5,
-    featured: true,
-    i18n: {
-      en: {
-        title: "Bilingual conversations 101: bridging English and Spanish with care",
-        excerpt:
-          "Practical phrases, translation etiquette, and how to keep nuance alive across two languages.",
-        keywords: ["bilingual dating", "Spanish English", "cross-cultural"],
-      },
-      es: {
-        title: "Conversaciones bilingües 101: tender puentes entre inglés y español con cuidado",
-        excerpt:
-          "Frases prácticas, etiqueta de traducción y cómo mantener viva la sutileza entre dos idiomas.",
-        keywords: ["citas bilingües", "inglés español", "interculturalidad"],
-      },
-    },
-  },
-  {
-    slug: "first-trip-to-meet",
-    category: "relationships",
-    publishedAt: "2026-02-28",
-    readMin: 9,
-    featured: true,
-    i18n: {
-      en: {
-        title: "Planning your first trip to meet: a respectful, realistic playbook",
-        excerpt:
-          "When to travel, what to ask before booking, and how to make the first in-person meeting safe and unhurried.",
-        keywords: ["first meeting", "travel to meet", "long distance"],
-      },
-      es: {
-        title: "Planificar tu primer viaje para conocerse: una guía respetuosa y realista",
-        excerpt:
-          "Cuándo viajar, qué preguntar antes de reservar y cómo hacer el primer encuentro seguro y sin prisas.",
-        keywords: ["primer encuentro", "viajar para conocerse", "larga distancia"],
-      },
-    },
-  },
-  {
-    slug: "spotting-romance-scams",
-    category: "safety",
-    publishedAt: "2026-02-05",
-    readMin: 6,
-    i18n: {
-      en: {
-        title: "Spotting romance scams early — patterns, red flags and what to do",
-        excerpt:
-          "The most common manipulative patterns, how moderators detect them, and what to report.",
-        keywords: ["romance scam", "online safety", "red flags"],
-      },
-      es: {
-        title: "Detectar estafas románticas a tiempo — patrones, señales y qué hacer",
-        excerpt:
-          "Los patrones manipulativos más comunes, cómo los detectan los moderadores y qué reportar.",
-        keywords: ["estafa romántica", "seguridad en línea", "señales de alerta"],
-      },
-    },
-  },
-  {
-    slug: "what-serious-intent-actually-looks-like",
-    category: "relationships",
-    publishedAt: "2026-01-18",
-    readMin: 4,
-    i18n: {
-      en: {
-        title: "What serious intent actually looks like in modern dating",
-        excerpt:
-          "Beyond labels: behaviors, follow-through, and the cadence of building something that lasts.",
-        keywords: ["serious relationships", "intentions", "dating maturity"],
-      },
-      es: {
-        title: "Cómo se ve realmente la intención seria en las citas modernas",
-        excerpt:
-          "Más allá de las etiquetas: comportamientos, seguimiento y el ritmo para construir algo que dure.",
-        keywords: ["relaciones serias", "intenciones", "madurez en citas"],
-      },
-    },
-  },
-  {
-    slug: "venezuelan-culture-respect-guide",
-    category: "culture",
-    publishedAt: "2025-12-12",
-    readMin: 8,
-    i18n: {
-      en: {
-        title: "A respectful introduction to Venezuelan culture for partners abroad",
-        excerpt:
-          "Family, food, faith, music — what to know, ask, and never assume when dating across cultures.",
-        keywords: ["Venezuelan culture", "intercultural dating", "respect"],
-      },
-      es: {
-        title: "Una introducción respetuosa a la cultura venezolana para parejas en el extranjero",
-        excerpt:
-          "Familia, comida, fe, música — qué saber, qué preguntar y qué nunca asumir al salir entre culturas.",
-        keywords: ["cultura venezolana", "citas interculturales", "respeto"],
-      },
-    },
-  },
-];
+// Posts come from the blog_posts table (RLS: published rows are public).
+const POSTS: Post[] = [];
+
 
 const COPY: Record<Lang, {
   metaTitle: string;
@@ -220,13 +98,40 @@ export default function Resources() {
   const copy = COPY[lang];
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<"all" | Post["category"]>("all");
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    let cancel = false;
+    supabase
+      .from("blog_posts")
+      .select("slug,category,reading_minutes,featured,published_at,title_en,excerpt_en,tags,title_es,excerpt_es")
+      .eq("published", true)
+      .order("published_at", { ascending: false })
+      .then(({ data }) => {
+        if (cancel || !data) return;
+        setPosts(
+          data.map((r: any) => ({
+            slug: r.slug,
+            category: r.category,
+            publishedAt: r.published_at,
+            readMin: r.reading_minutes,
+            featured: r.featured,
+            i18n: {
+              en: { title: r.title_en, excerpt: r.excerpt_en, keywords: r.tags ?? [] },
+              es: { title: r.title_es, excerpt: r.excerpt_es, keywords: r.tags ?? [] },
+            },
+          })),
+        );
+      });
+    return () => { cancel = true; };
+  }, []);
 
   const sorted = useMemo(
     () =>
-      [...POSTS].sort(
+      [...posts].sort(
         (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
       ),
-    [],
+    [posts],
   );
 
   const featured = useMemo(() => sorted.filter(p => p.featured).slice(0, 3), [sorted]);
@@ -427,7 +332,7 @@ function FeaturedCard({
       <footer className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
         <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
         <Button asChild size="sm" variant="ghost" className="h-8">
-          <Link to={`${CANONICAL_PATH}#${post.slug}`}>
+          <Link to={`${CANONICAL_PATH}/${post.slug}`}>
             {copy.read} <ArrowRight className="ml-1 h-3.5 w-3.5" />
           </Link>
         </Button>
@@ -448,24 +353,29 @@ function FeedCard({
   const i = post.i18n[lang];
   return (
     <li>
-      <article
-        id={post.slug}
-        className="flex h-full flex-col rounded-xl border border-border bg-card p-5 transition-colors hover:bg-card/60"
+      <Link
+        to={`${CANONICAL_PATH}/${post.slug}`}
+        className="block h-full"
       >
-        <div className="mb-2 flex items-center gap-2">
-          <Badge variant="outline" className="text-[11px]">
-            {copy.categories[post.category]}
-          </Badge>
-          <time dateTime={post.publishedAt} className="text-xs text-muted-foreground">
-            {formatDate(post.publishedAt, lang)}
-          </time>
-          <span className="text-xs text-muted-foreground">· {copy.readMin(post.readMin)}</span>
-        </div>
-        <h3 className="font-display font-semibold leading-snug">{i.title}</h3>
-        <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed line-clamp-2">
-          {i.excerpt}
-        </p>
-      </article>
+        <article
+          id={post.slug}
+          className="flex h-full flex-col rounded-xl border border-border bg-card p-5 transition-colors hover:bg-card/60"
+        >
+          <div className="mb-2 flex items-center gap-2">
+            <Badge variant="outline" className="text-[11px]">
+              {copy.categories[post.category]}
+            </Badge>
+            <time dateTime={post.publishedAt} className="text-xs text-muted-foreground">
+              {formatDate(post.publishedAt, lang)}
+            </time>
+            <span className="text-xs text-muted-foreground">· {copy.readMin(post.readMin)}</span>
+          </div>
+          <h3 className="font-display font-semibold leading-snug">{i.title}</h3>
+          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed line-clamp-2">
+            {i.excerpt}
+          </p>
+        </article>
+      </Link>
     </li>
   );
 }
