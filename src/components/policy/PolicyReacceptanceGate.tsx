@@ -146,7 +146,10 @@ export function PolicyReacceptanceGate() {
       subject_id: user.id,
       category: "policy",
       action: "policy_reaccepted",
-      metadata: { policy_version: config.policy_version } as any,
+      metadata: {
+        policy_version: config.policy_version,
+        accepted_keys: missingPolicies.map(p => p.key),
+      } as any,
     });
 
     setBusy(false);
@@ -179,30 +182,72 @@ export function PolicyReacceptanceGate() {
           </DialogDescription>
         </DialogHeader>
 
-        <ul className="mt-2 space-y-3 rounded-xl border border-border bg-muted/30 p-4">
-          {POLICIES.map(p => (
-            <li key={p.key} className="flex items-start gap-3">
-              <Checkbox
-                id={`reaccept-${p.key}`}
-                checked={accepted[p.key]}
-                onCheckedChange={(v) => setAccepted(prev => ({ ...prev, [p.key]: v === true }))}
-                className="mt-0.5"
-              />
-              <div className="flex-1 text-sm leading-snug">
-                <Label htmlFor={`reaccept-${p.key}`} className="cursor-pointer font-normal">
-                  {t.onboarding[p.labelKey]}
-                </Label>
-                <Link
-                  to={config.urls[p.key]}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                >
-                  {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
-                </Link>
-              </div>
-            </li>
-          ))}
+        <div className="mt-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <div>
+            <div className="font-medium">
+              {missingPolicies.length === POLICIES.length
+                ? t.policyReaccept.allMissing
+                : t.policyReaccept.someMissing
+                    .replace("{count}", String(missingPolicies.length))
+                    .replace("{total}", String(POLICIES.length))}
+            </div>
+            <div className="mt-0.5 text-xs text-amber-800/90">
+              {missingPolicies
+                .map(p => t.legalShort?.[p.key] ?? t.onboarding[p.labelKey])
+                .join(" · ")}
+            </div>
+          </div>
+        </div>
+
+        <ul className="mt-3 space-y-3 rounded-xl border border-border bg-muted/30 p-4">
+          {POLICIES.map(p => {
+            const isMissing = missingKeys.has(p.key);
+            const prior = priorByKey[p.key];
+            return (
+              <li key={p.key} className="flex items-start gap-3">
+                {isMissing ? (
+                  <Checkbox
+                    id={`reaccept-${p.key}`}
+                    checked={accepted[p.key]}
+                    onCheckedChange={(v) => setAccepted(prev => ({ ...prev, [p.key]: v === true }))}
+                    className="mt-0.5"
+                  />
+                ) : (
+                  <Checkbox checked disabled className="mt-0.5 opacity-70" />
+                )}
+                <div className="flex-1 text-sm leading-snug">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Label
+                      htmlFor={isMissing ? `reaccept-${p.key}` : undefined}
+                      className={isMissing ? "cursor-pointer font-normal" : "font-normal text-muted-foreground"}
+                    >
+                      {t.onboarding[p.labelKey]}
+                    </Label>
+                    {isMissing ? (
+                      <Badge variant="outline" className="border-amber-300 text-amber-700 text-[10px]">
+                        {prior
+                          ? t.policyReaccept.needsUpdate.replace("{version}", prior.policy_version)
+                          : t.policyReaccept.neverAccepted}
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 text-[10px]">
+                        {t.policyReaccept.upToDate}
+                      </Badge>
+                    )}
+                  </div>
+                  <Link
+                    to={config.urls[p.key]}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                  >
+                    {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
+                  </Link>
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">
