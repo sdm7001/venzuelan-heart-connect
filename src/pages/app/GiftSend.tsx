@@ -94,16 +94,26 @@ export default function GiftSend() {
     });
 
     if (recipientId) {
-      const [{ data: r }, { data: rEligible }] = await Promise.all([
+      const [{ data: r }, { data: rEligible }, { data: rTrust }, { data: blk }] = await Promise.all([
         supabase
           .from("profiles")
           .select("id, display_name, account_status")
           .eq("id", recipientId)
           .maybeSingle(),
         supabase.rpc("is_eligible_for_gifting", { _user_id: recipientId }),
+        supabase.rpc("user_trust_state", { _user_id: recipientId }),
+        supabase.rpc("is_blocked_between", { _a: user!.id, _b: recipientId }),
       ]);
       setRecipient(r);
       setRecipientEligible(!!rEligible);
+      setRecipientTrust(
+        Array.isArray(rTrust) && rTrust[0] ? (rTrust[0] as TrustState) : null
+      );
+      setBlockState(
+        Array.isArray(blk) && blk[0]
+          ? (blk[0] as { a_blocks_b: boolean; b_blocks_a: boolean })
+          : { a_blocks_b: false, b_blocks_a: false }
+      );
     }
 
     setLoading(false);
