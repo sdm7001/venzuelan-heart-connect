@@ -152,6 +152,7 @@ export function MyGiftsCard() {
             const latest = events[0];
             return (
               <li key={o.id} className="py-4">
+                <Link to={`/gifts/${o.id}`} className="block group -mx-2 px-2 rounded-lg hover:bg-muted/40 transition-colors">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5 text-muted-foreground">
                     {o.kind === "virtual"
@@ -223,6 +224,7 @@ export function MyGiftsCard() {
                     )}
                   </div>
                 </div>
+                </Link>
               </li>
             );
           })}
