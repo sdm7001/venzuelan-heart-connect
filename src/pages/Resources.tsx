@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Search, Star, X } from "lucide-react";
+import { ArrowRight, BookOpen, ChevronLeft, ChevronRight, Search, Star, X } from "lucide-react";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Input } from "@/components/ui/input";
@@ -40,6 +40,10 @@ const COPY: Record<Lang, {
   clear: string;
   readMin: (n: number) => string;
   read: string;
+  prev: string;
+  next: string;
+  pageOf: (page: number, total: number) => string;
+  showing: (from: number, to: number, total: number) => string;
   categories: Record<Post["category"], string>;
 }> = {
   en: {
@@ -59,6 +63,10 @@ const COPY: Record<Lang, {
     clear: "Clear",
     readMin: (n) => `${n} min read`,
     read: "Read",
+    prev: "Previous",
+    next: "Next",
+    pageOf: (p, t) => `Page ${p} of ${t}`,
+    showing: (f, to, t) => `Showing ${f}–${to} of ${t}`,
     categories: {
       trust: "Trust & verification",
       culture: "Culture & language",
@@ -83,6 +91,10 @@ const COPY: Record<Lang, {
     clear: "Limpiar",
     readMin: (n) => `${n} min de lectura`,
     read: "Leer",
+    prev: "Anterior",
+    next: "Siguiente",
+    pageOf: (p, t) => `Página ${p} de ${t}`,
+    showing: (f, to, t) => `Mostrando ${f}–${to} de ${t}`,
     categories: {
       trust: "Confianza y verificación",
       culture: "Cultura e idioma",
@@ -102,6 +114,13 @@ export default function Resources() {
   const [category, setCategory] = useState<"all" | Post["category"]>("all");
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 9;
+
+  // Reset to page 1 when filters/search/lang change
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, category, lang]);
 
   // Debounce search input → 300ms
   useEffect(() => {
@@ -170,7 +189,13 @@ export default function Resources() {
     [sorted, debouncedSearch, category],
   );
 
-  const filtered = sorted;
+  // Pagination operates on the full sorted feed
+  const total = sorted.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const fromIdx = total === 0 ? 0 : (safePage - 1) * PAGE_SIZE;
+  const toIdx = Math.min(fromIdx + PAGE_SIZE, total);
+  const filtered = sorted.slice(fromIdx, toIdx);
 
   // Centralized SEO: title, description, canonical, hreflang, OG, Twitter, JSON-LD
   const blogLd = {
@@ -304,16 +329,74 @@ export default function Resources() {
             </div>
           </div>
 
-          {filtered.length === 0 ? (
+          {total === 0 ? (
             <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-sm text-muted-foreground">
               {copy.noResults}
             </div>
           ) : (
-            <ul className="grid gap-4 md:grid-cols-2">
-              {filtered.map(p => (
-                <FeedCard key={p.slug} post={p} lang={lang} copy={copy} />
-              ))}
-            </ul>
+            <>
+              <ul className="grid gap-4 md:grid-cols-2">
+                {filtered.map(p => (
+                  <FeedCard key={p.slug} post={p} lang={lang} copy={copy} />
+                ))}
+              </ul>
+
+              {totalPages > 1 && (
+                <nav
+                  aria-label={lang === "en" ? "Pagination" : "Paginación"}
+                  className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between"
+                >
+                  <p className="text-xs text-muted-foreground" aria-live="polite">
+                    {copy.showing(fromIdx + 1, toIdx, total)}
+                  </p>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-8"
+                      disabled={safePage <= 1}
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    >
+                      <ChevronLeft className="mr-1 h-3.5 w-3.5" />
+                      {copy.prev}
+                    </Button>
+                    {Array.from({ length: totalPages }).map((_, i) => {
+                      const n = i + 1;
+                      const active = n === safePage;
+                      return (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => setPage(n)}
+                          aria-current={active ? "page" : undefined}
+                          aria-label={lang === "en" ? `Go to page ${n}` : `Ir a la página ${n}`}
+                          className={
+                            "h-8 min-w-8 rounded-md border px-2 text-xs transition-colors " +
+                            (active
+                              ? "border-primary bg-primary text-primary-foreground"
+                              : "border-border bg-background text-muted-foreground hover:text-foreground")
+                          }
+                        >
+                          {n}
+                        </button>
+                      );
+                    })}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-8"
+                      disabled={safePage >= totalPages}
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    >
+                      {copy.next}
+                      <ChevronRight className="ml-1 h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </nav>
+              )}
+            </>
           )}
         </div>
       </section>
