@@ -83,6 +83,7 @@ export default function AdminPolicyAcceptance() {
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [sending, setSending] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   // Debounce search input to keep typing snappy without hammering the function.
   useEffect(() => {
