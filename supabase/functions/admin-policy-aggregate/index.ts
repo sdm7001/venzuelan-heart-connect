@@ -20,6 +20,7 @@ type AggRow = {
   user_id: string;
   display_name: string | null;
   account_status: string;
+  created_at: string;
   has_current: boolean;
   accepted_keys: number;
   missing_keys: PolicyKey[];
