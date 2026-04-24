@@ -5,6 +5,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
+import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 import { cn } from "@/lib/utils";
 
 const items = [
@@ -23,8 +24,10 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const { signOut } = useAuth();
   const nav = useNavigate();
   return (
-    <div className="min-h-screen bg-muted/30 md:grid md:grid-cols-[260px_1fr]">
-      <aside className="hidden border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex md:flex-col">
+    <div className="min-h-screen bg-muted/30">
+      <ImpersonationBanner />
+      <div className="md:grid md:grid-cols-[260px_1fr]">
+        <aside className="hidden border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex md:flex-col">
         <Link to="/admin" className="flex items-center gap-2 px-6 py-5 font-display text-lg font-semibold">
           <span className="grid h-8 w-8 place-items-center rounded-full gradient-romance">
             <Heart className="h-4 w-4 text-primary-foreground" fill="currentColor" />
