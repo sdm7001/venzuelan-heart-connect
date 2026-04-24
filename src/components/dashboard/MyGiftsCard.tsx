@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Gift, Package, Sparkles, ArrowRight, Clock, Loader2, Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
+import { useI18n } from "@/i18n/I18nProvider";
+import { formatDateTime } from "@/i18n/datetime";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -68,6 +70,7 @@ const LAST_VISIT_KEY = "myGifts:lastVisitedAt";
 
 export function MyGiftsCard() {
   const { user } = useAuth();
+  const { lang } = useI18n();
   const [tab, setTab] = useState<"sent" | "received">("sent");
   const [orders, setOrders] = useState<Order[]>([]);
   const [eventsByOrder, setEventsByOrder] = useState<Record<string, EventRow[]>>({});
@@ -413,7 +416,7 @@ export function MyGiftsCard() {
                                 {e.status.replace(/_/g, " ")}
                               </span>
                               <span className="text-muted-foreground ml-2">
-                                {new Date(e.created_at).toLocaleString()}
+                                {formatDateTime(e.created_at, lang)}
                               </span>
                               {eNew && (
                                 <span className="ml-2 text-[10px] uppercase tracking-wide font-semibold text-primary">
@@ -436,7 +439,7 @@ export function MyGiftsCard() {
                     ) : (
                       <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        No status updates yet — created {new Date(o.created_at).toLocaleString()}
+                        No status updates yet — created {formatDateTime(o.created_at, lang)}
                         {latest && <ArrowRight className="h-3 w-3" />}
                       </div>
                     )}
