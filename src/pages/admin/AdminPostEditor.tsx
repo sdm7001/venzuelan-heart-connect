@@ -103,6 +103,10 @@ export default function AdminPostEditor() {
   }
 
   async function suggestLinks() {
+    if (isNew) {
+      toast.error("Save the post first, then queue link suggestions for review.");
+      return;
+    }
     if (!form.title_en && !form.title_es) {
       toast.error("Add a title in EN or ES first.");
       return;
@@ -128,8 +132,15 @@ export default function AdminPostEditor() {
         toast.error("No suggestions returned.");
         return;
       }
-      setForm(f => ({ ...f, internal_links_en: en, internal_links_es: es }));
-      toast.success(`Suggested ${en.length} EN + ${es.length} ES internal links.`);
+      const { data: userRes } = await supabase.auth.getUser();
+      const rows = [
+        ...en.map(l => ({ post_id: id!, lang: "en" as const, label: l.label, href: l.href, reason: l.reason ?? null, suggested_by: userRes.user?.id ?? null })),
+        ...es.map(l => ({ post_id: id!, lang: "es" as const, label: l.label, href: l.href, reason: l.reason ?? null, suggested_by: userRes.user?.id ?? null })),
+      ];
+      const { error: insErr } = await supabase.from("internal_link_suggestions").insert(rows);
+      if (insErr) throw insErr;
+      setPendingCount(c => c + rows.length);
+      toast.success(`Queued ${en.length} EN + ${es.length} ES suggestions for review.`);
     } catch (e: any) {
       toast.error(e?.message ?? "Suggestion failed");
     } finally {
