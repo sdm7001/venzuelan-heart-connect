@@ -43,6 +43,12 @@ type Mode = "blocked" | "completed";
 
 const PAGE_SIZE_OPTIONS = [25, 50, 100];
 
+// RFC 4180 escape: wrap in quotes if the value contains a comma, quote, or newline.
+function csvCell(v: string): string {
+  if (/[",\n\r]/.test(v)) return `"${v.replace(/"/g, '""')}"`;
+  return v;
+}
+
 export default function AdminPolicyAcceptance() {
   const { user: adminUser } = useAuth();
   const [config, setConfig] = useState<PolicyConfig>(DEFAULT_POLICY_CONFIG);
