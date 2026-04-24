@@ -13,17 +13,30 @@ import { useAuth } from "@/auth/AuthProvider";
 import { Heart, ExternalLink } from "lucide-react";
 import { usePolicyConfig, PolicyKey } from "@/lib/policyConfig";
 
-const schema = z.object({
+// Profile fields. Policy acceptance is validated separately so we can map
+// each failure back to its specific checkbox.
+const profileSchema = z.object({
   country: z.string().trim().min(2).max(60),
   city: z.string().trim().min(2).max(60),
   bio: z.string().trim().max(500).optional(),
 });
 
-const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti" }[] = [
-  { key: "tos", labelKey: "acceptTos" },
-  { key: "privacy", labelKey: "acceptPrivacy" },
-  { key: "aup", labelKey: "acceptAup" },
-  { key: "anti_solicitation", labelKey: "acceptAnti" },
+// Mirrors the server-side rule that we upsert one policy_acknowledgements
+// row per (user, policy_key, policy_version) for ALL four required keys.
+// Every checkbox must literally be `true` — z.literal(true) rejects `false`
+// with a clear path so we can surface inline errors.
+const policiesSchema = z.object({
+  tos: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+  privacy: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+  aup: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+  anti_solicitation: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+});
+
+const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti"; shortKey: "tos" | "privacy" | "aup" | "antiSolicit" }[] = [
+  { key: "tos", labelKey: "acceptTos", shortKey: "tos" },
+  { key: "privacy", labelKey: "acceptPrivacy", shortKey: "privacy" },
+  { key: "aup", labelKey: "acceptAup", shortKey: "aup" },
+  { key: "anti_solicitation", labelKey: "acceptAnti", shortKey: "antiSolicit" },
 ];
 
 export default function Onboarding() {
@@ -38,16 +51,43 @@ export default function Onboarding() {
     tos: false, privacy: false, aup: false, anti_solicitation: false,
   });
   const [busy, setBusy] = useState(false);
+  // Tracks per-policy validation failures (set by handleSubmit). The summary
+  // banner + per-row hint surface these so users see exactly what's missing
+  // instead of relying on the disabled submit button + toast.
+  const [policyErrors, setPolicyErrors] = useState<Set<PolicyKey>>(new Set());
+  // True after the first submit attempt — gates inline error display so we
+  // don't yell at users before they've tried to continue.
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => { if (!user) nav("/auth", { replace: true }); }, [user, nav]);
 
-  const allAccepted = POLICIES.every(p => accepted[p.key]);
+  const missingPolicies = POLICIES.filter(p => !accepted[p.key]);
+  const allAccepted = missingPolicies.length === 0;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const parsed = schema.safeParse({ country, city, bio });
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message ?? "Check your details");
-    if (!allAccepted) return toast.error(t.onboarding.mustAcceptAll);
+    setSubmitted(true);
+
+    const parsedProfile = profileSchema.safeParse({ country, city, bio });
+    if (!parsedProfile.success) {
+      return toast.error(parsedProfile.error.issues[0]?.message ?? "Check your details");
+    }
+
+    // Mirror the server-side rule: every required policy must be accepted
+    // before we even attempt the upsert. zod gives us a structured failure
+    // map so we can flag each unchecked box individually.
+    const parsedPolicies = policiesSchema.safeParse(accepted);
+    if (!parsedPolicies.success) {
+      const failed = new Set<PolicyKey>(
+        parsedPolicies.error.issues
+          .map(i => i.path[0])
+          .filter((k): k is PolicyKey => typeof k === "string" && POLICIES.some(p => p.key === k))
+      );
+      setPolicyErrors(failed);
+      return toast.error(t.onboarding.mustAcceptAll);
+    }
+    setPolicyErrors(new Set());
+
     if (!user) return;
 
     setBusy(true);
@@ -108,30 +148,69 @@ export default function Onboarding() {
             <div className="rounded-xl border border-border bg-muted/30 p-4">
               <h2 className="font-display text-base font-semibold text-burgundy">{t.onboarding.policiesTitle}</h2>
               <p className="mt-1 text-xs text-muted-foreground">{t.onboarding.policiesSub}</p>
+
+              {submitted && policyErrors.size > 0 && (
+                <div
+                  role="alert"
+                  className="mt-3 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-xs text-destructive"
+                >
+                  {t.onboarding.missingPoliciesSummary.replace(
+                    "{keys}",
+                    POLICIES.filter(p => policyErrors.has(p.key))
+                      .map(p => t.legal[p.shortKey])
+                      .join(" · ")
+                  )}
+                </div>
+              )}
+
               <ul className="mt-4 space-y-3">
-                {POLICIES.map(p => (
-                  <li key={p.key} className="flex items-start gap-3">
-                    <Checkbox
-                      id={`policy-${p.key}`}
-                      checked={accepted[p.key]}
-                      onCheckedChange={(v) => setAccepted(prev => ({ ...prev, [p.key]: v === true }))}
-                      className="mt-0.5"
-                    />
-                    <div className="flex-1 text-sm leading-snug">
-                      <Label htmlFor={`policy-${p.key}`} className="cursor-pointer font-normal">
-                        {t.onboarding[p.labelKey]}
-                      </Label>
-                      <Link
-                        to={policyConfig.urls[p.key]}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                      >
-                        {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
-                      </Link>
-                    </div>
-                  </li>
-                ))}
+                {POLICIES.map(p => {
+                  const hasError = submitted && policyErrors.has(p.key);
+                  return (
+                    <li key={p.key} className="flex items-start gap-3">
+                      <Checkbox
+                        id={`policy-${p.key}`}
+                        checked={accepted[p.key]}
+                        onCheckedChange={(v) => {
+                          const next = v === true;
+                          setAccepted(prev => ({ ...prev, [p.key]: next }));
+                          // Clear this policy's error live as soon as the user ticks it.
+                          if (next && policyErrors.has(p.key)) {
+                            setPolicyErrors(prev => {
+                              const copy = new Set(prev);
+                              copy.delete(p.key);
+                              return copy;
+                            });
+                          }
+                        }}
+                        aria-invalid={hasError || undefined}
+                        aria-describedby={hasError ? `policy-${p.key}-error` : undefined}
+                        className={`mt-0.5 ${hasError ? "border-destructive" : ""}`}
+                      />
+                      <div className="flex-1 text-sm leading-snug">
+                        <Label htmlFor={`policy-${p.key}`} className="cursor-pointer font-normal">
+                          {t.onboarding[p.labelKey]}
+                        </Label>
+                        <Link
+                          to={policyConfig.urls[p.key]}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                        >
+                          {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
+                        </Link>
+                        {hasError && (
+                          <p
+                            id={`policy-${p.key}-error`}
+                            className="mt-1 text-xs font-medium text-destructive"
+                          >
+                            {t.onboarding.policyRequired}
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

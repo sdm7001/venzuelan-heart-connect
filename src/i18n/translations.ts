@@ -109,6 +109,8 @@ const _translations = {
       acceptAnti: "I have read and accept the Anti-Solicitation Policy.",
       readPolicy: "Read",
       mustAcceptAll: "Please accept all four policies to continue.",
+      missingPoliciesSummary: "Still required: {keys}",
+      policyRequired: "Required to continue.",
     },
     policyReaccept: {
       title: "Our policies have been updated",
@@ -274,6 +276,8 @@ const _translations = {
       acceptAnti: "He leído y acepto la Política Anti-Solicitación.",
       readPolicy: "Leer",
       mustAcceptAll: "Debes aceptar las cuatro políticas para continuar.",
+      missingPoliciesSummary: "Aún requeridas: {keys}",
+      policyRequired: "Requerida para continuar.",
     },
     dashboard: {
       welcome: "Bienvenido de nuevo",
