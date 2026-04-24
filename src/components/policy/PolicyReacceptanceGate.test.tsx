@@ -135,6 +135,9 @@ beforeEach(() => {
   ackRows = [];
   upsertSpy.mockClear();
   insertSpy.mockClear();
+  insertSpy.mockImplementation(async () => ({ error: null }));
+  toastSuccess.mockClear();
+  toastError.mockClear();
   mockAuth.user = { id: "user-1" } as any;
   mockAuth.onboardingCompleted = true;
 });
