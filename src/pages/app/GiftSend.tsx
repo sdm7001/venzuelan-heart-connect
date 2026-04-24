@@ -27,9 +27,25 @@ type TrustState = {
   account_status: string | null;
 };
 
+type EligibilityCode =
+  | "account_suspended"
+  | "account_pending"
+  | "account_deactivated"
+  | "no_trust_badge"
+  | "recent_severe_flags"
+  | "trust_state_unavailable"
+  | "rpc_denied";
+
+type EligibilityReason = {
+  code: EligibilityCode;
+  title: string;
+  detail: string;
+  next?: { label: string; to: string };
+};
+
 type Eligibility = {
   eligible: boolean;
-  reasons: string[];
+  reasons: EligibilityReason[];
   trust: TrustState | null;
 };
 
