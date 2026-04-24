@@ -22,11 +22,11 @@
 
     /* Brand */
     --primary: 243 76% 59%;          /* #4f46e5 electric indigo */
-    --primary-foreground: 240 60% 6%;
+    --primary-foreground: 0 0% 100%; /* white text on indigo */
     --primary-soft: 240 55% 24%;     /* #1e1e5a deep indigo */
 
-    --burgundy: 0 0% 100%;           /* repurposed: white text on dark surfaces */
-    --burgundy-foreground: 240 60% 6%;
+    --burgundy: 235 50% 14%;         /* deep midnight surface */
+    --burgundy-foreground: 0 0% 100%;
 
     --gold: 243 76% 70%;             /* indigo accent (kept token name) */
 
