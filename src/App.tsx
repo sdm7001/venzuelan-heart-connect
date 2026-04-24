@@ -25,6 +25,7 @@ import AdminReports from "./pages/admin/AdminReports";
 import { AdminFlags, AdminBilling, AdminAudit } from "./pages/admin/AdminPlaceholders";
 import AdminVerification from "./pages/admin/AdminVerification";
 import AdminRiskEvents from "./pages/admin/AdminRiskEvents";
+import AdminRlsTests from "./pages/admin/AdminRlsTests";
 import AdminPolicies from "./pages/admin/AdminPolicies";
 import AdminPolicyAcceptance from "./pages/admin/AdminPolicyAcceptance";
 import AdminPolicyReaccepts from "./pages/admin/AdminPolicyReaccepts";
@@ -71,6 +72,7 @@ const App = () => (
               <Route path="/admin/flags" element={<RequireStaff><AdminFlags /></RequireStaff>} />
               <Route path="/admin/verification" element={<RequireStaff><AdminVerification /></RequireStaff>} />
               <Route path="/admin/risk-events" element={<RequireStaff><AdminRiskEvents /></RequireStaff>} />
+              <Route path="/admin/rls-tests" element={<RequireStaff><AdminRlsTests /></RequireStaff>} />
               <Route path="/admin/billing" element={<RequireStaff><AdminBilling /></RequireStaff>} />
               <Route path="/admin/audit" element={<RequireStaff><AdminAudit /></RequireStaff>} />
               <Route path="/admin/policies" element={<RequireStaff><AdminPolicies /></RequireStaff>} />
