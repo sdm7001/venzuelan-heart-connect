@@ -44,6 +44,10 @@ export default function Dashboard() {
         </Card>
       </div>
 
+      <div className="mt-6">
+        <ComplianceCard />
+      </div>
+
       <div className="mt-8">
         <EmptyState
           icon={<Heart className="h-5 w-5" fill="currentColor" />}
