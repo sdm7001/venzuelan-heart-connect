@@ -13,17 +13,30 @@ import { useAuth } from "@/auth/AuthProvider";
 import { Heart, ExternalLink } from "lucide-react";
 import { usePolicyConfig, PolicyKey } from "@/lib/policyConfig";
 
-const schema = z.object({
+// Profile fields. Policy acceptance is validated separately so we can map
+// each failure back to its specific checkbox.
+const profileSchema = z.object({
   country: z.string().trim().min(2).max(60),
   city: z.string().trim().min(2).max(60),
   bio: z.string().trim().max(500).optional(),
 });
 
-const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti" }[] = [
-  { key: "tos", labelKey: "acceptTos" },
-  { key: "privacy", labelKey: "acceptPrivacy" },
-  { key: "aup", labelKey: "acceptAup" },
-  { key: "anti_solicitation", labelKey: "acceptAnti" },
+// Mirrors the server-side rule that we upsert one policy_acknowledgements
+// row per (user, policy_key, policy_version) for ALL four required keys.
+// Every checkbox must literally be `true` — z.literal(true) rejects `false`
+// with a clear path so we can surface inline errors.
+const policiesSchema = z.object({
+  tos: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+  privacy: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+  aup: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+  anti_solicitation: z.literal(true, { errorMap: () => ({ message: "policyRequired" }) }),
+});
+
+const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti"; shortKey: "tos" | "privacy" | "aup" | "antiSolicit" }[] = [
+  { key: "tos", labelKey: "acceptTos", shortKey: "tos" },
+  { key: "privacy", labelKey: "acceptPrivacy", shortKey: "privacy" },
+  { key: "aup", labelKey: "acceptAup", shortKey: "aup" },
+  { key: "anti_solicitation", labelKey: "acceptAnti", shortKey: "antiSolicit" },
 ];
 
 export default function Onboarding() {
