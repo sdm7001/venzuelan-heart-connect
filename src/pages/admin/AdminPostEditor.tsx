@@ -322,9 +322,18 @@ export default function AdminPostEditor() {
           <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
             <h3 className="font-display text-sm font-semibold">Internal links</h3>
             <p className="mt-1 text-xs text-muted-foreground">
-              Click "Auto-suggest internal links" to populate both languages from related published posts and core site pages.
+              "Auto-suggest" sends suggestions to the review queue. Approved links are merged into this post.
             </p>
+            {pendingCount > 0 && (
+              <div className="mt-3 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-xs">
+                <div className="font-medium text-amber-700 dark:text-amber-400">
+                  {pendingCount} suggestion{pendingCount === 1 ? "" : "s"} awaiting review
+                </div>
+                <a href="/admin/link-suggestions" className="mt-1 inline-block underline">Open review queue →</a>
+              </div>
+            )}
             <div className="mt-4 space-y-3 text-xs">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Approved (live on post)</div>
               <LinkColumn title="EN" items={linksPreview.en} />
               <LinkColumn title="ES" items={linksPreview.es} />
             </div>
