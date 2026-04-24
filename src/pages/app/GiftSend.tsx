@@ -27,9 +27,25 @@ type TrustState = {
   account_status: string | null;
 };
 
+type EligibilityCode =
+  | "account_suspended"
+  | "account_pending"
+  | "account_deactivated"
+  | "no_trust_badge"
+  | "recent_severe_flags"
+  | "trust_state_unavailable"
+  | "rpc_denied";
+
+type EligibilityReason = {
+  code: EligibilityCode;
+  title: string;
+  detail: string;
+  next?: { label: string; to: string };
+};
+
 type Eligibility = {
   eligible: boolean;
-  reasons: string[];
+  reasons: EligibilityReason[];
   trust: TrustState | null;
 };
 
@@ -82,19 +98,73 @@ export default function GiftSend() {
     const trust: TrustState | null =
       Array.isArray(trustRow) && trustRow[0] ? (trustRow[0] as TrustState) : null;
 
-    const reasons: string[] = [];
+    const reasons: EligibilityReason[] = [];
     if (trust) {
-      if (trust.account_status && trust.account_status !== "active") {
-        reasons.push(`Your account is ${trust.account_status}.`);
+      const status = trust.account_status;
+      if (status === "suspended") {
+        reasons.push({
+          code: "account_suspended",
+          title: "Your account is suspended",
+          detail:
+            "While suspended you can't send gifts. Our trust & safety team can review your case if you believe this is a mistake.",
+          next: { label: "Contact support", to: "/safety" },
+        });
+      } else if (status === "pending") {
+        reasons.push({
+          code: "account_pending",
+          title: "Your account is still under review",
+          detail:
+            "New accounts are reviewed before unlocking gifting. This usually completes within 24 hours.",
+          next: { label: "Check verification", to: "/verification" },
+        });
+      } else if (status && status !== "active") {
+        reasons.push({
+          code: "account_deactivated",
+          title: `Account status: ${status}`,
+          detail:
+            "Reactivate your account from settings to resume sending gifts.",
+          next: { label: "Open profile", to: "/profile" },
+        });
       }
+
       if ((trust.badge_count ?? 0) < 1) {
-        reasons.push("You need at least one trust badge (photo, social, ID or income).");
+        reasons.push({
+          code: "no_trust_badge",
+          title: "You need at least one trust badge",
+          detail:
+            "Verify your photo, social, ID, or income to earn your first badge. This protects recipients and unlocks gifting.",
+          next: { label: "Get verified", to: "/verification" },
+        });
       }
+
       if ((trust.recent_severe_flags ?? 0) > 0) {
-        reasons.push("Recent serious moderation flags are blocking gift sending for 30 days.");
+        reasons.push({
+          code: "recent_severe_flags",
+          title: "Gift sending paused for 30 days",
+          detail: `We received ${trust.recent_severe_flags} serious moderation flag${
+            trust.recent_severe_flags === 1 ? "" : "s"
+          } on your account in the last 30 days. Gifting will reopen automatically once the cooldown ends.`,
+          next: { label: "Review safety policies", to: "/safety" },
+        });
       }
     } else {
-      reasons.push("Trust state could not be loaded.");
+      reasons.push({
+        code: "trust_state_unavailable",
+        title: "We couldn't load your trust state",
+        detail:
+          "This is usually temporary. Refresh the page in a moment, or contact support if the issue persists.",
+        next: { label: "Refresh", to: "/gift" },
+      });
+    }
+
+    if (eligible === false && reasons.length === 0) {
+      reasons.push({
+        code: "rpc_denied",
+        title: "Server marked you as not eligible",
+        detail:
+          "Your trust signals look fine here, but the server denied gifting. Try again in a minute or contact support.",
+        next: { label: "Contact support", to: "/safety" },
+      });
     }
 
     setEligibility({
@@ -308,14 +378,38 @@ export default function GiftSend() {
           <ShieldAlert className="h-5 w-5 text-destructive mt-0.5" />
           <div className="text-sm flex-1">
             <div className="font-medium">Gift sending is currently disabled</div>
-            <ul className="mt-1 text-muted-foreground list-disc pl-5 space-y-0.5">
-              {(eligibility?.reasons ?? ["Eligibility check failed."]).map((r, i) => (
-                <li key={i}>{r}</li>
+            <div className="text-muted-foreground mt-0.5">
+              {(eligibility?.reasons.length ?? 0) === 1
+                ? "Here's what's blocking you and what to do next."
+                : `${eligibility?.reasons.length ?? 0} things are blocking gift sending. Resolve each to continue.`}
+            </div>
+
+            <ul className="mt-3 space-y-2">
+              {(eligibility?.reasons ?? []).map((r) => (
+                <li
+                  key={r.code}
+                  className="rounded-md border border-destructive/20 bg-background/40 p-3"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="font-medium text-foreground">{r.title}</div>
+                      <div className="text-muted-foreground mt-0.5">{r.detail}</div>
+                      <div className="text-[11px] text-muted-foreground mt-1 font-mono">
+                        code: {r.code}
+                      </div>
+                    </div>
+                    {r.next && (
+                      <Button asChild size="sm" variant="outline" className="shrink-0">
+                        <Link to={r.next.to}>{r.next.label}</Link>
+                      </Button>
+                    )}
+                  </div>
+                </li>
               ))}
+              {(eligibility?.reasons.length ?? 0) === 0 && (
+                <li className="text-muted-foreground">Eligibility check failed.</li>
+              )}
             </ul>
-            <Button asChild size="sm" variant="outline" className="mt-3">
-              <Link to="/verification">Get verified</Link>
-            </Button>
           </div>
         </div>
       )}
