@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
+import logo from "@/assets/logo.png";
 
 export function PublicFooter() {
   const { t } = useI18n();
