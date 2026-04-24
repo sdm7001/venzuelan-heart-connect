@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Search, Star, X } from "lucide-react";
+import { ArrowRight, BookOpen, ChevronLeft, ChevronRight, Search, Star, X } from "lucide-react";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Input } from "@/components/ui/input";
