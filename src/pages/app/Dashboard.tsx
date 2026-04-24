@@ -7,6 +7,7 @@ import { useAuth } from "@/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { ComplianceCard } from "@/components/dashboard/ComplianceCard";
 
 export default function Dashboard() {
   const { t } = useI18n();
@@ -41,6 +42,10 @@ export default function Dashboard() {
         <Card icon={<MessageCircle className="h-5 w-5" />} title="Messages" value="0">
           <p className="mt-2 text-sm text-muted-foreground">Conversations open in the next phase.</p>
         </Card>
+      </div>
+
+      <div className="mt-6">
+        <ComplianceCard />
       </div>
 
       <div className="mt-8">
