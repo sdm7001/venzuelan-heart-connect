@@ -13,6 +13,7 @@ const items = [
   { to: "/admin/users", label: "Users", icon: Users },
   { to: "/admin/reports", label: "Reports", icon: Flag },
   { to: "/admin/flags", label: "Flags", icon: ShieldAlert },
+  { to: "/admin/risk-events", label: "Risk events", icon: ShieldAlert },
   { to: "/admin/verification", label: "Verification", icon: BadgeCheck },
   { to: "/admin/billing", label: "Billing", icon: CreditCard },
   { to: "/admin/audit", label: "Audit log", icon: Activity },
