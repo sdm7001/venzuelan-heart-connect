@@ -203,16 +203,21 @@ Deno.serve(async (req) => {
     : "en";
 
   try {
-    const posts = await fetchPosts();
     let body: string;
-    let contentType: string;
+    let contentType = "application/xml; charset=utf-8";
 
-    if (type === "rss") {
+    if (type === "sitemap-index" || type === "sitemapindex") {
+      body = buildSitemapIndex();
+    } else if (type === "rss") {
+      const posts = await fetchPosts();
       body = buildRss(posts, lang);
       contentType = "application/rss+xml; charset=utf-8";
     } else {
-      body = buildSitemap(posts);
-      contentType = "application/xml; charset=utf-8";
+      const posts = await fetchPosts();
+      const scope = url.searchParams.get("lang")
+        ? lang
+        : ("all" as const);
+      body = buildSitemap(posts, scope);
     }
 
     return new Response(body, {
