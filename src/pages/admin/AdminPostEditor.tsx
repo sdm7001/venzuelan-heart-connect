@@ -89,6 +89,11 @@ export default function AdminPostEditor() {
         internal_links_es: (data.internal_links_es as any) ?? [],
       });
       setLoading(false);
+      const { count } = await supabase
+        .from("internal_link_suggestions")
+        .select("id", { count: "exact", head: true })
+        .eq("post_id", id!).eq("status", "pending");
+      setPendingCount(count ?? 0);
     })();
   }, [id, isNew, nav]);
 
