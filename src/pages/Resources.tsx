@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/i18n/datetime";
+import { supabase } from "@/integrations/supabase/client";
 import type { Lang } from "@/i18n/translations";
 
 type Post = {
