@@ -59,6 +59,7 @@ export default function AdminPostEditor() {
   const [saving, setSaving] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [pendingCount, setPendingCount] = useState(0);
 
   useEffect(() => {
     if (isNew) return;
