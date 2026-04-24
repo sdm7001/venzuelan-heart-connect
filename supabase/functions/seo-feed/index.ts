@@ -73,11 +73,16 @@ async function fetchPosts(): Promise<Post[]> {
   return (await res.json()) as Post[];
 }
 
-function buildSitemap(posts: Post[]): string {
+function buildSitemap(posts: Post[], lang: "en" | "es" | "all" = "all"): string {
   const now = new Date().toISOString();
   const urls: string[] = [];
 
-  // Static routes — emit en + es alternates per page
+  const altLinks = (loc: string) =>
+    `    <xhtml:link rel="alternate" hreflang="en" href="${escapeXml(loc)}"/>
+    <xhtml:link rel="alternate" hreflang="es" href="${escapeXml(loc)}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(loc)}"/>`;
+
+  // Static routes
   for (const r of STATIC_ROUTES) {
     const loc = abs(r.path);
     urls.push(`  <url>
@@ -85,14 +90,15 @@ function buildSitemap(posts: Post[]): string {
     <lastmod>${now}</lastmod>
     <changefreq>${r.changefreq}</changefreq>
     <priority>${r.priority}</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="${escapeXml(loc)}"/>
-    <xhtml:link rel="alternate" hreflang="es" href="${escapeXml(loc)}"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(loc)}"/>
+${altLinks(loc)}
   </url>`);
   }
 
-  // Blog post routes
+  // Blog post routes — filter by language presence when lang-scoped
   for (const p of posts) {
+    if (lang === "en" && !p.title_en) continue;
+    if (lang === "es" && !p.title_es) continue;
+
     const loc = abs(`/resources/${p.slug}`);
     const lastmod = (p.updated_at ?? p.published_at) || now;
     const image = p.hero_image_url ? abs(p.hero_image_url) : null;
@@ -104,9 +110,7 @@ function buildSitemap(posts: Post[]): string {
     <lastmod>${new Date(lastmod).toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="${escapeXml(loc)}"/>
-    <xhtml:link rel="alternate" hreflang="es" href="${escapeXml(loc)}"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(loc)}"/>${imageBlock}
+${altLinks(loc)}${imageBlock}
   </url>`);
   }
 
@@ -116,6 +120,27 @@ function buildSitemap(posts: Post[]): string {
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls.join("\n")}
 </urlset>
+`;
+}
+
+function buildSitemapIndex(): string {
+  const now = new Date().toISOString();
+  const children = [
+    `${SITE_URL}/sitemap-en.xml`,
+    `${SITE_URL}/sitemap-es.xml`,
+  ];
+  const entries = children
+    .map(
+      (loc) => `  <sitemap>
+    <loc>${escapeXml(loc)}</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>`,
+    )
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries}
+</sitemapindex>
 `;
 }
 
