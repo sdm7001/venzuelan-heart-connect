@@ -37,6 +37,10 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
   const [expiresAt, setExpiresAt] = useState<number | null>(null);
   const [devCode, setDevCode] = useState<string | null>(null);
 
+  // Recovery fallback step
+  const [recoveryPassword, setRecoveryPassword] = useState("");
+  const [recoveryCode, setRecoveryCode] = useState("");
+
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,9 +57,8 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
       if (!active) return;
       const ts = data?.verified_at ? new Date(data.verified_at).getTime() : 0;
       const fresh = Date.now() - ts < VALIDITY_MS;
-      // Require OTP method specifically — a stale 'password'-only verification
-      // from before this gate shipped should NOT bypass OTP.
-      setVerified(fresh && data?.method === "otp");
+      // OTP or recovery both unlock the gate; password-only does not.
+      setVerified(fresh && (data?.method === "otp" || data?.method === "recovery"));
       setChecked(true);
     })();
     return () => { active = false; };
