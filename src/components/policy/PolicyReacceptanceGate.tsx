@@ -12,11 +12,11 @@ import { useAuth } from "@/auth/AuthProvider";
 import { useI18n } from "@/i18n/I18nProvider";
 import { usePolicyConfig, PolicyKey } from "@/lib/policyConfig";
 
-const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti" }[] = [
-  { key: "tos", labelKey: "acceptTos" },
-  { key: "privacy", labelKey: "acceptPrivacy" },
-  { key: "aup", labelKey: "acceptAup" },
-  { key: "anti_solicitation", labelKey: "acceptAnti" },
+const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti"; shortKey: "tos" | "privacy" | "aup" | "antiSolicit" }[] = [
+  { key: "tos", labelKey: "acceptTos", shortKey: "tos" },
+  { key: "privacy", labelKey: "acceptPrivacy", shortKey: "privacy" },
+  { key: "aup", labelKey: "acceptAup", shortKey: "aup" },
+  { key: "anti_solicitation", labelKey: "acceptAnti", shortKey: "antiSolicit" },
 ];
 
 type PriorAck = { policy_version: string; accepted_at: string };
@@ -193,9 +193,7 @@ export function PolicyReacceptanceGate() {
                     .replace("{total}", String(POLICIES.length))}
             </div>
             <div className="mt-0.5 text-xs text-amber-800/90">
-              {missingPolicies
-                .map(p => t.legalShort?.[p.key] ?? t.onboarding[p.labelKey])
-                .join(" · ")}
+              {missingPolicies.map(p => t.legal[p.shortKey]).join(" · ")}
             </div>
           </div>
         </div>
