@@ -24,7 +24,12 @@ export function RequireStaff({ children }: { children: ReactNode }) {
   if (loading) return <FullPageLoader />;
   if (!user) return <Navigate to="/auth" replace />;
   if (!isStaff) return <Navigate to="/dashboard" replace />;
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <PolicyReacceptanceGate />
+    </>
+  );
 }
 
 function FullPageLoader() {
