@@ -417,15 +417,40 @@ export default function AdminPolicyAcceptance() {
               {blockedState.rows.length > 0 && (
                 <>
                   <Checkbox
-                    checked={selected.size > 0 && selected.size === blockedState.rows.length}
+                    checked={
+                      selected.size === 0
+                        ? false
+                        : selected.size === blockedState.rows.length
+                          ? true
+                          : "indeterminate"
+                    }
                     onCheckedChange={(v) => toggleAllVisible(v === true)}
                     aria-label="Select all blocked members on this page"
                   />
                   <span className="text-muted-foreground">
-                    {selected.size === 0
-                      ? `Select members to send a re-acceptance reminder`
-                      : `${selected.size} of ${blockedState.rows.length} on this page selected`}
+                    {selected.size === 0 ? (
+                      <>Select blocked members to send a re-acceptance reminder · {totals.blocked} total blocked</>
+                    ) : (
+                      <>
+                        <span className="font-medium text-foreground">{selected.size}</span>
+                        {" "}of {blockedState.rows.length} on this page selected
+                        {totals.blocked > blockedState.rows.length && (
+                          <> · {totals.blocked} blocked across all pages</>
+                        )}
+                      </>
+                    )}
                   </span>
+                  {selected.size > 0 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-2 text-xs"
+                      onClick={() => setSelected(new Set())}
+                    >
+                      Clear
+                    </Button>
+                  )}
                 </>
               )}
             </div>
@@ -435,13 +460,68 @@ export default function AdminPolicyAcceptance() {
                 <Download className="h-4 w-4 mr-1" />
                 {exporting === "blocked" ? "Preparing…" : "Export CSV"}
               </Button>
-              <Button size="sm" variant="romance" onClick={sendReminders}
+              <Button size="sm" variant="romance" onClick={() => setConfirmOpen(true)}
                 disabled={selected.size === 0 || sending}>
                 <BellRing className="h-4 w-4 mr-1" />
-                {sending ? "Sending…" : `Send reminder${selected.size > 1 ? "s" : ""}`}
+                {sending
+                  ? "Sending…"
+                  : selected.size === 0
+                    ? "Send reminder"
+                    : `Send reminder to ${selected.size}`}
               </Button>
             </div>
           </div>
+          <AlertDialog open={confirmOpen} onOpenChange={(o) => !sending && setConfirmOpen(o)}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Send re-acceptance reminder to {selectedTargets.length} member{selectedTargets.length === 1 ? "" : "s"}?
+                </AlertDialogTitle>
+                <AlertDialogDescription asChild>
+                  <div className="space-y-2 text-sm">
+                    <p>
+                      Each member will get an in-app reminder for policy{" "}
+                      <span className="font-mono">v{config.policy_version}</span>{" "}
+                      covering the keys they haven't accepted yet.
+                    </p>
+                    {selectedTargets.length > 0 && (
+                      <div className="max-h-40 overflow-y-auto rounded border border-border bg-muted/40 p-2 text-xs">
+                        <ul className="space-y-1">
+                          {selectedTargets.slice(0, 8).map((t) => (
+                            <li key={t.user_id} className="flex justify-between gap-2">
+                              <span className="truncate">
+                                {t.display_name ?? <span className="font-mono">{t.user_id.slice(0, 8)}</span>}
+                              </span>
+                              <span className="font-mono text-muted-foreground">
+                                {t.missing_keys.length} missing
+                              </span>
+                            </li>
+                          ))}
+                          {selectedTargets.length > 8 && (
+                            <li className="italic text-muted-foreground">
+                              + {selectedTargets.length - 8} more…
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      This logs an audit event and a reminder record per member. It cannot be undone.
+                    </p>
+                  </div>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={sending}>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={(e) => { e.preventDefault(); sendReminders(); }}
+                  disabled={sending || selectedTargets.length === 0}
+                >
+                  {sending ? "Sending…" : `Send ${selectedTargets.length} reminder${selectedTargets.length === 1 ? "" : "s"}`}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <UserTable
             mode="blocked"
             activeVersion={config.policy_version}
