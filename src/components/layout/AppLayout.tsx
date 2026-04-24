@@ -28,7 +28,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-lg">
         <div className="container flex items-center justify-between gap-3 py-3 sm:py-4">
           <Link to="/dashboard" className="flex items-center gap-2 font-display text-base font-semibold text-burgundy sm:text-lg">
-            <img src={logo} alt="MatchVenezuelan" className="h-10 w-10 object-contain sm:h-14 sm:w-14 md:h-16 md:w-16" />
+            <img src={logo} alt="MatchVenezuelan" className="h-10 w-10 object-contain brightness-0 invert sm:h-14 sm:w-14 md:h-16 md:w-16" />
             <span className="whitespace-nowrap">MatchVenezuelan</span>
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
