@@ -8,8 +8,10 @@ export function LanguageToggle() {
 
   const btn = (active: boolean) =>
     cn(
-      "rounded-full px-2.5 py-0.5 text-xs font-medium transition-smooth",
+      "relative inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-smooth touch-manipulation",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+      // Touch hit area expansion (visual stays small, hit area = 44px on touch).
+      "before:absolute before:left-1/2 before:top-1/2 before:hidden before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] pointer-coarse:before:block pointer-coarse:before:h-11 pointer-coarse:before:w-11",
       active
         ? "bg-primary text-primary-foreground"
         : "text-muted-foreground hover:text-foreground",
