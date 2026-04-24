@@ -103,11 +103,19 @@ export default function GiftSend() {
       trust,
     });
 
+    // Load sender's preferred language
+    const { data: senderProfile } = await supabase
+      .from("profiles")
+      .select("preferred_language")
+      .eq("id", user!.id)
+      .maybeSingle();
+    setSenderLang((senderProfile?.preferred_language as "en" | "es") ?? null);
+
     if (recipientId) {
       const [{ data: r }, { data: rEligible }, { data: rTrust }, { data: blk }] = await Promise.all([
         supabase
           .from("profiles")
-          .select("id, display_name, account_status")
+          .select("id, display_name, account_status, preferred_language")
           .eq("id", recipientId)
           .maybeSingle(),
         supabase.rpc("is_eligible_for_gifting", { _user_id: recipientId }),
@@ -115,6 +123,7 @@ export default function GiftSend() {
         supabase.rpc("is_blocked_between", { _a: user!.id, _b: recipientId }),
       ]);
       setRecipient(r);
+      setRecipientLang((r?.preferred_language as "en" | "es") ?? null);
       setRecipientEligible(!!rEligible);
       setRecipientTrust(
         Array.isArray(rTrust) && rTrust[0] ? (rTrust[0] as TrustState) : null
