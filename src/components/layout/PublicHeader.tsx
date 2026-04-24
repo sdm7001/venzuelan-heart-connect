@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { LanguageToggle } from "./LanguageToggle";
@@ -27,19 +28,7 @@ export function PublicHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on Escape and on route change; restore focus to toggle.
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        menuBtnRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
+  // Auto-close drawer on route change.
   useEffect(() => { setOpen(false); }, [loc.pathname]);
 
   const links = [
@@ -55,7 +44,7 @@ export function PublicHeader() {
 
   return (
     <>
-      {/* Skip link — visible only when focused */}
+      {/* Skip link */}
       <a
         href="#main-content"
         className={cn(
@@ -88,10 +77,7 @@ export function PublicHeader() {
             <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
           </Link>
 
-          <nav
-            aria-label={a.primaryNav}
-            className="hidden h-header-row items-center gap-1 md:flex"
-          >
+          <nav aria-label={a.primaryNav} className="hidden h-header-row items-center gap-1 md:flex">
             {links.map(l => {
               const active = isActive(l.to);
               return (
@@ -129,63 +115,90 @@ export function PublicHeader() {
             )}
           </div>
 
+          {/* Mobile cluster: language + hamburger trigger */}
           <div className="flex h-header-row items-center gap-2 md:hidden">
             <LanguageToggle />
-            <button
-              ref={menuBtnRef}
-              type="button"
-              onClick={() => setOpen(v => !v)}
-              aria-label={open ? a.closeMenu : a.openMenu}
-              aria-expanded={open}
-              aria-haspopup="menu"
-              aria-controls="mobile-primary-nav"
-              className={cn(
-                "inline-flex size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent",
-                focusRing,
-              )}
-            >
-              {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
-            </button>
+            <Sheet open={open} onOpenChange={setOpen}>
+              <button
+                ref={menuBtnRef}
+                type="button"
+                onClick={() => setOpen(v => !v)}
+                aria-label={open ? a.closeMenu : a.openMenu}
+                aria-expanded={open}
+                aria-haspopup="dialog"
+                aria-controls="mobile-primary-nav"
+                className={cn(
+                  "inline-flex size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent",
+                  focusRing,
+                )}
+              >
+                {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+              </button>
+
+              <SheetContent
+                id="mobile-primary-nav"
+                side="right"
+                hideClose
+                className={cn(
+                  // Anchor the panel below the sticky header so top padding stays consistent.
+                  "top-header h-[calc(100dvh-var(--header-h))] sm:h-[calc(100dvh-var(--header-h-sm))] md:h-[calc(100dvh-var(--header-h-md))]",
+                  "flex w-[88vw] max-w-sm flex-col gap-0 border-l border-border/80 bg-background p-0",
+                  "data-[state=open]:duration-300 data-[state=closed]:duration-200",
+                )}
+              >
+                <SheetTitle className="sr-only">{a.mobileNav}</SheetTitle>
+                <SheetDescription className="sr-only">{a.skipToContent}</SheetDescription>
+
+                <nav aria-label={a.mobileNav} className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
+                  {links.map(l => {
+                    const active = isActive(l.to);
+                    return (
+                      <Link
+                        key={l.to}
+                        to={l.to}
+                        onClick={() => setOpen(false)}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "rounded-md px-3 py-3 text-base font-medium transition-smooth hover:bg-accent",
+                          active ? "bg-accent/60 text-foreground" : "text-foreground",
+                          focusRing,
+                        )}
+                      >
+                        {l.label}
+                      </Link>
+                    );
+                  })}
+
+                  <div className="my-3 h-px bg-border" role="separator" />
+
+                  <div className="flex flex-col gap-2">
+                    {user ? (
+                      <>
+                        {isStaff && (
+                          <Button asChild variant="ghost" className="justify-start">
+                            <Link to="/admin" onClick={() => setOpen(false)}>{t.nav.admin}</Link>
+                          </Button>
+                        )}
+                        <Button asChild>
+                          <Link to="/dashboard" onClick={() => setOpen(false)}>{t.nav.dashboard}</Link>
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button asChild variant="ghost" className="justify-start">
+                          <Link to="/auth" onClick={() => setOpen(false)}>{t.nav.signin}</Link>
+                        </Button>
+                        <Button asChild variant="romance">
+                          <Link to="/auth?mode=join" onClick={() => setOpen(false)}>{t.nav.join}</Link>
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-
-        {open && (
-          <nav
-            id="mobile-primary-nav"
-            aria-label={a.mobileNav}
-            className="md:hidden border-t border-border/60 bg-background"
-          >
-            <div className="container flex flex-col gap-1 py-4">
-              {links.map(l => {
-                const active = isActive(l.to);
-                return (
-                  <Link
-                    key={l.to}
-                    to={l.to}
-                    onClick={() => setOpen(false)}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "rounded-md px-3 py-2 text-sm font-medium hover:bg-accent",
-                      active ? "text-foreground bg-accent/60" : "text-foreground",
-                      focusRing,
-                    )}
-                  >
-                    {l.label}
-                  </Link>
-                );
-              })}
-              <div className="my-2 h-px bg-border" role="separator" />
-              {user ? (
-                <Button asChild className="mt-2"><Link to="/dashboard" onClick={() => setOpen(false)}>{t.nav.dashboard}</Link></Button>
-              ) : (
-                <>
-                  <Button asChild variant="ghost" className="mt-2"><Link to="/auth" onClick={() => setOpen(false)}>{t.nav.signin}</Link></Button>
-                  <Button asChild variant="romance"><Link to="/auth?mode=join" onClick={() => setOpen(false)}>{t.nav.join}</Link></Button>
-                </>
-              )}
-            </div>
-          </nav>
-        )}
       </header>
     </>
   );
