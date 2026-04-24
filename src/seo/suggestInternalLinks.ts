@@ -47,7 +47,7 @@ export async function suggestInternalLinks(
   >("suggest-internal-links", { body: input });
 
   if (error) throw error;
-  if (data && "error" in data) throw new Error(data.error);
   if (!data) throw new Error("Empty response from suggest-internal-links");
-  return data;
+  if ("error" in (data as any)) throw new Error((data as { error: string }).error);
+  return data as SuggestInternalLinksResult;
 }
