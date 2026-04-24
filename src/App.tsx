@@ -38,6 +38,7 @@ import AdminPostEditor from "./pages/admin/AdminPostEditor";
 import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
 import NotFound from "./pages/NotFound";
 import A11yAudit from "./pages/__A11yAudit";
+import ResponsiveQA from "./pages/__ResponsiveQA";
 
 const queryClient = new QueryClient();
 
@@ -94,6 +95,7 @@ const App = () => (
 
               {/* Dev-only audit harness — safe to remove. */}
               {import.meta.env.DEV && <Route path="/__a11y" element={<A11yAudit />} />}
+              {import.meta.env.DEV && <Route path="/__responsive" element={<ResponsiveQA />} />}
 
               <Route path="*" element={<NotFound />} />
               </Routes>
