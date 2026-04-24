@@ -122,6 +122,21 @@ export default function Auth() {
     nav("/onboarding");
   }
 
+  async function handleGoogle() {
+    setBusy(true);
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: `${window.location.origin}/dashboard`,
+    });
+    if (result.error) {
+      setBusy(false);
+      toast.error(result.error.message ?? "Google sign-in failed");
+      return;
+    }
+    if (result.redirected) return;
+    setBusy(false);
+    nav("/dashboard");
+  }
+
   const fieldError = (id: string, msg?: string) =>
     msg ? (
       <p
