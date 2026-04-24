@@ -222,44 +222,4 @@ export default function ResourceDetail() {
   );
 }
 
-/* head helpers */
-function upsertMeta(attr: "name" | "property", key: string, content: string) {
-  let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(attr, key);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("content", content);
-}
-function upsertLink(rel: string, href: string) {
-  let el = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]:not([hreflang])`);
-  if (!el) {
-    el = document.createElement("link");
-    el.setAttribute("rel", rel);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("href", href);
-}
-function upsertHreflang(hreflang: string, href: string) {
-  let el = document.head.querySelector<HTMLLinkElement>(
-    `link[rel="alternate"][hreflang="${hreflang}"]`,
-  );
-  if (!el) {
-    el = document.createElement("link");
-    el.setAttribute("rel", "alternate");
-    el.setAttribute("hreflang", hreflang);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("href", href);
-}
-function upsertJsonLd(id: string, data: unknown) {
-  let el = document.getElementById(id) as HTMLScriptElement | null;
-  if (!el) {
-    el = document.createElement("script");
-    el.id = id;
-    el.type = "application/ld+json";
-    document.head.appendChild(el);
-  }
-  el.textContent = JSON.stringify(data);
-}
+/* SEO helpers moved to @/seo/seo */
