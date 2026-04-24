@@ -308,6 +308,10 @@ const _translations = {
       previewTitle: "Vista previa de las políticas actualizadas",
       openInNewTab: "Abrir en una pestaña nueva",
     },
+    policyReacceptErrors: {
+      auditFailedTitle: "Aceptación guardada",
+      auditFailedBody: "Tu aceptación se registró, pero no pudimos registrar el evento de auditoría. Puedes seguir usando la app — nuestro equipo ha sido notificado.",
+    },
     compliance: {
       title: "Cumplimiento de la cuenta",
       headlineOk: "Todas las políticas aceptadas",
