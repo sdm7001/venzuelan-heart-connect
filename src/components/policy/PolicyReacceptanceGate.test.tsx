@@ -108,6 +108,15 @@ vi.mock("@/integrations/supabase/client", () => ({
   },
 }));
 
+const toastSuccess = vi.fn();
+const toastError = vi.fn();
+vi.mock("sonner", () => ({
+  toast: {
+    success: (...args: any[]) => toastSuccess(...args),
+    error: (...args: any[]) => toastError(...args),
+  },
+}));
+
 import { PolicyReacceptanceGate } from "./PolicyReacceptanceGate";
 
 function renderGate() {
