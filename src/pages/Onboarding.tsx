@@ -57,7 +57,9 @@ export default function Onboarding() {
       policy_key: p.key,
       policy_version: policyConfig.policy_version,
     }));
-    const { error: ackError } = await supabase.from("policy_acknowledgements").insert(ackRows);
+    const { error: ackError } = await supabase
+      .from("policy_acknowledgements")
+      .upsert(ackRows, { onConflict: "user_id,policy_key,policy_version", ignoreDuplicates: true });
     if (ackError) {
       setBusy(false);
       return toast.error(ackError.message);

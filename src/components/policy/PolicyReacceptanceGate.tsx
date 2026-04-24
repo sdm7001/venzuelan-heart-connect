@@ -83,7 +83,9 @@ export function PolicyReacceptanceGate() {
       policy_key: p.key,
       policy_version: config.policy_version,
     }));
-    const { error } = await supabase.from("policy_acknowledgements").insert(rows);
+    const { error } = await supabase
+      .from("policy_acknowledgements")
+      .upsert(rows, { onConflict: "user_id,policy_key,policy_version", ignoreDuplicates: true });
     if (error) {
       setBusy(false);
       return toast.error(error.message);
