@@ -197,11 +197,13 @@ Deno.serve(async (req) => {
       page: exportAll ? 1 : page,
       pageSize: exportAll ? total : pageSize,
       pageCount: exportAll ? 1 : Math.max(1, Math.ceil(total / pageSize)),
-      // Whole-set totals so the stat cards stay accurate regardless of page.
+      bumpedAt,
+      // Stat-card totals reflect the active onboarding filter so the numbers
+      // match the table the admin is staring at.
       totals: {
-        blocked: aggregated.filter((r) => !r.has_current).length,
-        completed: aggregated.filter((r) => r.has_current).length,
-        total: aggregated.length,
+        blocked: onboardingFiltered.filter((r) => !r.has_current).length,
+        completed: onboardingFiltered.filter((r) => r.has_current).length,
+        total: onboardingFiltered.length,
       },
     });
   } catch (e) {
