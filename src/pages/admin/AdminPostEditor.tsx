@@ -121,10 +121,6 @@ export default function AdminPostEditor() {
   }
 
   async function suggestLinks() {
-    if (isNew) {
-      toast.error("Save the post first, then queue link suggestions for review.");
-      return;
-    }
     if (!form.title_en && !form.title_es) {
       toast.error("Add a title in EN or ES first.");
       return;
@@ -140,30 +136,66 @@ export default function AdminPostEditor() {
           body_en: form.body_en,
           title_es: form.title_es,
           body_es: form.body_es,
-          limit: 6,
+          limit: 8,
         },
       });
       if (error) throw error;
+      const cands = (data?.candidates ?? []) as Candidate[];
       const en = (data?.suggestions_en ?? []) as LinkSuggestion[];
       const es = (data?.suggestions_es ?? []) as LinkSuggestion[];
-      if (!en.length && !es.length) {
-        toast.error("No suggestions returned.");
-        return;
+      setCandidates(cands);
+      // Pre-fill anchor edits using AI-picked anchor text when href matches a candidate.
+      const edits: Record<string, { en: string; es: string }> = {};
+      for (const c of cands) {
+        const eMatch = en.find(l => l.href === c.href);
+        const sMatch = es.find(l => l.href === c.href);
+        edits[c.href] = {
+          en: eMatch?.label ?? c.label_en,
+          es: sMatch?.label ?? c.label_es,
+        };
       }
-      const { data: userRes } = await supabase.auth.getUser();
-      const rows = [
-        ...en.map(l => ({ post_id: id!, lang: "en" as const, label: l.label, href: l.href, reason: l.reason ?? null, suggested_by: userRes.user?.id ?? null })),
-        ...es.map(l => ({ post_id: id!, lang: "es" as const, label: l.label, href: l.href, reason: l.reason ?? null, suggested_by: userRes.user?.id ?? null })),
-      ];
-      const { error: insErr } = await supabase.from("internal_link_suggestions").insert(rows);
-      if (insErr) throw insErr;
-      setPendingCount(c => c + rows.length);
-      toast.success(`Queued ${en.length} EN + ${es.length} ES suggestions for review.`);
+      setAnchorEdits(edits);
+      setDismissed(new Set());
+      if (!cands.length) toast.error("No candidates returned.");
+      else toast.success(`Ranked ${cands.length} candidates. Review and accept below.`);
     } catch (e: any) {
       toast.error(e?.message ?? "Suggestion failed");
     } finally {
       setSuggesting(false);
     }
+  }
+
+  function acceptCandidate(c: Candidate, lang: "en" | "es" | "both") {
+    if (isNew) {
+      toast.error("Save the post first, then accept link suggestions.");
+      return;
+    }
+    const edit = anchorEdits[c.href] ?? { en: c.label_en, es: c.label_es };
+    const langs: ("en" | "es")[] = lang === "both" ? ["en", "es"] : [lang];
+    (async () => {
+      try {
+        const { data: userRes } = await supabase.auth.getUser();
+        const rows = langs.map(l => ({
+          post_id: id!,
+          lang: l,
+          label: l === "en" ? edit.en : edit.es,
+          href: c.href,
+          reason: l === "en" ? c.reason_en : c.reason_es,
+          suggested_by: userRes.user?.id ?? null,
+        }));
+        const { error } = await supabase.from("internal_link_suggestions").insert(rows);
+        if (error) throw error;
+        setPendingCount(n => n + rows.length);
+        setDismissed(d => { const n = new Set(d); n.add(c.href); return n; });
+        toast.success(`Sent to review queue (${langs.join(" + ").toUpperCase()}).`);
+      } catch (e: any) {
+        toast.error(e?.message ?? "Accept failed");
+      }
+    })();
+  }
+
+  function removeCandidate(href: string) {
+    setDismissed(d => { const n = new Set(d); n.add(href); return n; });
   }
 
   async function save() {
