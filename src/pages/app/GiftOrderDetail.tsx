@@ -19,6 +19,8 @@ import {
 import { AppLayout, PageHeader } from "@/components/layout/AppLayout";
 import { useAuth } from "@/auth/AuthProvider";
 import { useI18n } from "@/i18n/I18nProvider";
+import { formatDateTime } from "@/i18n/datetime";
+import type { Lang } from "@/i18n/translations";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
