@@ -242,14 +242,26 @@ export function MyGiftsCard() {
           {orders.map(o => {
             const events = eventsByOrder[o.id] ?? [];
             const latest = events[0];
+            const newOrder = isUnread(o.created_at);
+            const newEventCount = events.filter(e => isUnread(e.created_at)).length;
+            const isNew = newOrder || newEventCount > 0;
             return (
               <li key={o.id} className="py-4">
-                <Link to={`/gifts/${o.id}`} className="block group -mx-2 px-2 rounded-lg hover:bg-muted/40 transition-colors">
+                <Link
+                  to={`/gifts/${o.id}`}
+                  className={cn(
+                    "block group -mx-2 px-2 rounded-lg hover:bg-muted/40 transition-colors",
+                    isNew && "bg-primary/5 ring-1 ring-primary/20",
+                  )}
+                >
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-muted-foreground">
+                  <span className="mt-0.5 text-muted-foreground relative">
                     {o.kind === "virtual"
                       ? <Sparkles className="h-4 w-4" />
                       : <Package className="h-4 w-4" />}
+                    {isNew && (
+                      <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary ring-2 ring-card" />
+                    )}
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
@@ -261,6 +273,13 @@ export function MyGiftsCard() {
                       )}>
                         {o.status.replace(/_/g, " ")}
                       </span>
+                      {isNew && (
+                        <Badge className="text-[10px] h-4 px-1.5 bg-primary text-primary-foreground">
+                          {newOrder && newEventCount === 0
+                            ? "New"
+                            : `${newEventCount} new update${newEventCount === 1 ? "" : "s"}`}
+                        </Badge>
+                      )}
                       {o.kind === "virtual" && o.credit_cost != null && (
                         <span className="text-xs text-muted-foreground">{o.credit_cost} cr</span>
                       )}
