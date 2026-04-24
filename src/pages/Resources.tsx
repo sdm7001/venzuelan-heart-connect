@@ -91,6 +91,10 @@ const COPY: Record<Lang, {
     clear: "Limpiar",
     readMin: (n) => `${n} min de lectura`,
     read: "Leer",
+    prev: "Anterior",
+    next: "Siguiente",
+    pageOf: (p, t) => `Página ${p} de ${t}`,
+    showing: (f, to, t) => `Mostrando ${f}–${to} de ${t}`,
     categories: {
       trust: "Confianza y verificación",
       culture: "Cultura e idioma",
