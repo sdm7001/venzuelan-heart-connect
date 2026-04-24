@@ -64,6 +64,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         </header>
         <main className="container py-8">{children}</main>
       </div>
+      </div>
     </div>
   );
 }
