@@ -359,6 +359,87 @@ export default function AdminPostEditor() {
               />
             </TabsContent>
           </Tabs>
+
+          {/* Ranked candidates */}
+          <section className="rounded-2xl border border-border bg-card p-6 shadow-card">
+            <div className="mb-3 flex items-center justify-between">
+              <div>
+                <h2 className="font-display text-base font-semibold">Ranked candidate links</h2>
+                <p className="text-xs text-muted-foreground">
+                  Posts and site pages, scored by topic + tag + category overlap. Edit anchor text, then accept to send to the review queue.
+                </p>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => void suggestLinks()} disabled={suggesting}>
+                {suggesting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4 text-primary" />}
+                {candidates.length ? "Re-rank" : "Generate"}
+              </Button>
+            </div>
+
+            {candidates.length === 0 ? (
+              <p className="rounded-md border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
+                No candidates yet. Click <span className="font-medium">Generate</span> to score related posts and site pages.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {candidates.filter(c => !dismissed.has(c.href)).map(c => {
+                  const edit = anchorEdits[c.href] ?? { en: c.label_en, es: c.label_es };
+                  return (
+                    <li key={c.href} className="rounded-md border border-border p-3">
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className={`rounded px-2 py-0.5 font-mono uppercase ${c.kind === "post" ? "bg-primary/10 text-primary" : "bg-muted"}`}>{c.kind}</span>
+                        <span className="rounded bg-emerald-500/15 px-2 py-0.5 font-mono text-emerald-700 dark:text-emerald-400">
+                          score {c.score.toFixed(3)}
+                        </span>
+                        <a href={c.href} target="_blank" rel="noreferrer" className="truncate font-mono text-muted-foreground hover:underline">{c.href}</a>
+                        <button
+                          onClick={() => removeCandidate(c.href)}
+                          className="ml-auto text-muted-foreground hover:text-destructive"
+                          title="Dismiss"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                      <div className="mt-2 grid gap-2 md:grid-cols-2">
+                        <div className="space-y-1">
+                          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">EN anchor</Label>
+                          <Input
+                            value={edit.en}
+                            onChange={e => setAnchorEdits(a => ({ ...a, [c.href]: { ...edit, en: e.target.value } }))}
+                            className="h-8 text-sm"
+                          />
+                          <p className="text-[11px] italic text-muted-foreground">{c.reason_en}</p>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">ES anchor</Label>
+                          <Input
+                            value={edit.es}
+                            onChange={e => setAnchorEdits(a => ({ ...a, [c.href]: { ...edit, es: e.target.value } }))}
+                            className="h-8 text-sm"
+                          />
+                          <p className="text-[11px] italic text-muted-foreground">{c.reason_es}</p>
+                        </div>
+                      </div>
+                      <div className="mt-2 flex flex-wrap justify-end gap-2">
+                        <Button size="sm" variant="ghost" onClick={() => removeCandidate(c.href)}>
+                          <Trash2 className="mr-1 h-3.5 w-3.5" /> Remove
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => acceptCandidate(c, "en")}>Accept EN</Button>
+                        <Button size="sm" variant="outline" onClick={() => acceptCandidate(c, "es")}>Accept ES</Button>
+                        <Button size="sm" onClick={() => acceptCandidate(c, "both")}>
+                          <Plus className="mr-1 h-3.5 w-3.5" /> Accept both
+                        </Button>
+                      </div>
+                    </li>
+                  );
+                })}
+                {candidates.filter(c => !dismissed.has(c.href)).length === 0 && (
+                  <li className="rounded-md border border-dashed border-border p-4 text-center text-xs text-muted-foreground">
+                    All candidates dismissed. Click Re-rank to fetch fresh suggestions.
+                  </li>
+                )}
+              </ul>
+            )}
+          </section>
         </div>
 
         {/* Sidebar: link suggestions snapshot */}
