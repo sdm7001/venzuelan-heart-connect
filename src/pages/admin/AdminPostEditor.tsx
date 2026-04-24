@@ -12,6 +12,15 @@ import { Sparkles, Save, Trash2, Plus, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 type LinkSuggestion = { label: string; href: string; reason?: string };
+type Candidate = {
+  href: string;
+  kind: "post" | "page";
+  score: number;
+  label_en: string;
+  label_es: string;
+  reason_en: string;
+  reason_es: string;
+};
 
 type PostForm = {
   slug: string;
@@ -60,6 +69,9 @@ export default function AdminPostEditor() {
   const [suggesting, setSuggesting] = useState(false);
   const [tagInput, setTagInput] = useState("");
   const [pendingCount, setPendingCount] = useState(0);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
+  const [anchorEdits, setAnchorEdits] = useState<Record<string, { en: string; es: string }>>({});
 
   useEffect(() => {
     if (isNew) return;
