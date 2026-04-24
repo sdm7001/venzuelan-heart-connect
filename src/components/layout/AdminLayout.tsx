@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Heart, LayoutDashboard, Users, Flag, ShieldAlert, BadgeCheck, CreditCard, Activity, FileText, ClipboardCheck, History, LogOut, ShieldCheck, Newspaper } from "lucide-react";
+import { Heart, LayoutDashboard, Users, Flag, ShieldAlert, BadgeCheck, CreditCard, Activity, FileText, ClipboardCheck, History, LogOut, ShieldCheck, Newspaper, Link2 } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ const items = [
   { to: "/admin/risk-events", label: "Risk events", icon: ShieldAlert },
   { to: "/admin/verification", label: "Verification", icon: BadgeCheck },
   { to: "/admin/posts", label: "Resources", icon: Newspaper },
+  { to: "/admin/link-suggestions", label: "Link review", icon: Link2 },
   { to: "/admin/billing", label: "Billing", icon: CreditCard },
   { to: "/admin/audit", label: "Audit log", icon: Activity },
   { to: "/admin/policies", label: "Policies", icon: FileText },

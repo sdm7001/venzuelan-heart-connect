@@ -35,6 +35,7 @@ import AdminPolicyReaccepts from "./pages/admin/AdminPolicyReaccepts";
 import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import AdminPosts from "./pages/admin/AdminPosts";
 import AdminPostEditor from "./pages/admin/AdminPostEditor";
+import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -88,6 +89,7 @@ const App = () => (
               <Route path="/admin/policy-reaccepts" element={<RequireStaff><AdminPolicyReaccepts /></RequireStaff>} />
               <Route path="/admin/posts" element={<RequireStaff><AdminPosts /></RequireStaff>} />
               <Route path="/admin/posts/:id" element={<RequireStaff><AdminPostEditor /></RequireStaff>} />
+              <Route path="/admin/link-suggestions" element={<RequireStaff><AdminLinkSuggestions /></RequireStaff>} />
 
               <Route path="*" element={<NotFound />} />
               </Routes>

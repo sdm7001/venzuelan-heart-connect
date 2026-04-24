@@ -453,6 +453,57 @@ export type Database = {
         }
         Relationships: []
       }
+      internal_link_suggestions: {
+        Row: {
+          applied_at: string | null
+          created_at: string
+          href: string
+          id: string
+          label: string
+          lang: Database["public"]["Enums"]["language_code"]
+          post_id: string
+          reason: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["link_suggestion_status"]
+          suggested_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          applied_at?: string | null
+          created_at?: string
+          href: string
+          id?: string
+          label: string
+          lang: Database["public"]["Enums"]["language_code"]
+          post_id: string
+          reason?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["link_suggestion_status"]
+          suggested_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          applied_at?: string | null
+          created_at?: string
+          href?: string
+          id?: string
+          label?: string
+          lang?: Database["public"]["Enums"]["language_code"]
+          post_id?: string
+          reason?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["link_suggestion_status"]
+          suggested_by?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           body: string
@@ -1123,6 +1174,7 @@ export type Database = {
         | "canceled"
         | "failed"
       language_code: "en" | "es"
+      link_suggestion_status: "pending" | "approved" | "rejected"
       moderation_status: "pending" | "approved" | "rejected" | "flagged"
       moderator_action:
         | "warn_user"
@@ -1364,6 +1416,7 @@ export const Constants = {
         "failed",
       ],
       language_code: ["en", "es"],
+      link_suggestion_status: ["pending", "approved", "rejected"],
       moderation_status: ["pending", "approved", "rejected", "flagged"],
       moderator_action: [
         "warn_user",

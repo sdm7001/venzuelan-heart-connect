@@ -59,6 +59,7 @@ export default function AdminPostEditor() {
   const [saving, setSaving] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [pendingCount, setPendingCount] = useState(0);
 
   useEffect(() => {
     if (isNew) return;
@@ -88,6 +89,11 @@ export default function AdminPostEditor() {
         internal_links_es: (data.internal_links_es as any) ?? [],
       });
       setLoading(false);
+      const { count } = await supabase
+        .from("internal_link_suggestions")
+        .select("id", { count: "exact", head: true })
+        .eq("post_id", id!).eq("status", "pending");
+      setPendingCount(count ?? 0);
     })();
   }, [id, isNew, nav]);
 
@@ -103,6 +109,10 @@ export default function AdminPostEditor() {
   }
 
   async function suggestLinks() {
+    if (isNew) {
+      toast.error("Save the post first, then queue link suggestions for review.");
+      return;
+    }
     if (!form.title_en && !form.title_es) {
       toast.error("Add a title in EN or ES first.");
       return;
@@ -128,8 +138,15 @@ export default function AdminPostEditor() {
         toast.error("No suggestions returned.");
         return;
       }
-      setForm(f => ({ ...f, internal_links_en: en, internal_links_es: es }));
-      toast.success(`Suggested ${en.length} EN + ${es.length} ES internal links.`);
+      const { data: userRes } = await supabase.auth.getUser();
+      const rows = [
+        ...en.map(l => ({ post_id: id!, lang: "en" as const, label: l.label, href: l.href, reason: l.reason ?? null, suggested_by: userRes.user?.id ?? null })),
+        ...es.map(l => ({ post_id: id!, lang: "es" as const, label: l.label, href: l.href, reason: l.reason ?? null, suggested_by: userRes.user?.id ?? null })),
+      ];
+      const { error: insErr } = await supabase.from("internal_link_suggestions").insert(rows);
+      if (insErr) throw insErr;
+      setPendingCount(c => c + rows.length);
+      toast.success(`Queued ${en.length} EN + ${es.length} ES suggestions for review.`);
     } catch (e: any) {
       toast.error(e?.message ?? "Suggestion failed");
     } finally {
@@ -140,6 +157,10 @@ export default function AdminPostEditor() {
   async function save() {
     if (!form.slug || !form.title_en || !form.title_es) {
       toast.error("Slug + EN + ES titles are required.");
+      return;
+    }
+    if (form.published && pendingCount > 0) {
+      toast.error(`Resolve ${pendingCount} pending link suggestion(s) before publishing.`);
       return;
     }
     setSaving(true);
@@ -301,9 +322,18 @@ export default function AdminPostEditor() {
           <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
             <h3 className="font-display text-sm font-semibold">Internal links</h3>
             <p className="mt-1 text-xs text-muted-foreground">
-              Click "Auto-suggest internal links" to populate both languages from related published posts and core site pages.
+              "Auto-suggest" sends suggestions to the review queue. Approved links are merged into this post.
             </p>
+            {pendingCount > 0 && (
+              <div className="mt-3 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-xs">
+                <div className="font-medium text-amber-700 dark:text-amber-400">
+                  {pendingCount} suggestion{pendingCount === 1 ? "" : "s"} awaiting review
+                </div>
+                <a href="/admin/link-suggestions" className="mt-1 inline-block underline">Open review queue →</a>
+              </div>
+            )}
             <div className="mt-4 space-y-3 text-xs">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Approved (live on post)</div>
               <LinkColumn title="EN" items={linksPreview.en} />
               <LinkColumn title="ES" items={linksPreview.es} />
             </div>
