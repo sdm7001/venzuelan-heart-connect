@@ -25,6 +25,7 @@ import AdminReports from "./pages/admin/AdminReports";
 import { AdminFlags, AdminBilling, AdminAudit } from "./pages/admin/AdminPlaceholders";
 import AdminVerification from "./pages/admin/AdminVerification";
 import AdminRiskEvents from "./pages/admin/AdminRiskEvents";
+import AdminRlsTests from "./pages/admin/AdminRlsTests";
 import AdminPolicies from "./pages/admin/AdminPolicies";
 import AdminPolicyAcceptance from "./pages/admin/AdminPolicyAcceptance";
 import AdminPolicyReaccepts from "./pages/admin/AdminPolicyReaccepts";
