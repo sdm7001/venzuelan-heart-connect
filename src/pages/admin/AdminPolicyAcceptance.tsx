@@ -369,8 +369,15 @@ function StatCard({
 }
 
 function UserTable({
-  rows, loading, mode, activeVersion,
-}: { rows: Row[]; loading: boolean; mode: "blocked" | "completed"; activeVersion: string }) {
+  rows, loading, mode, activeVersion, selected, onToggleSelected,
+}: {
+  rows: Row[];
+  loading: boolean;
+  mode: "blocked" | "completed";
+  activeVersion: string;
+  selected?: Set<string>;
+  onToggleSelected?: (id: string) => void;
+}) {
   if (loading) return <p className="text-sm text-muted-foreground">Loading…</p>;
   if (rows.length === 0) {
     return (
@@ -381,12 +388,14 @@ function UserTable({
       </div>
     );
   }
+  const showSelect = mode === "blocked" && onToggleSelected;
   return (
     <Card>
       <CardContent className="p-0">
         <Table>
           <TableHeader>
             <TableRow>
+              {showSelect && <TableHead className="w-10" />}
               <TableHead>Member</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>{mode === "blocked" ? "Last accepted" : "Re-accepted"}</TableHead>
@@ -395,7 +404,16 @@ function UserTable({
           </TableHeader>
           <TableBody>
             {rows.map(r => (
-              <TableRow key={r.user.id}>
+              <TableRow key={r.user.id} data-state={selected?.has(r.user.id) ? "selected" : undefined}>
+                {showSelect && (
+                  <TableCell className="w-10">
+                    <Checkbox
+                      checked={selected?.has(r.user.id) ?? false}
+                      onCheckedChange={() => onToggleSelected!(r.user.id)}
+                      aria-label={`Select ${r.user.display_name ?? r.user.id.slice(0, 8)}`}
+                    />
+                  </TableCell>
+                )}
                 <TableCell>
                   <div className="font-medium">{r.user.display_name ?? "—"}</div>
                   <div className="font-mono text-[10px] text-muted-foreground">{r.user.id.slice(0, 8)}</div>
@@ -430,7 +448,9 @@ function UserTable({
                 </TableCell>
                 <TableCell className="text-xs text-muted-foreground">
                   {mode === "blocked"
-                    ? `Awaiting v${activeVersion}`
+                    ? r.missingKeys.length > 0
+                      ? <>Missing: <span className="font-mono">{r.missingKeys.join(", ")}</span></>
+                      : `Awaiting v${activeVersion}`
                     : `v${activeVersion}`}
                 </TableCell>
               </TableRow>
