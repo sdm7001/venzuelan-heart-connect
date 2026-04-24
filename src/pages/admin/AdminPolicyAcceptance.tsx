@@ -1,14 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
-import { AlertTriangle, CheckCircle2, History, RefreshCw, Search, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
+import { AlertTriangle, BellRing, CheckCircle2, History, RefreshCw, Search, ShieldCheck } from "lucide-react";
 import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/auth/AuthProvider";
 import { fetchPolicyConfig, PolicyConfig, PolicyKey, DEFAULT_POLICY_CONFIG } from "@/lib/policyConfig";
 
 type ProfileRow = { id: string; display_name: string | null; account_status: string };
