@@ -1,4 +1,4 @@
-export const translations = {
+const _translations = {
   en: {
     brand: { name: "MatchVenezuelan", tagline: "Where serious hearts meet across borders." },
     nav: {
@@ -247,6 +247,6 @@ export const translations = {
   },
 } as const;
 
-export type Lang = keyof typeof translations;
-type DeepMutable<T> = { -readonly [K in keyof T]: T[K] extends object ? DeepMutable<T[K]> : T[K] };
-export type Dict = DeepMutable<typeof translations["en"]>;
+export type Lang = "en" | "es";
+export type Dict = typeof _translations.en;
+export const translations: Record<Lang, Dict> = _translations as Record<Lang, Dict>;
