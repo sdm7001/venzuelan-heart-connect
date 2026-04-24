@@ -382,9 +382,9 @@ function StepDot({ active, done, icon, label }: { active: boolean; done: boolean
         className={
           "grid h-5 w-5 place-items-center rounded-full border " +
           (done
-            ? "border-burgundy bg-burgundy text-primary-foreground"
+            ? "border-primary bg-primary text-primary-foreground"
             : active
-            ? "border-burgundy text-burgundy"
+            ? "border-primary text-foreground"
             : "border-border text-muted-foreground")
         }
       >
