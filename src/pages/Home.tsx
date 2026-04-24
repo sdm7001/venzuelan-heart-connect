@@ -48,7 +48,7 @@ export default function Home() {
               <Button asChild size="lg" variant="romance"><Link to="/auth?mode=join">{t.hero.ctaPrimary}</Link></Button>
               <Button asChild size="lg" variant="outline"><Link to="/how-it-works">{t.hero.ctaSecondary}</Link></Button>
             </div>
-            <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
+            <div className="mt-10 grid grid-cols-2 gap-3 max-w-md sm:grid-cols-3 sm:gap-4">
               <TrustChip icon={<ShieldCheck className="h-4 w-4" />} label={t.hero.trustA} />
               <TrustChip icon={<Users className="h-4 w-4" />} label={t.hero.trustB} />
               <TrustChip icon={<Globe2 className="h-4 w-4" />} label={t.hero.trustC} />
@@ -88,9 +88,9 @@ export default function Home() {
 
       {/* CTA */}
       <section className="container pb-20">
-        <div className="relative overflow-hidden rounded-3xl gradient-romance px-8 py-14 text-center text-primary-foreground shadow-elegant md:px-16 md:py-20">
-          <h3 className="font-display text-3xl font-semibold md:text-4xl text-balance">{t.home.ctaTitle}</h3>
-          <p className="mx-auto mt-3 max-w-xl text-primary-foreground/90">{t.home.ctaSub}</p>
+        <div className="relative overflow-hidden rounded-3xl gradient-romance px-6 py-12 text-center text-primary-foreground shadow-elegant sm:px-10 md:px-16 md:py-20">
+          <h3 className="font-display text-2xl font-semibold sm:text-3xl md:text-4xl text-balance">{t.home.ctaTitle}</h3>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/90 sm:text-base">{t.home.ctaSub}</p>
           <Button asChild size="lg" variant="secondary" className="mt-7"><Link to="/auth?mode=join">{t.hero.ctaPrimary}</Link></Button>
         </div>
       </section>

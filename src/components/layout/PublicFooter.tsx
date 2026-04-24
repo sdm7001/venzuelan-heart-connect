@@ -7,11 +7,11 @@ export function PublicFooter() {
   return (
     <footer className="mt-24 border-t border-border bg-card">
       <div className="container py-12 md:py-16">
-        <div className="grid gap-10 md:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold">
-              <img src={logo} alt="MatchVenezuelan" className="h-28 w-28 object-contain" />
-              <span className="text-burgundy">MatchVenezuelan</span>
+              <img src={logo} alt="MatchVenezuelan" className="h-14 w-14 object-contain sm:h-16 sm:w-16" />
+              <span className="text-burgundy whitespace-nowrap">MatchVenezuelan</span>
             </Link>
             <p className="mt-3 text-sm text-muted-foreground">{t.footer.tagline}</p>
           </div>
