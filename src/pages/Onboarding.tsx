@@ -148,30 +148,69 @@ export default function Onboarding() {
             <div className="rounded-xl border border-border bg-muted/30 p-4">
               <h2 className="font-display text-base font-semibold text-burgundy">{t.onboarding.policiesTitle}</h2>
               <p className="mt-1 text-xs text-muted-foreground">{t.onboarding.policiesSub}</p>
+
+              {submitted && policyErrors.size > 0 && (
+                <div
+                  role="alert"
+                  className="mt-3 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-xs text-destructive"
+                >
+                  {t.onboarding.missingPoliciesSummary.replace(
+                    "{keys}",
+                    POLICIES.filter(p => policyErrors.has(p.key))
+                      .map(p => t.legal[p.shortKey])
+                      .join(" · ")
+                  )}
+                </div>
+              )}
+
               <ul className="mt-4 space-y-3">
-                {POLICIES.map(p => (
-                  <li key={p.key} className="flex items-start gap-3">
-                    <Checkbox
-                      id={`policy-${p.key}`}
-                      checked={accepted[p.key]}
-                      onCheckedChange={(v) => setAccepted(prev => ({ ...prev, [p.key]: v === true }))}
-                      className="mt-0.5"
-                    />
-                    <div className="flex-1 text-sm leading-snug">
-                      <Label htmlFor={`policy-${p.key}`} className="cursor-pointer font-normal">
-                        {t.onboarding[p.labelKey]}
-                      </Label>
-                      <Link
-                        to={policyConfig.urls[p.key]}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                      >
-                        {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
-                      </Link>
-                    </div>
-                  </li>
-                ))}
+                {POLICIES.map(p => {
+                  const hasError = submitted && policyErrors.has(p.key);
+                  return (
+                    <li key={p.key} className="flex items-start gap-3">
+                      <Checkbox
+                        id={`policy-${p.key}`}
+                        checked={accepted[p.key]}
+                        onCheckedChange={(v) => {
+                          const next = v === true;
+                          setAccepted(prev => ({ ...prev, [p.key]: next }));
+                          // Clear this policy's error live as soon as the user ticks it.
+                          if (next && policyErrors.has(p.key)) {
+                            setPolicyErrors(prev => {
+                              const copy = new Set(prev);
+                              copy.delete(p.key);
+                              return copy;
+                            });
+                          }
+                        }}
+                        aria-invalid={hasError || undefined}
+                        aria-describedby={hasError ? `policy-${p.key}-error` : undefined}
+                        className={`mt-0.5 ${hasError ? "border-destructive" : ""}`}
+                      />
+                      <div className="flex-1 text-sm leading-snug">
+                        <Label htmlFor={`policy-${p.key}`} className="cursor-pointer font-normal">
+                          {t.onboarding[p.labelKey]}
+                        </Label>
+                        <Link
+                          to={policyConfig.urls[p.key]}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                        >
+                          {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
+                        </Link>
+                        {hasError && (
+                          <p
+                            id={`policy-${p.key}-error`}
+                            className="mt-1 text-xs font-medium text-destructive"
+                          >
+                            {t.onboarding.policyRequired}
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
