@@ -36,6 +36,7 @@ import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import AdminPosts from "./pages/admin/AdminPosts";
 import AdminPostEditor from "./pages/admin/AdminPostEditor";
 import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
+import AdminMfaRecoveryCodes from "./pages/admin/AdminMfaRecoveryCodes";
 import NotFound from "./pages/NotFound";
 import A11yAudit from "./pages/__A11yAudit";
 import ResponsiveQA from "./pages/__ResponsiveQA";
@@ -92,6 +93,7 @@ const App = () => (
               <Route path="/admin/posts" element={<RequireStaff><AdminPosts /></RequireStaff>} />
               <Route path="/admin/posts/:id" element={<RequireStaff><AdminPostEditor /></RequireStaff>} />
               <Route path="/admin/link-suggestions" element={<RequireStaff><AdminLinkSuggestions /></RequireStaff>} />
+              <Route path="/admin/mfa-recovery" element={<RequireStaff><AdminMfaRecoveryCodes /></RequireStaff>} />
 
               {/* Dev-only audit harness — safe to remove. */}
               {import.meta.env.DEV && <Route path="/__a11y" element={<A11yAudit />} />}

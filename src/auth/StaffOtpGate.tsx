@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { ShieldCheck, LogOut, Mail, KeyRound } from "lucide-react";
+import { ShieldCheck, LogOut, Mail, KeyRound, LifeBuoy } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./AuthProvider";
@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { sha256Hex, normalizeRecoveryCode } from "./mfaCrypto";
 
 const VALIDITY_HOURS = 12;
 const VALIDITY_MS = VALIDITY_HOURS * 60 * 60 * 1000;
 
-type Step = "password" | "request_code" | "enter_code";
+type Step = "password" | "request_code" | "enter_code" | "recovery";
 
 /**
  * Staff MFA gate: every 12h, require BOTH a password re-auth AND an emailed
@@ -37,6 +38,10 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
   const [expiresAt, setExpiresAt] = useState<number | null>(null);
   const [devCode, setDevCode] = useState<string | null>(null);
 
+  // Recovery fallback step
+  const [recoveryPassword, setRecoveryPassword] = useState("");
+  const [recoveryCode, setRecoveryCode] = useState("");
+
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,9 +58,8 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
       if (!active) return;
       const ts = data?.verified_at ? new Date(data.verified_at).getTime() : 0;
       const fresh = Date.now() - ts < VALIDITY_MS;
-      // Require OTP method specifically — a stale 'password'-only verification
-      // from before this gate shipped should NOT bypass OTP.
-      setVerified(fresh && data?.method === "otp");
+      // OTP or recovery both unlock the gate; password-only does not.
+      setVerified(fresh && (data?.method === "otp" || data?.method === "recovery"));
       setChecked(true);
     })();
     return () => { active = false; };
@@ -147,6 +151,51 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
       setCode("");
     } catch (e: any) {
       setError(e.message ?? "Couldn't verify code.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleRecovery(e: React.FormEvent) {
+    e.preventDefault();
+    if (!user?.email || !recoveryPassword || !recoveryCode) return;
+    setBusy(true);
+    setError(null);
+    try {
+      // Step 1: re-auth password (defense in depth — recovery code alone is never enough).
+      const { error: authErr } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: recoveryPassword,
+      });
+      if (authErr) {
+        setError("Incorrect password.");
+        return;
+      }
+      // Step 2: consume the recovery code.
+      const normalized = normalizeRecoveryCode(recoveryCode);
+      if (!normalized) {
+        setError("Invalid recovery code format.");
+        return;
+      }
+      const codeHash = await sha256Hex(normalized);
+      const { data, error: rpcErr } = await supabase.rpc("consume_staff_recovery_code", { _code_hash: codeHash });
+      if (rpcErr) throw rpcErr;
+      const row = (data as any)?.[0];
+      if (row?.verified) {
+        setVerified(true);
+        setRecoveryPassword("");
+        setRecoveryCode("");
+        const left = row.codes_remaining ?? 0;
+        toast.success(
+          left <= 2
+            ? `Verified. ${left} recovery code${left === 1 ? "" : "s"} left — generate a new set soon.`
+            : "Verified with recovery code. Use logged in audit.",
+        );
+        return;
+      }
+      setError("That code isn't valid or has already been used.");
+    } catch (e: any) {
+      setError(e.message ?? "Couldn't verify recovery code.");
     } finally {
       setBusy(false);
     }
@@ -276,6 +325,49 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
                 <LogOut className="mr-2 h-4 w-4" /> Sign out
               </Button>
             </div>
+            <Button type="button" variant="link" size="sm" className="w-full text-xs text-muted-foreground" onClick={() => { setError(null); setStep("recovery"); }}>
+              <LifeBuoy className="mr-1.5 h-3.5 w-3.5" /> Code not arriving? Use a recovery code
+            </Button>
+          </form>
+        )}
+
+        {step === "recovery" && (
+          <form onSubmit={handleRecovery} className="space-y-4" noValidate>
+            <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
+              <strong>Fallback sign-in.</strong> Use this only if email isn't arriving. Every use is recorded in the audit log.
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="rec-password">Password</Label>
+              <Input
+                id="rec-password"
+                type="password"
+                autoComplete="current-password"
+                value={recoveryPassword}
+                onChange={(e) => { setRecoveryPassword(e.target.value); setError(null); }}
+                required
+                autoFocus
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="rec-code">Recovery code</Label>
+              <Input
+                id="rec-code"
+                placeholder="ABCDE-12345"
+                autoComplete="one-time-code"
+                value={recoveryCode}
+                onChange={(e) => { setRecoveryCode(e.target.value); setError(null); }}
+                className="font-mono uppercase tracking-widest"
+                required
+              />
+              <p className="text-xs text-muted-foreground">Each code works once. Manage codes under Admin → Recovery codes.</p>
+            </div>
+            {error && <p role="alert" className="text-xs text-destructive">{error}</p>}
+            <Button type="submit" variant="romance" size="lg" className="w-full" disabled={busy || !recoveryPassword || !recoveryCode}>
+              {busy ? "Verifying…" : "Verify with recovery code"}
+            </Button>
+            <Button type="button" variant="ghost" size="sm" className="w-full" onClick={() => { setError(null); setStep("enter_code"); }}>
+              ← Back to email code
+            </Button>
           </form>
         )}
       </div>
@@ -303,7 +395,4 @@ function StepDot({ active, done, icon, label }: { active: boolean; done: boolean
   );
 }
 
-async function sha256Hex(input: string): Promise<string> {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
-  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
+// sha256Hex moved to ./mfaCrypto so the recovery codes page shares it.
