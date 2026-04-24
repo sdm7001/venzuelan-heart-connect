@@ -127,7 +127,7 @@ function setJsonLd(blocks: JsonLd[]) {
 function clearManagedAlternates() {
   document
     .querySelectorAll(
-      `link[rel="alternate"][${SEO_ATTR}="${SEO_VAL}"][hreflang]`,
+      `link[rel="alternate"][${SEO_ATTR}="${SEO_VAL}"]`,
     )
     .forEach((n) => n.parentNode?.removeChild(n));
 }
@@ -198,6 +198,14 @@ export function applySeo(opts: SeoOptions) {
     ];
   alternates.forEach((alt) =>
     setLink("alternate", alt.href, { hreflang: alt.hreflang }),
+  );
+
+  // RSS/Atom feed alternates
+  (opts.feeds ?? []).forEach((f) =>
+    setLink("alternate", f.href, {
+      type: f.type ?? "application/rss+xml",
+      title: f.title,
+    }),
   );
 
   // JSON-LD: merge with site-wide Organization block
