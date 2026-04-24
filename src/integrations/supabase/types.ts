@@ -501,27 +501,36 @@ export type Database = {
       profile_scores: {
         Row: {
           completeness: number
+          concierge_verified: boolean
           id: string
           risk_score: number
+          trust_badge_count: number
           trust_score: number
           updated_at: string
           user_id: string
+          verified_priority_score: number
         }
         Insert: {
           completeness?: number
+          concierge_verified?: boolean
           id?: string
           risk_score?: number
+          trust_badge_count?: number
           trust_score?: number
           updated_at?: string
           user_id: string
+          verified_priority_score?: number
         }
         Update: {
           completeness?: number
+          concierge_verified?: boolean
           id?: string
           risk_score?: number
+          trust_badge_count?: number
           trust_score?: number
           updated_at?: string
           user_id?: string
+          verified_priority_score?: number
         }
         Relationships: []
       }
@@ -675,6 +684,50 @@ export type Database = {
         }
         Relationships: []
       }
+      trust_badges: {
+        Row: {
+          awarded_at: string
+          awarded_by: string | null
+          id: string
+          kind: Database["public"]["Enums"]["trust_badge_kind"]
+          metadata: Json
+          revoked_at: string | null
+          revoked_reason: string | null
+          source_verification_id: string | null
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          awarded_by?: string | null
+          id?: string
+          kind: Database["public"]["Enums"]["trust_badge_kind"]
+          metadata?: Json
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          source_verification_id?: string | null
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          awarded_by?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["trust_badge_kind"]
+          metadata?: Json
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          source_verification_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trust_badges_source_verification_id_fkey"
+            columns: ["source_verification_id"]
+            isOneToOne: false
+            referencedRelation: "verification_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -702,12 +755,18 @@ export type Database = {
       verification_requests: {
         Row: {
           created_at: string
+          documents: Json
           evidence_url: string | null
           id: string
+          kind: Database["public"]["Enums"]["verification_kind"] | null
+          metadata: Json
           resolved_at: string | null
+          retry_of: string | null
+          reviewer_decision: string | null
           reviewer_id: string | null
           reviewer_notes: string | null
           status: Database["public"]["Enums"]["verification_status"]
+          step: string | null
           submitted_at: string | null
           type: Database["public"]["Enums"]["verification_type"]
           updated_at: string
@@ -715,12 +774,18 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          documents?: Json
           evidence_url?: string | null
           id?: string
+          kind?: Database["public"]["Enums"]["verification_kind"] | null
+          metadata?: Json
           resolved_at?: string | null
+          retry_of?: string | null
+          reviewer_decision?: string | null
           reviewer_id?: string | null
           reviewer_notes?: string | null
           status?: Database["public"]["Enums"]["verification_status"]
+          step?: string | null
           submitted_at?: string | null
           type: Database["public"]["Enums"]["verification_type"]
           updated_at?: string
@@ -728,18 +793,32 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          documents?: Json
           evidence_url?: string | null
           id?: string
+          kind?: Database["public"]["Enums"]["verification_kind"] | null
+          metadata?: Json
           resolved_at?: string | null
+          retry_of?: string | null
+          reviewer_decision?: string | null
           reviewer_id?: string | null
           reviewer_notes?: string | null
           status?: Database["public"]["Enums"]["verification_status"]
+          step?: string | null
           submitted_at?: string | null
           type?: Database["public"]["Enums"]["verification_type"]
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "verification_requests_retry_of_fkey"
+            columns: ["retry_of"]
+            isOneToOne: false
+            referencedRelation: "verification_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -755,6 +834,7 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      recompute_trust_state: { Args: { _user_id: string }; Returns: undefined }
     }
     Enums: {
       account_status:
@@ -829,6 +909,20 @@ export type Database = {
         | "level_2"
         | "premium"
         | "concierge_verified"
+      trust_badge_kind:
+        | "email_confirmed"
+        | "photo_verified"
+        | "social_verified"
+        | "id_verified"
+        | "income_verified"
+        | "concierge_verified"
+        | "profile_complete"
+      verification_kind:
+        | "social_verification"
+        | "photo_verification"
+        | "id_verification"
+        | "income_verification"
+        | "concierge_verified_review"
       verification_status:
         | "not_started"
         | "submitted"
@@ -1050,6 +1144,22 @@ export const Constants = {
         "level_2",
         "premium",
         "concierge_verified",
+      ],
+      trust_badge_kind: [
+        "email_confirmed",
+        "photo_verified",
+        "social_verified",
+        "id_verified",
+        "income_verified",
+        "concierge_verified",
+        "profile_complete",
+      ],
+      verification_kind: [
+        "social_verification",
+        "photo_verification",
+        "id_verification",
+        "income_verification",
+        "concierge_verified_review",
       ],
       verification_status: [
         "not_started",
