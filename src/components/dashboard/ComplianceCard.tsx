@@ -41,7 +41,7 @@ export function ComplianceCard() {
   const rows = POLICIES.map(p => {
     const all = (acks ?? []).filter(a => a.policy_key === p.key);
     const current = all.find(a => a.policy_version === config.policy_version);
-    const latest = all[0];
+    const latest = all[0]; // already sorted desc by accepted_at
     return {
       ...p,
       current,
@@ -51,7 +51,8 @@ export function ComplianceCard() {
   });
 
   const ready = !cfgLoading && acks !== null;
-  const allCurrent = ready && rows.every(r => r.status === "current");
+  const missingRows = rows.filter(r => r.status !== "current");
+  const allCurrent = ready && missingRows.length === 0;
   const anyMissing = ready && rows.some(r => r.status === "missing");
 
   const headlineIcon = allCurrent

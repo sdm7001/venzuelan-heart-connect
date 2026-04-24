@@ -137,6 +137,9 @@ const _translations = {
       notAccepted: "Not yet accepted.",
       review: "Review",
       reacceptHint: "You'll be prompted to re-accept on your next page load.",
+      missingSummary: "Missing for current version: {keys}",
+      lastAcknowledged: "Last acknowledged",
+      neverAcknowledged: "Never acknowledged",
     },
     dashboard: {
       welcome: "Welcome back",
@@ -305,6 +308,9 @@ const _translations = {
       notAccepted: "Aún no aceptada.",
       review: "Revisar",
       reacceptHint: "Se te pedirá volver a aceptar al cargar la próxima página.",
+      missingSummary: "Faltantes para la versión actual: {keys}",
+      lastAcknowledged: "Última aceptación",
+      neverAcknowledged: "Nunca aceptada",
     },
     messages: {
       title: "Mensajes",
