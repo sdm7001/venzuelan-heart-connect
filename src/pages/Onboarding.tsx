@@ -51,16 +51,43 @@ export default function Onboarding() {
     tos: false, privacy: false, aup: false, anti_solicitation: false,
   });
   const [busy, setBusy] = useState(false);
+  // Tracks per-policy validation failures (set by handleSubmit). The summary
+  // banner + per-row hint surface these so users see exactly what's missing
+  // instead of relying on the disabled submit button + toast.
+  const [policyErrors, setPolicyErrors] = useState<Set<PolicyKey>>(new Set());
+  // True after the first submit attempt — gates inline error display so we
+  // don't yell at users before they've tried to continue.
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => { if (!user) nav("/auth", { replace: true }); }, [user, nav]);
 
-  const allAccepted = POLICIES.every(p => accepted[p.key]);
+  const missingPolicies = POLICIES.filter(p => !accepted[p.key]);
+  const allAccepted = missingPolicies.length === 0;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const parsed = schema.safeParse({ country, city, bio });
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message ?? "Check your details");
-    if (!allAccepted) return toast.error(t.onboarding.mustAcceptAll);
+    setSubmitted(true);
+
+    const parsedProfile = profileSchema.safeParse({ country, city, bio });
+    if (!parsedProfile.success) {
+      return toast.error(parsedProfile.error.issues[0]?.message ?? "Check your details");
+    }
+
+    // Mirror the server-side rule: every required policy must be accepted
+    // before we even attempt the upsert. zod gives us a structured failure
+    // map so we can flag each unchecked box individually.
+    const parsedPolicies = policiesSchema.safeParse(accepted);
+    if (!parsedPolicies.success) {
+      const failed = new Set<PolicyKey>(
+        parsedPolicies.error.issues
+          .map(i => i.path[0])
+          .filter((k): k is PolicyKey => typeof k === "string" && POLICIES.some(p => p.key === k))
+      );
+      setPolicyErrors(failed);
+      return toast.error(t.onboarding.mustAcceptAll);
+    }
+    setPolicyErrors(new Set());
+
     if (!user) return;
 
     setBusy(true);
