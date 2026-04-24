@@ -60,13 +60,16 @@ export function PublicHeader() {
           )}
         </div>
 
-        <button
-          className="inline-flex h-header-row w-header-row size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent md:hidden"
-          onClick={() => setOpen(v => !v)}
-          aria-label="menu"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex h-header-row items-center gap-2 md:hidden">
+          <LanguageToggle />
+          <button
+            className="inline-flex size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent"
+            onClick={() => setOpen(v => !v)}
+            aria-label="menu"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {open && (
