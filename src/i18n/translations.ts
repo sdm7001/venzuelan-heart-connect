@@ -646,6 +646,15 @@ const _translations = {
       title: "Preguntas frecuentes",
       intro:
         "Todo lo que las personas nuevas preguntan sobre MatchVenezuelan: cómo funcionan el emparejamiento, la verificación, los regalos, los pagos y la seguridad. Se actualiza a medida que lanzamos nuevas funciones.",
+      tocTitle: "Saltar a un tema",
+      categories: {
+        about: "Conceptos básicos",
+        verification: "Verificación y confianza",
+        messaging: "Mensajería y moderación",
+        safety: "Seguridad y estafas",
+        billing: "Regalos, créditos y pagos",
+        privacy: "Privacidad y datos",
+      },
       entries: [
         {
           q: "¿MatchVenezuelan es un sitio de escorts, sugar o para adultos?",
