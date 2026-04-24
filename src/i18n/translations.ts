@@ -121,6 +121,8 @@ const _translations = {
       needsUpdate: "Needs update · last accepted v{version}",
       neverAccepted: "Not yet accepted",
       upToDate: "Up to date",
+      previewTitle: "Preview the updated policies",
+      openInNewTab: "Open in a new tab",
     },
     compliance: {
       title: "Account compliance",
@@ -287,6 +289,8 @@ const _translations = {
       needsUpdate: "Requiere actualización · última aceptada v{version}",
       neverAccepted: "Aún no aceptada",
       upToDate: "Al día",
+      previewTitle: "Vista previa de las políticas actualizadas",
+      openInNewTab: "Abrir en una pestaña nueva",
     },
     compliance: {
       title: "Cumplimiento de la cuenta",

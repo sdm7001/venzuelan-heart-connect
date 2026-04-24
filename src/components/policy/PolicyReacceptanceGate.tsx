@@ -198,6 +198,28 @@ export function PolicyReacceptanceGate() {
           </div>
         </div>
 
+        <div className="mt-3 rounded-xl border border-border bg-background p-3">
+          <div className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {t.policyReaccept.previewTitle}
+          </div>
+          <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+            {POLICIES.map(p => (
+              <li key={`preview-${p.key}`}>
+                <Link
+                  to={config.urls[p.key]}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${t.legal[p.shortKey]} — ${t.policyReaccept.openInNewTab}`}
+                  className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm text-foreground hover:bg-muted"
+                >
+                  <span className="truncate">{t.legal[p.shortKey]}</span>
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <ul className="mt-3 space-y-3 rounded-xl border border-border bg-muted/30 p-4">
           {POLICIES.map(p => {
             const isMissing = missingKeys.has(p.key);
