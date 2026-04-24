@@ -214,10 +214,14 @@ export default function GiftSend() {
         </div>
       )}
 
-      {recipientId && recipientEligible === false && (
-        <div className="mb-6 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm">
-          This recipient cannot currently receive gifts (account or trust state).
-        </div>
+      {recipientId && !loading && (
+        <RecipientStatusCard
+          recipient={recipient}
+          eligible={recipientEligible}
+          trust={recipientTrust}
+          aBlocksB={!!blockState?.a_blocks_b}
+          bBlocksA={!!blockState?.b_blocks_a}
+        />
       )}
 
       {!recipientId && (
