@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { format, formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import {
@@ -547,7 +548,12 @@ function UserTable({
                   </TableCell>
                 )}
                 <TableCell>
-                  <div className="font-medium">{r.display_name ?? "—"}</div>
+                  <Link
+                    to={`/admin/users/${r.user_id}`}
+                    className="font-medium text-primary underline-offset-2 hover:underline"
+                  >
+                    {r.display_name ?? "—"}
+                  </Link>
                   <div className="font-mono text-[10px] text-muted-foreground">{r.user_id.slice(0, 8)}</div>
                 </TableCell>
                 <TableCell>

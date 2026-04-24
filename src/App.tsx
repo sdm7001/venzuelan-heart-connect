@@ -24,6 +24,7 @@ import AdminReports from "./pages/admin/AdminReports";
 import { AdminFlags, AdminVerification, AdminBilling, AdminAudit } from "./pages/admin/AdminPlaceholders";
 import AdminPolicies from "./pages/admin/AdminPolicies";
 import AdminPolicyAcceptance from "./pages/admin/AdminPolicyAcceptance";
+import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
               {/* Admin */}
               <Route path="/admin" element={<RequireStaff><AdminOverview /></RequireStaff>} />
               <Route path="/admin/users" element={<RequireStaff><AdminUsers /></RequireStaff>} />
+              <Route path="/admin/users/:userId" element={<RequireStaff><AdminUserProfile /></RequireStaff>} />
               <Route path="/admin/reports" element={<RequireStaff><AdminReports /></RequireStaff>} />
               <Route path="/admin/flags" element={<RequireStaff><AdminFlags /></RequireStaff>} />
               <Route path="/admin/verification" element={<RequireStaff><AdminVerification /></RequireStaff>} />
