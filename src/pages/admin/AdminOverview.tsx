@@ -1,21 +1,61 @@
 import { useEffect, useState } from "react";
 import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Flag, ShieldAlert, BadgeCheck } from "lucide-react";
+import { useAuth } from "@/auth/AuthProvider";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Users, Flag, ShieldAlert, BadgeCheck, Sparkles, Copy, CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
+
+type SeedSummary = {
+  ok: boolean;
+  summary: { users: number; reports: number; moderation_actions: number; flags: number; verifications: number; billing_events: number };
+  demo_credentials: { password: string; accounts: { email: string; role: string }[] };
+};
 
 export default function AdminOverview() {
+  const { isAdmin } = useAuth();
   const [stats, setStats] = useState({ users: 0, reports: 0, flags: 0, verifications: 0 });
-  useEffect(() => {
-    (async () => {
-      const [u, r, f, v] = await Promise.all([
-        supabase.from("profiles").select("id", { count: "exact", head: true }),
-        supabase.from("reports").select("id", { count: "exact", head: true }).neq("status", "closed"),
-        supabase.from("moderation_flags").select("id", { count: "exact", head: true }).neq("status", "closed"),
-        supabase.from("verification_requests").select("id", { count: "exact", head: true }).in("status", ["submitted","under_review","needs_more_info"]),
-      ]);
-      setStats({ users: u.count ?? 0, reports: r.count ?? 0, flags: f.count ?? 0, verifications: v.count ?? 0 });
-    })();
-  }, []);
+  const [seeding, setSeeding] = useState(false);
+  const [result, setResult] = useState<SeedSummary | null>(null);
+
+  async function loadStats() {
+    const [u, r, f, v] = await Promise.all([
+      supabase.from("profiles").select("id", { count: "exact", head: true }),
+      supabase.from("reports").select("id", { count: "exact", head: true }).neq("status", "closed"),
+      supabase.from("moderation_flags").select("id", { count: "exact", head: true }).neq("status", "closed"),
+      supabase.from("verification_requests").select("id", { count: "exact", head: true }).in("status", ["submitted","under_review","needs_more_info"]),
+    ]);
+    setStats({ users: u.count ?? 0, reports: r.count ?? 0, flags: f.count ?? 0, verifications: v.count ?? 0 });
+  }
+  useEffect(() => { void loadStats(); }, []);
+
+  async function runSeed() {
+    setSeeding(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("seed-demo", { body: {} });
+      if (error) throw error;
+      const res = data as SeedSummary;
+      setResult(res);
+      toast.success(`Seeded ${res.summary.users} users, ${res.summary.reports} reports, ${res.summary.billing_events} billing events.`);
+      await loadStats();
+    } catch (e: any) {
+      toast.error(e?.message ?? "Seed failed");
+    } finally {
+      setSeeding(false);
+    }
+  }
+
+  async function copyCreds() {
+    if (!result) return;
+    const text = result.demo_credentials.accounts
+      .map(a => `${a.email}\t${result.demo_credentials.password}\t${a.role}`).join("\n");
+    await navigator.clipboard.writeText(text);
+    toast.success("Demo credentials copied to clipboard.");
+  }
 
   const cards = [
     { label: "Total members", value: stats.users, icon: Users },
@@ -26,7 +66,79 @@ export default function AdminOverview() {
 
   return (
     <AdminLayout>
-      <AdminPageHeader title="Overview" sub="Operational health of MatchVenezuelan" />
+      <AdminPageHeader
+        title="Overview"
+        sub="Operational health of MatchVenezuelan"
+        action={isAdmin ? (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Sparkles className="mr-2 h-4 w-4 text-primary" /> Seed demo data
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Seed demo data?</AlertDialogTitle>
+                <AlertDialogDescription className="space-y-2">
+                  <span className="block">This will create (or refresh) the following demo accounts and append a fresh batch of sample data so you can stress-test queues:</span>
+                  <ul className="list-disc pl-5 text-xs text-muted-foreground">
+                    <li>4 staff accounts (admin, moderator, support, verifier) and 7 member profiles</li>
+                    <li>7 sample reports across categories and statuses</li>
+                    <li>3 system flags, 4 verification requests, 7 billing events, credit wallets</li>
+                    <li>One <code className="text-xs">demo_data_seeded</code> entry in the audit log</li>
+                  </ul>
+                  <span className="block text-xs">All seeded rows are tagged <code>[seed]</code> so they're easy to spot. Re-running appends a new batch — it does not delete previous data.</span>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => void runSeed()} disabled={seeding}>
+                  {seeding ? "Seeding…" : "Run seed"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        ) : undefined}
+      />
+
+      {result && (
+        <div className="mb-6 rounded-2xl border border-success/30 bg-success/5 p-5 shadow-card">
+          <div className="flex items-start gap-3">
+            <CheckCircle2 className="mt-0.5 h-5 w-5 text-success shrink-0" />
+            <div className="flex-1 min-w-0">
+              <h3 className="font-display text-base font-semibold text-foreground">Demo data ready</h3>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Sign out, then sign in with any account below (password the same for all). Browse <code>/admin/reports</code>, <code>/admin/audit</code>, and the user app to verify P0.
+              </p>
+              <div className="mt-3 overflow-hidden rounded-md border border-border bg-card text-xs">
+                <table className="w-full">
+                  <thead className="bg-muted/40 text-[10px] uppercase tracking-wider text-muted-foreground">
+                    <tr>
+                      <th className="px-3 py-2 text-left">Email</th>
+                      <th className="px-3 py-2 text-left">Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.demo_credentials.accounts.map(a => (
+                      <tr key={a.email} className="border-t border-border">
+                        <td className="px-3 py-2 font-mono">{a.email}</td>
+                        <td className="px-3 py-2 text-muted-foreground">{a.role}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+                <span>Password for all demo accounts: <code className="rounded bg-muted px-1.5 py-0.5 font-mono">{result.demo_credentials.password}</code></span>
+                <Button size="sm" variant="ghost" onClick={copyCreds}>
+                  <Copy className="mr-1 h-3 w-3" /> Copy all
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid gap-4 md:grid-cols-4">
         {cards.map(c => (
           <div key={c.label} className="rounded-2xl border border-border bg-card p-5 shadow-card">
