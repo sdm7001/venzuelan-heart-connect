@@ -60,7 +60,6 @@ Deno.serve(async (req) => {
     // --- Parse + validate input.
     const body = await req.json().catch(() => ({}));
     const mode: Mode = body.mode === "completed" ? "completed" : "blocked";
-    // `all=true` skips pagination — used by CSV export to return the full filtered set.
     const exportAll = body.all === true;
     const page = Math.max(1, Math.min(1_000_000, Number(body.page) || 1));
     const pageSize = Math.max(1, Math.min(200, Number(body.pageSize) || 50));
@@ -72,18 +71,34 @@ Deno.serve(async (req) => {
     const sortDir: SortDir = body.sortDir === "asc" ? "asc" : "desc";
     const policyVersion = typeof body.policyVersion === "string" ? body.policyVersion : null;
     if (!policyVersion) return json({ error: "policyVersion required" }, 400);
+    // "before" / "after" / "all" — filters profiles by created_at relative to
+    // the most recent policy bump audit event for the active version.
+    const onboardedFilter: "before" | "after" | "all" =
+      body.onboardedFilter === "before" || body.onboardedFilter === "after"
+        ? body.onboardedFilter
+        : "all";
 
-    // Service-role for the heavy join — RLS already verified above.
     const admin = createClient(url, serviceKey);
 
-    // Pull onboarded profiles + acks. We still cap aggressively (10k profiles)
-    // so the function stays bounded; pagination then happens after the join.
-    // For larger tenants this should be moved to a SQL view, but the
-    // aggregation runs O(profiles + acks) which is comfortably fast at this size.
+    // Find when the active policy version was bumped (most recent
+    // policy_version_bumped event whose `next` matches). Falls back to null
+    // when there's no bump on record (e.g., initial deploy).
+    const { data: bumpEvent } = await admin
+      .from("audit_events")
+      .select("created_at, metadata")
+      .eq("category", "policy")
+      .eq("action", "policy_version_bumped")
+      .order("created_at", { ascending: false })
+      .limit(20);
+    const bumpRow = (bumpEvent ?? []).find(
+      (e: any) => e?.metadata?.next?.policy_version === policyVersion
+    );
+    const bumpedAt: string | null = bumpRow?.created_at ?? null;
+
     const [{ data: profiles, error: pErr }, { data: acks, error: aErr }] = await Promise.all([
       admin
         .from("profiles")
-        .select("id, display_name, account_status")
+        .select("id, display_name, account_status, created_at")
         .eq("onboarding_completed", true)
         .limit(10000),
       admin
