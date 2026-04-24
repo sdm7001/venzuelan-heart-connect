@@ -367,6 +367,13 @@ export default function AdminPolicyAcceptance() {
         </TabsContent>
 
         <TabsContent value="completed" className="mt-4">
+          <div className="mb-3 flex justify-end">
+            <Button size="sm" variant="outline" onClick={() => exportCsv("completed")}
+              disabled={exporting === "completed" || totals.completed === 0}>
+              <Download className="h-4 w-4 mr-1" />
+              {exporting === "completed" ? "Preparing…" : "Export CSV"}
+            </Button>
+          </div>
           <UserTable
             mode="completed"
             activeVersion={config.policy_version}
