@@ -66,9 +66,10 @@ const App = () => (
               <Route path="/admin/policies" element={<RequireStaff><AdminPolicies /></RequireStaff>} />
 
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </ImpersonationProvider>
       </AuthProvider>
     </I18nProvider>
   </QueryClientProvider>
