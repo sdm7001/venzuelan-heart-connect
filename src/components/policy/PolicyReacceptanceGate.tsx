@@ -5,7 +5,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { ExternalLink, ShieldCheck } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { AlertCircle, ExternalLink, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -17,6 +18,8 @@ const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acc
   { key: "aup", labelKey: "acceptAup" },
   { key: "anti_solicitation", labelKey: "acceptAnti" },
 ];
+
+type PriorAck = { policy_version: string; accepted_at: string };
 
 /**
  * Shown to authenticated, onboarded users when the active policy_version
@@ -33,6 +36,8 @@ export function PolicyReacceptanceGate() {
   // can never flash on initial mount or while auth/config are still loading.
   const [ready, setReady] = useState(false);
   const [needsReaccept, setNeedsReaccept] = useState(false);
+  const [missingKeys, setMissingKeys] = useState<Set<PolicyKey>>(new Set());
+  const [priorByKey, setPriorByKey] = useState<Partial<Record<PolicyKey, PriorAck>>>({});
   const [accepted, setAccepted] = useState<Record<PolicyKey, boolean>>({
     tos: false, privacy: false, aup: false, anti_solicitation: false,
   });
