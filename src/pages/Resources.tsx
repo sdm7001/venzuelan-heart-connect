@@ -63,6 +63,10 @@ const COPY: Record<Lang, {
     clear: "Clear",
     readMin: (n) => `${n} min read`,
     read: "Read",
+    prev: "Previous",
+    next: "Next",
+    pageOf: (p, t) => `Page ${p} of ${t}`,
+    showing: (f, to, t) => `Showing ${f}–${to} of ${t}`,
     categories: {
       trust: "Trust & verification",
       culture: "Culture & language",
