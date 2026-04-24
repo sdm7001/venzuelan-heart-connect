@@ -45,6 +45,8 @@ const STATUS_TONE: Record<string, string> = {
   canceled: "bg-muted text-muted-foreground",
 };
 
+const LAST_VISIT_KEY = "myGifts:lastVisitedAt";
+
 export function MyGiftsCard() {
   const { user } = useAuth();
   const [tab, setTab] = useState<"sent" | "received">("sent");
@@ -54,7 +56,21 @@ export function MyGiftsCard() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  // Snapshot of last-visited timestamp captured on mount; stays fixed during the
+  // session so unread highlights don't disappear as the user scrolls.
+  const [lastVisitedAt] = useState<number>(() => {
+    if (typeof window === "undefined") return 0;
+    const v = window.localStorage.getItem(LAST_VISIT_KEY);
+    return v ? Number(v) || 0 : 0;
+  });
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // Mark "visited now" when the card mounts with a user, so the next visit
+  // compares against this moment.
+  useEffect(() => {
+    if (!user || typeof window === "undefined") return;
+    window.localStorage.setItem(LAST_VISIT_KEY, String(Date.now()));
+  }, [user]);
 
   // Reset & load first page when user/tab changes
   useEffect(() => {
@@ -164,12 +180,27 @@ export function MyGiftsCard() {
     return () => io.disconnect();
   }, [loadPage, loading, loadingMore, hasMore, orders.length]);
 
+  const isUnread = (iso: string) =>
+    lastVisitedAt > 0 && new Date(iso).getTime() > lastVisitedAt;
+
+  const unreadCount = orders.reduce((acc, o) => {
+    const evs = eventsByOrder[o.id] ?? [];
+    const hasNewEvent = evs.some(e => isUnread(e.created_at));
+    const hasNewOrder = isUnread(o.created_at);
+    return acc + (hasNewEvent || hasNewOrder ? 1 : 0);
+  }, 0);
+
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Gift className="h-5 w-5 text-primary" />
           <h2 className="font-display text-lg font-semibold">My gifts</h2>
+          {unreadCount > 0 && (
+            <Badge className="h-5 px-1.5 text-[10px] bg-primary text-primary-foreground">
+              {unreadCount} new
+            </Badge>
+          )}
         </div>
         <div className="flex items-center gap-1 rounded-lg border border-border p-1">
           <button
@@ -211,14 +242,26 @@ export function MyGiftsCard() {
           {orders.map(o => {
             const events = eventsByOrder[o.id] ?? [];
             const latest = events[0];
+            const newOrder = isUnread(o.created_at);
+            const newEventCount = events.filter(e => isUnread(e.created_at)).length;
+            const isNew = newOrder || newEventCount > 0;
             return (
               <li key={o.id} className="py-4">
-                <Link to={`/gifts/${o.id}`} className="block group -mx-2 px-2 rounded-lg hover:bg-muted/40 transition-colors">
+                <Link
+                  to={`/gifts/${o.id}`}
+                  className={cn(
+                    "block group -mx-2 px-2 rounded-lg hover:bg-muted/40 transition-colors",
+                    isNew && "bg-primary/5 ring-1 ring-primary/20",
+                  )}
+                >
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-muted-foreground">
+                  <span className="mt-0.5 text-muted-foreground relative">
                     {o.kind === "virtual"
                       ? <Sparkles className="h-4 w-4" />
                       : <Package className="h-4 w-4" />}
+                    {isNew && (
+                      <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary ring-2 ring-card" />
+                    )}
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
@@ -230,6 +273,13 @@ export function MyGiftsCard() {
                       )}>
                         {o.status.replace(/_/g, " ")}
                       </span>
+                      {isNew && (
+                        <Badge className="text-[10px] h-4 px-1.5 bg-primary text-primary-foreground">
+                          {newOrder && newEventCount === 0
+                            ? "New"
+                            : `${newEventCount} new update${newEventCount === 1 ? "" : "s"}`}
+                        </Badge>
+                      )}
                       {o.kind === "virtual" && o.credit_cost != null && (
                         <span className="text-xs text-muted-foreground">{o.credit_cost} cr</span>
                       )}
@@ -248,11 +298,13 @@ export function MyGiftsCard() {
                     {/* Status timeline (latest 3 events) */}
                     {events.length > 0 ? (
                       <ol className="mt-3 space-y-1.5">
-                        {events.slice(0, 3).map((e, i) => (
+                        {events.slice(0, 3).map((e, i) => {
+                          const eNew = isUnread(e.created_at);
+                          return (
                           <li key={e.id} className="flex items-start gap-2 text-xs">
                             <span className={cn(
                               "mt-1 h-1.5 w-1.5 rounded-full shrink-0",
-                              i === 0 ? "bg-primary" : "bg-muted-foreground/40"
+                              eNew ? "bg-primary ring-2 ring-primary/30" : i === 0 ? "bg-primary" : "bg-muted-foreground/40"
                             )} />
                             <div className="flex-1">
                               <span className={cn(
@@ -264,12 +316,18 @@ export function MyGiftsCard() {
                               <span className="text-muted-foreground ml-2">
                                 {new Date(e.created_at).toLocaleString()}
                               </span>
+                              {eNew && (
+                                <span className="ml-2 text-[10px] uppercase tracking-wide font-semibold text-primary">
+                                  New
+                                </span>
+                              )}
                               {e.notes && (
                                 <div className="text-muted-foreground mt-0.5">{e.notes}</div>
                               )}
                             </div>
                           </li>
-                        ))}
+                          );
+                        })}
                         {events.length > 3 && (
                           <li className="text-xs text-muted-foreground pl-3.5">
                             +{events.length - 3} earlier event{events.length - 3 === 1 ? "" : "s"}
