@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Eye } from "lucide-react";
+import { Search, Eye, Settings2 } from "lucide-react";
 import { useAuth } from "@/auth/AuthProvider";
 import { ImpersonateDialog } from "@/components/admin/ImpersonateDialog";
 
@@ -58,15 +59,22 @@ export default function AdminUsers() {
                 <td className="px-4 py-3 text-muted-foreground">{new Date(r.created_at).toLocaleDateString()}</td>
                 {isAdmin && (
                   <td className="px-4 py-3 text-right">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      disabled={r.id === user?.id}
-                      title={r.id === user?.id ? "Cannot impersonate yourself" : "Start a read-only view-as session"}
-                      onClick={() => setTarget({ id: r.id, name: r.display_name ?? "Unnamed user" })}
-                    >
-                      <Eye className="mr-1 h-3.5 w-3.5" /> View as
-                    </Button>
+                    <div className="flex justify-end gap-1">
+                      <Button asChild size="sm" variant="ghost" title="Open management panel">
+                        <Link to={`/admin/users/${r.id}`}>
+                          <Settings2 className="mr-1 h-3.5 w-3.5" /> Manage
+                        </Link>
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        disabled={r.id === user?.id}
+                        title={r.id === user?.id ? "Cannot impersonate yourself" : "Start a read-only view-as session"}
+                        onClick={() => setTarget({ id: r.id, name: r.display_name ?? "Unnamed user" })}
+                      >
+                        <Eye className="mr-1 h-3.5 w-3.5" /> View as
+                      </Button>
+                    </div>
                   </td>
                 )}
               </tr>
