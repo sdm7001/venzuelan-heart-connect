@@ -200,6 +200,70 @@ export default function AdminPolicyAcceptance() {
     refresh();
   }
 
+  // Pulls the entire filtered set (no pagination) and downloads it as CSV.
+  // Member id, display name, last accepted version + timestamps are all included.
+  const [exporting, setExporting] = useState<Mode | null>(null);
+  async function exportCsv(mode: Mode) {
+    setExporting(mode);
+    const state = mode === "blocked" ? blockedState : completedState;
+    const { data, error } = await supabase.functions.invoke("admin-policy-aggregate", {
+      body: {
+        mode,
+        all: true,
+        search: debouncedSearch,
+        sortField: state.sortField,
+        sortDir: state.sortDir,
+        policyVersion: config.policy_version,
+      },
+    });
+    setExporting(null);
+    if (error || data?.error) {
+      return toast.error(`Export failed: ${(error?.message ?? data?.error) || "unknown"}`);
+    }
+    const rows: AggRow[] = data.rows ?? [];
+    if (rows.length === 0) return toast.info("Nothing to export for the current filter.");
+
+    const headers = [
+      "user_id",
+      "display_name",
+      "account_status",
+      "status",
+      "current_policy_version",
+      "current_accepted_at",
+      "last_accepted_version",
+      "last_accepted_at",
+      "missing_keys",
+      "accepted_keys_count",
+    ];
+    const lines = [headers.join(",")];
+    for (const r of rows) {
+      const lastVersion = r.has_current ? config.policy_version : (r.last_prior_version ?? "");
+      const lastAt = r.has_current ? (r.accepted_at ?? "") : (r.last_prior_at ?? "");
+      lines.push([
+        r.user_id,
+        r.display_name ?? "",
+        r.account_status,
+        r.has_current ? "up_to_date" : "blocked",
+        config.policy_version,
+        r.accepted_at ?? "",
+        lastVersion,
+        lastAt,
+        r.missing_keys.join("|"),
+        String(r.accepted_keys),
+      ].map(csvCell).join(","));
+    }
+    const csv = "\uFEFF" + lines.join("\n"); // BOM keeps Excel happy with UTF-8
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `policy-${mode}-v${config.policy_version}-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${rows.length} ${mode === "blocked" ? "blocked" : "re-accepted"} member${rows.length === 1 ? "" : "s"}.`);
+  }
   return (
     <AdminLayout>
       <AdminPageHeader
