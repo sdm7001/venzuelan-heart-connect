@@ -217,9 +217,16 @@ export default function AdminPolicyAcceptance() {
     setSelected(check ? new Set(blockedState.rows.map((r) => r.user_id)) : new Set());
   }
 
+  // Targets the user has currently checked. Memoised so the confirm dialog
+  // and the send handler agree on the exact set, even if rows refetch.
+  const selectedTargets = useMemo(
+    () => blockedState.rows.filter((r) => selected.has(r.user_id)),
+    [blockedState.rows, selected],
+  );
+
   async function sendReminders() {
     if (!adminUser) return;
-    const targets = blockedState.rows.filter((r) => selected.has(r.user_id));
+    const targets = selectedTargets;
     if (targets.length === 0) return;
     setSending(true);
 
@@ -234,6 +241,7 @@ export default function AdminPolicyAcceptance() {
     const { error: remErr } = await supabase.from("policy_reminders").insert(reminders);
     if (remErr) {
       setSending(false);
+      setConfirmOpen(false);
       return toast.error(`Reminder write failed: ${remErr.message}`);
     }
 
@@ -252,11 +260,13 @@ export default function AdminPolicyAcceptance() {
     const { error: auditErr } = await supabase.from("audit_events").insert(events);
     if (auditErr) {
       setSending(false);
+      setConfirmOpen(false);
       return toast.error(`Audit write failed: ${auditErr.message}`);
     }
 
     setSelected(new Set());
     setSending(false);
+    setConfirmOpen(false);
     toast.success(`Reminder sent to ${targets.length} member${targets.length === 1 ? "" : "s"}.`);
     refresh();
   }
