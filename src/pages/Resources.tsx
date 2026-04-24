@@ -353,24 +353,29 @@ function FeedCard({
   const i = post.i18n[lang];
   return (
     <li>
-      <article
-        id={post.slug}
-        className="flex h-full flex-col rounded-xl border border-border bg-card p-5 transition-colors hover:bg-card/60"
+      <Link
+        to={`${CANONICAL_PATH}/${post.slug}`}
+        className="block h-full"
       >
-        <div className="mb-2 flex items-center gap-2">
-          <Badge variant="outline" className="text-[11px]">
-            {copy.categories[post.category]}
-          </Badge>
-          <time dateTime={post.publishedAt} className="text-xs text-muted-foreground">
-            {formatDate(post.publishedAt, lang)}
-          </time>
-          <span className="text-xs text-muted-foreground">· {copy.readMin(post.readMin)}</span>
-        </div>
-        <h3 className="font-display font-semibold leading-snug">{i.title}</h3>
-        <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed line-clamp-2">
-          {i.excerpt}
-        </p>
-      </article>
+        <article
+          id={post.slug}
+          className="flex h-full flex-col rounded-xl border border-border bg-card p-5 transition-colors hover:bg-card/60"
+        >
+          <div className="mb-2 flex items-center gap-2">
+            <Badge variant="outline" className="text-[11px]">
+              {copy.categories[post.category]}
+            </Badge>
+            <time dateTime={post.publishedAt} className="text-xs text-muted-foreground">
+              {formatDate(post.publishedAt, lang)}
+            </time>
+            <span className="text-xs text-muted-foreground">· {copy.readMin(post.readMin)}</span>
+          </div>
+          <h3 className="font-display font-semibold leading-snug">{i.title}</h3>
+          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed line-clamp-2">
+            {i.excerpt}
+          </p>
+        </article>
+      </Link>
     </li>
   );
 }
