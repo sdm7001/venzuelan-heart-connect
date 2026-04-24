@@ -209,7 +209,7 @@ export default function FAQ() {
                         ? "border-destructive/30 bg-destructive/5 text-destructive hover:bg-destructive/10"
                         : ctaKind === "billing"
                           ? "border-amber-500/30 bg-amber-500/5 text-amber-700 hover:bg-amber-500/10 dark:text-amber-400"
-                          : "border-burgundy/30 bg-burgundy/5 text-burgundy hover:bg-burgundy/10";
+                          : "border-primary/30 bg-primary/10 text-foreground hover:bg-primary/15";
                     return (
                       <AccordionItem
                         key={idx}
