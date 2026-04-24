@@ -172,14 +172,41 @@ export default function AdminPostEditor() {
     }
     const edit = anchorEdits[c.href] ?? { en: c.label_en, es: c.label_es };
     const langs: ("en" | "es")[] = lang === "both" ? ["en", "es"] : [lang];
+
+    // Validate anchors + dedupe against this post's already-saved links per language.
+    const v = validateBilingualAccept({
+      href: c.href,
+      en: langs.includes("en") ? { label: edit.en, existing: form.internal_links_en } : undefined,
+      es: langs.includes("es") ? { label: edit.es, existing: form.internal_links_es } : undefined,
+    });
+    if (v.ok === false) { toast.error(v.error); return; }
+
     (async () => {
       try {
         const { data: userRes } = await supabase.auth.getUser();
-        const rows = langs.map(l => ({
+        // Also dedupe against any pending/approved suggestions already queued for this post+lang+href.
+        const { data: existingSugs, error: existErr } = await supabase
+          .from("internal_link_suggestions")
+          .select("lang,href,status")
+          .eq("post_id", id!)
+          .in("lang", langs)
+          .in("status", ["pending", "approved"]);
+        if (existErr) throw existErr;
+        const blocked = new Set(
+          (existingSugs ?? [])
+            .filter(r => (r.href ?? "").trim().toLowerCase().replace(/\/+$/, "") === c.href.trim().toLowerCase().replace(/\/+$/, ""))
+            .map(r => r.lang),
+        );
+        const filteredLangs = langs.filter(l => !blocked.has(l));
+        if (filteredLangs.length === 0) {
+          toast.error("This URL is already in the review queue for the selected language(s).");
+          return;
+        }
+        const rows = filteredLangs.map(l => ({
           post_id: id!,
           lang: l,
-          label: l === "en" ? edit.en : edit.es,
-          href: c.href,
+          label: (l === "en" ? edit.en : edit.es).trim(),
+          href: c.href.trim(),
           reason: l === "en" ? c.reason_en : c.reason_es,
           suggested_by: userRes.user?.id ?? null,
         }));
@@ -187,7 +214,10 @@ export default function AdminPostEditor() {
         if (error) throw error;
         setPendingCount(n => n + rows.length);
         setDismissed(d => { const n = new Set(d); n.add(c.href); return n; });
-        toast.success(`Sent to review queue (${langs.join(" + ").toUpperCase()}).`);
+        const skipped = langs.length - filteredLangs.length;
+        toast.success(
+          `Sent to review queue (${filteredLangs.join(" + ").toUpperCase()})${skipped ? ` — ${skipped} skipped as duplicate` : ""}.`,
+        );
       } catch (e: any) {
         toast.error(e?.message ?? "Accept failed");
       }
