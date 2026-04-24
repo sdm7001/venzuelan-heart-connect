@@ -76,6 +76,10 @@ export default function ResourceDetail() {
           lang,
           type: "article",
           image: post.hero_image_url ?? undefined,
+          feeds: [
+            { title: "MatchVenezuelan — Resources (EN)", href: "/rss.xml" },
+            { title: "MatchVenezuelan — Recursos (ES)", href: "/rss-es.xml" },
+          ],
           article: {
             publishedTime: post.published_at,
             section: CAT_LABEL[post.category]?.[lang] ?? post.category,

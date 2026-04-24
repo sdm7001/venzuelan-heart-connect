@@ -36,6 +36,8 @@ export type SeoOptions = {
   robots?: string;
   /** hreflang alternates. Defaults to en/es/x-default pointing to canonical. */
   alternates?: SeoAlternate[];
+  /** RSS/Atom feed alternates exposed via <link rel="alternate" type="application/rss+xml">. */
+  feeds?: { title: string; href: string; type?: string }[];
   /** One or more JSON-LD blocks. Each gets a unique <script> tag. */
   jsonLd?: JsonLd | JsonLd[];
   /** Article-only metadata. */
@@ -125,7 +127,7 @@ function setJsonLd(blocks: JsonLd[]) {
 function clearManagedAlternates() {
   document
     .querySelectorAll(
-      `link[rel="alternate"][${SEO_ATTR}="${SEO_VAL}"][hreflang]`,
+      `link[rel="alternate"][${SEO_ATTR}="${SEO_VAL}"]`,
     )
     .forEach((n) => n.parentNode?.removeChild(n));
 }
@@ -196,6 +198,14 @@ export function applySeo(opts: SeoOptions) {
     ];
   alternates.forEach((alt) =>
     setLink("alternate", alt.href, { hreflang: alt.hreflang }),
+  );
+
+  // RSS/Atom feed alternates
+  (opts.feeds ?? []).forEach((f) =>
+    setLink("alternate", f.href, {
+      type: f.type ?? "application/rss+xml",
+      title: f.title,
+    }),
   );
 
   // JSON-LD: merge with site-wide Organization block
