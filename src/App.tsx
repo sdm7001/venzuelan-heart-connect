@@ -24,6 +24,7 @@ import AdminReports from "./pages/admin/AdminReports";
 import { AdminFlags, AdminVerification, AdminBilling, AdminAudit } from "./pages/admin/AdminPlaceholders";
 import AdminPolicies from "./pages/admin/AdminPolicies";
 import AdminPolicyAcceptance from "./pages/admin/AdminPolicyAcceptance";
+import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
