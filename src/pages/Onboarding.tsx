@@ -121,7 +121,7 @@ export default function Onboarding() {
                       </Label>
                       <Link
                         to={policyConfig.urls[p.key]}
-                        target={/^https?:/i.test(policyConfig.urls[p.key]) ? "_blank" : undefined}
+                        target="_blank"
                         rel="noreferrer"
                         className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                       >
