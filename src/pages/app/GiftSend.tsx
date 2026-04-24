@@ -50,6 +50,14 @@ export default function GiftSend() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
+  const [confirmation, setConfirmation] = useState<{
+    orderId: string;
+    createdAt: string;
+    kind: "virtual" | "physical";
+    gift: GiftRow;
+    message: string | null;
+    creditCost: number | null;
+  } | null>(null);
 
   useEffect(() => {
     if (!user) return;
