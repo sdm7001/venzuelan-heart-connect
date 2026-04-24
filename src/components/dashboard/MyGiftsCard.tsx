@@ -180,12 +180,27 @@ export function MyGiftsCard() {
     return () => io.disconnect();
   }, [loadPage, loading, loadingMore, hasMore, orders.length]);
 
+  const isUnread = (iso: string) =>
+    lastVisitedAt > 0 && new Date(iso).getTime() > lastVisitedAt;
+
+  const unreadCount = orders.reduce((acc, o) => {
+    const evs = eventsByOrder[o.id] ?? [];
+    const hasNewEvent = evs.some(e => isUnread(e.created_at));
+    const hasNewOrder = isUnread(o.created_at);
+    return acc + (hasNewEvent || hasNewOrder ? 1 : 0);
+  }, 0);
+
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Gift className="h-5 w-5 text-primary" />
           <h2 className="font-display text-lg font-semibold">My gifts</h2>
+          {unreadCount > 0 && (
+            <Badge className="h-5 px-1.5 text-[10px] bg-primary text-primary-foreground">
+              {unreadCount} new
+            </Badge>
+          )}
         </div>
         <div className="flex items-center gap-1 rounded-lg border border-border p-1">
           <button
