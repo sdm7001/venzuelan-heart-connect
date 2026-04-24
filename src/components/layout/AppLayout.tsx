@@ -5,6 +5,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
+import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 import { cn } from "@/lib/utils";
 
 export function AppLayout({ children }: { children: ReactNode }) {
@@ -22,6 +23,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-muted/30">
+      <ImpersonationBanner />
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-lg">
         <div className="container flex h-16 items-center justify-between gap-4">
           <Link to="/dashboard" className="flex items-center gap-2 font-display text-lg font-semibold text-burgundy">

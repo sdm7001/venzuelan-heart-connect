@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { AuthProvider } from "@/auth/AuthProvider";
+import { ImpersonationProvider } from "@/auth/ImpersonationProvider";
 import { RequireAuth, RequireStaff } from "@/auth/RouteGuards";
 
 import Home from "./pages/Home";
@@ -29,11 +30,12 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <I18nProvider>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
+        <ImpersonationProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
               {/* Public */}
               <Route path="/" element={<Home />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
@@ -64,9 +66,10 @@ const App = () => (
               <Route path="/admin/policies" element={<RequireStaff><AdminPolicies /></RequireStaff>} />
 
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </ImpersonationProvider>
       </AuthProvider>
     </I18nProvider>
   </QueryClientProvider>
