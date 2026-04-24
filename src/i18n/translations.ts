@@ -142,6 +142,11 @@ const _translations = {
       missingSummary: "Missing for current version: {keys}",
       lastAcknowledged: "Last acknowledged",
       neverAcknowledged: "Never acknowledged",
+      lastReacceptTitle: "Last re-acceptance",
+      lastReacceptAt: "Re-accepted on",
+      newlyAcknowledged: "Newly acknowledged",
+      alreadyAcknowledged: "Already up to date",
+      noKeys: "None",
     },
     dashboard: {
       welcome: "Welcome back",
