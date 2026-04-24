@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { useI18n } from "@/i18n/I18nProvider";
 import { usePolicyConfig, PolicyKey } from "@/lib/policyConfig";
+import { assertPolicyReacceptedMetadata } from "@/lib/policyAuditSchema";
 
 const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti"; shortKey: "tos" | "privacy" | "aup" | "antiSolicit" }[] = [
   { key: "tos", labelKey: "acceptTos", shortKey: "tos" },
@@ -164,23 +165,43 @@ export function PolicyReacceptanceGate() {
       {}
     );
 
-    await supabase.from("audit_events").insert({
+    // Build the metadata up-front so we can validate before writing. If the
+    // shape ever drifts (new field, missing partition entry, etc.) we want a
+    // dev-time failure here instead of a polluted audit trail.
+    const metadata = {
+      policy_version: config.policy_version,
+      accepted_keys: keysToWrite,
+      newly_acknowledged: newlyAcknowledged,
+      already_acknowledged: alreadyAcknowledged,
+      per_key,
+      prior_versions: keysToWrite.reduce<Record<string, string | null>>((acc, k) => {
+        acc[k] = priorByKey[k as PolicyKey]?.policy_version ?? null;
+        return acc;
+      }, {}),
+    };
+
+    try {
+      assertPolicyReacceptedMetadata(metadata);
+    } catch (e) {
+      setBusy(false);
+      // Surface to the user *and* to logs — this is a programmer error, not
+      // user input, so we want it to be loud in development.
+      // eslint-disable-next-line no-console
+      console.error("[PolicyReacceptanceGate] metadata validation failed", e, metadata);
+      return toast.error("Could not record acceptance — please refresh and try again.");
+    }
+
+    const { error: auditErr } = await supabase.from("audit_events").insert({
       actor_id: user.id,
       subject_id: user.id,
       category: "policy",
       action: "policy_reaccepted",
-      metadata: {
-        policy_version: config.policy_version,
-        accepted_keys: keysToWrite,
-        newly_acknowledged: newlyAcknowledged,
-        already_acknowledged: alreadyAcknowledged,
-        per_key,
-        prior_versions: keysToWrite.reduce<Record<string, string | null>>((acc, k) => {
-          acc[k] = priorByKey[k as PolicyKey]?.policy_version ?? null;
-          return acc;
-        }, {}),
-      } as any,
+      metadata: metadata as any,
     });
+    if (auditErr) {
+      setBusy(false);
+      return toast.error(auditErr.message);
+    }
 
     setBusy(false);
     setNeedsReaccept(false);
