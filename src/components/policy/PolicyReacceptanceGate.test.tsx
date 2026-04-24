@@ -61,6 +61,10 @@ vi.mock("@/i18n/I18nProvider", () => ({
         previewTitle: "Preview",
         openInNewTab: "open",
       },
+      policyReacceptErrors: {
+        auditFailedTitle: "Acceptance saved",
+        auditFailedBody: "Saved but logging failed.",
+      },
     },
   }),
 }));
