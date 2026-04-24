@@ -111,14 +111,24 @@ export function PolicyReacceptanceGate() {
     return () => { active = false; };
   }, [user?.id, onboardingCompleted, config.policy_version, authLoading, cfgLoading]);
 
-  const allAccepted = useMemo(() => POLICIES.every(p => accepted[p.key]), [accepted]);
+  // Only the policies actually missing for this user need a fresh checkbox.
+  const missingPolicies = useMemo(
+    () => POLICIES.filter(p => missingKeys.has(p.key)),
+    [missingKeys]
+  );
+  const allAccepted = useMemo(
+    () => missingPolicies.every(p => accepted[p.key]),
+    [missingPolicies, accepted]
+  );
 
   async function handleConfirm() {
     if (!user) return;
     if (!allAccepted) return toast.error(t.onboarding.mustAcceptAll);
     setBusy(true);
 
-    const rows = POLICIES.map(p => ({
+    // Only insert acks for the policies that were actually missing — the rest
+    // are already current and the unique constraint would no-op anyway.
+    const rows = missingPolicies.map(p => ({
       user_id: user.id,
       policy_key: p.key,
       policy_version: config.policy_version,
