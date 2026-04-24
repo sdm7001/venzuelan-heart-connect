@@ -126,8 +126,22 @@ export function PolicyReacceptanceGate() {
     if (!allAccepted) return toast.error(t.onboarding.mustAcceptAll);
     setBusy(true);
 
-    // Only insert acks for the policies that were actually missing — the rest
-    // are already current and the unique constraint would no-op anyway.
+    // Pre-check which of the policies we're about to upsert already have a row
+    // for the current policy_version. We need this BEFORE the upsert so the
+    // audit trail can distinguish newly-acknowledged keys from idempotent
+    // re-clicks (the upsert with ignoreDuplicates won't return that info).
+    const keysToWrite = missingPolicies.map(p => p.key);
+    const { data: existingRows } = await supabase
+      .from("policy_acknowledgements")
+      .select("policy_key")
+      .eq("user_id", user.id)
+      .eq("policy_version", config.policy_version)
+      .in("policy_key", keysToWrite);
+
+    const alreadyExisted = new Set((existingRows ?? []).map(r => r.policy_key as PolicyKey));
+    const newlyAcknowledged = keysToWrite.filter(k => !alreadyExisted.has(k));
+    const alreadyAcknowledged = keysToWrite.filter(k => alreadyExisted.has(k));
+
     const rows = missingPolicies.map(p => ({
       user_id: user.id,
       policy_key: p.key,
@@ -141,6 +155,15 @@ export function PolicyReacceptanceGate() {
       return toast.error(error.message);
     }
 
+    // Per-key status lets admins see exactly what changed during this flow.
+    const per_key = keysToWrite.reduce<Record<string, "newly_acknowledged" | "already_existed">>(
+      (acc, k) => {
+        acc[k] = alreadyExisted.has(k) ? "already_existed" : "newly_acknowledged";
+        return acc;
+      },
+      {}
+    );
+
     await supabase.from("audit_events").insert({
       actor_id: user.id,
       subject_id: user.id,
@@ -148,7 +171,14 @@ export function PolicyReacceptanceGate() {
       action: "policy_reaccepted",
       metadata: {
         policy_version: config.policy_version,
-        accepted_keys: missingPolicies.map(p => p.key),
+        accepted_keys: keysToWrite,
+        newly_acknowledged: newlyAcknowledged,
+        already_acknowledged: alreadyAcknowledged,
+        per_key,
+        prior_versions: keysToWrite.reduce<Record<string, string | null>>((acc, k) => {
+          acc[k] = priorByKey[k as PolicyKey]?.policy_version ?? null;
+          return acc;
+        }, {}),
       } as any,
     });
 

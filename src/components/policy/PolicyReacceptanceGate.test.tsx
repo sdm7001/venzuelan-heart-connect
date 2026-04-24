@@ -65,35 +65,48 @@ vi.mock("@/i18n/I18nProvider", () => ({
   }),
 }));
 
-// Supabase client mock — chainable query builder.
+// Supabase client mock — chainable, thenable query builder. Any terminal
+// `await` resolves with rows filtered by the .eq()/.in() calls accumulated
+// during the chain, which lets us verify the new pre-check (filtered by
+// policy_version + policy_key set) without coupling to call order.
 type Row = { policy_key: string; policy_version: string; accepted_at: string };
 let ackRows: Row[] = [];
 const upsertSpy = vi.fn(async () => ({ error: null }));
 const insertSpy = vi.fn(async () => ({ error: null }));
 
-vi.mock("@/integrations/supabase/client", () => {
-  const builder = {
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
-    order: vi.fn(async () => ({ data: ackRows, error: null })),
-  };
-  return {
-    supabase: {
-      from: vi.fn((table: string) => {
-        if (table === "policy_acknowledgements") {
-          return {
-            ...builder,
-            upsert: upsertSpy,
-          };
-        }
-        if (table === "audit_events") {
-          return { insert: insertSpy };
-        }
-        return builder;
-      }),
+function makeAckBuilder() {
+  const filters: { policy_version?: string; policy_keys?: string[] } = {};
+  const builder: any = {
+    select: vi.fn(() => builder),
+    eq: vi.fn((col: string, val: any) => {
+      if (col === "policy_version") filters.policy_version = val;
+      return builder;
+    }),
+    in: vi.fn((col: string, vals: any[]) => {
+      if (col === "policy_key") filters.policy_keys = vals;
+      return builder;
+    }),
+    order: vi.fn(() => builder),
+    upsert: upsertSpy,
+    then: (resolve: any) => {
+      let data = ackRows;
+      if (filters.policy_version) data = data.filter(r => r.policy_version === filters.policy_version);
+      if (filters.policy_keys) data = data.filter(r => filters.policy_keys!.includes(r.policy_key));
+      return Promise.resolve({ data, error: null }).then(resolve);
     },
   };
-});
+  return builder;
+}
+
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    from: vi.fn((table: string) => {
+      if (table === "policy_acknowledgements") return makeAckBuilder();
+      if (table === "audit_events") return { insert: insertSpy };
+      return makeAckBuilder();
+    }),
+  },
+}));
 
 import { PolicyReacceptanceGate } from "./PolicyReacceptanceGate";
 
@@ -167,6 +180,50 @@ describe("PolicyReacceptanceGate", () => {
     const upsertedRows = (upsertSpy.mock.calls[0] as any[])[0] as any[];
     expect(upsertedRows).toHaveLength(4);
     expect(upsertedRows.every(r => r.policy_version === "v2")).toBe(true);
+
+    // Audit event records per-key newly_acknowledged vs already_existed.
+    expect(insertSpy).toHaveBeenCalledTimes(1);
+    const auditPayload = (insertSpy.mock.calls[0] as any[])[0] as any;
+    expect(auditPayload.action).toBe("policy_reaccepted");
+    expect(auditPayload.metadata.newly_acknowledged.sort()).toEqual(
+      ["anti_solicitation", "aup", "privacy", "tos"]
+    );
+    expect(auditPayload.metadata.already_acknowledged).toEqual([]);
+    expect(auditPayload.metadata.per_key).toMatchObject({
+      tos: "newly_acknowledged",
+      privacy: "newly_acknowledged",
+      aup: "newly_acknowledged",
+      anti_solicitation: "newly_acknowledged",
+    });
+    expect(auditPayload.metadata.prior_versions).toMatchObject({
+      tos: "v1", privacy: "v1", aup: "v1", anti_solicitation: "v1",
+    });
+  });
+
+  it("records already_existed in the audit event for idempotent re-accepts", async () => {
+    // User has stale v1 acks (so the gate appears) AND already-existing v2
+    // rows for two policies (e.g., a prior partial submit). Confirming should
+    // tag those two as already_existed and the rest as newly_acknowledged.
+    ackRows = [
+      { policy_key: "tos", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "privacy", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "aup", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "anti_solicitation", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "tos", policy_version: "v2", accepted_at: "2024-06-01" },
+      { policy_key: "privacy", policy_version: "v2", accepted_at: "2024-06-01" },
+    ];
+    renderGate();
+    // Only aup + anti_solicitation are missing for v2.
+    expect(await screen.findByText("2/4 missing")).toBeInTheDocument();
+
+    screen.getAllByRole("checkbox").forEach(cb => fireEvent.click(cb));
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+
+    await waitFor(() => expect(insertSpy).toHaveBeenCalledTimes(1));
+    const meta = ((insertSpy.mock.calls[0] as any[])[0] as any).metadata;
+    expect(meta.accepted_keys.sort()).toEqual(["anti_solicitation", "aup"]);
+    expect(meta.newly_acknowledged.sort()).toEqual(["anti_solicitation", "aup"]);
+    expect(meta.already_acknowledged).toEqual([]);
   });
 
   it("does not render for users who have not completed onboarding", async () => {
