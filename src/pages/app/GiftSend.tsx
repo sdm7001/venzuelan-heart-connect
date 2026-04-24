@@ -98,26 +98,74 @@ export default function GiftSend() {
     const trust: TrustState | null =
       Array.isArray(trustRow) && trustRow[0] ? (trustRow[0] as TrustState) : null;
 
-    const reasons: string[] = [];
+    const reasons: EligibilityReason[] = [];
     if (trust) {
-      if (trust.account_status && trust.account_status !== "active") {
-        reasons.push(`Your account is ${trust.account_status}.`);
+      const status = trust.account_status;
+      if (status === "suspended") {
+        reasons.push({
+          code: "account_suspended",
+          title: "Your account is suspended",
+          detail:
+            "While suspended you can't send gifts. Our trust & safety team can review your case if you believe this is a mistake.",
+          next: { label: "Contact support", to: "/safety" },
+        });
+      } else if (status === "pending") {
+        reasons.push({
+          code: "account_pending",
+          title: "Your account is still under review",
+          detail:
+            "New accounts are reviewed before unlocking gifting. This usually completes within 24 hours.",
+          next: { label: "Check verification", to: "/verification" },
+        });
+      } else if (status && status !== "active") {
+        reasons.push({
+          code: "account_deactivated",
+          title: `Account status: ${status}`,
+          detail:
+            "Reactivate your account from settings to resume sending gifts.",
+          next: { label: "Open profile", to: "/profile" },
+        });
       }
+
       if ((trust.badge_count ?? 0) < 1) {
-        reasons.push("You need at least one trust badge (photo, social, ID or income).");
+        reasons.push({
+          code: "no_trust_badge",
+          title: "You need at least one trust badge",
+          detail:
+            "Verify your photo, social, ID, or income to earn your first badge. This protects recipients and unlocks gifting.",
+          next: { label: "Get verified", to: "/verification" },
+        });
       }
+
       if ((trust.recent_severe_flags ?? 0) > 0) {
-        reasons.push("Recent serious moderation flags are blocking gift sending for 30 days.");
+        reasons.push({
+          code: "recent_severe_flags",
+          title: "Gift sending paused for 30 days",
+          detail: `We received ${trust.recent_severe_flags} serious moderation flag${
+            trust.recent_severe_flags === 1 ? "" : "s"
+          } on your account in the last 30 days. Gifting will reopen automatically once the cooldown ends.`,
+          next: { label: "Review safety policies", to: "/safety" },
+        });
       }
     } else {
-      reasons.push("Trust state could not be loaded.");
+      reasons.push({
+        code: "trust_state_unavailable",
+        title: "We couldn't load your trust state",
+        detail:
+          "This is usually temporary. Refresh the page in a moment, or contact support if the issue persists.",
+        next: { label: "Refresh", to: "/gift" },
+      });
     }
 
-    setEligibility({
-      eligible: !!eligible && reasons.length === 0,
-      reasons,
-      trust,
-    });
+    if (eligible === false && reasons.length === 0) {
+      reasons.push({
+        code: "rpc_denied",
+        title: "Server marked you as not eligible",
+        detail:
+          "Your trust signals look fine here, but the server denied gifting. Try again in a minute or contact support.",
+        next: { label: "Contact support", to: "/safety" },
+      });
+    }
 
     // Load sender's preferred language
     const { data: senderProfile } = await supabase
