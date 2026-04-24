@@ -43,6 +43,19 @@ const ENTRY_CATEGORIES: CategoryKey[] = [
   "about",        // 19 contact support
 ];
 
+// Per-entry CTA. Defaults to the entry's category when omitted; "none" hides
+// the CTA (e.g. for the "how do I contact support" entry itself).
+const ENTRY_CTAS: Partial<Record<number, CtaKind>> = {
+  4: "verification",
+  5: "verification",
+  6: "account",       // messaging questions go to account support
+  8: "safety",        // post-block/report follow-up is a safety matter
+  13: "account",      // cancel / delete account
+  17: "account",      // onboarding stuck
+  18: "account",      // duplicate accounts
+  19: "none",         // already explains how to contact support
+};
+
 const CATEGORY_ORDER: CategoryKey[] = [
   "about",
   "verification",
