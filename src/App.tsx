@@ -18,6 +18,7 @@ import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/app/Dashboard";
 import Profile from "./pages/app/Profile";
 import Messages from "./pages/app/Messages";
+import GiftSend from "./pages/app/GiftSend";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminReports from "./pages/admin/AdminReports";
