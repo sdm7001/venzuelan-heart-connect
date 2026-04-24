@@ -17,12 +17,21 @@ const POLICIES: { key: PolicyKey; labelKey: "tos" | "privacy" | "aup" | "antiSol
 ];
 
 type AckRow = { policy_key: string; policy_version: string; accepted_at: string };
+type ReacceptEvent = {
+  created_at: string;
+  metadata: {
+    policy_version?: string;
+    newly_acknowledged?: string[];
+    already_acknowledged?: string[];
+  } | null;
+};
 
 export function ComplianceCard() {
   const { t } = useI18n();
   const { user } = useAuth();
   const { config, loading: cfgLoading } = usePolicyConfig();
   const [acks, setAcks] = useState<AckRow[] | null>(null);
+  const [lastReaccept, setLastReaccept] = useState<ReacceptEvent | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -33,6 +42,19 @@ export function ComplianceCard() {
       .eq("user_id", user.id)
       .order("accepted_at", { ascending: false })
       .then(({ data }) => { if (active) setAcks((data as AckRow[]) ?? []); });
+    supabase
+      .from("audit_events")
+      .select("created_at, metadata")
+      .eq("subject_id", user.id)
+      .eq("category", "policy")
+      .eq("action", "policy_reaccepted")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .then(({ data }) => {
+        if (!active) return;
+        const row = (data ?? [])[0] as ReacceptEvent | undefined;
+        setLastReaccept(row ?? null);
+      });
     return () => { active = false; };
   }, [user?.id]);
 
