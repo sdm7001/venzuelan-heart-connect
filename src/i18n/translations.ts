@@ -664,6 +664,15 @@ const _translations = {
         billing: "Regalos, créditos y pagos",
         privacy: "Privacidad y datos",
       },
+      supportCtas: {
+        safety: { label: "Reportar un problema de seguridad", subject: "Reporte de seguridad" },
+        billing: { label: "Ayuda con pagos", subject: "Ayuda de facturación" },
+        privacy: { label: "Contactar al equipo de privacidad", subject: "Solicitud de privacidad" },
+        verification: { label: "Preguntar sobre verificación", subject: "Ayuda con verificación" },
+        account: { label: "Contactar soporte de cuenta", subject: "Ayuda con la cuenta" },
+        general: { label: "Contactar soporte", subject: "Seguimiento de FAQ" },
+      },
+      stillNeedHelp: "¿Aún necesitas ayuda?",
       entries: [
         {
           q: "¿MatchVenezuelan es un sitio de escorts, sugar o para adultos?",
