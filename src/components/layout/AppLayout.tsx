@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Heart, LayoutDashboard, User, MessageCircle, ShieldAlert, LogOut, ChevronRight } from "lucide-react";
+import { LayoutDashboard, User, MessageCircle, ShieldAlert, LogOut, ChevronRight } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
 import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { t } = useI18n();
