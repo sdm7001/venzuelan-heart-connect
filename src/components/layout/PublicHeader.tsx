@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
@@ -8,12 +8,17 @@ import { LanguageToggle } from "./LanguageToggle";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
+const focusRing =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
 export function PublicHeader() {
   const { t } = useI18n();
+  const a = t.a11y;
   const { user, isStaff } = useAuth();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const loc = useLocation();
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -21,6 +26,21 @@ export function PublicHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Close mobile menu on Escape and on route change; restore focus to toggle.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        menuBtnRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => { setOpen(false); }, [loc.pathname]);
 
   const links = [
     { to: "/", label: t.nav.home },
@@ -30,85 +50,143 @@ export function PublicHeader() {
     { to: "/resources", label: t.nav.resources },
   ];
 
+  const isActive = (to: string) =>
+    to === "/" ? loc.pathname === "/" : loc.pathname === to || loc.pathname.startsWith(to + "/");
+
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 w-full backdrop-blur-lg transition-all duration-300",
-        scrolled || open
-          ? "border-b border-border/80 bg-background/95 shadow-card supports-[backdrop-filter]:bg-background/85"
-          : "border-b border-transparent bg-background/40 supports-[backdrop-filter]:bg-background/30",
-      )}
-    >
-      <div className="container flex h-header max-h-header items-center justify-between gap-header">
-        <Link
-          to="/"
-          className="flex h-header-row items-center gap-2 font-display text-base font-semibold tracking-tight sm:text-lg"
-        >
-          <img src={logo} alt="MatchVenezuelan" className="size-header-logo shrink-0 object-contain" />
-          <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
-        </Link>
+    <>
+      {/* Skip link — visible only when focused */}
+      <a
+        href="#main-content"
+        className={cn(
+          "sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60]",
+          "focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-elegant",
+          focusRing,
+        )}
+      >
+        {a.skipToContent}
+      </a>
 
-        <nav className="hidden h-header-row items-center gap-1 md:flex">
-          {links.map(l => (
-            <Link key={l.to} to={l.to}
-              className={cn("inline-flex h-header-row items-center rounded-md px-3 text-sm font-medium leading-none text-muted-foreground hover:text-foreground transition-smooth",
-                loc.pathname === l.to && "text-foreground")}>
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden h-header-row items-center gap-2 md:flex">
-          <LanguageToggle />
-          {user ? (
-            <>
-              {isStaff && (
-                <Button asChild variant="ghost" size="sm"><Link to="/admin">{t.nav.admin}</Link></Button>
-              )}
-              <Button asChild size="sm"><Link to="/dashboard">{t.nav.dashboard}</Link></Button>
-            </>
-          ) : (
-            <>
-              <Button asChild variant="ghost" size="sm"><Link to="/auth">{t.nav.signin}</Link></Button>
-              <Button asChild size="sm" variant="romance"><Link to="/auth?mode=join">{t.nav.join}</Link></Button>
-            </>
-          )}
-        </div>
-
-        <div className="flex h-header-row items-center gap-2 md:hidden">
-          <LanguageToggle />
-          <button
-            className="inline-flex size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent"
-            onClick={() => setOpen(v => !v)}
-            aria-label="menu"
+      <header
+        className={cn(
+          "sticky top-0 z-40 w-full backdrop-blur-lg transition-all duration-300",
+          scrolled || open
+            ? "border-b border-border/80 bg-background/95 shadow-card supports-[backdrop-filter]:bg-background/85"
+            : "border-b border-transparent bg-background/40 supports-[backdrop-filter]:bg-background/30",
+        )}
+      >
+        <div className="container flex h-header max-h-header items-center justify-between gap-header">
+          <Link
+            to="/"
+            aria-label={a.brandHome}
+            className={cn(
+              "flex h-header-row items-center gap-2 rounded-md font-display text-base font-semibold tracking-tight sm:text-lg",
+              focusRing,
+            )}
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
+            <img src={logo} alt="" aria-hidden="true" className="size-header-logo shrink-0 object-contain" />
+            <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
+          </Link>
 
-      {open && (
-        <div className="md:hidden border-t border-border/60 bg-background">
-          <div className="container flex flex-col gap-1 py-4">
-            {links.map(l => (
-              <Link key={l.to} to={l.to} onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent">
-                {l.label}
-              </Link>
-            ))}
-            <div className="my-2 h-px bg-border" />
+          <nav
+            aria-label={a.primaryNav}
+            className="hidden h-header-row items-center gap-1 md:flex"
+          >
+            {links.map(l => {
+              const active = isActive(l.to);
+              return (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "inline-flex h-header-row items-center rounded-md px-3 text-sm font-medium leading-none transition-smooth",
+                    "text-muted-foreground hover:text-foreground",
+                    active && "text-foreground",
+                    focusRing,
+                  )}
+                >
+                  {l.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="hidden h-header-row items-center gap-2 md:flex">
             <LanguageToggle />
             {user ? (
-              <Button asChild className="mt-2"><Link to="/dashboard" onClick={() => setOpen(false)}>{t.nav.dashboard}</Link></Button>
+              <>
+                {isStaff && (
+                  <Button asChild variant="ghost" size="sm"><Link to="/admin">{t.nav.admin}</Link></Button>
+                )}
+                <Button asChild size="sm"><Link to="/dashboard">{t.nav.dashboard}</Link></Button>
+              </>
             ) : (
               <>
-                <Button asChild variant="ghost" className="mt-2"><Link to="/auth" onClick={() => setOpen(false)}>{t.nav.signin}</Link></Button>
-                <Button asChild variant="romance"><Link to="/auth?mode=join" onClick={() => setOpen(false)}>{t.nav.join}</Link></Button>
+                <Button asChild variant="ghost" size="sm"><Link to="/auth">{t.nav.signin}</Link></Button>
+                <Button asChild size="sm" variant="romance"><Link to="/auth?mode=join">{t.nav.join}</Link></Button>
               </>
             )}
           </div>
+
+          <div className="flex h-header-row items-center gap-2 md:hidden">
+            <LanguageToggle />
+            <button
+              ref={menuBtnRef}
+              type="button"
+              onClick={() => setOpen(v => !v)}
+              aria-label={open ? a.closeMenu : a.openMenu}
+              aria-expanded={open}
+              aria-haspopup="menu"
+              aria-controls="mobile-primary-nav"
+              className={cn(
+                "inline-flex size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent",
+                focusRing,
+              )}
+            >
+              {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+            </button>
+          </div>
         </div>
-      )}
-    </header>
+
+        {open && (
+          <nav
+            id="mobile-primary-nav"
+            aria-label={a.mobileNav}
+            className="md:hidden border-t border-border/60 bg-background"
+          >
+            <div className="container flex flex-col gap-1 py-4">
+              {links.map(l => {
+                const active = isActive(l.to);
+                return (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "rounded-md px-3 py-2 text-sm font-medium hover:bg-accent",
+                      active ? "text-foreground bg-accent/60" : "text-foreground",
+                      focusRing,
+                    )}
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
+              <div className="my-2 h-px bg-border" role="separator" />
+              {user ? (
+                <Button asChild className="mt-2"><Link to="/dashboard" onClick={() => setOpen(false)}>{t.nav.dashboard}</Link></Button>
+              ) : (
+                <>
+                  <Button asChild variant="ghost" className="mt-2"><Link to="/auth" onClick={() => setOpen(false)}>{t.nav.signin}</Link></Button>
+                  <Button asChild variant="romance"><Link to="/auth?mode=join" onClick={() => setOpen(false)}>{t.nav.join}</Link></Button>
+                </>
+              )}
+            </div>
+          </nav>
+        )}
+      </header>
+    </>
   );
 }
