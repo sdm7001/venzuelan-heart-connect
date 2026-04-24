@@ -61,16 +61,90 @@ const _translations = {
     },
     faq: {
       title: "Frequently asked questions",
-      q1: "Is MatchVenezuelan an escort or adult site?",
-      a1: "No. MatchVenezuelan is strictly for serious relationships and respectful international dating. Solicitation, escort services and adult content are prohibited and removed.",
-      q2: "Who can join?",
-      a2: "Adults aged 18 or older who are looking for a serious relationship, marriage, or genuine cross-cultural connection.",
-      q3: "Is it really free for women?",
-      a3: "Yes. Women always join and use core features for free. Men browse free; paid communication tiers are coming in a later phase.",
-      q4: "What languages are supported?",
-      a4: "English and Spanish, with full feature parity. You can switch language at any time.",
-      q5: "How do I report someone?",
-      a5: "Every profile, photo and message has a report button. Reports go to our moderation team within minutes.",
+      intro:
+        "Everything new members ask about MatchVenezuelan — how matching, verification, gifts, billing, and safety actually work. Updated as we ship new features.",
+      entries: [
+        {
+          q: "Is MatchVenezuelan an escort, sugar, or adult site?",
+          a: "No. MatchVenezuelan is strictly a serious-relationship platform for adults seeking marriage, partnership, or a genuine cross-cultural connection. Solicitation, escort services, sugar arrangements framed as transactions, and adult content are explicitly prohibited by our Terms, our Acceptable Use Policy, and our Anti-Scam / Anti-Solicitation Policy. Accounts that violate these rules are removed and may be reported to authorities.",
+        },
+        {
+          q: "Who can join the platform?",
+          a: "Adults aged 18 or older who are looking for a serious relationship, marriage, or genuine cross-cultural connection. You must have legal capacity to enter into a binding agreement in your country, must not be on a sex-offender registry or sanctions list, and must not be banned from a previous MatchVenezuelan account. We do not allow couples accounts or shared accounts — one person, one profile.",
+        },
+        {
+          q: "Is it really free for women?",
+          a: "Yes. Women always join, browse, match, message, and use core safety features for free. Premium services such as concierge verification, priority placement, or in-person event support may be optional add-ons but are never required to use the platform. Men browse for free and unlock paid communication tiers in a later phase — pricing is shown clearly before you ever pay.",
+        },
+        {
+          q: "What languages does the platform support?",
+          a: "English and Spanish, with full feature parity. Every page, email, FAQ, legal document, in-app message and notification is available in both languages. You can switch language at any time from the header or your settings, and the change persists across sessions on the same device.",
+        },
+        {
+          q: "How do you verify members?",
+          a: "We offer multiple layers of verification: photo verification (a live selfie matched to profile photos), social verification (linking a real social profile), ID verification (government document checked by a reviewer), income verification (for members who want to display financial transparency), and concierge verification (a human interview confirming the member is who they say they are). Each successful check awards a trust badge that appears on the profile.",
+        },
+        {
+          q: "What do the trust badges on a profile mean?",
+          a: "Each badge represents a separate verification step that a real human or our automated checks have completed — photo verified, ID verified, social verified, income verified, or concierge verified. Badges only appear while still active; if a member's evidence is later revoked or their account is suspended, the badge is removed. More badges generally mean a more thoroughly checked profile, but they do not replace your own judgment.",
+        },
+        {
+          q: "How does messaging work?",
+          a: "When two members express mutual interest, a chat thread is opened between them. Messages are scanned for safety signals (scams, off-platform contact, harassment, sexual solicitation) before delivery and may be held for moderation if something looks risky. You can block or report another user from any thread, and blocking is mutual and immediate.",
+        },
+        {
+          q: "How do I report someone?",
+          a: "Every profile, photo, and message has a report button. You can report for harassment, scams, fake profiles, off-platform money requests, sexual solicitation, underage suspicion, or any other violation. Reports go to our moderation team within minutes. We notify you when an action has been taken on a report you filed, and severe issues are escalated to law enforcement where appropriate.",
+        },
+        {
+          q: "What happens after I block or report a user?",
+          a: "Blocking is instant: the other person can no longer view your profile, message you, or interact with your content, and you stop seeing theirs. Reporting opens a moderation case independent of blocking — our team reviews the evidence and may issue a warning, restrict features, suspend, or permanently terminate the reported account. Repeat or severe violations are tracked across the user's history.",
+        },
+        {
+          q: "How does MatchVenezuelan prevent romance scams?",
+          a: "Several layers: identity and photo verification, AI-assisted detection of scam patterns (urgency, off-platform pivots, money requests, scripted language), human moderation, mandatory review for new accounts on suspicious devices, blocked-payment-keyword filters in messaging, and a strict policy that no MatchVenezuelan staff or member will ever ask you to send money. Read the Anti-Scam Policy for the full list of red flags.",
+        },
+        {
+          q: "Will anyone ever ask me for money on the platform?",
+          a: "No. MatchVenezuelan staff will never ask you for money, gift cards, crypto, or wire transfers, and no legitimate member should either. Any request to send money — for emergencies, plane tickets, customs fees, hospital bills, business deals, or 'proving your love' — is a scam. Stop, do not send anything, and report the conversation immediately. We treat money-request scams as a top-severity violation.",
+        },
+        {
+          q: "How do gifts work?",
+          a: "You can send digital gifts (instant, credit-based) or physical gifts (curated, fulfilled by partner vendors). Each gift you send creates a tracked order with a status timeline — created, paid, accepted, in fulfillment, delivered. Recipients can decline a gift, and physical gifts are subject to delivery and customs rules of the recipient's country. Gift orders, including the message you write, are visible to our moderation team.",
+        },
+        {
+          q: "How do credits and subscriptions work?",
+          a: "Credits are a prepaid in-app currency used for digital gifts and certain communication features. Subscriptions unlock recurring benefits like extended messaging, advanced filters, and priority support. Both are billed through our payment provider, prices are shown before purchase, and your wallet balance and billing history are always visible in your account. Credits and digital gifts are non-refundable except where required by law (for example, the EU 14-day right of withdrawal where applicable).",
+        },
+        {
+          q: "How do I cancel my subscription or delete my account?",
+          a: "You can cancel your subscription at any time from Settings → Billing — you keep access until the end of the current paid period and are not charged again. To delete your account, go to Settings → Privacy → Delete Account. We remove your profile, photos, and messages from public view immediately and permanently delete personal data within 30 days, except for what we are legally required to retain (for example, fraud prevention or tax records).",
+        },
+        {
+          q: "Will my private photos stay private?",
+          a: "Yes. Photos are split into public, primary, and private categories. Private photos are never shown in search or browsing — they are only visible to members you explicitly grant access to, on a per-person basis, and you can revoke access at any time. All photos pass moderation before being shown to anyone, and screenshotting another member's private photos to share elsewhere is a violation of our Terms.",
+        },
+        {
+          q: "How is my personal data handled?",
+          a: "We collect only what we need to provide a safe matchmaking experience: account information, profile data you choose to share, photos, messages, billing data, and basic device information for fraud prevention. We never sell your data. You can request a full export of your data, correct inaccuracies, or request deletion at any time from Settings → Privacy. Read the Privacy Policy for full details on retention, sub-processors, and your rights under GDPR and similar laws.",
+        },
+        {
+          q: "Is meeting in person encouraged or discouraged?",
+          a: "We support members who choose to meet in person after building real trust online — that is the whole point of a serious-relationship platform. We strongly encourage taking your time: have multiple video calls first, search the other person's photos online, tell a friend or family member where you will be, meet in a public place, and never travel for a first meeting without a clear plan and your own funds for return travel. The Safety page has a complete first-meeting checklist.",
+        },
+        {
+          q: "What happens if I don't complete onboarding?",
+          a: "Most features (browsing other members, matching, messaging, gifts, verification) require a completed profile and accepted community rules. Until onboarding is done you will see a guided checklist on your home screen. We never charge or auto-subscribe accounts that have not finished onboarding, and you can resume from where you left off.",
+        },
+        {
+          q: "Can I have more than one account?",
+          a: "No. One person, one account. Operating multiple accounts — for example, to evade a ban, manipulate matches, or impersonate someone — is a serious violation and results in all linked accounts being permanently banned. If you genuinely need to recover access to an existing account, contact support instead of creating a new one.",
+        },
+        {
+          q: "How do I contact support?",
+          a: "From any page, open the Help menu → Contact Support, or email support@matchvenezuelan.com. Our team is bilingual (English and Spanish) and aims to respond within one business day. Safety issues — active scams, threats, suspected minors, or imminent harm — are prioritized and triaged within hours, 7 days a week.",
+        },
+      ],
     },
     legal: {
       tos: "Terms of Service", privacy: "Privacy Policy", aup: "Acceptable Use Policy",
