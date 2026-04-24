@@ -41,7 +41,7 @@ export function ComplianceCard() {
   const rows = POLICIES.map(p => {
     const all = (acks ?? []).filter(a => a.policy_key === p.key);
     const current = all.find(a => a.policy_version === config.policy_version);
-    const latest = all[0];
+    const latest = all[0]; // already sorted desc by accepted_at
     return {
       ...p,
       current,
@@ -51,7 +51,8 @@ export function ComplianceCard() {
   });
 
   const ready = !cfgLoading && acks !== null;
-  const allCurrent = ready && rows.every(r => r.status === "current");
+  const missingRows = rows.filter(r => r.status !== "current");
+  const allCurrent = ready && missingRows.length === 0;
   const anyMissing = ready && rows.some(r => r.status === "missing");
 
   const headlineIcon = allCurrent
@@ -92,9 +93,27 @@ export function ComplianceCard() {
         {t.compliance.activeVersion}: <span className="font-mono">{config.policy_version}</span>
       </p>
 
+      {ready && missingRows.length > 0 && (
+        <div
+          role="status"
+          className="mt-3 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900"
+        >
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          <div className="leading-snug">
+            {t.compliance.missingSummary.replace(
+              "{keys}",
+              missingRows.map(r => t.legal[r.labelKey]).join(" · ")
+            )}
+          </div>
+        </div>
+      )}
+
       <ul className="mt-4 divide-y divide-border rounded-lg border border-border">
         {rows.map(r => {
           const accepted = r.current ?? r.latest;
+          const tsLabel = accepted
+            ? `${t.compliance.lastAcknowledged}: ${format(new Date(accepted.accepted_at), "PP p")} · v${accepted.policy_version}`
+            : t.compliance.neverAcknowledged;
           return (
             <li key={r.key} className="flex items-center justify-between gap-3 px-3 py-2.5">
               <div className="min-w-0">
@@ -105,24 +124,22 @@ export function ComplianceCard() {
                     <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
                   )}
                   <span className="truncate">{t.legal[r.labelKey]}</span>
+                  <span className="ml-1 font-mono text-[10px] text-muted-foreground">
+                    {r.key}
+                  </span>
+                  {r.status === "stale" && (
+                    <Badge variant="outline" className="border-amber-300 text-amber-700 text-[10px]">
+                      {t.compliance.outdatedVersion} v{accepted!.policy_version}
+                    </Badge>
+                  )}
+                  {r.status === "missing" && (
+                    <Badge variant="outline" className="border-red-300 text-red-700 text-[10px]">
+                      {t.compliance.actionRequired}
+                    </Badge>
+                  )}
                 </div>
                 <div className="mt-0.5 pl-6 text-xs text-muted-foreground">
-                  {r.status === "missing" && t.compliance.notAccepted}
-                  {r.status === "stale" && accepted && (
-                    <>
-                      {t.compliance.acceptedOn} {format(new Date(accepted.accepted_at), "PP")}
-                      {" · "}
-                      <span className="text-amber-700">
-                        {t.compliance.outdatedVersion} v{accepted.policy_version}
-                      </span>
-                    </>
-                  )}
-                  {r.status === "current" && accepted && (
-                    <>
-                      {t.compliance.acceptedOn} {format(new Date(accepted.accepted_at), "PP")}
-                      {" · v"}{accepted.policy_version}
-                    </>
-                  )}
+                  {tsLabel}
                 </div>
               </div>
               <Button asChild size="sm" variant="ghost" className="shrink-0">
