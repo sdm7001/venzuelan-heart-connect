@@ -3,7 +3,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import {
   AlertTriangle, ArrowDown, ArrowUp, ArrowUpDown, BellRing, CheckCircle2,
-  ChevronLeft, ChevronRight, History, RefreshCw, Search, ShieldCheck,
+  ChevronLeft, ChevronRight, Download, History, RefreshCw, Search, ShieldCheck,
 } from "lucide-react";
 import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
