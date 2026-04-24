@@ -60,6 +60,8 @@ Deno.serve(async (req) => {
     // --- Parse + validate input.
     const body = await req.json().catch(() => ({}));
     const mode: Mode = body.mode === "completed" ? "completed" : "blocked";
+    // `all=true` skips pagination — used by CSV export to return the full filtered set.
+    const exportAll = body.all === true;
     const page = Math.max(1, Math.min(1_000_000, Number(body.page) || 1));
     const pageSize = Math.max(1, Math.min(200, Number(body.pageSize) || 50));
     const search = (typeof body.search === "string" ? body.search : "").trim().toLowerCase();
