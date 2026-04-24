@@ -24,6 +24,7 @@ import AdminReports from "./pages/admin/AdminReports";
 import { AdminFlags, AdminVerification, AdminBilling, AdminAudit } from "./pages/admin/AdminPlaceholders";
 import AdminPolicies from "./pages/admin/AdminPolicies";
 import AdminPolicyAcceptance from "./pages/admin/AdminPolicyAcceptance";
+import AdminPolicyReaccepts from "./pages/admin/AdminPolicyReaccepts";
 import AdminUserProfile from "./pages/admin/AdminUserProfile";
 import NotFound from "./pages/NotFound";
 
@@ -69,6 +70,7 @@ const App = () => (
               <Route path="/admin/audit" element={<RequireStaff><AdminAudit /></RequireStaff>} />
               <Route path="/admin/policies" element={<RequireStaff><AdminPolicies /></RequireStaff>} />
               <Route path="/admin/policy-acceptance" element={<RequireStaff><AdminPolicyAcceptance /></RequireStaff>} />
+              <Route path="/admin/policy-reaccepts" element={<RequireStaff><AdminPolicyReaccepts /></RequireStaff>} />
 
               <Route path="*" element={<NotFound />} />
               </Routes>
