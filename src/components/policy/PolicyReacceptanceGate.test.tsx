@@ -65,35 +65,48 @@ vi.mock("@/i18n/I18nProvider", () => ({
   }),
 }));
 
-// Supabase client mock — chainable query builder.
+// Supabase client mock — chainable, thenable query builder. Any terminal
+// `await` resolves with rows filtered by the .eq()/.in() calls accumulated
+// during the chain, which lets us verify the new pre-check (filtered by
+// policy_version + policy_key set) without coupling to call order.
 type Row = { policy_key: string; policy_version: string; accepted_at: string };
 let ackRows: Row[] = [];
 const upsertSpy = vi.fn(async () => ({ error: null }));
 const insertSpy = vi.fn(async () => ({ error: null }));
 
-vi.mock("@/integrations/supabase/client", () => {
-  const builder = {
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
-    order: vi.fn(async () => ({ data: ackRows, error: null })),
-  };
-  return {
-    supabase: {
-      from: vi.fn((table: string) => {
-        if (table === "policy_acknowledgements") {
-          return {
-            ...builder,
-            upsert: upsertSpy,
-          };
-        }
-        if (table === "audit_events") {
-          return { insert: insertSpy };
-        }
-        return builder;
-      }),
+function makeAckBuilder() {
+  const filters: { policy_version?: string; policy_keys?: string[] } = {};
+  const builder: any = {
+    select: vi.fn(() => builder),
+    eq: vi.fn((col: string, val: any) => {
+      if (col === "policy_version") filters.policy_version = val;
+      return builder;
+    }),
+    in: vi.fn((col: string, vals: any[]) => {
+      if (col === "policy_key") filters.policy_keys = vals;
+      return builder;
+    }),
+    order: vi.fn(() => builder),
+    upsert: upsertSpy,
+    then: (resolve: any) => {
+      let data = ackRows;
+      if (filters.policy_version) data = data.filter(r => r.policy_version === filters.policy_version);
+      if (filters.policy_keys) data = data.filter(r => filters.policy_keys!.includes(r.policy_key));
+      return Promise.resolve({ data, error: null }).then(resolve);
     },
   };
-});
+  return builder;
+}
+
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    from: vi.fn((table: string) => {
+      if (table === "policy_acknowledgements") return makeAckBuilder();
+      if (table === "audit_events") return { insert: insertSpy };
+      return makeAckBuilder();
+    }),
+  },
+}));
 
 import { PolicyReacceptanceGate } from "./PolicyReacceptanceGate";
 
