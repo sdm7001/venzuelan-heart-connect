@@ -58,10 +58,8 @@ export function PublicHeader() {
 
       <header
         className={cn(
-          "sticky top-0 z-40 w-full backdrop-blur-lg transition-all duration-300",
-          scrolled || open
-            ? "border-b border-border/80 bg-background/95 shadow-card supports-[backdrop-filter]:bg-background/85"
-            : "border-b border-transparent bg-background/40 supports-[backdrop-filter]:bg-background/30",
+          "sticky top-0 z-40 w-full bg-white text-black backdrop-blur-lg transition-all duration-300",
+          scrolled || open ? "border-b border-black/10 shadow-card" : "border-b border-transparent",
         )}
       >
         <div className="container flex h-header max-h-header items-center justify-between gap-header">
@@ -73,8 +71,8 @@ export function PublicHeader() {
               focusRing,
             )}
           >
-            <img src={logo} alt="" aria-hidden="true" className="size-header-logo shrink-0 object-contain brightness-0 invert" />
-            <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
+            <img src={logo} alt="" aria-hidden="true" className="size-header-logo shrink-0 object-contain" />
+            <span className="text-black whitespace-nowrap leading-none">MatchVenezuelan</span>
           </Link>
 
           <nav aria-label={a.primaryNav} className="hidden h-header-row items-center gap-1 md:flex">
@@ -87,8 +85,8 @@ export function PublicHeader() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "inline-flex h-header-row items-center rounded-md px-3 text-sm font-medium leading-none transition-smooth",
-                    "text-muted-foreground hover:text-foreground",
-                    active && "text-foreground",
+                    "text-black/70 hover:text-black",
+                    active && "text-black",
                     focusRing,
                   )}
                 >
