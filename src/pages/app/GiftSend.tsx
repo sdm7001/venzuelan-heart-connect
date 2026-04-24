@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useI18n } from "@/i18n/I18nProvider";
 
 type GiftRow = {
   id: string;
@@ -38,9 +39,15 @@ type EligibilityCode =
 
 type EligibilityReason = {
   code: EligibilityCode;
-  title: string;
-  detail: string;
-  next?: { label: string; to: string };
+  vars?: Record<string, string | number>;
+  ctaKey:
+    | "ctaContactSupport"
+    | "ctaCheckVerification"
+    | "ctaOpenProfile"
+    | "ctaGetVerified"
+    | "ctaReviewSafety"
+    | "ctaRefresh";
+  to: string;
 };
 
 type Eligibility = {
@@ -49,8 +56,18 @@ type Eligibility = {
   trust: TrustState | null;
 };
 
+// Tiny {var} interpolation for translation strings.
+function fmt(template: string, vars?: Record<string, string | number>) {
+  if (!vars) return template;
+  return template.replace(/\{(\w+)\}/g, (_, k) =>
+    vars[k] === undefined || vars[k] === null ? "" : String(vars[k]),
+  );
+}
+
 export default function GiftSend() {
   const { user } = useAuth();
+  const { t } = useI18n();
+  const tg = t.gift;
   const [params] = useSearchParams();
   const recipientId = params.get("to") ?? "";
   const threadId = params.get("thread");
@@ -104,66 +121,54 @@ export default function GiftSend() {
       if (status === "suspended") {
         reasons.push({
           code: "account_suspended",
-          title: "Your account is suspended",
-          detail:
-            "While suspended you can't send gifts. Our trust & safety team can review your case if you believe this is a mistake.",
-          next: { label: "Contact support", to: "/safety" },
+          ctaKey: "ctaContactSupport",
+          to: "/safety",
         });
       } else if (status === "pending") {
         reasons.push({
           code: "account_pending",
-          title: "Your account is still under review",
-          detail:
-            "New accounts are reviewed before unlocking gifting. This usually completes within 24 hours.",
-          next: { label: "Check verification", to: "/verification" },
+          ctaKey: "ctaCheckVerification",
+          to: "/verification",
         });
       } else if (status && status !== "active") {
         reasons.push({
           code: "account_deactivated",
-          title: `Account status: ${status}`,
-          detail:
-            "Reactivate your account from settings to resume sending gifts.",
-          next: { label: "Open profile", to: "/profile" },
+          vars: { status },
+          ctaKey: "ctaOpenProfile",
+          to: "/profile",
         });
       }
 
       if ((trust.badge_count ?? 0) < 1) {
         reasons.push({
           code: "no_trust_badge",
-          title: "You need at least one trust badge",
-          detail:
-            "Verify your photo, social, ID, or income to earn your first badge. This protects recipients and unlocks gifting.",
-          next: { label: "Get verified", to: "/verification" },
+          ctaKey: "ctaGetVerified",
+          to: "/verification",
         });
       }
 
       if ((trust.recent_severe_flags ?? 0) > 0) {
+        const n = trust.recent_severe_flags;
         reasons.push({
           code: "recent_severe_flags",
-          title: "Gift sending paused for 30 days",
-          detail: `We received ${trust.recent_severe_flags} serious moderation flag${
-            trust.recent_severe_flags === 1 ? "" : "s"
-          } on your account in the last 30 days. Gifting will reopen automatically once the cooldown ends.`,
-          next: { label: "Review safety policies", to: "/safety" },
+          vars: { n, plural: n === 1 ? "" : "s" },
+          ctaKey: "ctaReviewSafety",
+          to: "/safety",
         });
       }
     } else {
       reasons.push({
         code: "trust_state_unavailable",
-        title: "We couldn't load your trust state",
-        detail:
-          "This is usually temporary. Refresh the page in a moment, or contact support if the issue persists.",
-        next: { label: "Refresh", to: "/gift" },
+        ctaKey: "ctaRefresh",
+        to: "/gift",
       });
     }
 
     if (eligible === false && reasons.length === 0) {
       reasons.push({
         code: "rpc_denied",
-        title: "Server marked you as not eligible",
-        detail:
-          "Your trust signals look fine here, but the server denied gifting. Try again in a minute or contact support.",
-        next: { label: "Contact support", to: "/safety" },
+        ctaKey: "ctaContactSupport",
+        to: "/safety",
       });
     }
 
@@ -173,7 +178,7 @@ export default function GiftSend() {
       trust,
     });
 
-    // Load sender's preferred language
+    // Sender's preferred language for translation
     const { data: senderProfile } = await supabase
       .from("profiles")
       .select("preferred_language")
@@ -228,7 +233,6 @@ export default function GiftSend() {
     if (!canSend || !selected) return;
     setSending(true);
 
-    // Auto-translate the message to recipient's preferred language (bilingual rule).
     let translation: {
       source_lang: string | null;
       target_lang: "en" | "es";
@@ -256,9 +260,8 @@ export default function GiftSend() {
         if (tData?.error) throw new Error(tData.error);
         translation = tData;
       } catch (e: any) {
-        // Non-fatal: still send the gift with original text only.
         console.warn("Translation failed", e);
-        toast.message("Translation unavailable — sending original message only.");
+        toast.message(tg.toasts.translationFailed);
       }
     }
 
@@ -303,15 +306,12 @@ export default function GiftSend() {
     setSending(false);
 
     if (error || !inserted) {
-      // RLS will block if eligibility regressed between load & send.
-      toast.error(error?.message ?? "Failed to create gift order");
+      toast.error(error?.message ?? tg.toasts.orderFailed);
       return;
     }
 
     toast.success(
-      kind === "virtual"
-        ? "Virtual gift sent"
-        : "Physical gift order created — admin will process fulfillment"
+      kind === "virtual" ? tg.toasts.virtualSuccess : tg.toasts.physicalSuccess
     );
 
     setConfirmation({
@@ -334,8 +334,14 @@ export default function GiftSend() {
     return (
       <AppLayout>
         <PageHeader
-          title="Gift order confirmed"
-          sub={recipient ? `To ${recipient.display_name ?? "this user"}` : undefined}
+          title={tg.confirmation.title}
+          sub={
+            recipient
+              ? fmt(tg.confirmation.toUser, {
+                  name: recipient.display_name ?? tg.confirmation.toFallback,
+                })
+              : undefined
+          }
         />
         <GiftConfirmation
           confirmation={confirmation}
@@ -347,29 +353,37 @@ export default function GiftSend() {
     );
   }
 
+  const badgeCount = eligibility?.trust?.badge_count ?? 0;
+
   return (
     <AppLayout>
       <PageHeader
-        title="Send a gift"
+        title={tg.pageTitle}
         sub={
           recipient
-            ? `To ${recipient.display_name ?? "this user"}`
-            : "Pick a recipient from a chat or profile to enable sending."
+            ? fmt(tg.pageSubTo, {
+                name: recipient.display_name ?? tg.confirmation.toFallback,
+              })
+            : tg.pageSubPick
         }
       />
 
       {/* Eligibility banner */}
       {loading ? (
-        <div className="text-sm text-muted-foreground mb-6">Checking eligibility…</div>
+        <div className="text-sm text-muted-foreground mb-6">{tg.checking}</div>
       ) : eligibility?.eligible ? (
         <div className="mb-6 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 flex items-start gap-3">
           <BadgeCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400 mt-0.5" />
           <div className="text-sm">
-            <div className="font-medium">You're eligible to send gifts</div>
+            <div className="font-medium">{tg.eligibleTitle}</div>
             <div className="text-muted-foreground mt-0.5">
-              {eligibility.trust?.badge_count ?? 0} trust badge
-              {(eligibility.trust?.badge_count ?? 0) === 1 ? "" : "s"} active
-              {eligibility.trust?.concierge_verified ? " · Concierge Verified" : ""}.
+              {fmt(tg.eligibleBody, {
+                count: badgeCount,
+                plural: badgeCount === 1 ? "" : "s",
+                concierge: eligibility.trust?.concierge_verified
+                  ? tg.conciergeSuffix
+                  : "",
+              })}
             </div>
           </div>
         </div>
@@ -377,37 +391,45 @@ export default function GiftSend() {
         <div className="mb-6 rounded-lg border border-destructive/30 bg-destructive/10 p-4 flex items-start gap-3">
           <ShieldAlert className="h-5 w-5 text-destructive mt-0.5" />
           <div className="text-sm flex-1">
-            <div className="font-medium">Gift sending is currently disabled</div>
+            <div className="font-medium">{tg.disabledTitle}</div>
             <div className="text-muted-foreground mt-0.5">
               {(eligibility?.reasons.length ?? 0) === 1
-                ? "Here's what's blocking you and what to do next."
-                : `${eligibility?.reasons.length ?? 0} things are blocking gift sending. Resolve each to continue.`}
+                ? tg.disabledOne
+                : fmt(tg.disabledMany, {
+                    count: eligibility?.reasons.length ?? 0,
+                  })}
             </div>
 
             <ul className="mt-3 space-y-2">
-              {(eligibility?.reasons ?? []).map((r) => (
-                <li
-                  key={r.code}
-                  className="rounded-md border border-destructive/20 bg-background/40 p-3"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="font-medium text-foreground">{r.title}</div>
-                      <div className="text-muted-foreground mt-0.5">{r.detail}</div>
-                      <div className="text-[11px] text-muted-foreground mt-1 font-mono">
-                        code: {r.code}
+              {(eligibility?.reasons ?? []).map((r) => {
+                const titleKey = `${r.code}_title` as keyof typeof tg.reasons;
+                const detailKey = `${r.code}_detail` as keyof typeof tg.reasons;
+                return (
+                  <li
+                    key={r.code}
+                    className="rounded-md border border-destructive/20 bg-background/40 p-3"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="font-medium text-foreground">
+                          {fmt(tg.reasons[titleKey] as string, r.vars)}
+                        </div>
+                        <div className="text-muted-foreground mt-0.5">
+                          {fmt(tg.reasons[detailKey] as string, r.vars)}
+                        </div>
+                        <div className="text-[11px] text-muted-foreground mt-1 font-mono">
+                          {tg.codeLabel} {r.code}
+                        </div>
                       </div>
-                    </div>
-                    {r.next && (
                       <Button asChild size="sm" variant="outline" className="shrink-0">
-                        <Link to={r.next.to}>{r.next.label}</Link>
+                        <Link to={r.to}>{tg.reasons[r.ctaKey]}</Link>
                       </Button>
-                    )}
-                  </div>
-                </li>
-              ))}
+                    </div>
+                  </li>
+                );
+              })}
               {(eligibility?.reasons.length ?? 0) === 0 && (
-                <li className="text-muted-foreground">Eligibility check failed.</li>
+                <li className="text-muted-foreground">{tg.checkFailed}</li>
               )}
             </ul>
           </div>
@@ -427,8 +449,8 @@ export default function GiftSend() {
       {!recipientId && (
         <EmptyState
           icon={<Gift className="h-5 w-5" />}
-          title="No recipient selected"
-          body="Open a chat or profile and choose 'Send a gift' to start."
+          title={tg.noRecipientTitle}
+          body={tg.noRecipientBody}
         />
       )}
 
@@ -437,10 +459,10 @@ export default function GiftSend() {
           <Tabs value={kind} onValueChange={(v) => setKind(v as "virtual" | "physical")}>
             <TabsList>
               <TabsTrigger value="virtual">
-                <Sparkles className="h-4 w-4 mr-1" /> Virtual
+                <Sparkles className="h-4 w-4 mr-1" /> {tg.tabVirtual}
               </TabsTrigger>
               <TabsTrigger value="physical">
-                <Package className="h-4 w-4 mr-1" /> Physical
+                <Package className="h-4 w-4 mr-1" /> {tg.tabPhysical}
               </TabsTrigger>
             </TabsList>
 
@@ -456,7 +478,7 @@ export default function GiftSend() {
 
             <TabsContent value="physical" className="mt-4">
               <div className="text-xs text-muted-foreground mb-3">
-                Physical gifts are processed by our concierge team after payment confirmation.
+                {tg.physicalNote}
               </div>
               <GiftGrid
                 gifts={gifts}
@@ -470,17 +492,19 @@ export default function GiftSend() {
 
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-sm font-medium">Message (optional)</label>
+              <label className="text-sm font-medium">{tg.messageLabel}</label>
               {recipientLang && senderLang && recipientLang !== senderLang && (
                 <span className="text-[11px] text-muted-foreground">
-                  Will be auto-translated to {recipientLang === "es" ? "Spanish" : "English"} for the recipient. Both versions are saved.
+                  {fmt(tg.messageHint, {
+                    lang: recipientLang === "es" ? tg.langSpanish : tg.langEnglish,
+                  })}
                 </span>
               )}
             </div>
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="A short note to send with the gift…"
+              placeholder={tg.messagePlaceholder}
               rows={3}
               maxLength={500}
               disabled={!eligibility?.eligible || recipientEligible === false || isBlocked}
@@ -491,21 +515,22 @@ export default function GiftSend() {
             <div className="text-sm text-muted-foreground">
               {selected ? (
                 <>
-                  Selected: <span className="font-medium text-foreground">{selected.name}</span>
+                  {tg.selectedLabel}{" "}
+                  <span className="font-medium text-foreground">{selected.name}</span>
                   {kind === "virtual" && (
-                    <> · {selected.credit_cost} credits</>
+                    <> · {fmt(tg.creditsSuffix, { n: selected.credit_cost })}</>
                   )}
                 </>
               ) : (
-                "Pick a gift to continue"
+                tg.pickToContinue
               )}
             </div>
             <Button onClick={handleSend} disabled={!canSend}>
               {sending
-                ? "Sending…"
+                ? tg.sending
                 : kind === "virtual"
-                  ? "Send virtual gift"
-                  : "Place physical gift order"}
+                  ? tg.sendVirtual
+                  : tg.sendPhysical}
             </Button>
           </div>
         </div>
@@ -523,8 +548,10 @@ function GiftGrid({
   disabled: boolean;
   kind: "virtual" | "physical";
 }) {
+  const { t } = useI18n();
+  const tg = t.gift;
   if (gifts.length === 0) {
-    return <div className="text-sm text-muted-foreground">No gifts available.</div>;
+    return <div className="text-sm text-muted-foreground">{tg.noGifts}</div>;
   }
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -546,7 +573,9 @@ function GiftGrid({
             <div className="flex items-center justify-between">
               <div className="font-medium">{g.name}</div>
               <Badge variant="outline" className="text-xs">
-                {kind === "virtual" ? `${g.credit_cost} cr` : "Physical"}
+                {kind === "virtual"
+                  ? fmt(tg.creditsShort, { n: g.credit_cost })
+                  : tg.physicalShort}
               </Badge>
             </div>
             {g.description && (
@@ -570,24 +599,28 @@ function RecipientStatusCard({
   aBlocksB: boolean;
   bBlocksA: boolean;
 }) {
+  const { t } = useI18n();
+  const r = t.gift.recipient;
   const blocked = aBlocksB || bBlocksA;
   const ok = eligible === true && !blocked;
 
   const reasons: string[] = [];
-  if (aBlocksB) reasons.push("You have blocked this user. Unblock them to send a gift.");
-  if (bBlocksA) reasons.push("This user has blocked you.");
+  if (aBlocksB) reasons.push(r.youBlocked);
+  if (bBlocksA) reasons.push(r.theyBlocked);
   if (eligible === false) {
     if (trust?.account_status && trust.account_status !== "active") {
-      reasons.push(`Recipient account is ${trust.account_status}.`);
+      reasons.push(fmt(r.accountStatus, { status: trust.account_status }));
     }
     if ((trust?.badge_count ?? 0) < 1) {
-      reasons.push("Recipient has no active trust badge yet.");
+      reasons.push(r.noBadge);
     }
     if ((trust?.recent_severe_flags ?? 0) > 0) {
-      reasons.push("Recipient has recent serious moderation flags.");
+      reasons.push(r.severeFlags);
     }
-    if (reasons.length === 0) reasons.push("Recipient is not eligible to receive gifts right now.");
+    if (reasons.length === 0) reasons.push(r.notEligibleGeneric);
   }
+
+  const badgeCount = trust?.badge_count ?? 0;
 
   return (
     <div
@@ -610,7 +643,7 @@ function RecipientStatusCard({
         )}
         <div className="text-sm flex-1">
           <div className="font-medium">
-            Recipient status
+            {r.title}
             {recipient?.display_name && (
               <span className="text-muted-foreground font-normal"> · {recipient.display_name}</span>
             )}
@@ -626,7 +659,7 @@ function RecipientStatusCard({
                   : "border-destructive/40 text-destructive",
               )}
             >
-              {eligible ? "Eligible to receive gifts" : "Not eligible"}
+              {eligible ? r.eligible : r.notEligible}
             </Badge>
             <Badge
               variant="outline"
@@ -637,32 +670,31 @@ function RecipientStatusCard({
                   : "border-emerald-500/40 text-emerald-700 dark:text-emerald-400",
               )}
             >
-              {blocked ? "Blocked" : "No blocks"}
+              {blocked ? r.blocked : r.noBlocks}
             </Badge>
             {trust && (
               <Badge variant="outline" className="text-xs">
-                {trust.badge_count} trust badge{trust.badge_count === 1 ? "" : "s"}
-                {trust.concierge_verified ? " · Concierge" : ""}
+                {fmt(r.badges, { n: badgeCount, plural: badgeCount === 1 ? "" : "s" })}
+                {trust.concierge_verified ? r.conciergeSuffix : ""}
               </Badge>
             )}
             {trust?.account_status && (
               <Badge variant="outline" className="text-xs">
-                Account: {trust.account_status}
+                {fmt(r.accountLabel, { status: trust.account_status })}
               </Badge>
             )}
           </div>
 
           {reasons.length > 0 && (
             <ul className="mt-3 text-muted-foreground list-disc pl-5 space-y-0.5">
-              {reasons.map((r, i) => (
-                <li key={i}>{r}</li>
+              {reasons.map((reason, i) => (
+                <li key={i}>{reason}</li>
               ))}
             </ul>
           )}
 
           <div className="mt-2 text-[11px] text-muted-foreground">
-            Server-verified via <code>is_eligible_for_gifting</code> and{" "}
-            <code>is_blocked_between</code>.
+            {r.verifiedHint}
           </div>
         </div>
       </div>
@@ -685,6 +717,8 @@ function GiftConfirmation({
   threadId: string | null;
   onSendAnother: () => void;
 }) {
+  const { t, lang } = useI18n();
+  const c = t.gift.confirmation;
   const { orderId, createdAt, kind, gift, message, creditCost } = confirmation;
   const shortId = orderId.slice(0, 8).toUpperCase();
   const created = new Date(createdAt);
@@ -692,22 +726,21 @@ function GiftConfirmation({
   async function copyId() {
     try {
       await navigator.clipboard.writeText(orderId);
-      toast.success("Order ID copied");
+      toast.success(c.copied);
     } catch {
-      toast.error("Could not copy");
+      toast.error(c.copyFailed);
     }
   }
 
   const physicalSteps = [
-    { icon: CheckCircle2, label: "Order received", done: true,
-      desc: "We've recorded your order and notified our concierge team." },
-    { icon: Clock, label: "Eligibility & payment review", done: false,
-      desc: "Our team confirms eligibility and processes payment within 1 business day." },
-    { icon: Package, label: "Sourcing & packing", done: false,
-      desc: "We source the gift locally in Venezuela and prepare it for delivery." },
-    { icon: Truck, label: "Hand-delivered", done: false,
-      desc: "A vetted courier delivers the gift and shares a delivery confirmation." },
+    { icon: CheckCircle2, label: c.steps.received, done: true, desc: c.steps.receivedDesc },
+    { icon: Clock, label: c.steps.review, done: false, desc: c.steps.reviewDesc },
+    { icon: Package, label: c.steps.sourcing, done: false, desc: c.steps.sourcingDesc },
+    { icon: Truck, label: c.steps.delivered, done: false, desc: c.steps.deliveredDesc },
   ];
+
+  // Split track hint around {link} placeholder
+  const trackParts = c.trackHint.split("{link}");
 
   return (
     <div className="space-y-6">
@@ -715,23 +748,21 @@ function GiftConfirmation({
         <CheckCircle2 className="h-6 w-6 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
         <div className="text-sm flex-1">
           <div className="font-medium text-base">
-            {kind === "virtual" ? "Virtual gift sent" : "Physical gift order created"}
+            {kind === "virtual" ? c.virtualSentTitle : c.physicalCreatedTitle}
           </div>
           <div className="text-muted-foreground mt-1">
-            {kind === "virtual"
-              ? "Your recipient will see it in their gift inbox right away."
-              : "Our concierge team will take it from here. You'll get updates as the order progresses."}
+            {kind === "virtual" ? c.virtualSentBody : c.physicalCreatedBody}
           </div>
         </div>
       </div>
 
       <div className="rounded-lg border border-border bg-card p-5">
         <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-3">
-          Order details
+          {c.orderDetails}
         </div>
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
           <div>
-            <dt className="text-muted-foreground">Order ID</dt>
+            <dt className="text-muted-foreground">{c.orderId}</dt>
             <dd className="mt-0.5 flex items-center gap-2">
               <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">{shortId}</code>
               <button
@@ -739,49 +770,49 @@ function GiftConfirmation({
                 className="text-xs text-primary hover:underline"
                 type="button"
               >
-                Copy full ID
+                {c.copyFull}
               </button>
             </dd>
           </div>
           <div>
-            <dt className="text-muted-foreground">Created</dt>
-            <dd className="mt-0.5">{created.toLocaleString()}</dd>
+            <dt className="text-muted-foreground">{c.created}</dt>
+            <dd className="mt-0.5">{created.toLocaleString(lang === "es" ? "es-VE" : "en-US")}</dd>
           </div>
           <div>
-            <dt className="text-muted-foreground">Type</dt>
+            <dt className="text-muted-foreground">{c.type}</dt>
             <dd className="mt-0.5">
               <Badge variant="outline" className="text-xs">
                 {kind === "virtual" ? (
-                  <><Sparkles className="h-3 w-3 mr-1" /> Virtual</>
+                  <><Sparkles className="h-3 w-3 mr-1" /> {t.gift.tabVirtual}</>
                 ) : (
-                  <><Package className="h-3 w-3 mr-1" /> Physical</>
+                  <><Package className="h-3 w-3 mr-1" /> {t.gift.tabPhysical}</>
                 )}
               </Badge>
             </dd>
           </div>
           <div>
-            <dt className="text-muted-foreground">Gift</dt>
+            <dt className="text-muted-foreground">{c.gift}</dt>
             <dd className="mt-0.5 font-medium">{gift.name}</dd>
           </div>
           {gift.description && (
             <div className="sm:col-span-2">
-              <dt className="text-muted-foreground">Description</dt>
+              <dt className="text-muted-foreground">{c.description}</dt>
               <dd className="mt-0.5 text-muted-foreground">{gift.description}</dd>
             </div>
           )}
           {kind === "virtual" && creditCost !== null && (
             <div>
-              <dt className="text-muted-foreground">Cost</dt>
-              <dd className="mt-0.5">{creditCost} credits</dd>
+              <dt className="text-muted-foreground">{c.cost}</dt>
+              <dd className="mt-0.5">{fmt(t.gift.creditsSuffix, { n: creditCost })}</dd>
             </div>
           )}
           <div>
-            <dt className="text-muted-foreground">Recipient</dt>
+            <dt className="text-muted-foreground">{c.recipient}</dt>
             <dd className="mt-0.5">{recipient?.display_name ?? "—"}</dd>
           </div>
           {message && (
             <div className="sm:col-span-2">
-              <dt className="text-muted-foreground">Your message</dt>
+              <dt className="text-muted-foreground">{c.yourMessage}</dt>
               <dd className="mt-0.5 italic text-foreground">"{message}"</dd>
             </div>
           )}
@@ -791,7 +822,7 @@ function GiftConfirmation({
       {kind === "physical" && (
         <div className="rounded-lg border border-border bg-card p-5">
           <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-4">
-            What happens next
+            {c.whatsNext}
           </div>
           <ol className="space-y-4">
             {physicalSteps.map((step, i) => {
@@ -819,8 +850,11 @@ function GiftConfirmation({
             })}
           </ol>
           <div className="mt-4 text-xs text-muted-foreground border-t border-border pt-3">
-            You'll get in-app notifications at each step. Track this order anytime from{" "}
-            <Link to="/dashboard" className="text-primary hover:underline">My gifts</Link> on your dashboard.
+            {trackParts[0]}
+            <Link to="/dashboard" className="text-primary hover:underline">
+              {c.myGiftsLink}
+            </Link>
+            {trackParts[1] ?? ""}
           </div>
         </div>
       )}
@@ -828,28 +862,25 @@ function GiftConfirmation({
       {kind === "virtual" && (
         <div className="rounded-lg border border-border bg-card p-5 text-sm">
           <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2">
-            What happens next
+            {c.whatsNext}
           </div>
-          <p className="text-muted-foreground">
-            The gift is already visible in your recipient's inbox. They'll receive an in-app
-            notification. You can keep the conversation going from your messages.
-          </p>
+          <p className="text-muted-foreground">{c.virtualNext}</p>
         </div>
       )}
 
       <div className="flex flex-wrap gap-2 pt-2">
         <Button onClick={onSendAnother} variant="default">
-          <Gift className="h-4 w-4 mr-1.5" /> Send another gift
+          <Gift className="h-4 w-4 mr-1.5" /> {c.sendAnother}
         </Button>
         {threadId && (
           <Button asChild variant="outline">
             <Link to={`/messages?thread=${threadId}`}>
-              <MessageCircle className="h-4 w-4 mr-1.5" /> Back to chat
+              <MessageCircle className="h-4 w-4 mr-1.5" /> {c.backToChat}
             </Link>
           </Button>
         )}
         <Button asChild variant="ghost">
-          <Link to="/dashboard">View My gifts</Link>
+          <Link to="/dashboard">{c.viewMyGifts}</Link>
         </Button>
       </div>
     </div>
