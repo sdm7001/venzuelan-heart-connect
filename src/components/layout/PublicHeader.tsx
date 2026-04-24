@@ -26,7 +26,7 @@ export function PublicHeader() {
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
       <div className="container flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-          <img src={logo} alt="MatchVenezuelan" className="h-9 w-9 object-contain" />
+          <img src={logo} alt="MatchVenezuelan" className="h-28 w-28 object-contain" />
           <span className="text-burgundy">MatchVenezuelan</span>
         </Link>
 

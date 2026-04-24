@@ -10,7 +10,7 @@ export function PublicFooter() {
         <div className="grid gap-10 md:grid-cols-4">
           <div>
             <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold">
-              <img src={logo} alt="MatchVenezuelan" className="h-9 w-9 object-contain" />
+              <img src={logo} alt="MatchVenezuelan" className="h-28 w-28 object-contain" />
               <span className="text-burgundy">MatchVenezuelan</span>
             </Link>
             <p className="mt-3 text-sm text-muted-foreground">{t.footer.tagline}</p>
