@@ -167,6 +167,12 @@ export default function GiftSend() {
       });
     }
 
+    setEligibility({
+      eligible: !!eligible && reasons.length === 0,
+      reasons,
+      trust,
+    });
+
     // Load sender's preferred language
     const { data: senderProfile } = await supabase
       .from("profiles")
