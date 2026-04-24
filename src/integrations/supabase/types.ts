@@ -143,6 +143,84 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_posts: {
+        Row: {
+          body_en: string
+          body_es: string
+          category: string
+          created_at: string
+          excerpt_en: string
+          excerpt_es: string
+          faq_en: Json
+          faq_es: Json
+          featured: boolean
+          hero_image_url: string | null
+          id: string
+          internal_links_en: Json
+          internal_links_es: Json
+          meta_description_en: string
+          meta_description_es: string
+          published: boolean
+          published_at: string
+          reading_minutes: number
+          slug: string
+          tags: string[]
+          title_en: string
+          title_es: string
+          updated_at: string
+        }
+        Insert: {
+          body_en: string
+          body_es: string
+          category: string
+          created_at?: string
+          excerpt_en: string
+          excerpt_es: string
+          faq_en?: Json
+          faq_es?: Json
+          featured?: boolean
+          hero_image_url?: string | null
+          id?: string
+          internal_links_en?: Json
+          internal_links_es?: Json
+          meta_description_en: string
+          meta_description_es: string
+          published?: boolean
+          published_at?: string
+          reading_minutes?: number
+          slug: string
+          tags?: string[]
+          title_en: string
+          title_es: string
+          updated_at?: string
+        }
+        Update: {
+          body_en?: string
+          body_es?: string
+          category?: string
+          created_at?: string
+          excerpt_en?: string
+          excerpt_es?: string
+          faq_en?: Json
+          faq_es?: Json
+          featured?: boolean
+          hero_image_url?: string | null
+          id?: string
+          internal_links_en?: Json
+          internal_links_es?: Json
+          meta_description_en?: string
+          meta_description_es?: string
+          published?: boolean
+          published_at?: string
+          reading_minutes?: number
+          slug?: string
+          tags?: string[]
+          title_en?: string
+          title_es?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       chat_threads: {
         Row: {
           created_at: string
