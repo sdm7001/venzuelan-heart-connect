@@ -63,11 +63,14 @@ export function PolicyReacceptanceGate() {
         return;
       }
 
+      // Pull every prior acceptance for this user across all policies/versions
+      // so we can tell each missing policy from a brand-new one and surface
+      // the previously-accepted version to the user.
       const { data, error } = await supabase
         .from("policy_acknowledgements")
-        .select("policy_key")
+        .select("policy_key, policy_version, accepted_at")
         .eq("user_id", user.id)
-        .eq("policy_version", config.policy_version);
+        .order("accepted_at", { ascending: false });
 
       if (!active) return;
 
@@ -79,12 +82,28 @@ export function PolicyReacceptanceGate() {
         return;
       }
 
-      const haveKeys = new Set((data ?? []).map(r => r.policy_key));
-      const missing = POLICIES.some(p => !haveKeys.has(p.key));
-      if (missing) {
+      const rows = (data ?? []) as { policy_key: string; policy_version: string; accepted_at: string }[];
+      const haveCurrent = new Set(
+        rows.filter(r => r.policy_version === config.policy_version).map(r => r.policy_key)
+      );
+      const missing = new Set<PolicyKey>(
+        POLICIES.map(p => p.key).filter(k => !haveCurrent.has(k))
+      );
+
+      // Most recent prior (non-current) ack per policy.
+      const prior: Partial<Record<PolicyKey, PriorAck>> = {};
+      for (const r of rows) {
+        if (r.policy_version === config.policy_version) continue;
+        const k = r.policy_key as PolicyKey;
+        if (!prior[k]) prior[k] = { policy_version: r.policy_version, accepted_at: r.accepted_at };
+      }
+
+      if (missing.size > 0) {
         setAccepted({ tos: false, privacy: false, aup: false, anti_solicitation: false });
       }
-      setNeedsReaccept(missing);
+      setMissingKeys(missing);
+      setPriorByKey(prior);
+      setNeedsReaccept(missing.size > 0);
       setReady(true);
     }
 
