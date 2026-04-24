@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
+import { PolicyReacceptanceGate } from "@/components/policy/PolicyReacceptanceGate";
 
 export function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading, onboardingCompleted } = useAuth();
@@ -10,7 +11,12 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   if (onboardingCompleted === false && loc.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <PolicyReacceptanceGate />
+    </>
+  );
 }
 
 export function RequireStaff({ children }: { children: ReactNode }) {
@@ -18,7 +24,12 @@ export function RequireStaff({ children }: { children: ReactNode }) {
   if (loading) return <FullPageLoader />;
   if (!user) return <Navigate to="/auth" replace />;
   if (!isStaff) return <Navigate to="/dashboard" replace />;
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <PolicyReacceptanceGate />
+    </>
+  );
 }
 
 function FullPageLoader() {

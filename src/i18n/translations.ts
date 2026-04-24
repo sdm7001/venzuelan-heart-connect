@@ -110,6 +110,13 @@ const _translations = {
       readPolicy: "Read",
       mustAcceptAll: "Please accept all four policies to continue.",
     },
+    policyReaccept: {
+      title: "Our policies have been updated",
+      sub: "Please review and re-accept to continue using MatchVenezuelan (version {version}).",
+      confirm: "Accept and continue",
+      confirmed: "Thanks — your acknowledgement has been recorded.",
+      signOut: "Sign out instead",
+    },
     dashboard: {
       welcome: "Welcome back",
       complete: "Complete your profile to start meeting people.",
@@ -249,6 +256,13 @@ const _translations = {
       complete: "Completa tu perfil para comenzar a conocer personas.",
       placeholderTitle: "El descubrimiento llega pronto",
       placeholderBody: "P0 sienta la base. El feed de descubrimiento, los matches y la mensajería se abren en la próxima fase.",
+    },
+    policyReaccept: {
+      title: "Hemos actualizado nuestras políticas",
+      sub: "Por favor revisa y vuelve a aceptar para continuar usando MatchVenezuelan (versión {version}).",
+      confirm: "Aceptar y continuar",
+      confirmed: "Gracias — registramos tu aceptación.",
+      signOut: "Cerrar sesión",
     },
     messages: {
       title: "Mensajes",
