@@ -285,7 +285,7 @@ export default function Auth() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="flex min-w-0 items-start gap-2 text-sm text-muted-foreground">
+                    <label className="flex min-w-0 items-start gap-2 text-sm text-foreground/80">
                       <Checkbox
                         checked={rulesOk}
                         onCheckedChange={(v) => { setRulesOk(!!v); clearError("rulesAccepted"); }}

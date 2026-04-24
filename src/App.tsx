@@ -37,6 +37,7 @@ import AdminPosts from "./pages/admin/AdminPosts";
 import AdminPostEditor from "./pages/admin/AdminPostEditor";
 import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
 import NotFound from "./pages/NotFound";
+import A11yAudit from "./pages/__A11yAudit";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,9 @@ const App = () => (
               <Route path="/admin/posts" element={<RequireStaff><AdminPosts /></RequireStaff>} />
               <Route path="/admin/posts/:id" element={<RequireStaff><AdminPostEditor /></RequireStaff>} />
               <Route path="/admin/link-suggestions" element={<RequireStaff><AdminLinkSuggestions /></RequireStaff>} />
+
+              {/* Dev-only audit harness — safe to remove. */}
+              {import.meta.env.DEV && <Route path="/__a11y" element={<A11yAudit />} />}
 
               <Route path="*" element={<NotFound />} />
               </Routes>
