@@ -28,17 +28,22 @@ type Row = {
   hasCurrent: boolean;
   acceptedAt: string | null;     // when current-version acceptance completed (latest of the 4)
   acceptedKeys: number;          // count of distinct policies accepted at current version
+  missingKeys: PolicyKey[];      // which policies are missing for the active version
   lastPriorAt: string | null;    // most recent acceptance at any prior version
   lastPriorVersion: string | null;
 };
 
 export default function AdminPolicyAcceptance() {
+  const { user: adminUser } = useAuth();
   const [config, setConfig] = useState<PolicyConfig>(DEFAULT_POLICY_CONFIG);
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [acks, setAcks] = useState<AckRow[]>([]);
   const [audit, setAudit] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  // Selection of blocked users for the bulk "send reminder" action.
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [sending, setSending] = useState(false);
 
   async function load() {
     setLoading(true);
