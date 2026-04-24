@@ -61,6 +61,10 @@ vi.mock("@/i18n/I18nProvider", () => ({
         previewTitle: "Preview",
         openInNewTab: "open",
       },
+      policyReacceptErrors: {
+        auditFailedTitle: "Acceptance saved",
+        auditFailedBody: "Saved but logging failed.",
+      },
     },
   }),
 }));
@@ -108,6 +112,15 @@ vi.mock("@/integrations/supabase/client", () => ({
   },
 }));
 
+const toastSuccess = vi.fn();
+const toastError = vi.fn();
+vi.mock("sonner", () => ({
+  toast: {
+    success: (...args: any[]) => toastSuccess(...args),
+    error: (...args: any[]) => toastError(...args),
+  },
+}));
+
 import { PolicyReacceptanceGate } from "./PolicyReacceptanceGate";
 
 function renderGate() {
@@ -122,6 +135,9 @@ beforeEach(() => {
   ackRows = [];
   upsertSpy.mockClear();
   insertSpy.mockClear();
+  insertSpy.mockImplementation(async () => ({ error: null }));
+  toastSuccess.mockClear();
+  toastError.mockClear();
   mockAuth.user = { id: "user-1" } as any;
   mockAuth.onboardingCompleted = true;
 });
@@ -312,5 +328,37 @@ describe("PolicyReacceptanceGate", () => {
     await waitFor(() => {
       expect(container.querySelector("[role='dialog']")).toBeNull();
     });
+  });
+
+  it("keeps the upsert and dismisses the gate even if the audit insert fails after retries", async () => {
+    ackRows = [
+      { policy_key: "tos", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "privacy", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "aup", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "anti_solicitation", policy_version: "v1", accepted_at: "2024-01-01" },
+    ];
+    // Audit insert always fails — simulates a persistent backend error.
+    insertSpy.mockImplementation(async () => ({ error: { message: "boom" } }));
+
+    renderGate();
+    expect(await screen.findByText("Policies updated")).toBeInTheDocument();
+    screen.getAllByRole("checkbox").forEach(cb => fireEvent.click(cb));
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+
+    // Upsert succeeded once; gate dismisses; audit retried 3 times then gave up.
+    await waitFor(() => expect(insertSpy).toHaveBeenCalledTimes(3));
+    expect(upsertSpy).toHaveBeenCalledTimes(1);
+
+    await waitFor(() => {
+      expect(screen.queryByText("Policies updated")).not.toBeInTheDocument();
+    });
+
+    // User sees the safe "saved but logging failed" toast, not a hard error
+    // about the audit table.
+    expect(toastError).toHaveBeenCalledWith(
+      "Acceptance saved",
+      expect.objectContaining({ description: "Saved but logging failed." }),
+    );
+    expect(toastSuccess).not.toHaveBeenCalled();
   });
 });

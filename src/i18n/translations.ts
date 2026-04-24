@@ -126,6 +126,10 @@ const _translations = {
       previewTitle: "Preview the updated policies",
       openInNewTab: "Open in a new tab",
     },
+    policyReacceptErrors: {
+      auditFailedTitle: "Acceptance saved",
+      auditFailedBody: "Your acceptance was recorded, but we couldn't log the audit event. You can keep using the app — our team has been notified.",
+    },
     compliance: {
       title: "Account compliance",
       headlineOk: "All policies acknowledged",
@@ -303,6 +307,10 @@ const _translations = {
       upToDate: "Al día",
       previewTitle: "Vista previa de las políticas actualizadas",
       openInNewTab: "Abrir en una pestaña nueva",
+    },
+    policyReacceptErrors: {
+      auditFailedTitle: "Aceptación guardada",
+      auditFailedBody: "Tu aceptación se registró, pero no pudimos registrar el evento de auditoría. Puedes seguir usando la app — nuestro equipo ha sido notificado.",
     },
     compliance: {
       title: "Cumplimiento de la cuenta",

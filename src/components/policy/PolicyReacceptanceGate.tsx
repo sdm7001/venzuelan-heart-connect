@@ -191,21 +191,45 @@ export function PolicyReacceptanceGate() {
       return toast.error("Could not record acceptance — please refresh and try again.");
     }
 
-    const { error: auditErr } = await supabase.from("audit_events").insert({
+    // Audit insert is best-effort with bounded exponential backoff. The user's
+    // acceptance has already been persisted by the upsert above, so a failure
+    // here must NOT roll back the gate or block the user — it only degrades
+    // observability. We retry transient errors a few times, then surface a
+    // safe "saved but logging failed" state and unblock the app.
+    const auditPayload = {
       actor_id: user.id,
       subject_id: user.id,
       category: "policy",
       action: "policy_reaccepted",
       metadata: metadata as any,
-    });
-    if (auditErr) {
-      setBusy(false);
-      return toast.error(auditErr.message);
+    };
+    const MAX_ATTEMPTS = 3;
+    let auditErr: { message: string } | null = null;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      const { error } = await supabase.from("audit_events").insert(auditPayload);
+      if (!error) { auditErr = null; break; }
+      auditErr = error;
+      if (attempt < MAX_ATTEMPTS) {
+        // 200ms, 400ms backoff. Keep total wait well under a perceivable hang.
+        await new Promise(r => setTimeout(r, 200 * attempt));
+      }
     }
 
     setBusy(false);
     setNeedsReaccept(false);
-    toast.success(t.policyReaccept.confirmed);
+    if (auditErr) {
+      // eslint-disable-next-line no-console
+      console.error(
+        "[PolicyReacceptanceGate] audit insert failed after retries",
+        auditErr,
+        auditPayload,
+      );
+      toast.error(t.policyReacceptErrors.auditFailedTitle, {
+        description: t.policyReacceptErrors.auditFailedBody,
+      });
+    } else {
+      toast.success(t.policyReaccept.confirmed);
+    }
   }
 
   // Render nothing until the first check has fully resolved — eliminates
