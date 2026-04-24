@@ -135,6 +135,24 @@
   .transition-smooth { transition: all 0.3s var(--transition-smooth); }
   .text-balance { text-wrap: balance; }
 
+  /* Tap target — guarantees 44x44 hit area on touch devices.
+     Uses an invisible ::before overlay so the visual size of small icons /
+     inline links isn't affected, only the clickable area. */
+  .tap-target { position: relative; touch-action: manipulation; }
+  @media (pointer: coarse) {
+    .tap-target::before {
+      content: "";
+      position: absolute;
+      inset: 50% 50% 50% 50%;
+      width: 44px;
+      height: 44px;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      inset: auto;
+    }
+  }
+
   /* Header tokens — use these instead of hardcoding height/padding.
      The row uses h-header AND max-h-header to enforce a strict ceiling.
      Children use h-header-row to share the logo's vertical center line. */
