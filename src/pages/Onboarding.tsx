@@ -30,7 +30,7 @@ const POLICIES: { key: PolicyKey; href: string; labelKey: "acceptTos" | "acceptP
 
 export default function Onboarding() {
   const { t } = useI18n();
-  const { user } = useAuth();
+  const { user, refreshProfile } = useAuth();
   const nav = useNavigate();
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -69,8 +69,12 @@ export default function Onboarding() {
       onboarding_completed: true,
       community_rules_accepted_at: new Date().toISOString(),
     }).eq("id", user.id);
+    if (error) {
+      setBusy(false);
+      return toast.error(error.message);
+    }
+    await refreshProfile();
     setBusy(false);
-    if (error) return toast.error(error.message);
     toast.success(t.profile.saved);
     nav("/dashboard");
   }
