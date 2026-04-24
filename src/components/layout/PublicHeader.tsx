@@ -24,7 +24,7 @@ export function PublicHeader() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
-      <div className="container flex items-center justify-between gap-header py-header min-h-header">
+      <div className="container flex h-header items-center justify-between gap-header">
         <Link to="/" className="flex items-center gap-2 font-display text-base font-semibold tracking-tight sm:text-lg">
           <img src={logo} alt="MatchVenezuelan" className="size-header-logo object-contain" />
           <span className="text-burgundy whitespace-nowrap">MatchVenezuelan</span>
@@ -57,7 +57,11 @@ export function PublicHeader() {
           )}
         </div>
 
-        <button className="md:hidden" onClick={() => setOpen(v => !v)} aria-label="menu">
+        <button
+          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground hover:bg-accent md:hidden"
+          onClick={() => setOpen(v => !v)}
+          aria-label="menu"
+        >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
