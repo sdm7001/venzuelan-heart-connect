@@ -40,6 +40,8 @@ export default function GiftSend() {
   const threadId = params.get("thread");
 
   const [recipient, setRecipient] = useState<any>(null);
+  const [recipientLang, setRecipientLang] = useState<"en" | "es" | null>(null);
+  const [senderLang, setSenderLang] = useState<"en" | "es" | null>(null);
   const [gifts, setGifts] = useState<GiftRow[]>([]);
   const [eligibility, setEligibility] = useState<Eligibility | null>(null);
   const [recipientEligible, setRecipientEligible] = useState<boolean | null>(null);
