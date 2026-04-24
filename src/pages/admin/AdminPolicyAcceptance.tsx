@@ -270,6 +270,7 @@ export default function AdminPolicyAcceptance() {
         sortField: state.sortField,
         sortDir: state.sortDir,
         policyVersion: config.policy_version,
+        onboardedFilter,
       },
     });
     setExporting(null);
