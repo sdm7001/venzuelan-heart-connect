@@ -41,6 +41,7 @@ const _translations = {
       s4Body: "When you're ready, our safety guidance helps you take the next step with confidence.",
     },
     safety: {
+      eyebrow: "Safety first",
       title: "Your safety is the product.",
       sub: "Not a feature, not a checkbox. The reason MatchVenezuelan exists.",
       itemsTitle: "What we do",
@@ -174,6 +175,7 @@ const _translations = {
       s4Body: "Cuando estés listo, nuestras guías de seguridad te ayudan a dar el siguiente paso con confianza.",
     },
     safety: {
+      eyebrow: "Seguridad primero",
       title: "Tu seguridad es el producto.",
       sub: "No es una función, no es una casilla. Es la razón por la que existe MatchVenezuelan.",
       itemsTitle: "Lo que hacemos",
