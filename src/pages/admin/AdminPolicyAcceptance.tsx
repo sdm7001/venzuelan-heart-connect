@@ -342,12 +342,33 @@ export default function AdminPolicyAcceptance() {
           label="Total onboarded members" value={totals.total} />
       </div>
 
-      <div className="mt-6 mb-3 flex items-center gap-2">
-        <div className="relative flex-1 max-w-sm">
+      <div className="mt-6 mb-3 flex flex-wrap items-center gap-2">
+        <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search className="pointer-events-none absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or user id" className="pl-8" />
         </div>
+
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span>Onboarded</span>
+          <Select value={onboardedFilter}
+            onValueChange={(v) => setOnboardedFilter(v as "all" | "before" | "after")}>
+            <SelectTrigger className="h-8 w-44"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Anytime</SelectItem>
+              <SelectItem value="before" disabled={!bumpedAt}>Before last bump</SelectItem>
+              <SelectItem value="after" disabled={!bumpedAt}>After last bump</SelectItem>
+            </SelectContent>
+          </Select>
+          {bumpedAt ? (
+            <span className="hidden sm:inline">
+              · bumped {format(new Date(bumpedAt), "PP")}
+            </span>
+          ) : (
+            <span className="hidden sm:inline italic">· no bump on record</span>
+          )}
+        </div>
+
         <div className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
           <span>Rows per page</span>
           <Select value={String(pageSize)} onValueChange={(v) => setPageSize(Number(v))}>
