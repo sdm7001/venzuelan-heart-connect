@@ -911,6 +911,51 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_mfa_challenges: {
+        Row: {
+          attempts: number
+          code_hash: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          locked_at: string | null
+          max_attempts: number
+          request_ip: string | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          code_hash: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          locked_at?: string | null
+          max_attempts?: number
+          request_ip?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          code_hash?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          locked_at?: string | null
+          max_attempts?: number
+          request_ip?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       staff_step_up: {
         Row: {
           method: string
@@ -1143,6 +1188,13 @@ export type Database = {
       }
       is_eligible_for_gifting: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      issue_staff_mfa_challenge: {
+        Args: { _code_hash: string; _ip?: string; _user_agent?: string }
+        Returns: {
+          challenge_id: string
+          expires_at: string
+        }[]
+      }
       recompute_trust_state: { Args: { _user_id: string }; Returns: undefined }
       user_trust_state: {
         Args: { _user_id: string }
@@ -1151,6 +1203,13 @@ export type Database = {
           badge_count: number
           concierge_verified: boolean
           recent_severe_flags: number
+        }[]
+      }
+      verify_staff_mfa_challenge: {
+        Args: { _code_hash: string }
+        Returns: {
+          reason: string
+          verified: boolean
         }[]
       }
     }
