@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Heart, LayoutDashboard, Users, Flag, ShieldAlert, BadgeCheck, CreditCard, Activity, FileText, ClipboardCheck, History, LogOut, ShieldCheck, Newspaper, Link2 } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
+import { StaffMfaGate } from "@/auth/StaffMfaGate";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
 import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
@@ -30,6 +31,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const { signOut } = useAuth();
   const nav = useNavigate();
   return (
+    <StaffMfaGate>
     <div className="min-h-screen bg-muted/30">
       <ImpersonationBanner />
       <div className="md:grid md:grid-cols-[260px_1fr]">
@@ -72,6 +74,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       </div>
       </div>
     </div>
+    </StaffMfaGate>
   );
 }
 
