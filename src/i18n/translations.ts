@@ -320,6 +320,11 @@ const _translations = {
       missingSummary: "Faltantes para la versión actual: {keys}",
       lastAcknowledged: "Última aceptación",
       neverAcknowledged: "Nunca aceptada",
+      lastReacceptTitle: "Última re-aceptación",
+      lastReacceptAt: "Re-aceptada el",
+      newlyAcknowledged: "Aceptadas por primera vez",
+      alreadyAcknowledged: "Ya estaban al día",
+      noKeys: "Ninguna",
     },
     messages: {
       title: "Mensajes",
