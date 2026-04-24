@@ -9,6 +9,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { LifeBuoy, Mail } from "lucide-react";
+
+const SUPPORT_EMAIL = "support@matchvenezuelan.com";
+
+type CtaKind = "safety" | "billing" | "privacy" | "verification" | "account" | "general" | "none";
 
 type CategoryKey = "about" | "verification" | "messaging" | "safety" | "billing" | "privacy";
 
