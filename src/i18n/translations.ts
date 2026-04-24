@@ -308,6 +308,7 @@ const _translations = {
         copyFailed: "Could not copy",
       },
     },
+    profile: {
       title: "My profile", save: "Save changes", saved: "Profile saved",
     },
     safetyTools: {
