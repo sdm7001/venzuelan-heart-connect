@@ -19,15 +19,12 @@ const PAGE_SIZE = 20;
 
 const STATUS_OPTIONS = [
   "created",
-  "pending_payment",
   "paid",
-  "processing",
-  "shipped",
-  "delivered",
-  "completed",
-  "failed",
+  "blocked_by_moderation",
+  "fulfilled",
   "refunded",
   "canceled",
+  "failed",
 ] as const;
 type StatusFilter = "all" | (typeof STATUS_OPTIONS)[number];
 
