@@ -103,14 +103,11 @@ function cosineLike(a: Map<string, number>, b: Map<string, number>): number {
   return dot / (Math.sqrt(na) * Math.sqrt(nb) + 1e-9);
 }
 
-serve_handler();
-
-function serve_handler() {
-  Deno.serve(async (req) => {
-    if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-    if (req.method !== "POST") {
-      return json({ error: "method not allowed" }, 405);
-    }
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method !== "POST") {
+    return json({ error: "method not allowed" }, 405);
+  }
 
     try {
       const body = await req.json().catch(() => ({}));
