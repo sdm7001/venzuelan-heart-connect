@@ -2,7 +2,7 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo } from "@/seo/seo";
 
-type Section = { heading: string; items: string[] };
+type Section = { readonly heading: string; readonly items: readonly string[] };
 type Key = "tos" | "privacy" | "aup" | "antiSolicit";
 
 export function LegalPage({ titleKey }: { titleKey: Key }) {
@@ -20,11 +20,11 @@ export function LegalPage({ titleKey }: { titleKey: Key }) {
     aup: t.legal.aupBody,
     antiSolicit: t.legal.antiBody,
   };
-  const sectionsMap: Record<Key, Section[]> = {
-    tos: t.legal.tosSections as Section[],
-    privacy: t.legal.privacySections as Section[],
-    aup: t.legal.aupSections as Section[],
-    antiSolicit: t.legal.antiSections as Section[],
+  const sectionsMap: Record<Key, readonly Section[]> = {
+    tos: t.legal.tosSections,
+    privacy: t.legal.privacySections,
+    aup: t.legal.aupSections,
+    antiSolicit: t.legal.antiSections,
   };
   const pathMap: Record<Key, string> = {
     tos: "/legal/terms",
