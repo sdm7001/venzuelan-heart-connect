@@ -635,16 +635,90 @@ const _translations = {
     },
     faq: {
       title: "Preguntas frecuentes",
-      q1: "¿MatchVenezuelan es un sitio de escorts o de adultos?",
-      a1: "No. MatchVenezuelan es estrictamente para relaciones serias y citas internacionales respetuosas. La solicitación, los servicios de escort y el contenido para adultos están prohibidos y se eliminan.",
-      q2: "¿Quién puede unirse?",
-      a2: "Adultos de 18 años o más que busquen una relación seria, matrimonio o una conexión intercultural genuina.",
-      q3: "¿Realmente es gratis para las mujeres?",
-      a3: "Sí. Las mujeres siempre se unen y usan las funciones principales gratis. Los hombres navegan gratis; los niveles de comunicación pagos llegarán en una fase posterior.",
-      q4: "¿Qué idiomas se admiten?",
-      a4: "Inglés y español, con paridad total de funciones. Puedes cambiar de idioma en cualquier momento.",
-      q5: "¿Cómo reporto a alguien?",
-      a5: "Cada perfil, foto y mensaje tiene un botón de reporte. Los reportes llegan a nuestro equipo de moderación en minutos.",
+      intro:
+        "Todo lo que las personas nuevas preguntan sobre MatchVenezuelan: cómo funcionan el emparejamiento, la verificación, los regalos, los pagos y la seguridad. Se actualiza a medida que lanzamos nuevas funciones.",
+      entries: [
+        {
+          q: "¿MatchVenezuelan es un sitio de escorts, sugar o para adultos?",
+          a: "No. MatchVenezuelan es estrictamente una plataforma de relaciones serias para personas adultas que buscan matrimonio, pareja o una conexión intercultural genuina. La solicitación, los servicios de escort, los acuerdos sugar planteados como transacciones y el contenido para adultos están explícitamente prohibidos por nuestros Términos, nuestra Política de Uso Aceptable y nuestra Política Antiestafa / Anti-Solicitación. Las cuentas que infringen estas reglas se eliminan y pueden ser reportadas a las autoridades.",
+        },
+        {
+          q: "¿Quién puede unirse a la plataforma?",
+          a: "Personas adultas de 18 años o más que busquen una relación seria, matrimonio o una conexión intercultural genuina. Debes tener capacidad legal para celebrar contratos en tu país, no estar en un registro de delincuentes sexuales ni en una lista de sanciones, y no haber sido baneada de una cuenta anterior de MatchVenezuelan. No permitimos cuentas de pareja ni cuentas compartidas: una persona, un perfil.",
+        },
+        {
+          q: "¿Realmente es gratis para las mujeres?",
+          a: "Sí. Las mujeres siempre se unen, navegan, hacen match, envían mensajes y usan las funciones de seguridad principales de forma gratuita. Servicios premium como verificación concierge, posicionamiento prioritario o apoyo en eventos presenciales pueden ser opcionales, pero nunca son obligatorios. Los hombres navegan gratis y desbloquean niveles de comunicación pagos en una fase posterior; los precios se muestran con claridad antes de pagar.",
+        },
+        {
+          q: "¿Qué idiomas admite la plataforma?",
+          a: "Inglés y español, con paridad total de funciones. Cada página, correo, FAQ, documento legal, mensaje en la app y notificación está disponible en ambos idiomas. Puedes cambiar el idioma en cualquier momento desde el encabezado o tu configuración, y el cambio se mantiene entre sesiones en el mismo dispositivo.",
+        },
+        {
+          q: "¿Cómo verifican a las personas?",
+          a: "Ofrecemos varias capas de verificación: verificación de foto (un selfie en vivo comparado con las fotos del perfil), verificación social (vincular un perfil social real), verificación de identidad (documento oficial revisado por una persona), verificación de ingresos (para quienes desean mostrar transparencia financiera) y verificación concierge (una entrevista humana que confirma que la persona es quien dice ser). Cada verificación aprobada otorga una insignia de confianza visible en el perfil.",
+        },
+        {
+          q: "¿Qué significan las insignias de confianza en un perfil?",
+          a: "Cada insignia representa un paso de verificación distinto que una persona real o nuestros controles automatizados completaron: foto verificada, identidad verificada, perfil social verificado, ingresos verificados o verificación concierge. Las insignias solo aparecen mientras siguen activas; si la evidencia se revoca o la cuenta se suspende, la insignia se retira. Más insignias suelen indicar un perfil más revisado, pero no sustituyen tu propio criterio.",
+        },
+        {
+          q: "¿Cómo funcionan los mensajes?",
+          a: "Cuando dos personas muestran interés mutuo se abre un hilo de chat entre ambas. Los mensajes se analizan en busca de señales de seguridad (estafas, contacto fuera de la plataforma, acoso, solicitación sexual) antes de ser entregados y pueden retenerse para moderación si algo parece riesgoso. Puedes bloquear o reportar a la otra persona desde cualquier hilo; el bloqueo es mutuo e inmediato.",
+        },
+        {
+          q: "¿Cómo reporto a alguien?",
+          a: "Cada perfil, foto y mensaje tiene un botón de reporte. Puedes reportar por acoso, estafas, perfiles falsos, pedidos de dinero fuera de la plataforma, solicitación sexual, sospecha de menores de edad o cualquier otra infracción. Los reportes llegan a nuestro equipo de moderación en minutos. Te avisamos cuando se toma una acción sobre un reporte que enviaste y los casos graves se escalan a las autoridades cuando corresponde.",
+        },
+        {
+          q: "¿Qué pasa después de que bloqueo o reporto a una persona?",
+          a: "El bloqueo es instantáneo: la otra persona ya no puede ver tu perfil, escribirte ni interactuar con tu contenido, y tú dejas de ver el suyo. El reporte abre un caso de moderación independiente del bloqueo: nuestro equipo revisa la evidencia y puede emitir una advertencia, restringir funciones, suspender o cancelar la cuenta de forma permanente. Las violaciones reiteradas o graves se registran en el historial del usuario.",
+        },
+        {
+          q: "¿Cómo previene MatchVenezuelan las estafas románticas?",
+          a: "Con varias capas: verificación de identidad y foto, detección asistida por IA de patrones de estafa (urgencia, traslado fuera de la plataforma, pedidos de dinero, lenguaje guionizado), moderación humana, revisión obligatoria para cuentas nuevas en dispositivos sospechosos, filtros de palabras clave de pago en la mensajería y una política estricta de que ningún miembro del equipo ni ninguna otra persona en la plataforma debe pedirte dinero. Lee la Política Antiestafa para ver la lista completa de señales de alerta.",
+        },
+        {
+          q: "¿Alguien me pedirá dinero alguna vez en la plataforma?",
+          a: "No. El equipo de MatchVenezuelan nunca te pedirá dinero, tarjetas de regalo, criptomonedas ni transferencias, y ninguna persona legítima debería hacerlo tampoco. Cualquier pedido de dinero —para emergencias, boletos de avión, aduanas, hospitales, negocios o 'demostrar tu amor'— es una estafa. Detente, no envíes nada y reporta la conversación de inmediato. Tratamos los pedidos de dinero como una infracción de máxima gravedad.",
+        },
+        {
+          q: "¿Cómo funcionan los regalos?",
+          a: "Puedes enviar regalos digitales (instantáneos, basados en créditos) o regalos físicos (curados, gestionados por proveedores asociados). Cada regalo crea una orden con una línea de tiempo de estado: creada, pagada, aceptada, en preparación, entregada. Las personas pueden rechazar un regalo, y los regalos físicos están sujetos a las reglas de envío y aduana del país de la receptora. Las órdenes de regalo, incluido el mensaje que escribas, son visibles para el equipo de moderación.",
+        },
+        {
+          q: "¿Cómo funcionan los créditos y las suscripciones?",
+          a: "Los créditos son una moneda prepaga dentro de la app que se usa para regalos digitales y ciertas funciones de comunicación. Las suscripciones desbloquean beneficios recurrentes como mensajería extendida, filtros avanzados y soporte prioritario. Ambos se cobran a través de nuestro proveedor de pagos, los precios se muestran antes de comprar y tu saldo y tu historial de facturación están siempre visibles en tu cuenta. Los créditos y los regalos digitales no son reembolsables, salvo cuando la ley lo exige (por ejemplo, el derecho de retracto de 14 días en la UE cuando aplica).",
+        },
+        {
+          q: "¿Cómo cancelo mi suscripción o elimino mi cuenta?",
+          a: "Puedes cancelar tu suscripción en cualquier momento desde Configuración → Facturación: conservas el acceso hasta el final del período pago en curso y no se te volverá a cobrar. Para eliminar tu cuenta, ve a Configuración → Privacidad → Eliminar cuenta. Retiramos tu perfil, fotos y mensajes de la vista pública de inmediato y eliminamos tus datos personales en un plazo de 30 días, salvo lo que estamos legalmente obligados a conservar (por ejemplo, prevención de fraude o registros fiscales).",
+        },
+        {
+          q: "¿Mis fotos privadas seguirán siendo privadas?",
+          a: "Sí. Las fotos se dividen en públicas, principal y privadas. Las fotos privadas nunca aparecen en búsquedas o listados: solo son visibles para las personas a las que les des acceso explícito, una por una, y puedes revocar el acceso en cualquier momento. Todas las fotos pasan por moderación antes de mostrarse a alguien, y hacer capturas de pantalla de las fotos privadas de otra persona para compartirlas en otro lugar es una infracción de los Términos.",
+        },
+        {
+          q: "¿Cómo se manejan mis datos personales?",
+          a: "Recopilamos solo lo necesario para ofrecer una experiencia de matchmaking segura: información de cuenta, datos de perfil que decidas compartir, fotos, mensajes, datos de facturación e información básica del dispositivo para prevenir fraudes. Nunca vendemos tus datos. Puedes pedir una exportación completa, corregir errores o solicitar la eliminación en cualquier momento desde Configuración → Privacidad. Lee la Política de Privacidad para ver retención, sub-procesadores y tus derechos bajo el RGPD y leyes similares.",
+        },
+        {
+          q: "¿Se recomienda o se desaconseja conocerse en persona?",
+          a: "Apoyamos a quienes deciden conocerse en persona después de construir una verdadera confianza en línea: ese es justamente el sentido de una plataforma de relaciones serias. Recomendamos firmemente tomarse tiempo: hacer varias videollamadas primero, buscar las fotos de la otra persona en internet, avisar a una amistad o familiar dónde estarás, encontrarse en un lugar público y nunca viajar para un primer encuentro sin un plan claro y con tus propios fondos para regresar. La página de Seguridad tiene una lista completa para el primer encuentro.",
+        },
+        {
+          q: "¿Qué pasa si no completo el onboarding?",
+          a: "La mayoría de las funciones (navegar, hacer match, mensajería, regalos, verificación) requieren un perfil completo y las normas de la comunidad aceptadas. Hasta terminar el onboarding verás una lista guiada en tu pantalla de inicio. Nunca cobramos ni activamos suscripciones automáticas a cuentas que no terminaron el onboarding, y puedes retomar desde donde lo dejaste.",
+        },
+        {
+          q: "¿Puedo tener más de una cuenta?",
+          a: "No. Una persona, una cuenta. Operar varias cuentas —por ejemplo, para evadir un baneo, manipular matches o suplantar a alguien— es una infracción grave y resulta en el baneo permanente de todas las cuentas vinculadas. Si genuinamente necesitas recuperar el acceso a una cuenta existente, contacta a soporte en lugar de crear una nueva.",
+        },
+        {
+          q: "¿Cómo contacto a soporte?",
+          a: "Desde cualquier página, abre el menú de Ayuda → Contactar soporte, o escribe a support@matchvenezuelan.com. Nuestro equipo es bilingüe (español e inglés) y procura responder en un día hábil. Las cuestiones de seguridad —estafas activas, amenazas, sospecha de menores o riesgo inminente— tienen prioridad y se atienden en horas, los 7 días de la semana.",
+        },
+      ],
     },
     legal: {
       tos: "Términos de Servicio", privacy: "Política de Privacidad", aup: "Política de Uso Aceptable",
