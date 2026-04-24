@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Gift, Package, Sparkles, ArrowRight, Clock, Loader2, Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
+import { useI18n } from "@/i18n/I18nProvider";
+import { formatDateTime } from "@/i18n/datetime";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
