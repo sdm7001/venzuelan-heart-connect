@@ -367,8 +367,7 @@ Deno.serve(async (req) => {
       console.error("suggest-internal-links error:", e);
       return json({ error: e instanceof Error ? e.message : "Unknown error" }, 500);
     }
-  });
-}
+});
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
