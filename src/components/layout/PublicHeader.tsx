@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
@@ -12,7 +12,15 @@ export function PublicHeader() {
   const { t } = useI18n();
   const { user, isStaff } = useAuth();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const loc = useLocation();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const links = [
     { to: "/", label: t.nav.home },
@@ -23,7 +31,14 @@ export function PublicHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full backdrop-blur-lg transition-all duration-300",
+        scrolled || open
+          ? "border-b border-border/80 bg-background/95 shadow-card supports-[backdrop-filter]:bg-background/85"
+          : "border-b border-transparent bg-background/40 supports-[backdrop-filter]:bg-background/30",
+      )}
+    >
       <div className="container flex h-header max-h-header items-center justify-between gap-header">
         <Link
           to="/"
