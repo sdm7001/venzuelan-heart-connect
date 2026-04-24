@@ -378,14 +378,38 @@ export default function GiftSend() {
           <ShieldAlert className="h-5 w-5 text-destructive mt-0.5" />
           <div className="text-sm flex-1">
             <div className="font-medium">Gift sending is currently disabled</div>
-            <ul className="mt-1 text-muted-foreground list-disc pl-5 space-y-0.5">
-              {(eligibility?.reasons ?? ["Eligibility check failed."]).map((r, i) => (
-                <li key={i}>{r}</li>
+            <div className="text-muted-foreground mt-0.5">
+              {(eligibility?.reasons.length ?? 0) === 1
+                ? "Here's what's blocking you and what to do next."
+                : `${eligibility?.reasons.length ?? 0} things are blocking gift sending. Resolve each to continue.`}
+            </div>
+
+            <ul className="mt-3 space-y-2">
+              {(eligibility?.reasons ?? []).map((r) => (
+                <li
+                  key={r.code}
+                  className="rounded-md border border-destructive/20 bg-background/40 p-3"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="font-medium text-foreground">{r.title}</div>
+                      <div className="text-muted-foreground mt-0.5">{r.detail}</div>
+                      <div className="text-[11px] text-muted-foreground mt-1 font-mono">
+                        code: {r.code}
+                      </div>
+                    </div>
+                    {r.next && (
+                      <Button asChild size="sm" variant="outline" className="shrink-0">
+                        <Link to={r.next.to}>{r.next.label}</Link>
+                      </Button>
+                    )}
+                  </div>
+                </li>
               ))}
+              {(eligibility?.reasons.length ?? 0) === 0 && (
+                <li className="text-muted-foreground">Eligibility check failed.</li>
+              )}
             </ul>
-            <Button asChild size="sm" variant="outline" className="mt-3">
-              <Link to="/verification">Get verified</Link>
-            </Button>
           </div>
         </div>
       )}
