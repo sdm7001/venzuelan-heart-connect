@@ -3,10 +3,33 @@ import { Heart, ShieldCheck, Globe2, Sparkles, Users, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useSeo, SITE_NAME, SITE_URL } from "@/seo/seo";
 import heroImg from "@/assets/hero-portrait.jpg";
 
 export default function Home() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  useSeo(
+    {
+      title: `${SITE_NAME} — ${t.hero.title}`,
+      titleAbsolute: true,
+      description: t.hero.sub,
+      path: "/",
+      lang,
+      type: "website",
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: SITE_NAME,
+        url: SITE_URL,
+        potentialAction: {
+          "@type": "SearchAction",
+          target: `${SITE_URL}/resources?q={search_term_string}`,
+          "query-input": "required name=search_term_string",
+        },
+      },
+    },
+    [lang],
+  );
   return (
     <PublicLayout>
       {/* HERO */}

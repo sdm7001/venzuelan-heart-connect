@@ -1,9 +1,10 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useSeo, faqLd } from "@/seo/seo";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function FAQ() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const items = [
     [t.faq.q1, t.faq.a1],
     [t.faq.q2, t.faq.a2],
@@ -11,6 +12,16 @@ export default function FAQ() {
     [t.faq.q4, t.faq.a4],
     [t.faq.q5, t.faq.a5],
   ];
+  useSeo(
+    {
+      title: t.faq.title,
+      description: items.map(([q]) => q).join(" · ").slice(0, 155),
+      path: "/faq",
+      lang,
+      jsonLd: faqLd(items.map(([q, a]) => ({ q, a }))),
+    },
+    [lang],
+  );
   return (
     <PublicLayout>
       <section className="container py-20 md:py-28">

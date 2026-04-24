@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/i18n/datetime";
 import { supabase } from "@/integrations/supabase/client";
 import type { Lang } from "@/i18n/translations";
+import { useSeo, blogPostingLd, breadcrumbLd } from "@/seo/seo";
 
 type Post = {
   slug: string;
@@ -171,54 +172,45 @@ export default function Resources() {
 
   const filtered = sorted;
 
-  // Document-head SEO (title, description, canonical, hreflang, og, JSON-LD)
-  useEffect(() => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const url = `${origin}${CANONICAL_PATH}`;
+  // Centralized SEO: title, description, canonical, hreflang, OG, Twitter, JSON-LD
+  const blogLd = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: `${copy.metaTitle}`,
+    description: copy.metaDescription,
+    inLanguage: lang === "en" ? "en-US" : "es-ES",
+    blogPost: sorted.map((p) => {
+      const i = p.i18n[lang];
+      return blogPostingLd({
+        title: i.title,
+        description: i.excerpt,
+        url: `${typeof window !== "undefined" ? window.location.origin : ""}/resources/${p.slug}`,
+        lang,
+        publishedAt: p.publishedAt,
+        section: copy.categories[p.category],
+        tags: i.keywords,
+      });
+    }),
+  };
 
-    document.title = copy.metaTitle;
-    document.documentElement.lang = lang;
-
-    upsertMeta("name", "description", copy.metaDescription);
-    upsertMeta("property", "og:title", copy.metaTitle);
-    upsertMeta("property", "og:description", copy.metaDescription);
-    upsertMeta("property", "og:type", "website");
-    upsertMeta("property", "og:url", url);
-    upsertMeta("name", "twitter:card", "summary_large_image");
-    upsertMeta("name", "twitter:title", copy.metaTitle);
-    upsertMeta("name", "twitter:description", copy.metaDescription);
-
-    upsertLink("canonical", url);
-    upsertHreflang("en", `${origin}${CANONICAL_PATH}`);
-    upsertHreflang("es", `${origin}${CANONICAL_PATH}`);
-    upsertHreflang("x-default", `${origin}${CANONICAL_PATH}`);
-
-    // JSON-LD: Blog with itemList of posts (server-friendly even if SPA)
-    const ld = {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      name: copy.metaTitle,
+  useSeo(
+    {
+      title: copy.metaTitle,
+      titleAbsolute: true,
       description: copy.metaDescription,
-      url,
-      inLanguage: lang === "en" ? "en-US" : "es-ES",
-      blogPost: sorted.map(p => {
-        const i = p.i18n[lang];
-        return {
-          "@type": "BlogPosting",
-          headline: i.title,
-          description: i.excerpt,
-          datePublished: p.publishedAt,
-          inLanguage: lang === "en" ? "en-US" : "es-ES",
-          keywords: i.keywords.join(", "),
-          articleSection: copy.categories[p.category],
-          mainEntityOfPage: `${url}#${p.slug}`,
-          author: { "@type": "Organization", name: "MatchVenezuelan" },
-          publisher: { "@type": "Organization", name: "MatchVenezuelan" },
-        };
-      }),
-    };
-    upsertJsonLd("resources-blog-jsonld", ld);
-  }, [lang, copy, sorted]);
+      path: CANONICAL_PATH,
+      lang,
+      type: "website",
+      jsonLd: [
+        blogLd,
+        breadcrumbLd([
+          { name: lang === "en" ? "Home" : "Inicio", url: "/" },
+          { name: copy.eyebrow, url: CANONICAL_PATH },
+        ]),
+      ],
+    },
+    [lang, sorted.length],
+  );
 
   const categories: ("all" | Post["category"])[] = ["all", "trust", "culture", "relationships", "safety"];
 
@@ -403,52 +395,4 @@ function FeedCard({
   );
 }
 
-/* ---------- Document head helpers ---------- */
-
-function upsertMeta(attr: "name" | "property", key: string, content: string) {
-  if (typeof document === "undefined") return;
-  let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(attr, key);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("content", content);
-}
-
-function upsertLink(rel: string, href: string) {
-  if (typeof document === "undefined") return;
-  let el = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]:not([hreflang])`);
-  if (!el) {
-    el = document.createElement("link");
-    el.setAttribute("rel", rel);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("href", href);
-}
-
-function upsertHreflang(hreflang: string, href: string) {
-  if (typeof document === "undefined") return;
-  let el = document.head.querySelector<HTMLLinkElement>(
-    `link[rel="alternate"][hreflang="${hreflang}"]`,
-  );
-  if (!el) {
-    el = document.createElement("link");
-    el.setAttribute("rel", "alternate");
-    el.setAttribute("hreflang", hreflang);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("href", href);
-}
-
-function upsertJsonLd(id: string, data: unknown) {
-  if (typeof document === "undefined") return;
-  let el = document.getElementById(id) as HTMLScriptElement | null;
-  if (!el) {
-    el = document.createElement("script");
-    el.id = id;
-    el.type = "application/ld+json";
-    document.head.appendChild(el);
-  }
-  el.textContent = JSON.stringify(data);
-}
+/* SEO helpers moved to @/seo/seo */

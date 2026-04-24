@@ -1,9 +1,11 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useSeo } from "@/seo/seo";
 import { UserPlus, BadgeCheck, MessageCircle, Plane } from "lucide-react";
 
 export default function HowItWorks() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  useSeo({ title: t.how.title, description: t.how.sub, path: "/how-it-works", lang }, [lang]);
   const steps = [
     { icon: <UserPlus className="h-5 w-5" />, title: t.how.s1Title, body: t.how.s1Body },
     { icon: <BadgeCheck className="h-5 w-5" />, title: t.how.s2Title, body: t.how.s2Body },
