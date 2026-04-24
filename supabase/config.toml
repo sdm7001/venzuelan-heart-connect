@@ -1,1 +1,4 @@
 project_id = "txuwrnczbisfpnpiouqk"
+
+[functions.suggest-internal-links]
+verify_jwt = false
