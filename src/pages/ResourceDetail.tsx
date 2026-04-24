@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { ArrowLeft, BookOpen } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronRight, Link2 } from "lucide-react";
+import { toast } from "sonner";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -146,16 +147,52 @@ export default function ResourceDetail() {
   const links = lang === "en" ? post.internal_links_en : post.internal_links_es;
   const catLabel = CAT_LABEL[post.category]?.[lang] ?? post.category;
 
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/resources/${post.slug}` : `/resources/${post.slug}`;
+  const shareText = encodeURIComponent(title);
+  const shareHref = encodeURIComponent(shareUrl);
+  const onCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success(lang === "en" ? "Link copied" : "Enlace copiado");
+    } catch {
+      toast.error(lang === "en" ? "Couldn't copy" : "No se pudo copiar");
+    }
+  };
+  const onNativeShare = async () => {
+    if (typeof navigator !== "undefined" && (navigator as any).share) {
+      try {
+        await (navigator as any).share({ title, text: desc, url: shareUrl });
+      } catch { /* user cancelled */ }
+    } else {
+      onCopyLink();
+    }
+  };
+
   return (
     <PublicLayout>
       <article className="container max-w-3xl py-14 md:py-20">
-        <Link
-          to="/resources"
-          className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+        <nav
+          aria-label={lang === "en" ? "Breadcrumb" : "Migas de pan"}
+          className="text-xs text-muted-foreground"
         >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          {lang === "en" ? "All resources" : "Todos los recursos"}
-        </Link>
+          <ol className="flex flex-wrap items-center gap-1.5">
+            <li>
+              <Link to="/" className="hover:text-foreground">
+                {lang === "en" ? "Home" : "Inicio"}
+              </Link>
+            </li>
+            <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
+            <li>
+              <Link to="/resources" className="hover:text-foreground">
+                {lang === "en" ? "Resources" : "Recursos"}
+              </Link>
+            </li>
+            <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
+            <li className="text-foreground/80 line-clamp-1 max-w-[14rem]" aria-current="page">
+              {title}
+            </li>
+          </ol>
+        </nav>
 
         <header className="mt-6">
           <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -178,6 +215,59 @@ export default function ResourceDetail() {
           <p className="mt-3 text-lg text-muted-foreground leading-relaxed">
             {excerpt}
           </p>
+
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="text-xs uppercase tracking-wide text-muted-foreground">
+              {lang === "en" ? "Share" : "Compartir"}
+            </span>
+            <Button asChild size="sm" variant="outline" className="h-8">
+              <a
+                href={`https://twitter.com/intent/tweet?text=${shareText}&url=${shareHref}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X / Twitter"
+              >
+                X
+              </a>
+            </Button>
+            <Button asChild size="sm" variant="outline" className="h-8">
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${shareHref}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                Facebook
+              </a>
+            </Button>
+            <Button asChild size="sm" variant="outline" className="h-8">
+              <a
+                href={`https://api.whatsapp.com/send?text=${shareText}%20${shareHref}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+              >
+                WhatsApp
+              </a>
+            </Button>
+            <Button asChild size="sm" variant="outline" className="h-8">
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareHref}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+              >
+                LinkedIn
+              </a>
+            </Button>
+            <Button size="sm" variant="outline" className="h-8" onClick={onCopyLink}>
+              <Link2 className="mr-1.5 h-3.5 w-3.5" />
+              {lang === "en" ? "Copy link" : "Copiar enlace"}
+            </Button>
+            <Button size="sm" variant="ghost" className="h-8" onClick={onNativeShare}>
+              {lang === "en" ? "Share…" : "Compartir…"}
+            </Button>
+          </div>
         </header>
 
         <div className="prose prose-neutral mt-10 max-w-none prose-headings:font-display prose-headings:text-burgundy prose-a:text-primary">
