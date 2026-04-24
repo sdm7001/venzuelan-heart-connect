@@ -88,9 +88,9 @@ export default function Home() {
 
       {/* CTA */}
       <section className="container pb-20">
-        <div className="relative overflow-hidden rounded-3xl gradient-romance px-8 py-14 text-center text-primary-foreground shadow-elegant md:px-16 md:py-20">
-          <h3 className="font-display text-3xl font-semibold md:text-4xl text-balance">{t.home.ctaTitle}</h3>
-          <p className="mx-auto mt-3 max-w-xl text-primary-foreground/90">{t.home.ctaSub}</p>
+        <div className="relative overflow-hidden rounded-3xl gradient-romance px-6 py-12 text-center text-primary-foreground shadow-elegant sm:px-10 md:px-16 md:py-20">
+          <h3 className="font-display text-2xl font-semibold sm:text-3xl md:text-4xl text-balance">{t.home.ctaTitle}</h3>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/90 sm:text-base">{t.home.ctaSub}</p>
           <Button asChild size="lg" variant="secondary" className="mt-7"><Link to="/auth?mode=join">{t.hero.ctaPrimary}</Link></Button>
         </div>
       </section>
