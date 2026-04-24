@@ -24,10 +24,10 @@ export function PublicHeader() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
-      <div className="container flex items-center justify-between gap-4 py-4 sm:py-5 md:py-6">
-        <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-          <img src={logo} alt="MatchVenezuelan" className="h-28 w-28 object-contain" />
-          <span className="text-burgundy">MatchVenezuelan</span>
+      <div className="container flex items-center justify-between gap-3 py-3 sm:gap-4 sm:py-4 md:py-5">
+        <Link to="/" className="flex items-center gap-2 font-display text-base font-semibold tracking-tight sm:text-lg">
+          <img src={logo} alt="MatchVenezuelan" className="h-12 w-12 object-contain sm:h-16 sm:w-16 md:h-20 md:w-20" />
+          <span className="text-burgundy whitespace-nowrap">MatchVenezuelan</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
