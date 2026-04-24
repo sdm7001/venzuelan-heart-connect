@@ -61,6 +61,11 @@ export default function AdminPolicyAcceptance() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [pageSize, setPageSize] = useState(50);
+  // Filter members by their profile.created_at relative to the most recent
+  // policy_version_bumped audit event. The server resolves the cutoff so the
+  // UI doesn't have to know when the bump happened.
+  const [onboardedFilter, setOnboardedFilter] = useState<"all" | "before" | "after">("all");
+  const [bumpedAt, setBumpedAt] = useState<string | null>(null);
 
   const [blockedState, setBlockedState] = useState({
     page: 1, sortField: "missing_count" as SortField, sortDir: "desc" as SortDir,
@@ -81,7 +86,8 @@ export default function AdminPolicyAcceptance() {
     return () => clearTimeout(t);
   }, [search]);
 
-  // Load policy config + audit once.
+  // Load policy config + audit, and subscribe to app_settings changes so a
+  // version bump auto-refreshes the page.
   useEffect(() => {
     fetchPolicyConfig().then(setConfig);
     supabase
@@ -91,6 +97,29 @@ export default function AdminPolicyAcceptance() {
       .order("created_at", { ascending: false })
       .limit(200)
       .then(({ data }) => setAudit((data as AuditRow[]) ?? []));
+
+    // Realtime: refetch the policy config the moment the row changes. Falls
+    // back to a 60s poll for environments where realtime isn't enabled on
+    // app_settings (the publication membership is opt-in).
+    const channel = supabase
+      .channel("admin-policy-config")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "app_settings", filter: "key=eq.policy_config" },
+        () => fetchPolicyConfig().then(setConfig),
+      )
+      .subscribe();
+    const poll = setInterval(() => {
+      fetchPolicyConfig().then((next) => {
+        setConfig((prev) =>
+          prev.policy_version === next.policy_version ? prev : next,
+        );
+      });
+    }, 60_000);
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(poll);
+    };
   }, []);
 
   const loadPage = useCallback(
@@ -107,6 +136,7 @@ export default function AdminPolicyAcceptance() {
           sortField: state.sortField,
           sortDir: state.sortDir,
           policyVersion: config.policy_version,
+          onboardedFilter,
         },
       });
       if (error || data?.error) {
@@ -122,9 +152,10 @@ export default function AdminPolicyAcceptance() {
         loading: false,
       }));
       if (data.totals) setTotals(data.totals);
+      if (typeof data.bumpedAt !== "undefined") setBumpedAt(data.bumpedAt);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pageSize, debouncedSearch, config.policy_version,
+    [pageSize, debouncedSearch, config.policy_version, onboardedFilter,
      blockedState.page, blockedState.sortField, blockedState.sortDir,
      completedState.page, completedState.sortField, completedState.sortDir],
   );
@@ -132,11 +163,29 @@ export default function AdminPolicyAcceptance() {
   // Refetch the active tab whenever its inputs change.
   useEffect(() => { loadPage(activeTab); }, [activeTab, loadPage]);
 
-  // Reset to page 1 when search or page size changes.
+  // When the policy version changes (e.g. an admin in another tab bumps it),
+  // refetch *both* tabs and the audit timeline so totals/charts stay accurate
+  // without the user needing to click Refresh.
   useEffect(() => {
     setBlockedState((s) => ({ ...s, page: 1 }));
     setCompletedState((s) => ({ ...s, page: 1 }));
-  }, [debouncedSearch, pageSize]);
+    loadPage("blocked");
+    loadPage("completed");
+    supabase
+      .from("audit_events")
+      .select("id, actor_id, subject_id, action, metadata, created_at")
+      .eq("category", "policy")
+      .order("created_at", { ascending: false })
+      .limit(200)
+      .then(({ data }) => setAudit((data as AuditRow[]) ?? []));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config.policy_version]);
+
+  // Reset to page 1 when search, page size, or onboarding filter changes.
+  useEffect(() => {
+    setBlockedState((s) => ({ ...s, page: 1 }));
+    setCompletedState((s) => ({ ...s, page: 1 }));
+  }, [debouncedSearch, pageSize, onboardedFilter]);
 
   function refresh() {
     loadPage(activeTab);
@@ -221,6 +270,7 @@ export default function AdminPolicyAcceptance() {
         sortField: state.sortField,
         sortDir: state.sortDir,
         policyVersion: config.policy_version,
+        onboardedFilter,
       },
     });
     setExporting(null);
@@ -293,12 +343,33 @@ export default function AdminPolicyAcceptance() {
           label="Total onboarded members" value={totals.total} />
       </div>
 
-      <div className="mt-6 mb-3 flex items-center gap-2">
-        <div className="relative flex-1 max-w-sm">
+      <div className="mt-6 mb-3 flex flex-wrap items-center gap-2">
+        <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search className="pointer-events-none absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or user id" className="pl-8" />
         </div>
+
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span>Onboarded</span>
+          <Select value={onboardedFilter}
+            onValueChange={(v) => setOnboardedFilter(v as "all" | "before" | "after")}>
+            <SelectTrigger className="h-8 w-44"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Anytime</SelectItem>
+              <SelectItem value="before" disabled={!bumpedAt}>Before last bump</SelectItem>
+              <SelectItem value="after" disabled={!bumpedAt}>After last bump</SelectItem>
+            </SelectContent>
+          </Select>
+          {bumpedAt ? (
+            <span className="hidden sm:inline">
+              · bumped {format(new Date(bumpedAt), "PP")}
+            </span>
+          ) : (
+            <span className="hidden sm:inline italic">· no bump on record</span>
+          )}
+        </div>
+
         <div className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
           <span>Rows per page</span>
           <Select value={String(pageSize)} onValueChange={(v) => setPageSize(Number(v))}>
