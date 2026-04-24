@@ -1,4 +1,10 @@
+# MatchVenezuelan — robots policy
+# Localized content is served on the same URLs (en + es alternates declared in sitemap)
+
 User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
 Allow: /
 
 User-agent: Bingbot
@@ -19,5 +25,20 @@ Disallow: /onboarding
 Disallow: /messages
 Disallow: /gifts/
 Disallow: /profile
+Disallow: /auth
 
-Sitemap: https://www.matchvenezulan.com/sitemap.xml
+# Crawl-delay for noisy bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Sitemaps (sitemap index points to per-language children)
+Sitemap: https://www.matchvenezuelan.com/sitemap.xml
+Sitemap: https://www.matchvenezuelan.com/sitemap-en.xml
+Sitemap: https://www.matchvenezuelan.com/sitemap-es.xml
+
+# RSS feeds for resources
+Sitemap: https://www.matchvenezuelan.com/rss.xml
+Sitemap: https://www.matchvenezuelan.com/rss-es.xml

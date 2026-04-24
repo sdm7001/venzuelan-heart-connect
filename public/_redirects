@@ -1,3 +1,5 @@
-/sitemap.xml  https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=sitemap  200
-/rss.xml      https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=rss&lang=en  200
-/rss-es.xml   https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=rss&lang=es  200
+/sitemap.xml      https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=sitemap-index  200
+/sitemap-en.xml   https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=sitemap&lang=en  200
+/sitemap-es.xml   https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=sitemap&lang=es  200
+/rss.xml          https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=rss&lang=en  200
+/rss-es.xml       https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=rss&lang=es  200
