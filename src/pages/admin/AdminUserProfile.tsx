@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchPolicyConfig, PolicyConfig, PolicyKey, DEFAULT_POLICY_CONFIG } from "@/lib/policyConfig";
+import { UserManagementPanel } from "@/components/admin/UserManagementPanel";
 
 type Profile = {
   id: string; display_name: string | null; account_status: string;
@@ -153,6 +154,19 @@ export default function AdminUserProfile() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Admin: account status + verification badges */}
+          <UserManagementPanel
+            userId={profile.id}
+            currentStatus={profile.account_status as any}
+            onChanged={() => {
+              // Refresh just the status badge in the identity card.
+              supabase.from("profiles")
+                .select("id, display_name, account_status, country, city, gender, created_at, community_rules_accepted_at")
+                .eq("id", profile.id).maybeSingle()
+                .then(({ data }) => data && setProfile(data as Profile));
+            }}
+          />
 
           {/* Per-policy compliance */}
           <Card>
