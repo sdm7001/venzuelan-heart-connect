@@ -132,6 +132,7 @@ Deno.serve(async (req) => {
         user_id: u.id,
         display_name: u.display_name,
         account_status: u.account_status,
+        created_at: u.created_at,
         has_current: hasCurrent,
         accepted_keys: currentKeys.size,
         missing_keys: POLICY_KEYS.filter((k) => !currentKeys.has(k)),
