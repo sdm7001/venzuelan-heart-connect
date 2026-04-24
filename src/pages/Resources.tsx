@@ -97,58 +97,79 @@ export default function Resources() {
   const { lang } = useI18n();
   const copy = COPY[lang];
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [category, setCategory] = useState<"all" | Post["category"]>("all");
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // Debounce search input → 300ms
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  // Fetch posts from DB with server-side filtering by language, category, and search.
   useEffect(() => {
     let cancel = false;
-    supabase
-      .from("blog_posts")
-      .select("slug,category,reading_minutes,featured,published_at,title_en,excerpt_en,tags,title_es,excerpt_es")
-      .eq("published", true)
-      .order("published_at", { ascending: false })
-      .then(({ data }) => {
-        if (cancel || !data) return;
-        setPosts(
-          data.map((r: any) => ({
-            slug: r.slug,
-            category: r.category,
-            publishedAt: r.published_at,
-            readMin: r.reading_minutes,
-            featured: r.featured,
-            i18n: {
-              en: { title: r.title_en, excerpt: r.excerpt_en, keywords: r.tags ?? [] },
-              es: { title: r.title_es, excerpt: r.excerpt_es, keywords: r.tags ?? [] },
-            },
-          })),
-        );
-      });
-    return () => { cancel = true; };
-  }, []);
+    setLoading(true);
 
-  const sorted = useMemo(
-    () =>
-      [...posts].sort(
-        (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-      ),
-    [posts],
+    let q = supabase
+      .from("blog_posts")
+      .select(
+        "slug,category,reading_minutes,featured,published_at,title_en,excerpt_en,tags,title_es,excerpt_es",
+      )
+      .eq("published", true)
+      .order("published_at", { ascending: false });
+
+    if (category !== "all") q = q.eq("category", category);
+
+    if (debouncedSearch) {
+      // Escape % , and ) which are special in PostgREST or() values.
+      const safe = debouncedSearch
+        .replace(/,/g, " ")
+        .replace(/\(/g, " ")
+        .replace(/\)/g, " ")
+        .replace(/%/g, " ")
+        .trim();
+      const pat = `%${safe}%`;
+      // Search across the active language's title/excerpt + shared tags.
+      const fields =
+        lang === "en"
+          ? [`title_en.ilike.${pat}`, `excerpt_en.ilike.${pat}`, `body_en.ilike.${pat}`]
+          : [`title_es.ilike.${pat}`, `excerpt_es.ilike.${pat}`, `body_es.ilike.${pat}`];
+      q = q.or([...fields, `tags.cs.{${safe}}`].join(","));
+    }
+
+    q.then(({ data }) => {
+      if (cancel) return;
+      const rows = data ?? [];
+      setPosts(
+        rows.map((r: any) => ({
+          slug: r.slug,
+          category: r.category,
+          publishedAt: r.published_at,
+          readMin: r.reading_minutes,
+          featured: r.featured,
+          i18n: {
+            en: { title: r.title_en, excerpt: r.excerpt_en, keywords: r.tags ?? [] },
+            es: { title: r.title_es, excerpt: r.excerpt_es, keywords: r.tags ?? [] },
+          },
+        })),
+      );
+      setLoading(false);
+    });
+
+    return () => { cancel = true; };
+  }, [category, debouncedSearch, lang]);
+
+  const sorted = posts;
+
+  const featured = useMemo(
+    () => (debouncedSearch || category !== "all" ? [] : sorted.filter(p => p.featured).slice(0, 3)),
+    [sorted, debouncedSearch, category],
   );
 
-  const featured = useMemo(() => sorted.filter(p => p.featured).slice(0, 3), [sorted]);
-
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return sorted.filter(p => {
-      if (category !== "all" && p.category !== category) return false;
-      if (!q) return true;
-      const i = p.i18n[lang];
-      return (
-        i.title.toLowerCase().includes(q) ||
-        i.excerpt.toLowerCase().includes(q) ||
-        i.keywords.some(k => k.toLowerCase().includes(q))
-      );
-    });
-  }, [sorted, category, search, lang]);
+  const filtered = sorted;
 
   // Document-head SEO (title, description, canonical, hreflang, og, JSON-LD)
   useEffect(() => {
