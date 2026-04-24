@@ -159,15 +159,16 @@ Deno.serve(async (req) => {
     });
 
     const total = filtered.length;
-    const start = (page - 1) * pageSize;
-    const rows = filtered.slice(start, start + pageSize);
+    const rows = exportAll
+      ? filtered
+      : filtered.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
 
     return json({
       rows,
       total,
-      page,
-      pageSize,
-      pageCount: Math.max(1, Math.ceil(total / pageSize)),
+      page: exportAll ? 1 : page,
+      pageSize: exportAll ? total : pageSize,
+      pageCount: exportAll ? 1 : Math.max(1, Math.ceil(total / pageSize)),
       // Whole-set totals so the stat cards stay accurate regardless of page.
       totals: {
         blocked: aggregated.filter((r) => !r.has_current).length,
