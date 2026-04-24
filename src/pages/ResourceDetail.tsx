@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { ArrowLeft, BookOpen, ChevronRight, Link2, Check } from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronRight, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { Badge } from "@/components/ui/badge";
