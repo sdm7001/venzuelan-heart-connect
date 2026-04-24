@@ -382,7 +382,7 @@ export default function AdminPolicyReaccepts() {
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </Fragment>
               );
             })}
           </TableBody>
