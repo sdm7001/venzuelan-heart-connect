@@ -375,7 +375,14 @@ export default function GiftSend() {
           </Tabs>
 
           <div>
-            <label className="text-sm font-medium block mb-1">Message (optional)</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-sm font-medium">Message (optional)</label>
+              {recipientLang && senderLang && recipientLang !== senderLang && (
+                <span className="text-[11px] text-muted-foreground">
+                  Will be auto-translated to {recipientLang === "es" ? "Spanish" : "English"} for the recipient. Both versions are saved.
+                </span>
+              )}
+            </div>
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
