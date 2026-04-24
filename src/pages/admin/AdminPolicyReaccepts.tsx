@@ -164,7 +164,7 @@ export default function AdminPolicyReaccepts() {
     <AdminLayout>
       <AdminPageHeader
         title="Policy re-accept events"
-        subtitle="Audit trail of every policy_reaccepted event with per-key newly vs already-existed status."
+        sub="Audit trail of every policy_reaccepted event with per-key newly vs already-existed status."
       />
 
       <div className="grid gap-3 sm:grid-cols-3">
