@@ -24,7 +24,7 @@ export function PublicHeader() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
-      <div className="container flex h-16 items-center justify-between gap-4 pt-4">
+      <div className="container flex items-center justify-between gap-4 py-4 sm:py-5 md:py-6">
         <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
           <img src={logo} alt="MatchVenezuelan" className="h-28 w-28 object-contain" />
           <span className="text-burgundy">MatchVenezuelan</span>
