@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sparkles, Save, Trash2, Plus, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { validateBilingualAccept } from "@/seo/linkValidation";
 
 type LinkSuggestion = { label: string; href: string; reason?: string };
 type Candidate = {
