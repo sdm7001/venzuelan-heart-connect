@@ -441,6 +441,42 @@ export type Database = {
         }
         Relationships: []
       }
+      policy_reminders: {
+        Row: {
+          channel: string
+          created_at: string
+          dismissed_at: string | null
+          email_status: string | null
+          id: string
+          missing_keys: string[]
+          policy_version: string
+          sent_by: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          dismissed_at?: string | null
+          email_status?: string | null
+          id?: string
+          missing_keys?: string[]
+          policy_version: string
+          sent_by: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          dismissed_at?: string | null
+          email_status?: string | null
+          id?: string
+          missing_keys?: string[]
+          policy_version?: string
+          sent_by?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       private_photo_permissions: {
         Row: {
           created_at: string
