@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { LanguageToggle } from "./LanguageToggle";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 export function PublicHeader() {
   const { t } = useI18n();
