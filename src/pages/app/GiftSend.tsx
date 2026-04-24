@@ -158,18 +158,71 @@ export default function GiftSend() {
     if (!canSend || !selected) return;
     setSending(true);
 
+    // Auto-translate the message to recipient's preferred language (bilingual rule).
+    let translation: {
+      source_lang: string | null;
+      target_lang: "en" | "es";
+      original: string;
+      translated: string;
+      skipped?: string;
+    } | null = null;
+
+    const trimmed = (message ?? "").trim();
+    const target: "en" | "es" = recipientLang ?? "en";
+
+    if (trimmed.length > 0) {
+      try {
+        const { data: tData, error: tError } = await supabase.functions.invoke(
+          "translate-gift-message",
+          {
+            body: {
+              text: trimmed,
+              target_lang: target,
+              source_hint: senderLang ?? undefined,
+            },
+          },
+        );
+        if (tError) throw tError;
+        if (tData?.error) throw new Error(tData.error);
+        translation = tData;
+      } catch (e: any) {
+        // Non-fatal: still send the gift with original text only.
+        console.warn("Translation failed", e);
+        toast.message("Translation unavailable — sending original message only.");
+      }
+    }
+
+    const finalMessage = translation?.translated ?? (trimmed || null);
+
+    const messageMeta =
+      trimmed.length > 0
+        ? {
+            message: {
+              original: trimmed,
+              original_lang: translation?.source_lang ?? senderLang ?? null,
+              translated: translation?.translated ?? trimmed,
+              translated_lang: target,
+              translation_skipped: translation?.skipped ?? null,
+              translation_provider: translation ? "lovable-ai" : null,
+            },
+          }
+        : {};
+
+    const baseMeta =
+      kind === "physical"
+        ? { fulfillment: "pending_admin", note: "Physical gift requires admin processing" }
+        : {};
+
     const payload: any = {
       sender_id: user!.id,
       recipient_id: recipientId,
       gift_id: selected.id,
       kind,
       thread_id: threadId ?? null,
-      message: message || null,
+      message: finalMessage,
       status: "created",
       credit_cost: kind === "virtual" ? selected.credit_cost : null,
-      metadata: kind === "physical"
-        ? { fulfillment: "pending_admin", note: "Physical gift requires admin processing" }
-        : {},
+      metadata: { ...baseMeta, ...messageMeta },
     };
 
     const { data: inserted, error } = await supabase
