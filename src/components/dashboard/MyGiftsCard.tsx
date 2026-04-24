@@ -87,6 +87,16 @@ export function MyGiftsCard() {
   });
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
+  // Filters
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    return () => window.clearTimeout(t);
+  }, [search]);
+
   // Mark "visited now" when the card mounts with a user, so the next visit
   // compares against this moment.
   useEffect(() => {
@@ -94,16 +104,15 @@ export function MyGiftsCard() {
     window.localStorage.setItem(LAST_VISIT_KEY, String(Date.now()));
   }, [user]);
 
-  // Reset & load first page when user/tab changes
+  // Reset & load first page when user/tab/filters change
   useEffect(() => {
     if (!user) return;
     setOrders([]);
     setEventsByOrder({});
-    setGiftNames({});
     setHasMore(true);
     void loadPage({ reset: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, tab]);
+  }, [user, tab, debouncedSearch, statusFilter]);
 
   const loadPage = useCallback(
     async ({ reset = false }: { reset?: boolean } = {}) => {
