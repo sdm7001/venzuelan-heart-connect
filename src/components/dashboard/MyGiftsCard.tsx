@@ -298,11 +298,13 @@ export function MyGiftsCard() {
                     {/* Status timeline (latest 3 events) */}
                     {events.length > 0 ? (
                       <ol className="mt-3 space-y-1.5">
-                        {events.slice(0, 3).map((e, i) => (
+                        {events.slice(0, 3).map((e, i) => {
+                          const eNew = isUnread(e.created_at);
+                          return (
                           <li key={e.id} className="flex items-start gap-2 text-xs">
                             <span className={cn(
                               "mt-1 h-1.5 w-1.5 rounded-full shrink-0",
-                              i === 0 ? "bg-primary" : "bg-muted-foreground/40"
+                              eNew ? "bg-primary ring-2 ring-primary/30" : i === 0 ? "bg-primary" : "bg-muted-foreground/40"
                             )} />
                             <div className="flex-1">
                               <span className={cn(
@@ -314,6 +316,11 @@ export function MyGiftsCard() {
                               <span className="text-muted-foreground ml-2">
                                 {new Date(e.created_at).toLocaleString()}
                               </span>
+                              {eNew && (
+                                <span className="ml-2 text-[10px] uppercase tracking-wide font-semibold text-primary">
+                                  New
+                                </span>
+                              )}
                               {e.notes && (
                                 <div className="text-muted-foreground mt-0.5">{e.notes}</div>
                               )}
