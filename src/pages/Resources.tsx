@@ -332,7 +332,7 @@ function FeaturedCard({
       <footer className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
         <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, lang)}</time>
         <Button asChild size="sm" variant="ghost" className="h-8">
-          <Link to={`${CANONICAL_PATH}#${post.slug}`}>
+          <Link to={`${CANONICAL_PATH}/${post.slug}`}>
             {copy.read} <ArrowRight className="ml-1 h-3.5 w-3.5" />
           </Link>
         </Button>
