@@ -239,22 +239,24 @@ export default function Resources() {
         </div>
       </section>
 
-      {/* Featured posts */}
-      <section aria-labelledby="featured-heading" className="container py-14 md:py-20">
-        <header className="mb-8 flex items-end justify-between gap-4">
-          <div>
-            <h2 id="featured-heading" className="font-display text-2xl font-semibold flex items-center gap-2">
-              <Star className="h-5 w-5 text-primary" /> {copy.featuredTitle}
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">{copy.featuredSub}</p>
+      {/* Featured posts — hidden when filtering or searching */}
+      {featured.length > 0 && (
+        <section aria-labelledby="featured-heading" className="container py-14 md:py-20">
+          <header className="mb-8 flex items-end justify-between gap-4">
+            <div>
+              <h2 id="featured-heading" className="font-display text-2xl font-semibold flex items-center gap-2">
+                <Star className="h-5 w-5 text-primary" /> {copy.featuredTitle}
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">{copy.featuredSub}</p>
+            </div>
+          </header>
+          <div className="grid gap-6 md:grid-cols-3">
+            {featured.map(p => (
+              <FeaturedCard key={p.slug} post={p} lang={lang} copy={copy} />
+            ))}
           </div>
-        </header>
-        <div className="grid gap-6 md:grid-cols-3">
-          {featured.map(p => (
-            <FeaturedCard key={p.slug} post={p} lang={lang} copy={copy} />
-          ))}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Feed */}
       <section aria-labelledby="feed-heading" className="border-t border-border/60 bg-muted/20">
