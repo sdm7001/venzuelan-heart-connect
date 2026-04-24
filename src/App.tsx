@@ -18,6 +18,7 @@ import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/app/Dashboard";
 import Profile from "./pages/app/Profile";
 import Messages from "./pages/app/Messages";
+import GiftSend from "./pages/app/GiftSend";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminReports from "./pages/admin/AdminReports";
@@ -59,6 +60,7 @@ const App = () => (
               <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
               <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
               <Route path="/messages" element={<RequireAuth><Messages /></RequireAuth>} />
+              <Route path="/gifts/send" element={<RequireAuth><GiftSend /></RequireAuth>} />
 
               {/* Admin */}
               <Route path="/admin" element={<RequireStaff><AdminOverview /></RequireStaff>} />
