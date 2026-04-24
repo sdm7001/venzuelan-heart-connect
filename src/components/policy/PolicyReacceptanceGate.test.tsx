@@ -164,7 +164,7 @@ describe("PolicyReacceptanceGate", () => {
       expect(screen.queryByText("Policies updated")).not.toBeInTheDocument();
     });
 
-    const upsertedRows = upsertSpy.mock.calls[0][0] as any[];
+    const upsertedRows = (upsertSpy.mock.calls[0] as any[])[0] as any[];
     expect(upsertedRows).toHaveLength(4);
     expect(upsertedRows.every(r => r.policy_version === "v2")).toBe(true);
   });
