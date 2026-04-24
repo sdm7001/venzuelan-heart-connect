@@ -45,6 +45,8 @@ const STATUS_TONE: Record<string, string> = {
   canceled: "bg-muted text-muted-foreground",
 };
 
+const LAST_VISIT_KEY = "myGifts:lastVisitedAt";
+
 export function MyGiftsCard() {
   const { user } = useAuth();
   const [tab, setTab] = useState<"sent" | "received">("sent");
@@ -54,7 +56,21 @@ export function MyGiftsCard() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  // Snapshot of last-visited timestamp captured on mount; stays fixed during the
+  // session so unread highlights don't disappear as the user scrolls.
+  const [lastVisitedAt] = useState<number>(() => {
+    if (typeof window === "undefined") return 0;
+    const v = window.localStorage.getItem(LAST_VISIT_KEY);
+    return v ? Number(v) || 0 : 0;
+  });
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // Mark "visited now" when the card mounts with a user, so the next visit
+  // compares against this moment.
+  useEffect(() => {
+    if (!user || typeof window === "undefined") return;
+    window.localStorage.setItem(LAST_VISIT_KEY, String(Date.now()));
+  }, [user]);
 
   // Reset & load first page when user/tab changes
   useEffect(() => {
