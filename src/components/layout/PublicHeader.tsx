@@ -87,8 +87,8 @@ export function PublicHeader() {
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "inline-flex h-header-row items-center rounded-md px-3 text-sm font-medium leading-none transition-smooth",
-                    "text-muted-foreground hover:text-foreground",
-                    active && "text-foreground",
+                    "text-white/80 hover:text-white",
+                    active && "text-white",
                     focusRing,
                   )}
                 >
