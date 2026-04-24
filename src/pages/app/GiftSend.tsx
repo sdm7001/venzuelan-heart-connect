@@ -249,7 +249,7 @@ export default function GiftSend() {
                 gifts={gifts}
                 selectedId={selectedId}
                 onSelect={setSelectedId}
-                disabled={!eligibility?.eligible}
+                disabled={!eligibility?.eligible || recipientEligible === false || isBlocked}
                 kind="virtual"
               />
             </TabsContent>
