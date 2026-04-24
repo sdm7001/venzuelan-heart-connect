@@ -326,7 +326,8 @@ export function MyGiftsCard() {
                               )}
                             </div>
                           </li>
-                        ))}
+                          );
+                        })}
                         {events.length > 3 && (
                           <li className="text-xs text-muted-foreground pl-3.5">
                             +{events.length - 3} earlier event{events.length - 3 === 1 ? "" : "s"}
