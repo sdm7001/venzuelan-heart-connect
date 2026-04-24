@@ -49,7 +49,8 @@ function fail(name: string, detail: string): CheckResult {
 }
 
 async function ensureUser(
-  admin: ReturnType<typeof createClient>,
+  // deno-lint-ignore no-explicit-any
+  admin: any,
   email: string,
   meta: Record<string, unknown>,
 ): Promise<string> {
