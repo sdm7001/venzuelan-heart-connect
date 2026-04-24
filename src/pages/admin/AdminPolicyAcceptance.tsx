@@ -98,6 +98,7 @@ export default function AdminPolicyAcceptance() {
         hasCurrent,
         acceptedAt,
         acceptedKeys: currentKeys.size,
+        missingKeys: POLICY_KEYS.filter(k => !currentKeys.has(k)),
         lastPriorAt: lastPrior?.accepted_at ?? null,
         lastPriorVersion: lastPrior?.policy_version ?? null,
       };
