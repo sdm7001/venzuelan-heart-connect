@@ -3,11 +3,16 @@ import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Eye } from "lucide-react";
+import { useAuth } from "@/auth/AuthProvider";
+import { ImpersonateDialog } from "@/components/admin/ImpersonateDialog";
 
 export default function AdminUsers() {
+  const { isAdmin, user } = useAuth();
   const [rows, setRows] = useState<any[]>([]);
   const [q, setQ] = useState("");
+  const [target, setTarget] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     supabase.from("profiles").select("*").order("created_at", { ascending: false }).limit(200)
@@ -38,6 +43,7 @@ export default function AdminUsers() {
               <th className="px-4 py-3 text-left">Lang</th>
               <th className="px-4 py-3 text-left">Status</th>
               <th className="px-4 py-3 text-left">Joined</th>
+              {isAdmin && <th className="px-4 py-3 text-right">Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -50,14 +56,33 @@ export default function AdminUsers() {
                 <td className="px-4 py-3 text-muted-foreground uppercase">{r.preferred_language}</td>
                 <td className="px-4 py-3"><StatusBadge status={r.account_status} /></td>
                 <td className="px-4 py-3 text-muted-foreground">{new Date(r.created_at).toLocaleDateString()}</td>
+                {isAdmin && (
+                  <td className="px-4 py-3 text-right">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      disabled={r.id === user?.id}
+                      title={r.id === user?.id ? "Cannot impersonate yourself" : "Start a read-only view-as session"}
+                      onClick={() => setTarget({ id: r.id, name: r.display_name ?? "Unnamed user" })}
+                    >
+                      <Eye className="mr-1 h-3.5 w-3.5" /> View as
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))}
             {filtered.length === 0 && (
-              <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">No members yet.</td></tr>
+              <tr><td colSpan={isAdmin ? 8 : 7} className="px-4 py-12 text-center text-muted-foreground">No members yet.</td></tr>
             )}
           </tbody>
         </table>
       </div>
+
+      <ImpersonateDialog
+        open={!!target}
+        onOpenChange={(o) => { if (!o) setTarget(null); }}
+        target={target}
+      />
     </AdminLayout>
   );
 }
