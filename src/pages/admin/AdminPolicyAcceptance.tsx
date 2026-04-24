@@ -319,27 +319,36 @@ export default function AdminPolicyAcceptance() {
         </TabsList>
 
         <TabsContent value="blocked" className="mt-4">
-          {blockedState.rows.length > 0 && (
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
-              <div className="flex items-center gap-3 text-sm">
-                <Checkbox
-                  checked={selected.size > 0 && selected.size === blockedState.rows.length}
-                  onCheckedChange={(v) => toggleAllVisible(v === true)}
-                  aria-label="Select all blocked members on this page"
-                />
-                <span className="text-muted-foreground">
-                  {selected.size === 0
-                    ? `Select members to send a re-acceptance reminder`
-                    : `${selected.size} of ${blockedState.rows.length} on this page selected`}
-                </span>
-              </div>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+            <div className="flex items-center gap-3 text-sm">
+              {blockedState.rows.length > 0 && (
+                <>
+                  <Checkbox
+                    checked={selected.size > 0 && selected.size === blockedState.rows.length}
+                    onCheckedChange={(v) => toggleAllVisible(v === true)}
+                    aria-label="Select all blocked members on this page"
+                  />
+                  <span className="text-muted-foreground">
+                    {selected.size === 0
+                      ? `Select members to send a re-acceptance reminder`
+                      : `${selected.size} of ${blockedState.rows.length} on this page selected`}
+                  </span>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Button size="sm" variant="outline" onClick={() => exportCsv("blocked")}
+                disabled={exporting === "blocked" || totals.blocked === 0}>
+                <Download className="h-4 w-4 mr-1" />
+                {exporting === "blocked" ? "Preparing…" : "Export CSV"}
+              </Button>
               <Button size="sm" variant="romance" onClick={sendReminders}
                 disabled={selected.size === 0 || sending}>
                 <BellRing className="h-4 w-4 mr-1" />
                 {sending ? "Sending…" : `Send reminder${selected.size > 1 ? "s" : ""}`}
               </Button>
             </div>
-          )}
+          </div>
           <UserTable
             mode="blocked"
             activeVersion={config.policy_version}
