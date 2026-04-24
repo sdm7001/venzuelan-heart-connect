@@ -72,7 +72,7 @@ async function ensureUser(
   for (;;) {
     const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 200 });
     if (error) throw new Error(`listUsers: ${error.message}`);
-    const found = data.users.find((u) => u.email?.toLowerCase() === email.toLowerCase());
+    const found = data.users.find((u: { email?: string | null }) => u.email?.toLowerCase() === email.toLowerCase());
     if (found) return found.id;
     if (data.users.length < 200) break;
     page += 1;
