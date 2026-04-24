@@ -91,7 +91,8 @@ export default function AdminLinkSuggestions() {
       const next = exists
         ? current.map(l => (l.href ?? "").trim() === e.href.trim() ? { label: e.label, href: e.href, reason: r.reason ?? undefined } : l)
         : [...current, { label: e.label, href: e.href, reason: r.reason ?? undefined }];
-      const { error: writeErr } = await supabase.from("blog_posts").update({ [col]: next }).eq("id", r.post_id);
+      const update: any = { [col]: next };
+      const { error: writeErr } = await supabase.from("blog_posts").update(update).eq("id", r.post_id);
       if (writeErr) throw writeErr;
 
       toast.success("Approved and merged into post.");
