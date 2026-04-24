@@ -28,8 +28,11 @@ export function PolicyReacceptanceGate() {
   const { user, onboardingCompleted, signOut, loading: authLoading } = useAuth();
   const { config, loading: cfgLoading } = usePolicyConfig();
 
+  // `ready` flips true only after the first complete check resolves for the
+  // current (user, version) pair. Until then we render nothing — the dialog
+  // can never flash on initial mount or while auth/config are still loading.
+  const [ready, setReady] = useState(false);
   const [needsReaccept, setNeedsReaccept] = useState(false);
-  const [checking, setChecking] = useState(false);
   const [accepted, setAccepted] = useState<Record<PolicyKey, boolean>>({
     tos: false, privacy: false, aup: false, anti_solicitation: false,
   });
@@ -38,14 +41,23 @@ export function PolicyReacceptanceGate() {
   // Re-check whenever the active user, version or onboarding state changes.
   useEffect(() => {
     let active = true;
+
+    // Reset readiness whenever inputs change so we don't render stale state.
+    setReady(false);
+
     async function check() {
+      // Wait until auth + policy config have both resolved.
       if (authLoading || cfgLoading) return;
-      // Only gate after onboarding is done — Onboarding itself records ack.
+
+      // No user, or user hasn't onboarded yet → nothing to gate. Mark ready
+      // so future state changes can flip needsReaccept without a flash.
       if (!user || onboardingCompleted !== true) {
-        if (active) setNeedsReaccept(false);
+        if (!active) return;
+        setNeedsReaccept(false);
+        setReady(true);
         return;
       }
-      setChecking(true);
+
       const { data, error } = await supabase
         .from("policy_acknowledgements")
         .select("policy_key")
@@ -53,20 +65,24 @@ export function PolicyReacceptanceGate() {
         .eq("policy_version", config.policy_version);
 
       if (!active) return;
-      setChecking(false);
 
       if (error) {
-        // Fail-open: don't lock users out on a transient read error.
+        // Fail-open: never lock users out on a transient read error,
+        // but still mark ready so the gate stays closed without flashing.
         setNeedsReaccept(false);
+        setReady(true);
         return;
       }
+
       const haveKeys = new Set((data ?? []).map(r => r.policy_key));
       const missing = POLICIES.some(p => !haveKeys.has(p.key));
-      setNeedsReaccept(missing);
       if (missing) {
         setAccepted({ tos: false, privacy: false, aup: false, anti_solicitation: false });
       }
+      setNeedsReaccept(missing);
+      setReady(true);
     }
+
     check();
     return () => { active = false; };
   }, [user?.id, onboardingCompleted, config.policy_version, authLoading, cfgLoading]);
