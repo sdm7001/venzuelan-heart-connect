@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      app_settings_history: {
+        Row: {
+          changed_at: string
+          changed_by: string | null
+          id: string
+          key: string
+          value: Json
+        }
+        Insert: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          key: string
+          value: Json
+        }
+        Update: {
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          key?: string
+          value?: Json
+        }
+        Relationships: []
+      }
       audit_events: {
         Row: {
           action: string
