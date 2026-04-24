@@ -95,6 +95,7 @@ const App = () => (
 
               {/* Dev-only audit harness — safe to remove. */}
               {import.meta.env.DEV && <Route path="/__a11y" element={<A11yAudit />} />}
+              {import.meta.env.DEV && <Route path="/__responsive" element={<ResponsiveQA />} />}
 
               <Route path="*" element={<NotFound />} />
               </Routes>
