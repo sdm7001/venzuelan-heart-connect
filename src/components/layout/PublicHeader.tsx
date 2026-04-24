@@ -73,7 +73,7 @@ export function PublicHeader() {
               focusRing,
             )}
           >
-            <img src={logo} alt="" aria-hidden="true" className="size-header-logo shrink-0 object-contain" />
+            <img src={logo} alt="" aria-hidden="true" className="size-header-logo shrink-0 object-contain brightness-0 invert" />
             <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
           </Link>
 
