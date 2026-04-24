@@ -38,6 +38,7 @@ import AdminPostEditor from "./pages/admin/AdminPostEditor";
 import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
 import NotFound from "./pages/NotFound";
 import A11yAudit from "./pages/__A11yAudit";
+import ResponsiveQA from "./pages/__ResponsiveQA";
 
 const queryClient = new QueryClient();
 
