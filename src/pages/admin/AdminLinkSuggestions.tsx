@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, X, ExternalLink, Loader2, Filter } from "lucide-react";
 import { toast } from "sonner";
+import { validateLinkEntry } from "@/seo/linkValidation";
 
 type Row = {
   id: string;
