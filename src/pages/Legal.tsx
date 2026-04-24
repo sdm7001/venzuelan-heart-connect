@@ -1,10 +1,22 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useSeo } from "@/seo/seo";
 
 export function LegalPage({ titleKey }: { titleKey: "tos" | "privacy" | "aup" | "antiSolicit" }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const titleMap = { tos: t.legal.tos, privacy: t.legal.privacy, aup: t.legal.aup, antiSolicit: t.legal.antiSolicit };
   const bodyMap = { tos: t.legal.tosBody, privacy: t.legal.privacyBody, aup: t.legal.aupBody, antiSolicit: t.legal.antiBody };
+  const pathMap = { tos: "/legal/terms", privacy: "/legal/privacy", aup: "/legal/acceptable-use", antiSolicit: "/legal/anti-solicitation" };
+  useSeo(
+    {
+      title: titleMap[titleKey],
+      description: bodyMap[titleKey].slice(0, 155),
+      path: pathMap[titleKey],
+      lang,
+      robots: "index,follow",
+    },
+    [lang, titleKey],
+  );
   return (
     <PublicLayout>
       <section className="container py-20 md:py-28">

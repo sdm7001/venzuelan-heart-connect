@@ -1,9 +1,11 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useSeo } from "@/seo/seo";
 import { ShieldCheck, Check } from "lucide-react";
 
 export default function Safety() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  useSeo({ title: t.safety.title, description: t.safety.sub, path: "/safety", lang }, [lang]);
   const items = [t.safety.i1, t.safety.i2, t.safety.i3, t.safety.i4, t.safety.i5, t.safety.i6];
   const tips = [t.safety.t1, t.safety.t2, t.safety.t3, t.safety.t4, t.safety.t5];
   return (
