@@ -63,6 +63,15 @@ const _translations = {
       title: "Frequently asked questions",
       intro:
         "Everything new members ask about MatchVenezuelan — how matching, verification, gifts, billing, and safety actually work. Updated as we ship new features.",
+      tocTitle: "Jump to a topic",
+      categories: {
+        about: "Platform basics",
+        verification: "Verification & trust",
+        messaging: "Messaging & moderation",
+        safety: "Safety & scams",
+        billing: "Gifts, credits & billing",
+        privacy: "Privacy & data",
+      },
       entries: [
         {
           q: "Is MatchVenezuelan an escort, sugar, or adult site?",
