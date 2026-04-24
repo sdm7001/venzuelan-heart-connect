@@ -29,6 +29,7 @@ const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acc
 export default function Onboarding() {
   const { t } = useI18n();
   const { user, refreshProfile } = useAuth();
+  const { config: policyConfig } = usePolicyConfig();
   const nav = useNavigate();
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -54,7 +55,7 @@ export default function Onboarding() {
     const ackRows = POLICIES.map(p => ({
       user_id: user.id,
       policy_key: p.key,
-      policy_version: POLICY_VERSION,
+      policy_version: policyConfig.policy_version,
     }));
     const { error: ackError } = await supabase.from("policy_acknowledgements").insert(ackRows);
     if (ackError) {
@@ -119,8 +120,8 @@ export default function Onboarding() {
                         {t.onboarding[p.labelKey]}
                       </Label>
                       <Link
-                        to={p.href}
-                        target="_blank"
+                        to={policyConfig.urls[p.key]}
+                        target={/^https?:/i.test(policyConfig.urls[p.key]) ? "_blank" : undefined}
                         rel="noreferrer"
                         className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                       >
