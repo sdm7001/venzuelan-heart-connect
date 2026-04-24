@@ -114,6 +114,13 @@ export default function Resources() {
   const [category, setCategory] = useState<"all" | Post["category"]>("all");
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 9;
+
+  // Reset to page 1 when filters/search/lang change
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, category, lang]);
 
   // Debounce search input → 300ms
   useEffect(() => {
