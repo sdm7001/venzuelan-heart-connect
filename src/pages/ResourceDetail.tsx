@@ -55,7 +55,7 @@ export default function ResourceDetail() {
       .maybeSingle()
       .then(({ data }) => {
         if (!cancel) {
-          setPost((data as Post) ?? null);
+          setPost((data as unknown as Post) ?? null);
           setLoading(false);
         }
       });

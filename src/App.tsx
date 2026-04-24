@@ -13,6 +13,7 @@ import HowItWorks from "./pages/HowItWorks";
 import Safety from "./pages/Safety";
 import FAQ from "./pages/FAQ";
 import Resources from "./pages/Resources";
+import ResourceDetail from "./pages/ResourceDetail";
 import { Terms, Privacy, AcceptableUse, AntiSolicitation } from "./pages/Legal";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="/safety" element={<Safety />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/resources" element={<Resources />} />
+              <Route path="/resources/:slug" element={<ResourceDetail />} />
               <Route path="/legal/terms" element={<Terms />} />
               <Route path="/legal/privacy" element={<Privacy />} />
               <Route path="/legal/acceptable-use" element={<AcceptableUse />} />
