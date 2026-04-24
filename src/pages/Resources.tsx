@@ -40,6 +40,10 @@ const COPY: Record<Lang, {
   clear: string;
   readMin: (n: number) => string;
   read: string;
+  prev: string;
+  next: string;
+  pageOf: (page: number, total: number) => string;
+  showing: (from: number, to: number, total: number) => string;
   categories: Record<Post["category"], string>;
 }> = {
   en: {
