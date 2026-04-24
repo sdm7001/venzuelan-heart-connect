@@ -226,6 +226,86 @@ describe("PolicyReacceptanceGate", () => {
     expect(meta.already_acknowledged).toEqual([]);
   });
 
+  it("records already_existed for all four keys when Accept is clicked a second time after v2 rows already landed", async () => {
+    // Gate opens because only stale v1 rows exist for the user.
+    ackRows = [
+      { policy_key: "tos", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "privacy", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "aup", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "anti_solicitation", policy_version: "v1", accepted_at: "2024-01-01" },
+    ];
+
+    renderGate();
+    expect(await screen.findByText("Policies updated")).toBeInTheDocument();
+    // Tick all four checkboxes.
+    screen.getAllByRole("checkbox").forEach(cb => fireEvent.click(cb));
+
+    // --- First Accept click: all four are newly acknowledged ---
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    await waitFor(() => expect(insertSpy).toHaveBeenCalledTimes(1));
+
+    const firstMeta = ((insertSpy.mock.calls[0] as any[])[0] as any).metadata;
+    expect(firstMeta.newly_acknowledged.sort()).toEqual(
+      ["anti_solicitation", "aup", "privacy", "tos"]
+    );
+    expect(firstMeta.already_acknowledged).toEqual([]);
+    expect(firstMeta.per_key).toMatchObject({
+      tos: "newly_acknowledged",
+      privacy: "newly_acknowledged",
+      aup: "newly_acknowledged",
+      anti_solicitation: "newly_acknowledged",
+    });
+
+    // Simulate the v2 rows the first upsert would have written landing in the
+    // store. The gate is still mounted (it closes on success but a real user
+    // double-click can fire a second handleConfirm before unmount, and the
+    // pre-check inside handleConfirm now sees v2 rows for all four keys).
+    ackRows.push(
+      { policy_key: "tos", policy_version: "v2", accepted_at: "2025-02-01" },
+      { policy_key: "privacy", policy_version: "v2", accepted_at: "2025-02-01" },
+      { policy_key: "aup", policy_version: "v2", accepted_at: "2025-02-01" },
+      { policy_key: "anti_solicitation", policy_version: "v2", accepted_at: "2025-02-01" },
+    );
+
+    // --- Second Accept click: all four should be tagged already_existed ---
+    // The dialog may have closed after success; if so the button is gone, so
+    // we directly invoke the same submit path by clicking Accept again if it
+    // is still in the DOM. If it's been unmounted, we re-mount with the same
+    // (stale + v2) ackRows so the gate's open-check still triggers via the
+    // v1 priors and the in-handler pre-check sees the v2 rows.
+    let acceptBtn = screen.queryByRole("button", { name: "Accept" });
+    if (!acceptBtn) {
+      // Drop the just-added v2 rows so the gate re-opens on remount, then
+      // restore them right before the click so handleConfirm's pre-check
+      // sees them as already_existed.
+      const v2Rows = ackRows.filter(r => r.policy_version === "v2");
+      ackRows = ackRows.filter(r => r.policy_version !== "v2");
+      renderGate();
+      expect(await screen.findByText("Policies updated")).toBeInTheDocument();
+      ackRows.push(...v2Rows);
+      screen.getAllByRole("checkbox").forEach(cb => fireEvent.click(cb));
+      acceptBtn = screen.getByRole("button", { name: "Accept" });
+    }
+    fireEvent.click(acceptBtn);
+
+    await waitFor(() => expect(insertSpy).toHaveBeenCalledTimes(2));
+
+    const secondMeta = ((insertSpy.mock.calls[1] as any[])[0] as any).metadata;
+    expect(secondMeta.accepted_keys.sort()).toEqual(
+      ["anti_solicitation", "aup", "privacy", "tos"]
+    );
+    expect(secondMeta.newly_acknowledged).toEqual([]);
+    expect(secondMeta.already_acknowledged.sort()).toEqual(
+      ["anti_solicitation", "aup", "privacy", "tos"]
+    );
+    expect(secondMeta.per_key).toMatchObject({
+      tos: "already_existed",
+      privacy: "already_existed",
+      aup: "already_existed",
+      anti_solicitation: "already_existed",
+    });
+  });
+
   it("does not render for users who have not completed onboarding", async () => {
     mockAuth.onboardingCompleted = false;
     const { container } = renderGate();
