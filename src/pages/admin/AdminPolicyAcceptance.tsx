@@ -123,6 +123,77 @@ export default function AdminPolicyAcceptance() {
     total: rows.length,
   };
 
+  // Keep the selection in sync with the visible blocked set — clear out any
+  // ids that have since re-accepted or been filtered out so we never send
+  // reminders to users who don't need one.
+  useEffect(() => {
+    const visible = new Set(blocked.map(b => b.user.id));
+    setSelected(prev => {
+      const next = new Set<string>();
+      prev.forEach(id => visible.has(id) && next.add(id));
+      return next;
+    });
+  }, [blocked.map(b => b.user.id).join(",")]);
+
+  function toggleSelected(id: string) {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+  function toggleAllVisible(check: boolean) {
+    setSelected(check ? new Set(blocked.map(b => b.user.id)) : new Set());
+  }
+
+  async function sendReminders() {
+    if (!adminUser) return;
+    const targets = blocked.filter(b => selected.has(b.user.id));
+    if (targets.length === 0) return;
+    setSending(true);
+
+    // 1) Per-recipient reminder rows — drives the in-app banner the next time
+    //    the recipient lands on the dashboard.
+    const reminders = targets.map(t => ({
+      user_id: t.user.id,
+      sent_by: adminUser.id,
+      policy_version: config.policy_version,
+      missing_keys: t.missingKeys,
+      channel: "in_app",
+      email_status: null,
+    }));
+    const { error: remErr } = await supabase.from("policy_reminders").insert(reminders);
+    if (remErr) {
+      setSending(false);
+      return toast.error(`Reminder write failed: ${remErr.message}`);
+    }
+
+    // 2) One audit_event per recipient so the history tab shows exactly who
+    //    was nudged, by whom, when, and which policies they were missing.
+    const events = targets.map(t => ({
+      actor_id: adminUser.id,
+      subject_id: t.user.id,
+      category: "policy",
+      action: "policy_reminder_sent",
+      metadata: {
+        policy_version: config.policy_version,
+        missing_keys: t.missingKeys,
+        channel: "in_app",
+        accepted_keys_at_send: t.acceptedKeys,
+      } as any,
+    }));
+    const { error: auditErr } = await supabase.from("audit_events").insert(events);
+    if (auditErr) {
+      setSending(false);
+      return toast.error(`Audit write failed: ${auditErr.message}`);
+    }
+
+    setSelected(new Set());
+    setSending(false);
+    toast.success(`Reminder sent to ${targets.length} member${targets.length === 1 ? "" : "s"}.`);
+    load();
+  }
+
   return (
     <AdminLayout>
       <AdminPageHeader
