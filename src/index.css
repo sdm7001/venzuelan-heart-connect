@@ -52,6 +52,20 @@
 
     --radius: 0.875rem;
 
+    /* Header layout tokens — keep logo + nav aligned across breakpoints.
+       Header height = logo size + 2 * vertical padding. Update together. */
+    --header-h: 3.5rem;          /* 56px mobile  (h-8 logo + py-3) */
+    --header-h-sm: 4rem;         /* 64px sm      (h-9 logo + py-3.5) */
+    --header-h-md: 4.5rem;       /* 72px md+     (h-10 logo + py-4) */
+    --header-py: 0.75rem;        /* py-3 */
+    --header-py-sm: 0.875rem;    /* py-3.5 */
+    --header-py-md: 1rem;        /* py-4 */
+    --header-logo: 2rem;         /* 32px */
+    --header-logo-sm: 2.25rem;   /* 36px */
+    --header-logo-md: 2.5rem;    /* 40px */
+    --header-gap: 0.75rem;
+    --header-gap-sm: 1rem;
+
     /* Gradients */
     --gradient-romance: linear-gradient(135deg, hsl(343 55% 85%) 0%, hsl(343 50% 56%) 60%, hsl(345 50% 24%) 100%);
     --gradient-soft: linear-gradient(180deg, hsl(28 60% 98%) 0%, hsl(343 55% 95%) 100%);
@@ -120,4 +134,32 @@
   .shadow-card { box-shadow: var(--shadow-card); }
   .transition-smooth { transition: all 0.3s var(--transition-smooth); }
   .text-balance { text-wrap: balance; }
+
+  /* Header tokens — use these instead of hardcoding height/padding. */
+  .h-header { height: var(--header-h); }
+  .min-h-header { min-height: var(--header-h); }
+  .py-header { padding-top: var(--header-py); padding-bottom: var(--header-py); }
+  .gap-header { gap: var(--header-gap); }
+  .size-header-logo { height: var(--header-logo); width: var(--header-logo); }
+  .scroll-mt-header { scroll-margin-top: var(--header-h); }
+  .top-header { top: var(--header-h); }
+
+  @media (min-width: 640px) {
+    .h-header { height: var(--header-h-sm); }
+    .min-h-header { min-height: var(--header-h-sm); }
+    .py-header { padding-top: var(--header-py-sm); padding-bottom: var(--header-py-sm); }
+    .gap-header { gap: var(--header-gap-sm); }
+    .size-header-logo { height: var(--header-logo-sm); width: var(--header-logo-sm); }
+    .scroll-mt-header { scroll-margin-top: var(--header-h-sm); }
+    .top-header { top: var(--header-h-sm); }
+  }
+
+  @media (min-width: 768px) {
+    .h-header { height: var(--header-h-md); }
+    .min-h-header { min-height: var(--header-h-md); }
+    .py-header { padding-top: var(--header-py-md); padding-bottom: var(--header-py-md); }
+    .size-header-logo { height: var(--header-logo-md); width: var(--header-logo-md); }
+    .scroll-mt-header { scroll-margin-top: var(--header-h-md); }
+    .top-header { top: var(--header-h-md); }
+  }
 }
