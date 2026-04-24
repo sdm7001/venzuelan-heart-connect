@@ -126,6 +126,10 @@ const _translations = {
       previewTitle: "Preview the updated policies",
       openInNewTab: "Open in a new tab",
     },
+    policyReacceptErrors: {
+      auditFailedTitle: "Acceptance saved",
+      auditFailedBody: "Your acceptance was recorded, but we couldn't log the audit event. You can keep using the app — our team has been notified.",
+    },
     compliance: {
       title: "Account compliance",
       headlineOk: "All policies acknowledged",
