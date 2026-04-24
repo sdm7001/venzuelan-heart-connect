@@ -17,6 +17,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { fetchPolicyConfig, PolicyConfig, PolicyKey, DEFAULT_POLICY_CONFIG } from "@/lib/policyConfig";
@@ -79,6 +83,7 @@ export default function AdminPolicyAcceptance() {
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [sending, setSending] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   // Debounce search input to keep typing snappy without hammering the function.
   useEffect(() => {
@@ -212,9 +217,16 @@ export default function AdminPolicyAcceptance() {
     setSelected(check ? new Set(blockedState.rows.map((r) => r.user_id)) : new Set());
   }
 
+  // Targets the user has currently checked. Memoised so the confirm dialog
+  // and the send handler agree on the exact set, even if rows refetch.
+  const selectedTargets = useMemo(
+    () => blockedState.rows.filter((r) => selected.has(r.user_id)),
+    [blockedState.rows, selected],
+  );
+
   async function sendReminders() {
     if (!adminUser) return;
-    const targets = blockedState.rows.filter((r) => selected.has(r.user_id));
+    const targets = selectedTargets;
     if (targets.length === 0) return;
     setSending(true);
 
@@ -229,6 +241,7 @@ export default function AdminPolicyAcceptance() {
     const { error: remErr } = await supabase.from("policy_reminders").insert(reminders);
     if (remErr) {
       setSending(false);
+      setConfirmOpen(false);
       return toast.error(`Reminder write failed: ${remErr.message}`);
     }
 
@@ -247,11 +260,13 @@ export default function AdminPolicyAcceptance() {
     const { error: auditErr } = await supabase.from("audit_events").insert(events);
     if (auditErr) {
       setSending(false);
+      setConfirmOpen(false);
       return toast.error(`Audit write failed: ${auditErr.message}`);
     }
 
     setSelected(new Set());
     setSending(false);
+    setConfirmOpen(false);
     toast.success(`Reminder sent to ${targets.length} member${targets.length === 1 ? "" : "s"}.`);
     refresh();
   }
@@ -402,15 +417,40 @@ export default function AdminPolicyAcceptance() {
               {blockedState.rows.length > 0 && (
                 <>
                   <Checkbox
-                    checked={selected.size > 0 && selected.size === blockedState.rows.length}
+                    checked={
+                      selected.size === 0
+                        ? false
+                        : selected.size === blockedState.rows.length
+                          ? true
+                          : "indeterminate"
+                    }
                     onCheckedChange={(v) => toggleAllVisible(v === true)}
                     aria-label="Select all blocked members on this page"
                   />
                   <span className="text-muted-foreground">
-                    {selected.size === 0
-                      ? `Select members to send a re-acceptance reminder`
-                      : `${selected.size} of ${blockedState.rows.length} on this page selected`}
+                    {selected.size === 0 ? (
+                      <>Select blocked members to send a re-acceptance reminder · {totals.blocked} total blocked</>
+                    ) : (
+                      <>
+                        <span className="font-medium text-foreground">{selected.size}</span>
+                        {" "}of {blockedState.rows.length} on this page selected
+                        {totals.blocked > blockedState.rows.length && (
+                          <> · {totals.blocked} blocked across all pages</>
+                        )}
+                      </>
+                    )}
                   </span>
+                  {selected.size > 0 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-2 text-xs"
+                      onClick={() => setSelected(new Set())}
+                    >
+                      Clear
+                    </Button>
+                  )}
                 </>
               )}
             </div>
@@ -420,13 +460,68 @@ export default function AdminPolicyAcceptance() {
                 <Download className="h-4 w-4 mr-1" />
                 {exporting === "blocked" ? "Preparing…" : "Export CSV"}
               </Button>
-              <Button size="sm" variant="romance" onClick={sendReminders}
+              <Button size="sm" variant="romance" onClick={() => setConfirmOpen(true)}
                 disabled={selected.size === 0 || sending}>
                 <BellRing className="h-4 w-4 mr-1" />
-                {sending ? "Sending…" : `Send reminder${selected.size > 1 ? "s" : ""}`}
+                {sending
+                  ? "Sending…"
+                  : selected.size === 0
+                    ? "Send reminder"
+                    : `Send reminder to ${selected.size}`}
               </Button>
             </div>
           </div>
+          <AlertDialog open={confirmOpen} onOpenChange={(o) => !sending && setConfirmOpen(o)}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Send re-acceptance reminder to {selectedTargets.length} member{selectedTargets.length === 1 ? "" : "s"}?
+                </AlertDialogTitle>
+                <AlertDialogDescription asChild>
+                  <div className="space-y-2 text-sm">
+                    <p>
+                      Each member will get an in-app reminder for policy{" "}
+                      <span className="font-mono">v{config.policy_version}</span>{" "}
+                      covering the keys they haven't accepted yet.
+                    </p>
+                    {selectedTargets.length > 0 && (
+                      <div className="max-h-40 overflow-y-auto rounded border border-border bg-muted/40 p-2 text-xs">
+                        <ul className="space-y-1">
+                          {selectedTargets.slice(0, 8).map((t) => (
+                            <li key={t.user_id} className="flex justify-between gap-2">
+                              <span className="truncate">
+                                {t.display_name ?? <span className="font-mono">{t.user_id.slice(0, 8)}</span>}
+                              </span>
+                              <span className="font-mono text-muted-foreground">
+                                {t.missing_keys.length} missing
+                              </span>
+                            </li>
+                          ))}
+                          {selectedTargets.length > 8 && (
+                            <li className="italic text-muted-foreground">
+                              + {selectedTargets.length - 8} more…
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      This logs an audit event and a reminder record per member. It cannot be undone.
+                    </p>
+                  </div>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={sending}>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={(e) => { e.preventDefault(); sendReminders(); }}
+                  disabled={sending || selectedTargets.length === 0}
+                >
+                  {sending ? "Sending…" : `Send ${selectedTargets.length} reminder${selectedTargets.length === 1 ? "" : "s"}`}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <UserTable
             mode="blocked"
             activeVersion={config.policy_version}
