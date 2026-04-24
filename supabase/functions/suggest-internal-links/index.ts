@@ -361,6 +361,14 @@ Deno.serve(async (req) => {
           href: c.href,
           kind: c.kind,
           score: c.score,
+          label_en: c.kind === "post" ? c.meta.title_en : c.meta.en.label,
+          label_es: c.kind === "post" ? c.meta.title_es : c.meta.es.label,
+          reason_en: c.kind === "post"
+            ? `${c.meta.category ? `Same/related category: ${c.meta.category}. ` : ""}Lexical match score ${c.score}`
+            : `Site page: ${c.meta.en.topic}`,
+          reason_es: c.kind === "post"
+            ? `${c.meta.category ? `Categoría relacionada: ${c.meta.category}. ` : ""}Coincidencia léxica ${c.score}`
+            : `Página del sitio: ${c.meta.es.topic}`,
         })),
       });
     } catch (e) {
