@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Heart, LayoutDashboard, Users, Flag, ShieldAlert, BadgeCheck, CreditCard, Activity, FileText, ClipboardCheck, History, LogOut, ShieldCheck, Newspaper, Link2 } from "lucide-react";
+import { Heart, LayoutDashboard, Users, Flag, ShieldAlert, BadgeCheck, CreditCard, Activity, FileText, ClipboardCheck, History, LogOut, ShieldCheck, Newspaper, Link2, KeyRound } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { StaffOtpGate } from "@/auth/StaffOtpGate";
@@ -24,6 +24,7 @@ const items = [
   { to: "/admin/policy-acceptance", label: "Policy acceptance", icon: ClipboardCheck },
   { to: "/admin/policy-reaccepts", label: "Re-accept events", icon: History },
   { to: "/admin/rls-tests", label: "RLS tests", icon: ShieldCheck },
+  { to: "/admin/mfa-recovery", label: "Recovery codes", icon: KeyRound },
 ];
 
 export function AdminLayout({ children }: { children: ReactNode }) {
