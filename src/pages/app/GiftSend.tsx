@@ -40,6 +40,8 @@ export default function GiftSend() {
   const threadId = params.get("thread");
 
   const [recipient, setRecipient] = useState<any>(null);
+  const [recipientLang, setRecipientLang] = useState<"en" | "es" | null>(null);
+  const [senderLang, setSenderLang] = useState<"en" | "es" | null>(null);
   const [gifts, setGifts] = useState<GiftRow[]>([]);
   const [eligibility, setEligibility] = useState<Eligibility | null>(null);
   const [recipientEligible, setRecipientEligible] = useState<boolean | null>(null);
@@ -101,11 +103,19 @@ export default function GiftSend() {
       trust,
     });
 
+    // Load sender's preferred language
+    const { data: senderProfile } = await supabase
+      .from("profiles")
+      .select("preferred_language")
+      .eq("id", user!.id)
+      .maybeSingle();
+    setSenderLang((senderProfile?.preferred_language as "en" | "es") ?? null);
+
     if (recipientId) {
       const [{ data: r }, { data: rEligible }, { data: rTrust }, { data: blk }] = await Promise.all([
         supabase
           .from("profiles")
-          .select("id, display_name, account_status")
+          .select("id, display_name, account_status, preferred_language")
           .eq("id", recipientId)
           .maybeSingle(),
         supabase.rpc("is_eligible_for_gifting", { _user_id: recipientId }),
@@ -113,6 +123,7 @@ export default function GiftSend() {
         supabase.rpc("is_blocked_between", { _a: user!.id, _b: recipientId }),
       ]);
       setRecipient(r);
+      setRecipientLang((r?.preferred_language as "en" | "es") ?? null);
       setRecipientEligible(!!rEligible);
       setRecipientTrust(
         Array.isArray(rTrust) && rTrust[0] ? (rTrust[0] as TrustState) : null
@@ -147,18 +158,71 @@ export default function GiftSend() {
     if (!canSend || !selected) return;
     setSending(true);
 
+    // Auto-translate the message to recipient's preferred language (bilingual rule).
+    let translation: {
+      source_lang: string | null;
+      target_lang: "en" | "es";
+      original: string;
+      translated: string;
+      skipped?: string;
+    } | null = null;
+
+    const trimmed = (message ?? "").trim();
+    const target: "en" | "es" = recipientLang ?? "en";
+
+    if (trimmed.length > 0) {
+      try {
+        const { data: tData, error: tError } = await supabase.functions.invoke(
+          "translate-gift-message",
+          {
+            body: {
+              text: trimmed,
+              target_lang: target,
+              source_hint: senderLang ?? undefined,
+            },
+          },
+        );
+        if (tError) throw tError;
+        if (tData?.error) throw new Error(tData.error);
+        translation = tData;
+      } catch (e: any) {
+        // Non-fatal: still send the gift with original text only.
+        console.warn("Translation failed", e);
+        toast.message("Translation unavailable — sending original message only.");
+      }
+    }
+
+    const finalMessage = translation?.translated ?? (trimmed || null);
+
+    const messageMeta =
+      trimmed.length > 0
+        ? {
+            message: {
+              original: trimmed,
+              original_lang: translation?.source_lang ?? senderLang ?? null,
+              translated: translation?.translated ?? trimmed,
+              translated_lang: target,
+              translation_skipped: translation?.skipped ?? null,
+              translation_provider: translation ? "lovable-ai" : null,
+            },
+          }
+        : {};
+
+    const baseMeta =
+      kind === "physical"
+        ? { fulfillment: "pending_admin", note: "Physical gift requires admin processing" }
+        : {};
+
     const payload: any = {
       sender_id: user!.id,
       recipient_id: recipientId,
       gift_id: selected.id,
       kind,
       thread_id: threadId ?? null,
-      message: message || null,
+      message: finalMessage,
       status: "created",
       credit_cost: kind === "virtual" ? selected.credit_cost : null,
-      metadata: kind === "physical"
-        ? { fulfillment: "pending_admin", note: "Physical gift requires admin processing" }
-        : {},
+      metadata: { ...baseMeta, ...messageMeta },
     };
 
     const { data: inserted, error } = await supabase
@@ -311,7 +375,14 @@ export default function GiftSend() {
           </Tabs>
 
           <div>
-            <label className="text-sm font-medium block mb-1">Message (optional)</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-sm font-medium">Message (optional)</label>
+              {recipientLang && senderLang && recipientLang !== senderLang && (
+                <span className="text-[11px] text-muted-foreground">
+                  Will be auto-translated to {recipientLang === "es" ? "Spanish" : "English"} for the recipient. Both versions are saved.
+                </span>
+              )}
+            </div>
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
