@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ComplianceCard } from "@/components/dashboard/ComplianceCard";
 import { PolicyReminderBanner } from "@/components/dashboard/PolicyReminderBanner";
+import { MyGiftsCard } from "@/components/dashboard/MyGiftsCard";
 
 export default function Dashboard() {
   const { t } = useI18n();
@@ -49,6 +50,10 @@ export default function Dashboard() {
 
       <div className="mt-6">
         <ComplianceCard />
+      </div>
+
+      <div className="mt-6">
+        <MyGiftsCard />
       </div>
 
       <div className="mt-8">
