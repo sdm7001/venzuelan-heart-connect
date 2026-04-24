@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { useI18n } from "@/i18n/I18nProvider";
 import { usePolicyConfig, PolicyKey } from "@/lib/policyConfig";
+import { assertPolicyReacceptedMetadata } from "@/lib/policyAuditSchema";
 
 const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti"; shortKey: "tos" | "privacy" | "aup" | "antiSolicit" }[] = [
   { key: "tos", labelKey: "acceptTos", shortKey: "tos" },
