@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ComplianceCard } from "@/components/dashboard/ComplianceCard";
+import { PolicyReminderBanner } from "@/components/dashboard/PolicyReminderBanner";
 
 export default function Dashboard() {
   const { t } = useI18n();
@@ -27,6 +28,8 @@ export default function Dashboard() {
         title={`${t.dashboard.welcome}${profile?.display_name ? ", " + profile.display_name : ""}`}
         sub={t.dashboard.complete}
       />
+
+      <PolicyReminderBanner />
 
       <div className="grid gap-5 md:grid-cols-3">
         <Card icon={<BadgeCheck className="h-5 w-5" />} title="Profile completeness" value={`${completeness}%`}>

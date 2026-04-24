@@ -1,14 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
-import { AlertTriangle, CheckCircle2, History, RefreshCw, Search, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
+import { AlertTriangle, BellRing, CheckCircle2, History, RefreshCw, Search, ShieldCheck } from "lucide-react";
 import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/auth/AuthProvider";
 import { fetchPolicyConfig, PolicyConfig, PolicyKey, DEFAULT_POLICY_CONFIG } from "@/lib/policyConfig";
 
 type ProfileRow = { id: string; display_name: string | null; account_status: string };
@@ -25,17 +28,22 @@ type Row = {
   hasCurrent: boolean;
   acceptedAt: string | null;     // when current-version acceptance completed (latest of the 4)
   acceptedKeys: number;          // count of distinct policies accepted at current version
+  missingKeys: PolicyKey[];      // which policies are missing for the active version
   lastPriorAt: string | null;    // most recent acceptance at any prior version
   lastPriorVersion: string | null;
 };
 
 export default function AdminPolicyAcceptance() {
+  const { user: adminUser } = useAuth();
   const [config, setConfig] = useState<PolicyConfig>(DEFAULT_POLICY_CONFIG);
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
   const [acks, setAcks] = useState<AckRow[]>([]);
   const [audit, setAudit] = useState<AuditRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  // Selection of blocked users for the bulk "send reminder" action.
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [sending, setSending] = useState(false);
 
   async function load() {
     setLoading(true);
@@ -90,6 +98,7 @@ export default function AdminPolicyAcceptance() {
         hasCurrent,
         acceptedAt,
         acceptedKeys: currentKeys.size,
+        missingKeys: POLICY_KEYS.filter(k => !currentKeys.has(k)),
         lastPriorAt: lastPrior?.accepted_at ?? null,
         lastPriorVersion: lastPrior?.policy_version ?? null,
       };
@@ -113,6 +122,77 @@ export default function AdminPolicyAcceptance() {
     completed: rows.filter(r => r.hasCurrent).length,
     total: rows.length,
   };
+
+  // Keep the selection in sync with the visible blocked set — clear out any
+  // ids that have since re-accepted or been filtered out so we never send
+  // reminders to users who don't need one.
+  useEffect(() => {
+    const visible = new Set(blocked.map(b => b.user.id));
+    setSelected(prev => {
+      const next = new Set<string>();
+      prev.forEach(id => visible.has(id) && next.add(id));
+      return next;
+    });
+  }, [blocked.map(b => b.user.id).join(",")]);
+
+  function toggleSelected(id: string) {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+  function toggleAllVisible(check: boolean) {
+    setSelected(check ? new Set(blocked.map(b => b.user.id)) : new Set());
+  }
+
+  async function sendReminders() {
+    if (!adminUser) return;
+    const targets = blocked.filter(b => selected.has(b.user.id));
+    if (targets.length === 0) return;
+    setSending(true);
+
+    // 1) Per-recipient reminder rows — drives the in-app banner the next time
+    //    the recipient lands on the dashboard.
+    const reminders = targets.map(t => ({
+      user_id: t.user.id,
+      sent_by: adminUser.id,
+      policy_version: config.policy_version,
+      missing_keys: t.missingKeys,
+      channel: "in_app",
+      email_status: null,
+    }));
+    const { error: remErr } = await supabase.from("policy_reminders").insert(reminders);
+    if (remErr) {
+      setSending(false);
+      return toast.error(`Reminder write failed: ${remErr.message}`);
+    }
+
+    // 2) One audit_event per recipient so the history tab shows exactly who
+    //    was nudged, by whom, when, and which policies they were missing.
+    const events = targets.map(t => ({
+      actor_id: adminUser.id,
+      subject_id: t.user.id,
+      category: "policy",
+      action: "policy_reminder_sent",
+      metadata: {
+        policy_version: config.policy_version,
+        missing_keys: t.missingKeys,
+        channel: "in_app",
+        accepted_keys_at_send: t.acceptedKeys,
+      } as any,
+    }));
+    const { error: auditErr } = await supabase.from("audit_events").insert(events);
+    if (auditErr) {
+      setSending(false);
+      return toast.error(`Audit write failed: ${auditErr.message}`);
+    }
+
+    setSelected(new Set());
+    setSending(false);
+    toast.success(`Reminder sent to ${targets.length} member${targets.length === 1 ? "" : "s"}.`);
+    load();
+  }
 
   return (
     <AdminLayout>
@@ -172,11 +252,40 @@ export default function AdminPolicyAcceptance() {
         </TabsList>
 
         <TabsContent value="blocked" className="mt-4">
+          {blocked.length > 0 && (
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+              <div className="flex items-center gap-3 text-sm">
+                <Checkbox
+                  checked={selected.size > 0 && selected.size === blocked.length}
+                  // Indeterminate isn't a real boolean in shadcn's Checkbox API,
+                  // so we just toggle between "all" and "none" based on count.
+                  onCheckedChange={(v) => toggleAllVisible(v === true)}
+                  aria-label="Select all blocked members"
+                />
+                <span className="text-muted-foreground">
+                  {selected.size === 0
+                    ? `Select members to send a re-acceptance reminder`
+                    : `${selected.size} of ${blocked.length} selected`}
+                </span>
+              </div>
+              <Button
+                size="sm"
+                variant="romance"
+                onClick={sendReminders}
+                disabled={selected.size === 0 || sending}
+              >
+                <BellRing className="h-4 w-4 mr-1" />
+                {sending ? "Sending…" : `Send reminder${selected.size > 1 ? "s" : ""}`}
+              </Button>
+            </div>
+          )}
           <UserTable
             rows={blocked}
             loading={loading}
             mode="blocked"
             activeVersion={config.policy_version}
+            selected={selected}
+            onToggleSelected={toggleSelected}
           />
         </TabsContent>
 
@@ -229,6 +338,13 @@ export default function AdminPolicyAcceptance() {
                           {a.action === "policy_reaccepted" && a.metadata?.policy_version && (
                             <>Re-accepted v{a.metadata.policy_version}</>
                           )}
+                          {a.action === "policy_reminder_sent" && (
+                            <>
+                              Reminder for v{a.metadata?.policy_version ?? "?"} ·{" "}
+                              <span className="font-mono">{(a.metadata?.missing_keys ?? []).join(", ") || "—"}</span>
+                              {a.metadata?.channel ? <> · {a.metadata.channel}</> : null}
+                            </>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -260,8 +376,15 @@ function StatCard({
 }
 
 function UserTable({
-  rows, loading, mode, activeVersion,
-}: { rows: Row[]; loading: boolean; mode: "blocked" | "completed"; activeVersion: string }) {
+  rows, loading, mode, activeVersion, selected, onToggleSelected,
+}: {
+  rows: Row[];
+  loading: boolean;
+  mode: "blocked" | "completed";
+  activeVersion: string;
+  selected?: Set<string>;
+  onToggleSelected?: (id: string) => void;
+}) {
   if (loading) return <p className="text-sm text-muted-foreground">Loading…</p>;
   if (rows.length === 0) {
     return (
@@ -272,12 +395,14 @@ function UserTable({
       </div>
     );
   }
+  const showSelect = mode === "blocked" && onToggleSelected;
   return (
     <Card>
       <CardContent className="p-0">
         <Table>
           <TableHeader>
             <TableRow>
+              {showSelect && <TableHead className="w-10" />}
               <TableHead>Member</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>{mode === "blocked" ? "Last accepted" : "Re-accepted"}</TableHead>
@@ -286,7 +411,16 @@ function UserTable({
           </TableHeader>
           <TableBody>
             {rows.map(r => (
-              <TableRow key={r.user.id}>
+              <TableRow key={r.user.id} data-state={selected?.has(r.user.id) ? "selected" : undefined}>
+                {showSelect && (
+                  <TableCell className="w-10">
+                    <Checkbox
+                      checked={selected?.has(r.user.id) ?? false}
+                      onCheckedChange={() => onToggleSelected!(r.user.id)}
+                      aria-label={`Select ${r.user.display_name ?? r.user.id.slice(0, 8)}`}
+                    />
+                  </TableCell>
+                )}
                 <TableCell>
                   <div className="font-medium">{r.user.display_name ?? "—"}</div>
                   <div className="font-mono text-[10px] text-muted-foreground">{r.user.id.slice(0, 8)}</div>
@@ -321,7 +455,9 @@ function UserTable({
                 </TableCell>
                 <TableCell className="text-xs text-muted-foreground">
                   {mode === "blocked"
-                    ? `Awaiting v${activeVersion}`
+                    ? r.missingKeys.length > 0
+                      ? <>Missing: <span className="font-mono">{r.missingKeys.join(", ")}</span></>
+                      : `Awaiting v${activeVersion}`
                     : `v${activeVersion}`}
                 </TableCell>
               </TableRow>
