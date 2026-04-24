@@ -292,6 +292,29 @@ export function MyGiftsCard() {
         </ul>
       )}
 
+      {/* Infinite scroll sentinel + load-more fallback */}
+      {!loading && orders.length > 0 && (
+        <div className="mt-2">
+          <div ref={sentinelRef} aria-hidden className="h-1" />
+          {loadingMore ? (
+            <div className="flex items-center justify-center gap-2 py-3 text-xs text-muted-foreground">
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              Loading older gifts…
+            </div>
+          ) : hasMore ? (
+            <div className="flex justify-center pt-2">
+              <Button size="sm" variant="ghost" onClick={() => void loadPage()}>
+                Load more
+              </Button>
+            </div>
+          ) : (
+            <div className="text-center text-xs text-muted-foreground py-2">
+              No more gifts to load.
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="mt-4 pt-4 border-t border-border flex justify-end">
         <Button asChild size="sm" variant="soft">
           <Link to="/gifts/send">
