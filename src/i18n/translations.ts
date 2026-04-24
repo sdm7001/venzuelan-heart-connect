@@ -116,6 +116,11 @@ const _translations = {
       confirm: "Accept and continue",
       confirmed: "Thanks — your acknowledgement has been recorded.",
       signOut: "Sign out instead",
+      allMissing: "All four policies need a fresh acknowledgement.",
+      someMissing: "{count} of {total} policies need a fresh acknowledgement.",
+      needsUpdate: "Needs update · last accepted v{version}",
+      neverAccepted: "Not yet accepted",
+      upToDate: "Up to date",
     },
     compliance: {
       title: "Account compliance",
@@ -277,6 +282,11 @@ const _translations = {
       confirm: "Aceptar y continuar",
       confirmed: "Gracias — registramos tu aceptación.",
       signOut: "Cerrar sesión",
+      allMissing: "Las cuatro políticas requieren una nueva aceptación.",
+      someMissing: "{count} de {total} políticas requieren una nueva aceptación.",
+      needsUpdate: "Requiere actualización · última aceptada v{version}",
+      neverAccepted: "Aún no aceptada",
+      upToDate: "Al día",
     },
     compliance: {
       title: "Cumplimiento de la cuenta",

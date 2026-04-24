@@ -5,18 +5,21 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { ExternalLink, ShieldCheck } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { AlertCircle, ExternalLink, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { useI18n } from "@/i18n/I18nProvider";
 import { usePolicyConfig, PolicyKey } from "@/lib/policyConfig";
 
-const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti" }[] = [
-  { key: "tos", labelKey: "acceptTos" },
-  { key: "privacy", labelKey: "acceptPrivacy" },
-  { key: "aup", labelKey: "acceptAup" },
-  { key: "anti_solicitation", labelKey: "acceptAnti" },
+const POLICIES: { key: PolicyKey; labelKey: "acceptTos" | "acceptPrivacy" | "acceptAup" | "acceptAnti"; shortKey: "tos" | "privacy" | "aup" | "antiSolicit" }[] = [
+  { key: "tos", labelKey: "acceptTos", shortKey: "tos" },
+  { key: "privacy", labelKey: "acceptPrivacy", shortKey: "privacy" },
+  { key: "aup", labelKey: "acceptAup", shortKey: "aup" },
+  { key: "anti_solicitation", labelKey: "acceptAnti", shortKey: "antiSolicit" },
 ];
+
+type PriorAck = { policy_version: string; accepted_at: string };
 
 /**
  * Shown to authenticated, onboarded users when the active policy_version
@@ -33,6 +36,8 @@ export function PolicyReacceptanceGate() {
   // can never flash on initial mount or while auth/config are still loading.
   const [ready, setReady] = useState(false);
   const [needsReaccept, setNeedsReaccept] = useState(false);
+  const [missingKeys, setMissingKeys] = useState<Set<PolicyKey>>(new Set());
+  const [priorByKey, setPriorByKey] = useState<Partial<Record<PolicyKey, PriorAck>>>({});
   const [accepted, setAccepted] = useState<Record<PolicyKey, boolean>>({
     tos: false, privacy: false, aup: false, anti_solicitation: false,
   });
@@ -58,11 +63,14 @@ export function PolicyReacceptanceGate() {
         return;
       }
 
+      // Pull every prior acceptance for this user across all policies/versions
+      // so we can tell each missing policy from a brand-new one and surface
+      // the previously-accepted version to the user.
       const { data, error } = await supabase
         .from("policy_acknowledgements")
-        .select("policy_key")
+        .select("policy_key, policy_version, accepted_at")
         .eq("user_id", user.id)
-        .eq("policy_version", config.policy_version);
+        .order("accepted_at", { ascending: false });
 
       if (!active) return;
 
@@ -74,12 +82,28 @@ export function PolicyReacceptanceGate() {
         return;
       }
 
-      const haveKeys = new Set((data ?? []).map(r => r.policy_key));
-      const missing = POLICIES.some(p => !haveKeys.has(p.key));
-      if (missing) {
+      const rows = (data ?? []) as { policy_key: string; policy_version: string; accepted_at: string }[];
+      const haveCurrent = new Set(
+        rows.filter(r => r.policy_version === config.policy_version).map(r => r.policy_key)
+      );
+      const missing = new Set<PolicyKey>(
+        POLICIES.map(p => p.key).filter(k => !haveCurrent.has(k))
+      );
+
+      // Most recent prior (non-current) ack per policy.
+      const prior: Partial<Record<PolicyKey, PriorAck>> = {};
+      for (const r of rows) {
+        if (r.policy_version === config.policy_version) continue;
+        const k = r.policy_key as PolicyKey;
+        if (!prior[k]) prior[k] = { policy_version: r.policy_version, accepted_at: r.accepted_at };
+      }
+
+      if (missing.size > 0) {
         setAccepted({ tos: false, privacy: false, aup: false, anti_solicitation: false });
       }
-      setNeedsReaccept(missing);
+      setMissingKeys(missing);
+      setPriorByKey(prior);
+      setNeedsReaccept(missing.size > 0);
       setReady(true);
     }
 
@@ -87,14 +111,24 @@ export function PolicyReacceptanceGate() {
     return () => { active = false; };
   }, [user?.id, onboardingCompleted, config.policy_version, authLoading, cfgLoading]);
 
-  const allAccepted = useMemo(() => POLICIES.every(p => accepted[p.key]), [accepted]);
+  // Only the policies actually missing for this user need a fresh checkbox.
+  const missingPolicies = useMemo(
+    () => POLICIES.filter(p => missingKeys.has(p.key)),
+    [missingKeys]
+  );
+  const allAccepted = useMemo(
+    () => missingPolicies.every(p => accepted[p.key]),
+    [missingPolicies, accepted]
+  );
 
   async function handleConfirm() {
     if (!user) return;
     if (!allAccepted) return toast.error(t.onboarding.mustAcceptAll);
     setBusy(true);
 
-    const rows = POLICIES.map(p => ({
+    // Only insert acks for the policies that were actually missing — the rest
+    // are already current and the unique constraint would no-op anyway.
+    const rows = missingPolicies.map(p => ({
       user_id: user.id,
       policy_key: p.key,
       policy_version: config.policy_version,
@@ -112,7 +146,10 @@ export function PolicyReacceptanceGate() {
       subject_id: user.id,
       category: "policy",
       action: "policy_reaccepted",
-      metadata: { policy_version: config.policy_version } as any,
+      metadata: {
+        policy_version: config.policy_version,
+        accepted_keys: missingPolicies.map(p => p.key),
+      } as any,
     });
 
     setBusy(false);
@@ -145,30 +182,70 @@ export function PolicyReacceptanceGate() {
           </DialogDescription>
         </DialogHeader>
 
-        <ul className="mt-2 space-y-3 rounded-xl border border-border bg-muted/30 p-4">
-          {POLICIES.map(p => (
-            <li key={p.key} className="flex items-start gap-3">
-              <Checkbox
-                id={`reaccept-${p.key}`}
-                checked={accepted[p.key]}
-                onCheckedChange={(v) => setAccepted(prev => ({ ...prev, [p.key]: v === true }))}
-                className="mt-0.5"
-              />
-              <div className="flex-1 text-sm leading-snug">
-                <Label htmlFor={`reaccept-${p.key}`} className="cursor-pointer font-normal">
-                  {t.onboarding[p.labelKey]}
-                </Label>
-                <Link
-                  to={config.urls[p.key]}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ml-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                >
-                  {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
-                </Link>
-              </div>
-            </li>
-          ))}
+        <div className="mt-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <div>
+            <div className="font-medium">
+              {missingPolicies.length === POLICIES.length
+                ? t.policyReaccept.allMissing
+                : t.policyReaccept.someMissing
+                    .replace("{count}", String(missingPolicies.length))
+                    .replace("{total}", String(POLICIES.length))}
+            </div>
+            <div className="mt-0.5 text-xs text-amber-800/90">
+              {missingPolicies.map(p => t.legal[p.shortKey]).join(" · ")}
+            </div>
+          </div>
+        </div>
+
+        <ul className="mt-3 space-y-3 rounded-xl border border-border bg-muted/30 p-4">
+          {POLICIES.map(p => {
+            const isMissing = missingKeys.has(p.key);
+            const prior = priorByKey[p.key];
+            return (
+              <li key={p.key} className="flex items-start gap-3">
+                {isMissing ? (
+                  <Checkbox
+                    id={`reaccept-${p.key}`}
+                    checked={accepted[p.key]}
+                    onCheckedChange={(v) => setAccepted(prev => ({ ...prev, [p.key]: v === true }))}
+                    className="mt-0.5"
+                  />
+                ) : (
+                  <Checkbox checked disabled className="mt-0.5 opacity-70" />
+                )}
+                <div className="flex-1 text-sm leading-snug">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Label
+                      htmlFor={isMissing ? `reaccept-${p.key}` : undefined}
+                      className={isMissing ? "cursor-pointer font-normal" : "font-normal text-muted-foreground"}
+                    >
+                      {t.onboarding[p.labelKey]}
+                    </Label>
+                    {isMissing ? (
+                      <Badge variant="outline" className="border-amber-300 text-amber-700 text-[10px]">
+                        {prior
+                          ? t.policyReaccept.needsUpdate.replace("{version}", prior.policy_version)
+                          : t.policyReaccept.neverAccepted}
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 text-[10px]">
+                        {t.policyReaccept.upToDate}
+                      </Badge>
+                    )}
+                  </div>
+                  <Link
+                    to={config.urls[p.key]}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                  >
+                    {t.onboarding.readPolicy} <ExternalLink className="h-3 w-3" />
+                  </Link>
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">
