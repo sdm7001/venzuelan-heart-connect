@@ -189,7 +189,13 @@ export default function Resources() {
     [sorted, debouncedSearch, category],
   );
 
-  const filtered = sorted;
+  // Pagination operates on the full sorted feed
+  const total = sorted.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const fromIdx = total === 0 ? 0 : (safePage - 1) * PAGE_SIZE;
+  const toIdx = Math.min(fromIdx + PAGE_SIZE, total);
+  const filtered = sorted.slice(fromIdx, toIdx);
 
   // Centralized SEO: title, description, canonical, hreflang, OG, Twitter, JSON-LD
   const blogLd = {
