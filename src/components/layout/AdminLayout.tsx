@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Heart, LayoutDashboard, Users, Flag, ShieldAlert, BadgeCheck, CreditCard, Activity, FileText, LogOut } from "lucide-react";
+import { Heart, LayoutDashboard, Users, Flag, ShieldAlert, BadgeCheck, CreditCard, Activity, FileText, ClipboardCheck, LogOut } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ const items = [
   { to: "/admin/billing", label: "Billing", icon: CreditCard },
   { to: "/admin/audit", label: "Audit log", icon: Activity },
   { to: "/admin/policies", label: "Policies", icon: FileText },
+  { to: "/admin/policy-acceptance", label: "Policy acceptance", icon: ClipboardCheck },
 ];
 
 export function AdminLayout({ children }: { children: ReactNode }) {
