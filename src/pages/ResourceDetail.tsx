@@ -14,6 +14,7 @@ import {
 import { useI18n } from "@/i18n/I18nProvider";
 import { formatDate } from "@/i18n/datetime";
 import { supabase } from "@/integrations/supabase/client";
+import { useSeo, blogPostingLd, faqLd, breadcrumbLd } from "@/seo/seo";
 
 type Faq = { q: string; a: string };
 type Link = { label: string; href: string };
@@ -62,52 +63,52 @@ export default function ResourceDetail() {
     return () => { cancel = true; };
   }, [slug]);
 
-  useEffect(() => {
-    if (!post) return;
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
-    const url = `${origin}/resources/${post.slug}`;
-    const title = lang === "en" ? post.title_en : post.title_es;
-    const desc = lang === "en" ? post.meta_description_en : post.meta_description_es;
+  const title = post ? (lang === "en" ? post.title_en : post.title_es) : "";
+  const desc = post ? (lang === "en" ? post.meta_description_en : post.meta_description_es) : "";
+  const faqList = post ? ((lang === "en" ? post.faq_en : post.faq_es) ?? []) : [];
 
-    document.title = `${title} · MatchVenezuelan`;
-    document.documentElement.lang = lang;
-    upsertMeta("name", "description", desc);
-    upsertMeta("property", "og:title", title);
-    upsertMeta("property", "og:description", desc);
-    upsertMeta("property", "og:type", "article");
-    upsertMeta("property", "og:url", url);
-    upsertLink("canonical", url);
-    upsertHreflang("en", url);
-    upsertHreflang("es", url);
-    upsertHreflang("x-default", url);
-
-    const faq = (lang === "en" ? post.faq_en : post.faq_es) ?? [];
-    const ld = {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "BlogPosting",
-          headline: title,
+  useSeo(
+    post
+      ? {
+          title,
           description: desc,
-          datePublished: post.published_at,
-          inLanguage: lang === "en" ? "en-US" : "es-ES",
-          articleSection: CAT_LABEL[post.category]?.[lang] ?? post.category,
-          mainEntityOfPage: url,
-          author: { "@type": "Organization", name: "MatchVenezuelan" },
-          publisher: { "@type": "Organization", name: "MatchVenezuelan" },
+          path: `/resources/${post.slug}`,
+          lang,
+          type: "article",
+          image: post.hero_image_url ?? undefined,
+          article: {
+            publishedTime: post.published_at,
+            section: CAT_LABEL[post.category]?.[lang] ?? post.category,
+            tags: post.tags,
+            authorName: "MatchVenezuelan",
+          },
+          jsonLd: [
+            blogPostingLd({
+              title,
+              description: desc,
+              url: `${typeof window !== "undefined" ? window.location.origin : ""}/resources/${post.slug}`,
+              lang,
+              publishedAt: post.published_at,
+              section: CAT_LABEL[post.category]?.[lang] ?? post.category,
+              tags: post.tags,
+              image: post.hero_image_url ?? undefined,
+            }),
+            ...(faqList.length > 0 ? [faqLd(faqList)] : []),
+            breadcrumbLd([
+              { name: lang === "en" ? "Home" : "Inicio", url: "/" },
+              { name: lang === "en" ? "Resources" : "Recursos", url: "/resources" },
+              { name: title, url: `/resources/${post.slug}` },
+            ]),
+          ],
+        }
+      : {
+          title: lang === "en" ? "Loading…" : "Cargando…",
+          description: "",
+          lang,
+          robots: "noindex,follow",
         },
-        faq.length > 0 && {
-          "@type": "FAQPage",
-          mainEntity: faq.map((f) => ({
-            "@type": "Question",
-            name: f.q,
-            acceptedAnswer: { "@type": "Answer", text: f.a },
-          })),
-        },
-      ].filter(Boolean),
-    };
-    upsertJsonLd("post-jsonld", ld);
-  }, [post, lang]);
+    [post?.slug, lang],
+  );
 
   if (loading) {
     return (
