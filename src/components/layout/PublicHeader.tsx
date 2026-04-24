@@ -24,23 +24,26 @@ export function PublicHeader() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
-      <div className="container flex h-header items-center justify-between gap-header">
-        <Link to="/" className="flex items-center gap-2 font-display text-base font-semibold tracking-tight sm:text-lg">
-          <img src={logo} alt="MatchVenezuelan" className="size-header-logo object-contain" />
-          <span className="text-burgundy whitespace-nowrap">MatchVenezuelan</span>
+      <div className="container flex h-header max-h-header items-center justify-between gap-header">
+        <Link
+          to="/"
+          className="flex h-header-row items-center gap-2 font-display text-base font-semibold tracking-tight sm:text-lg"
+        >
+          <img src={logo} alt="MatchVenezuelan" className="size-header-logo shrink-0 object-contain" />
+          <span className="text-burgundy whitespace-nowrap leading-none">MatchVenezuelan</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden h-header-row items-center gap-1 md:flex">
           {links.map(l => (
             <Link key={l.to} to={l.to}
-              className={cn("rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-smooth",
+              className={cn("inline-flex h-header-row items-center rounded-md px-3 text-sm font-medium leading-none text-muted-foreground hover:text-foreground transition-smooth",
                 loc.pathname === l.to && "text-foreground")}>
               {l.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden h-header-row items-center gap-2 md:flex">
           <LanguageToggle />
           {user ? (
             <>
@@ -58,7 +61,7 @@ export function PublicHeader() {
         </div>
 
         <button
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground hover:bg-accent md:hidden"
+          className="inline-flex h-header-row w-header-row size-header-logo items-center justify-center rounded-md text-foreground hover:bg-accent md:hidden"
           onClick={() => setOpen(v => !v)}
           aria-label="menu"
         >

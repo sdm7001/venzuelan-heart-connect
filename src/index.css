@@ -135,9 +135,13 @@
   .transition-smooth { transition: all 0.3s var(--transition-smooth); }
   .text-balance { text-wrap: balance; }
 
-  /* Header tokens — use these instead of hardcoding height/padding. */
+  /* Header tokens — use these instead of hardcoding height/padding.
+     The row uses h-header AND max-h-header to enforce a strict ceiling.
+     Children use h-header-row to share the logo's vertical center line. */
   .h-header { height: var(--header-h); }
   .min-h-header { min-height: var(--header-h); }
+  .max-h-header { max-height: var(--header-h); }
+  .h-header-row { height: var(--header-logo); }
   .py-header { padding-top: var(--header-py); padding-bottom: var(--header-py); }
   .gap-header { gap: var(--header-gap); }
   .size-header-logo { height: var(--header-logo); width: var(--header-logo); }
@@ -147,6 +151,8 @@
   @media (min-width: 640px) {
     .h-header { height: var(--header-h-sm); }
     .min-h-header { min-height: var(--header-h-sm); }
+    .max-h-header { max-height: var(--header-h-sm); }
+    .h-header-row { height: var(--header-logo-sm); }
     .py-header { padding-top: var(--header-py-sm); padding-bottom: var(--header-py-sm); }
     .gap-header { gap: var(--header-gap-sm); }
     .size-header-logo { height: var(--header-logo-sm); width: var(--header-logo-sm); }
@@ -157,6 +163,8 @@
   @media (min-width: 768px) {
     .h-header { height: var(--header-h-md); }
     .min-h-header { min-height: var(--header-h-md); }
+    .max-h-header { max-height: var(--header-h-md); }
+    .h-header-row { height: var(--header-logo-md); }
     .py-header { padding-top: var(--header-py-md); padding-bottom: var(--header-py-md); }
     .size-header-logo { height: var(--header-logo-md); width: var(--header-logo-md); }
     .scroll-mt-header { scroll-margin-top: var(--header-h-md); }
