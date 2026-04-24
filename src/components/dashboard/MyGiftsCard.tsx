@@ -128,7 +128,7 @@ export function MyGiftsCard() {
           .ilike("name", `%${debouncedSearch}%`);
         allowedGiftIds = (matched ?? []).map((g: any) => g.id);
         if (allowedGiftIds.length === 0) {
-          setOrders(reset ? [] : prev => prev);
+          if (reset) setOrders([]);
           setHasMore(false);
           if (reset) setLoading(false);
           else setLoadingMore(false);
