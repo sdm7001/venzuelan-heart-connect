@@ -325,7 +325,9 @@ export function MyGiftsCard() {
         <div className="text-sm text-muted-foreground">Loading…</div>
       ) : orders.length === 0 ? (
         <div className="text-sm text-muted-foreground py-6 text-center">
-          {tab === "sent" ? (
+          {debouncedSearch || statusFilter !== "all" ? (
+            <>No {tab} gifts match your filters.</>
+          ) : tab === "sent" ? (
             <>
               You haven't sent any gifts yet.{" "}
               <Link to="/messages" className="text-primary underline">Open a chat</Link> to send one.
