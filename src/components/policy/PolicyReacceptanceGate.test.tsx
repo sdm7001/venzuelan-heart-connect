@@ -180,6 +180,50 @@ describe("PolicyReacceptanceGate", () => {
     const upsertedRows = (upsertSpy.mock.calls[0] as any[])[0] as any[];
     expect(upsertedRows).toHaveLength(4);
     expect(upsertedRows.every(r => r.policy_version === "v2")).toBe(true);
+
+    // Audit event records per-key newly_acknowledged vs already_existed.
+    expect(insertSpy).toHaveBeenCalledTimes(1);
+    const auditPayload = (insertSpy.mock.calls[0] as any[])[0] as any;
+    expect(auditPayload.action).toBe("policy_reaccepted");
+    expect(auditPayload.metadata.newly_acknowledged.sort()).toEqual(
+      ["anti_solicitation", "aup", "privacy", "tos"]
+    );
+    expect(auditPayload.metadata.already_acknowledged).toEqual([]);
+    expect(auditPayload.metadata.per_key).toMatchObject({
+      tos: "newly_acknowledged",
+      privacy: "newly_acknowledged",
+      aup: "newly_acknowledged",
+      anti_solicitation: "newly_acknowledged",
+    });
+    expect(auditPayload.metadata.prior_versions).toMatchObject({
+      tos: "v1", privacy: "v1", aup: "v1", anti_solicitation: "v1",
+    });
+  });
+
+  it("records already_existed in the audit event for idempotent re-accepts", async () => {
+    // User has stale v1 acks (so the gate appears) AND already-existing v2
+    // rows for two policies (e.g., a prior partial submit). Confirming should
+    // tag those two as already_existed and the rest as newly_acknowledged.
+    ackRows = [
+      { policy_key: "tos", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "privacy", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "aup", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "anti_solicitation", policy_version: "v1", accepted_at: "2024-01-01" },
+      { policy_key: "tos", policy_version: "v2", accepted_at: "2024-06-01" },
+      { policy_key: "privacy", policy_version: "v2", accepted_at: "2024-06-01" },
+    ];
+    renderGate();
+    // Only aup + anti_solicitation are missing for v2.
+    expect(await screen.findByText("2/4 missing")).toBeInTheDocument();
+
+    screen.getAllByRole("checkbox").forEach(cb => fireEvent.click(cb));
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+
+    await waitFor(() => expect(insertSpy).toHaveBeenCalledTimes(1));
+    const meta = ((insertSpy.mock.calls[0] as any[])[0] as any).metadata;
+    expect(meta.accepted_keys.sort()).toEqual(["anti_solicitation", "aup"]);
+    expect(meta.newly_acknowledged.sort()).toEqual(["anti_solicitation", "aup"]);
+    expect(meta.already_acknowledged).toEqual([]);
   });
 
   it("does not render for users who have not completed onboarding", async () => {
