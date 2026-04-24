@@ -956,6 +956,30 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_recovery_codes: {
+        Row: {
+          code_hash: string
+          created_at: string
+          id: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          code_hash: string
+          created_at?: string
+          id?: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          code_hash?: string
+          created_at?: string
+          id?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       staff_step_up: {
         Row: {
           method: string
@@ -1163,6 +1187,19 @@ export type Database = {
       award_badge_from_verification: {
         Args: { _verification_id: string }
         Returns: string
+      }
+      consume_staff_recovery_code: {
+        Args: { _code_hash: string }
+        Returns: {
+          codes_remaining: number
+          reason: string
+          verified: boolean
+        }[]
+      }
+      count_active_staff_recovery_codes: { Args: never; Returns: number }
+      generate_staff_recovery_codes: {
+        Args: { _code_hashes: string[] }
+        Returns: number
       }
       has_active_badge: {
         Args: {
