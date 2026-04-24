@@ -984,6 +984,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_blocked_between: {
+        Args: { _a: string; _b: string }
+        Returns: {
+          a_blocks_b: boolean
+          b_blocks_a: boolean
+        }[]
+      }
       is_eligible_for_gifting: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       recompute_trust_state: { Args: { _user_id: string }; Returns: undefined }
