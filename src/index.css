@@ -1,105 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Figtree:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* MatchVenezuelan — Caracas Rose
+   Premium, romantic, international, trust-first.
+   All colors HSL. */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Surfaces */
+    --background: 28 60% 98%;        /* #fdf8f5 cream */
+    --foreground: 345 50% 12%;       /* deep burgundy ink */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 345 50% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 345 50% 12%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Brand */
+    --primary: 343 50% 56%;          /* #c45c7c rose */
+    --primary-foreground: 28 60% 98%;
+    --primary-soft: 343 55% 85%;     /* #e8c5d0 blush */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --burgundy: 345 50% 24%;         /* #5c1f2e */
+    --burgundy-foreground: 28 60% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --gold: 38 55% 55%;              /* trust accent */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --secondary: 343 55% 95%;
+    --secondary-foreground: 345 50% 24%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --muted: 28 30% 94%;
+    --muted-foreground: 345 15% 40%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --accent: 343 55% 92%;
+    --accent-foreground: 345 50% 24%;
 
-    --radius: 0.5rem;
+    --destructive: 0 70% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --sidebar-background: 0 0% 98%;
+    --success: 152 45% 38%;
+    --warning: 32 90% 50%;
+    --info: 210 70% 50%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --border: 343 25% 90%;
+    --input: 343 25% 90%;
+    --ring: 343 50% 56%;
 
-    --sidebar-primary: 240 5.9% 10%;
+    --radius: 0.875rem;
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    /* Gradients */
+    --gradient-romance: linear-gradient(135deg, hsl(343 55% 85%) 0%, hsl(343 50% 56%) 60%, hsl(345 50% 24%) 100%);
+    --gradient-soft: linear-gradient(180deg, hsl(28 60% 98%) 0%, hsl(343 55% 95%) 100%);
+    --gradient-hero: radial-gradient(ellipse at top, hsl(343 55% 92%) 0%, hsl(28 60% 98%) 60%);
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    /* Shadows */
+    --shadow-elegant: 0 20px 60px -20px hsl(345 50% 24% / 0.18);
+    --shadow-soft: 0 8px 24px -8px hsl(343 50% 56% / 0.18);
+    --shadow-card: 0 1px 3px hsl(345 30% 30% / 0.06), 0 12px 32px -8px hsl(345 30% 30% / 0.08);
 
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    /* Typography */
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-body: 'Figtree', system-ui, sans-serif;
 
-    --sidebar-border: 220 13% 91%;
+    /* Transitions */
+    --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar (admin) */
+    --sidebar-background: 345 50% 12%;
+    --sidebar-foreground: 28 40% 92%;
+    --sidebar-primary: 343 50% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 345 40% 18%;
+    --sidebar-accent-foreground: 28 40% 92%;
+    --sidebar-border: 345 30% 22%;
+    --sidebar-ring: 343 50% 56%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 345 40% 8%;
+    --foreground: 28 40% 95%;
+    --card: 345 40% 12%;
+    --card-foreground: 28 40% 95%;
+    --popover: 345 40% 12%;
+    --popover-foreground: 28 40% 95%;
+    --primary: 343 60% 65%;
+    --primary-foreground: 345 50% 10%;
+    --secondary: 345 30% 18%;
+    --secondary-foreground: 28 40% 95%;
+    --muted: 345 25% 16%;
+    --muted-foreground: 28 20% 70%;
+    --accent: 345 30% 20%;
+    --accent-foreground: 28 40% 95%;
+    --border: 345 25% 22%;
+    --input: 345 25% 22%;
+    --ring: 343 60% 65%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
+  html { font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  body { @apply bg-background text-foreground; font-feature-settings: "ss01","cv11"; }
+  h1,h2,h3,h4,h5 { font-family: var(--font-display); letter-spacing: -0.02em; }
+}
 
-  body {
-    @apply bg-background text-foreground;
-  }
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-body { font-family: var(--font-body); }
+  .gradient-romance { background: var(--gradient-romance); }
+  .gradient-soft { background: var(--gradient-soft); }
+  .gradient-hero { background: var(--gradient-hero); }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .transition-smooth { transition: all 0.3s var(--transition-smooth); }
+  .text-balance { text-wrap: balance; }
 }
