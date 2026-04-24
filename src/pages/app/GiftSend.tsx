@@ -124,12 +124,15 @@ export default function GiftSend() {
     [gifts, selectedId]
   );
 
+  const isBlocked = !!(blockState?.a_blocks_b || blockState?.b_blocks_a);
+
   const canSend =
     !!user &&
     !!recipientId &&
     !!selected &&
     !!eligibility?.eligible &&
     recipientEligible !== false &&
+    !isBlocked &&
     !sending;
 
   async function handleSend() {
