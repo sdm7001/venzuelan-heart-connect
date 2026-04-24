@@ -262,8 +262,8 @@ export default function AdminPolicyReaccepts() {
               const isOpen = !!expanded[row.id];
               const subject = row.subject_id ? profiles[row.subject_id] : null;
               return (
-                <FragmentRow key={row.id}>
-                  <TableRow key={row.id} className="hover:bg-muted/30">
+                <Fragment key={row.id}>
+                  <TableRow className="hover:bg-muted/30">
                     <TableCell className="align-top">
                       <button
                         type="button"
