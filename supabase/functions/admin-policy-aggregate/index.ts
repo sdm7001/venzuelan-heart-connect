@@ -60,6 +60,8 @@ Deno.serve(async (req) => {
     // --- Parse + validate input.
     const body = await req.json().catch(() => ({}));
     const mode: Mode = body.mode === "completed" ? "completed" : "blocked";
+    // `all=true` skips pagination — used by CSV export to return the full filtered set.
+    const exportAll = body.all === true;
     const page = Math.max(1, Math.min(1_000_000, Number(body.page) || 1));
     const pageSize = Math.max(1, Math.min(200, Number(body.pageSize) || 50));
     const search = (typeof body.search === "string" ? body.search : "").trim().toLowerCase();
@@ -157,15 +159,16 @@ Deno.serve(async (req) => {
     });
 
     const total = filtered.length;
-    const start = (page - 1) * pageSize;
-    const rows = filtered.slice(start, start + pageSize);
+    const rows = exportAll
+      ? filtered
+      : filtered.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
 
     return json({
       rows,
       total,
-      page,
-      pageSize,
-      pageCount: Math.max(1, Math.ceil(total / pageSize)),
+      page: exportAll ? 1 : page,
+      pageSize: exportAll ? total : pageSize,
+      pageCount: exportAll ? 1 : Math.max(1, Math.ceil(total / pageSize)),
       // Whole-set totals so the stat cards stay accurate regardless of page.
       totals: {
         blocked: aggregated.filter((r) => !r.has_current).length,

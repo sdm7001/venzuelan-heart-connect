@@ -3,7 +3,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import {
   AlertTriangle, ArrowDown, ArrowUp, ArrowUpDown, BellRing, CheckCircle2,
-  ChevronLeft, ChevronRight, History, RefreshCw, Search, ShieldCheck,
+  ChevronLeft, ChevronRight, Download, History, RefreshCw, Search, ShieldCheck,
 } from "lucide-react";
 import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
@@ -42,6 +42,12 @@ type SortDir = "asc" | "desc";
 type Mode = "blocked" | "completed";
 
 const PAGE_SIZE_OPTIONS = [25, 50, 100];
+
+// RFC 4180 escape: wrap in quotes if the value contains a comma, quote, or newline.
+function csvCell(v: string): string {
+  if (/[",\n\r]/.test(v)) return `"${v.replace(/"/g, '""')}"`;
+  return v;
+}
 
 export default function AdminPolicyAcceptance() {
   const { user: adminUser } = useAuth();
@@ -200,6 +206,70 @@ export default function AdminPolicyAcceptance() {
     refresh();
   }
 
+  // Pulls the entire filtered set (no pagination) and downloads it as CSV.
+  // Member id, display name, last accepted version + timestamps are all included.
+  const [exporting, setExporting] = useState<Mode | null>(null);
+  async function exportCsv(mode: Mode) {
+    setExporting(mode);
+    const state = mode === "blocked" ? blockedState : completedState;
+    const { data, error } = await supabase.functions.invoke("admin-policy-aggregate", {
+      body: {
+        mode,
+        all: true,
+        search: debouncedSearch,
+        sortField: state.sortField,
+        sortDir: state.sortDir,
+        policyVersion: config.policy_version,
+      },
+    });
+    setExporting(null);
+    if (error || data?.error) {
+      return toast.error(`Export failed: ${(error?.message ?? data?.error) || "unknown"}`);
+    }
+    const rows: AggRow[] = data.rows ?? [];
+    if (rows.length === 0) return toast.info("Nothing to export for the current filter.");
+
+    const headers = [
+      "user_id",
+      "display_name",
+      "account_status",
+      "status",
+      "current_policy_version",
+      "current_accepted_at",
+      "last_accepted_version",
+      "last_accepted_at",
+      "missing_keys",
+      "accepted_keys_count",
+    ];
+    const lines = [headers.join(",")];
+    for (const r of rows) {
+      const lastVersion = r.has_current ? config.policy_version : (r.last_prior_version ?? "");
+      const lastAt = r.has_current ? (r.accepted_at ?? "") : (r.last_prior_at ?? "");
+      lines.push([
+        r.user_id,
+        r.display_name ?? "",
+        r.account_status,
+        r.has_current ? "up_to_date" : "blocked",
+        config.policy_version,
+        r.accepted_at ?? "",
+        lastVersion,
+        lastAt,
+        r.missing_keys.join("|"),
+        String(r.accepted_keys),
+      ].map(csvCell).join(","));
+    }
+    const csv = "\uFEFF" + lines.join("\n"); // BOM keeps Excel happy with UTF-8
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `policy-${mode}-v${config.policy_version}-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${rows.length} ${mode === "blocked" ? "blocked" : "re-accepted"} member${rows.length === 1 ? "" : "s"}.`);
+  }
   return (
     <AdminLayout>
       <AdminPageHeader
@@ -255,27 +325,36 @@ export default function AdminPolicyAcceptance() {
         </TabsList>
 
         <TabsContent value="blocked" className="mt-4">
-          {blockedState.rows.length > 0 && (
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
-              <div className="flex items-center gap-3 text-sm">
-                <Checkbox
-                  checked={selected.size > 0 && selected.size === blockedState.rows.length}
-                  onCheckedChange={(v) => toggleAllVisible(v === true)}
-                  aria-label="Select all blocked members on this page"
-                />
-                <span className="text-muted-foreground">
-                  {selected.size === 0
-                    ? `Select members to send a re-acceptance reminder`
-                    : `${selected.size} of ${blockedState.rows.length} on this page selected`}
-                </span>
-              </div>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+            <div className="flex items-center gap-3 text-sm">
+              {blockedState.rows.length > 0 && (
+                <>
+                  <Checkbox
+                    checked={selected.size > 0 && selected.size === blockedState.rows.length}
+                    onCheckedChange={(v) => toggleAllVisible(v === true)}
+                    aria-label="Select all blocked members on this page"
+                  />
+                  <span className="text-muted-foreground">
+                    {selected.size === 0
+                      ? `Select members to send a re-acceptance reminder`
+                      : `${selected.size} of ${blockedState.rows.length} on this page selected`}
+                  </span>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Button size="sm" variant="outline" onClick={() => exportCsv("blocked")}
+                disabled={exporting === "blocked" || totals.blocked === 0}>
+                <Download className="h-4 w-4 mr-1" />
+                {exporting === "blocked" ? "Preparing…" : "Export CSV"}
+              </Button>
               <Button size="sm" variant="romance" onClick={sendReminders}
                 disabled={selected.size === 0 || sending}>
                 <BellRing className="h-4 w-4 mr-1" />
                 {sending ? "Sending…" : `Send reminder${selected.size > 1 ? "s" : ""}`}
               </Button>
             </div>
-          )}
+          </div>
           <UserTable
             mode="blocked"
             activeVersion={config.policy_version}
@@ -294,6 +373,13 @@ export default function AdminPolicyAcceptance() {
         </TabsContent>
 
         <TabsContent value="completed" className="mt-4">
+          <div className="mb-3 flex justify-end">
+            <Button size="sm" variant="outline" onClick={() => exportCsv("completed")}
+              disabled={exporting === "completed" || totals.completed === 0}>
+              <Download className="h-4 w-4 mr-1" />
+              {exporting === "completed" ? "Preparing…" : "Export CSV"}
+            </Button>
+          </div>
           <UserTable
             mode="completed"
             activeVersion={config.policy_version}
