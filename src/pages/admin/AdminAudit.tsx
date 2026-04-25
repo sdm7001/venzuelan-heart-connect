@@ -242,74 +242,72 @@ export default function AdminAudit() {
                 <th className="px-4 py-3 text-left">Subject</th>
               </tr>
             </thead>
-            <tbody>
-              {filtered.map((r) => {
-                const isOpen = expanded === r.id;
-                const grp = actionGroup(r.action);
-                return (
-                  <tbody key={r.id} className="contents">
-                    <tr
-                      className="cursor-pointer border-t border-border hover:bg-muted/20"
-                      onClick={() => setExpanded(isOpen ? null : r.id)}
-                    >
-                      <td className="px-2 py-3 text-muted-foreground">
-                        {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                      </td>
-                      <td className="px-4 py-3 text-xs tabular-nums text-muted-foreground">
-                        {new Date(r.created_at).toLocaleString()}
-                      </td>
-                      <td className="px-4 py-3">
-                        <Badge variant="outline" className="border-0 bg-muted text-xs capitalize">
-                          {r.category}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={cn(
-                            "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
-                            grp ? ACTION_GROUPS[grp].tone : "bg-muted text-muted-foreground",
-                          )}
-                        >
-                          {r.action}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <ActorCell id={r.actor_id} name={profiles[r.actor_id ?? ""]} />
-                      </td>
-                      <td className="px-4 py-3">
-                        <ActorCell id={r.subject_id} name={profiles[r.subject_id ?? ""]} />
+            {filtered.map((r) => {
+              const isOpen = expanded === r.id;
+              const grp = actionGroup(r.action);
+              return (
+                <tbody key={r.id}>
+                  <tr
+                    className="cursor-pointer border-t border-border hover:bg-muted/20"
+                    onClick={() => setExpanded(isOpen ? null : r.id)}
+                  >
+                    <td className="px-2 py-3 text-muted-foreground">
+                      {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                    </td>
+                    <td className="px-4 py-3 text-xs tabular-nums text-muted-foreground">
+                      {new Date(r.created_at).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge variant="outline" className="border-0 bg-muted text-xs capitalize">
+                        {r.category}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
+                          grp ? ACTION_GROUPS[grp].tone : "bg-muted text-muted-foreground",
+                        )}
+                      >
+                        {r.action}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <ActorCell id={r.actor_id} name={profiles[r.actor_id ?? ""]} />
+                    </td>
+                    <td className="px-4 py-3">
+                      <ActorCell id={r.subject_id} name={profiles[r.subject_id ?? ""]} />
+                    </td>
+                  </tr>
+                  {isOpen && (
+                    <tr className="border-t border-border bg-muted/20">
+                      <td />
+                      <td colSpan={5} className="px-4 py-3">
+                        <div className="grid gap-3 md:grid-cols-2">
+                          <div className="text-xs text-muted-foreground">
+                            <div className="mb-1 font-semibold uppercase tracking-wider">Event</div>
+                            <div>id: <code className="font-mono">{r.id}</code></div>
+                            <div>iso: <code className="font-mono">{r.created_at}</code></div>
+                          </div>
+                          <div>
+                            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                              Metadata
+                            </div>
+                            {r.metadata && Object.keys(r.metadata).length > 0 ? (
+                              <pre className="max-h-64 overflow-auto rounded-md bg-card p-2 text-[11px] leading-snug text-foreground">
+{JSON.stringify(r.metadata, null, 2)}
+                              </pre>
+                            ) : (
+                              <p className="text-xs text-muted-foreground">No metadata.</p>
+                            )}
+                          </div>
+                        </div>
                       </td>
                     </tr>
-                    {isOpen && (
-                      <tr key={`${r.id}-meta`} className="border-t border-border bg-muted/20">
-                        <td />
-                        <td colSpan={5} className="px-4 py-3">
-                          <div className="grid gap-3 md:grid-cols-2">
-                            <div className="text-xs text-muted-foreground">
-                              <div className="mb-1 font-semibold uppercase tracking-wider">Event</div>
-                              <div>id: <code className="font-mono">{r.id}</code></div>
-                              <div>iso: <code className="font-mono">{r.created_at}</code></div>
-                            </div>
-                            <div>
-                              <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                Metadata
-                              </div>
-                              {r.metadata && Object.keys(r.metadata).length > 0 ? (
-                                <pre className="max-h-64 overflow-auto rounded-md bg-card p-2 text-[11px] leading-snug text-foreground">
-{JSON.stringify(r.metadata, null, 2)}
-                                </pre>
-                              ) : (
-                                <p className="text-xs text-muted-foreground">No metadata.</p>
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </>
-                );
-              })}
-            </tbody>
+                  )}
+                </tbody>
+              );
+            })}
           </table>
         </div>
       )}
