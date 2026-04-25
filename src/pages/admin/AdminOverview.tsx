@@ -3,11 +3,13 @@ import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Users, Flag, ShieldAlert, BadgeCheck, Sparkles, Copy, CheckCircle2 } from "lucide-react";
+import { Users, Flag, ShieldAlert, BadgeCheck, Sparkles, Copy, CheckCircle2, Award } from "lucide-react";
 import { toast } from "sonner";
 
 type SeedSummary = {
