@@ -4,39 +4,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* MatchVenezuelan — Midnight Indigo
-   Deep navy with electric indigo. Sophisticated tech feel.
-   All colors HSL. Palette: #0a0a1a / #141432 / #1e1e5a / #4f46e5 */
+/* MatchVenezuelan — Ocean Blue
+   Bright, premium blue palette. Light surfaces, deep ocean primary, teal accent.
+   All colors HSL. Palette: #f5f9fd / #e6eef7 / #1a4a8c / #2d8aa8 */
 
 @layer base {
   :root {
-    /* Surfaces — dark by default for Midnight Indigo */
-    --background: 240 60% 6%;        /* #0a0a1a deep navy */
-    --foreground: 0 0% 100%;       /* near-white ink */
+    /* Surfaces — bright, airy */
+    --background: 210 50% 98%;       /* near-white with blue tint */
+    --foreground: 215 45% 14%;       /* deep navy ink */
 
-    --card: 235 50% 14%;             /* #141432 */
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 45% 14%;
 
-    --popover: 235 50% 14%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 45% 14%;
 
     /* Brand */
-    --primary: 243 76% 59%;          /* #4f46e5 electric indigo */
-    --primary-foreground: 0 0% 100%; /* white text on indigo */
-    --primary-soft: 240 55% 24%;     /* #1e1e5a deep indigo */
+    --primary: 212 70% 32%;          /* deep ocean blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 210 70% 92%;     /* soft blue wash */
 
-    --burgundy: 0 0% 100%;           /* repurposed for dark theme: white text token */
-    --burgundy-foreground: 240 60% 6%;
+    --burgundy: 215 55% 18%;         /* repurposed: deep navy heading token */
+    --burgundy-foreground: 0 0% 100%;
 
-    --gold: 243 76% 70%;             /* indigo accent (kept token name) */
+    --gold: 192 55% 42%;             /* teal accent (kept token name) */
 
-    --secondary: 240 40% 18%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 210 45% 94%;
+    --secondary-foreground: 215 45% 14%;
 
-    --muted: 235 30% 16%;
-    --muted-foreground: 230 30% 88%;
+    --muted: 210 40% 95%;
+    --muted-foreground: 215 20% 42%;
 
-    --accent: 240 55% 24%;
+    --accent: 192 55% 42%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 70% 48%;
@@ -44,11 +44,11 @@
 
     --success: 152 45% 38%;
     --warning: 32 90% 50%;
-    --info: 210 70% 50%;
+    --info: 212 70% 45%;
 
-    --border: 240 35% 22%;
-    --input: 240 35% 22%;
-    --ring: 243 76% 59%;
+    --border: 212 30% 88%;
+    --input: 212 30% 88%;
+    --ring: 212 70% 32%;
 
     --radius: 0.875rem;
 
