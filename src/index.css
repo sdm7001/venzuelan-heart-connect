@@ -4,77 +4,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* MatchVenezuelan — Ocean Blue
-   Bright, premium blue palette. Light surfaces, deep ocean primary, teal accent.
-   All colors HSL. Palette: #f5f9fd / #e6eef7 / #1a4a8c / #2d8aa8 */
+/* MatchVenezuelan — Cream / Navy / Blue / Gold
+   Warm cream surfaces, deep navy ink, mid-blue primary, mustard gold accent.
+   All colors HSL. Palette: #f3efe0 / #0e1f4a / #3470b0 / #d2a13a */
 
 @layer base {
   :root {
-    /* Surfaces — bright, airy */
-    --background: 210 50% 98%;       /* near-white with blue tint */
-    --foreground: 215 45% 14%;       /* deep navy ink */
+    /* Surfaces — warm cream */
+    --background: 48 40% 92%;        /* #f3efe0 cream */
+    --foreground: 222 70% 17%;       /* #0e1f4a deep navy ink */
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 45% 14%;
+    --card: 48 50% 96%;              /* lighter cream card */
+    --card-foreground: 222 70% 17%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 45% 14%;
+    --popover: 48 50% 96%;
+    --popover-foreground: 222 70% 17%;
 
     /* Brand */
-    --primary: 212 70% 32%;          /* deep ocean blue */
-    --primary-foreground: 0 0% 100%;
-    --primary-soft: 210 70% 92%;     /* soft blue wash */
+    --primary: 211 55% 45%;          /* #3470b0 mid blue */
+    --primary-foreground: 48 50% 97%;
+    --primary-soft: 211 55% 88%;     /* soft blue wash */
 
-    --burgundy: 215 55% 18%;         /* repurposed: deep navy heading token */
-    --burgundy-foreground: 0 0% 100%;
+    --burgundy: 222 70% 17%;         /* repurposed: deep navy heading token */
+    --burgundy-foreground: 48 50% 97%;
 
-    --gold: 192 55% 42%;             /* teal accent (kept token name) */
+    --gold: 41 64% 53%;              /* #d2a13a mustard gold */
 
-    --secondary: 210 45% 94%;
-    --secondary-foreground: 215 45% 14%;
+    --secondary: 48 35% 86%;
+    --secondary-foreground: 222 70% 17%;
 
-    --muted: 210 40% 95%;
-    --muted-foreground: 215 20% 42%;
+    --muted: 48 30% 88%;
+    --muted-foreground: 222 25% 35%;
 
-    --accent: 192 55% 42%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 41 64% 53%;
+    --accent-foreground: 222 70% 17%;
 
-    --destructive: 0 70% 48%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 48 50% 97%;
 
-    --success: 152 45% 38%;
-    --warning: 32 90% 50%;
-    --info: 212 70% 45%;
+    --success: 152 45% 35%;
+    --warning: 41 64% 53%;
+    --info: 211 55% 45%;
 
-    --border: 212 30% 88%;
-    --input: 212 30% 88%;
-    --ring: 212 70% 32%;
+    --border: 48 25% 80%;
+    --input: 48 25% 80%;
+    --ring: 211 55% 45%;
 
     --radius: 0.875rem;
 
     /* Header layout tokens — keep logo + nav aligned across breakpoints.
        Header height = logo size + 2 * vertical padding. Update together. */
-    --header-h: 5.5rem;          /* 88px mobile  (64px logo + py-3) */
-    --header-h-sm: 6.25rem;      /* 100px sm     (72px logo + py-3.5) */
-    --header-h-md: 7rem;         /* 112px md+    (80px logo + py-4) */
-    --header-py: 0.75rem;        /* py-3 */
-    --header-py-sm: 0.875rem;    /* py-3.5 */
-    --header-py-md: 1rem;        /* py-4 */
-    --header-logo: 4rem;         /* 64px (2x) */
-    --header-logo-sm: 4.5rem;    /* 72px (2x) */
-    --header-logo-md: 5rem;      /* 80px (2x) */
+    --header-h: 5.5rem;
+    --header-h-sm: 6.25rem;
+    --header-h-md: 7rem;
+    --header-py: 0.75rem;
+    --header-py-sm: 0.875rem;
+    --header-py-md: 1rem;
+    --header-logo: 4rem;
+    --header-logo-sm: 4.5rem;
+    --header-logo-md: 5rem;
     --header-gap: 0.75rem;
     --header-gap-sm: 1rem;
 
-    /* Gradients — Ocean Blue */
-    --gradient-romance: linear-gradient(135deg, hsl(212 70% 32%) 0%, hsl(192 55% 42%) 60%, hsl(212 70% 22%) 100%);
-    --gradient-soft: linear-gradient(180deg, hsl(210 50% 98%) 0%, hsl(210 60% 94%) 100%);
-    --gradient-hero: radial-gradient(ellipse at top, hsl(210 70% 92%) 0%, hsl(210 50% 98%) 60%);
+    /* Gradients — Cream / Navy / Blue / Gold */
+    --gradient-romance: linear-gradient(135deg, hsl(222 70% 17%) 0%, hsl(211 55% 45%) 60%, hsl(41 64% 53%) 100%);
+    --gradient-soft: linear-gradient(180deg, hsl(48 40% 92%) 0%, hsl(48 50% 96%) 100%);
+    --gradient-hero: radial-gradient(ellipse at top, hsl(211 55% 88%) 0%, hsl(48 40% 92%) 60%);
 
     /* Shadows */
-    --shadow-elegant: 0 20px 60px -20px hsl(212 70% 32% / 0.30);
-    --shadow-soft: 0 8px 24px -8px hsl(212 70% 32% / 0.20);
-    --shadow-card: 0 1px 3px hsl(212 40% 20% / 0.08), 0 12px 32px -8px hsl(212 40% 20% / 0.12);
+    --shadow-elegant: 0 20px 60px -20px hsl(222 70% 17% / 0.30);
+    --shadow-soft: 0 8px 24px -8px hsl(211 55% 45% / 0.20);
+    --shadow-card: 0 1px 3px hsl(222 40% 15% / 0.08), 0 12px 32px -8px hsl(222 40% 15% / 0.12);
 
     /* Typography */
     --font-display: 'Outfit', system-ui, sans-serif;
@@ -83,15 +83,15 @@
     /* Transitions */
     --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
-    /* Sidebar (admin) */
-    --sidebar-background: 215 45% 14%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 192 55% 50%;
-    --sidebar-primary-foreground: 215 45% 14%;
-    --sidebar-accent: 215 40% 22%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 215 35% 26%;
-    --sidebar-ring: 192 55% 50%;
+    /* Sidebar (admin) — deep navy */
+    --sidebar-background: 222 70% 17%;
+    --sidebar-foreground: 48 50% 96%;
+    --sidebar-primary: 41 64% 53%;
+    --sidebar-primary-foreground: 222 70% 17%;
+    --sidebar-accent: 222 50% 24%;
+    --sidebar-accent-foreground: 48 50% 96%;
+    --sidebar-border: 222 40% 28%;
+    --sidebar-ring: 41 64% 53%;
   }
 
   .dark {
