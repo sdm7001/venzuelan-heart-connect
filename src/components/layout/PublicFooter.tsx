@@ -23,6 +23,8 @@ export function PublicFooter() {
           <FooterCol title={t.footer.legal} links={[
             { to: "/legal/terms", label: t.legal.tos },
             { to: "/legal/privacy", label: t.legal.privacy },
+            { to: "/legal/cookies", label: t.legal.cookies },
+            { to: "/legal/consent", label: t.legal.consent },
             { to: "/legal/acceptable-use", label: t.legal.aup },
             { to: "/legal/anti-solicitation", label: t.legal.antiSolicit },
           ]} />
