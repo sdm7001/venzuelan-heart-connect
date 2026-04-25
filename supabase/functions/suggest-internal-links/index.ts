@@ -151,7 +151,7 @@ Deno.serve(async (req) => {
         href: string;
         kind: "post" | "page";
         score: number;
-        meta: any;
+        meta: Record<string, unknown>;
       };
       const candidates: Cand[] = [];
 
@@ -212,8 +212,8 @@ Deno.serve(async (req) => {
 
       // Ask Lovable AI to pick the best `max` and write bilingual anchor text.
       const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-      let suggestions_en: any[] = [];
-      let suggestions_es: any[] = [];
+      let suggestions_en: { label: string; href: string }[] = [];
+      let suggestions_es: { label: string; href: string }[] = [];
 
       if (LOVABLE_API_KEY && shortlist.length > 0) {
         const sysPrompt =

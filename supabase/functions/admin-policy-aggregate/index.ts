@@ -92,7 +92,8 @@ Deno.serve(async (req) => {
       .order("created_at", { ascending: false })
       .limit(20);
     const bumpRow = (bumpEvent ?? []).find(
-      (e: any) => e?.metadata?.next?.policy_version === policyVersion
+      (e: { metadata?: { next?: { policy_version?: string } }; created_at?: string }) =>
+        e?.metadata?.next?.policy_version === policyVersion
     );
     const bumpedAt: string | null = bumpRow?.created_at ?? null;
 

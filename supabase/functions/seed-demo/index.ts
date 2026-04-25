@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Seed demo data for the MatchVenezuelan P0 foundation.
 // Caller must be authenticated AND have the 'admin' role.
 // Idempotent-ish: re-running upserts demo accounts and appends a fresh batch

@@ -116,16 +116,18 @@ const PROBE_SCRIPT = (insets: Device["insets"]) => `
 export default function ResponsiveQA() {
   const [device, setDevice] = useState<Device>(DEVICES[1]);
   const [route, setRoute] = useState<string>(ROUTES[0]);
-  const [report, setReport] = useState<{ overflow: OverflowReport; insets: any } | null>(null);
+  const [report, setReport] = useState<{ overflow: OverflowReport; insets: Record<string, string> | null } | null>(null);
   const [loading, setLoading] = useState(false);
   const frameRef = useRef<HTMLIFrameElement>(null);
 
   const src = useMemo(() => `${route}${route.includes("?") ? "&" : "?"}__qa=1`, [route]);
 
   useEffect(() => {
+    type QaMsg = { __qa: true; overflow: OverflowReport; insets: Record<string, string> };
     const onMsg = (e: MessageEvent) => {
-      if (e.data && (e.data as any).__qa) {
-        setReport({ overflow: (e.data as any).overflow, insets: (e.data as any).insets });
+      const d = e.data as QaMsg | null;
+      if (d?.__qa) {
+        setReport({ overflow: d.overflow, insets: d.insets });
         setLoading(false);
       }
     };
@@ -139,7 +141,6 @@ export default function ResponsiveQA() {
     setLoading(true);
     setReport(null);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
       // Inject our probe script into the iframe.
       const script = f.contentWindow.document.createElement("script");
       script.textContent = PROBE_SCRIPT(device.insets);
