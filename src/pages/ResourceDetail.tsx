@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { ArrowLeft, BookOpen, ChevronRight, Link2 } from "lucide-react";
@@ -39,6 +39,80 @@ const CAT_LABEL: Record<string, { en: string; es: string }> = {
   relationships: { en: "Relationships", es: "Relaciones" },
   safety: { en: "Safety", es: "Seguridad" },
 };
+
+// ── Callout box renderer ──────────────────────────────────────────────────────
+// Markdown blockquotes that start with [!TYPE] are rendered as styled callout
+// boxes. Supported types: WARNING, CAUTION, NOTE, TIP, IMPORTANT, FOR_WOMEN,
+// FOR_MEN.
+//
+// Example Markdown:
+//   > [!WARNING]
+//   > Never send money to someone you haven't video-called.
+
+const CALLOUT_CFG = {
+  WARNING:   { emoji: "⚠️", label: "Warning",   border: "border-l-amber-400",   bg: "bg-amber-50 dark:bg-amber-950/30",    title: "text-amber-800 dark:text-amber-200"   },
+  CAUTION:   { emoji: "🚨", label: "Caution",   border: "border-l-red-400",     bg: "bg-red-50 dark:bg-red-950/30",        title: "text-red-800 dark:text-red-200"       },
+  NOTE:      { emoji: "ℹ️",  label: "Note",     border: "border-l-blue-400",    bg: "bg-blue-50 dark:bg-blue-950/30",      title: "text-blue-800 dark:text-blue-200"     },
+  TIP:       { emoji: "💡", label: "Tip",       border: "border-l-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/30",title: "text-emerald-800 dark:text-emerald-200"},
+  IMPORTANT: { emoji: "❗", label: "Important", border: "border-l-violet-400",  bg: "bg-violet-50 dark:bg-violet-950/30",  title: "text-violet-800 dark:text-violet-200" },
+  FOR_WOMEN: { emoji: "👩", label: "For Women", border: "border-l-pink-400",    bg: "bg-pink-50 dark:bg-pink-950/30",      title: "text-pink-800 dark:text-pink-200"     },
+  FOR_MEN:   { emoji: "👨", label: "For Men",   border: "border-l-sky-400",     bg: "bg-sky-50 dark:bg-sky-950/30",        title: "text-sky-800 dark:text-sky-200"       },
+} as const;
+type CalloutType = keyof typeof CALLOUT_CFG;
+
+function MdBlockquote({ children }: { children: React.ReactNode }) {
+  const arr = React.Children.toArray(children);
+  const first = arr[0];
+
+  if (React.isValidElement(first)) {
+    const pContent = (first.props as { children?: unknown }).children;
+    const firstText =
+      typeof pContent === "string"
+        ? pContent
+        : Array.isArray(pContent) && typeof pContent[0] === "string"
+        ? pContent[0]
+        : null;
+
+    if (firstText) {
+      const m = firstText.match(/^\[!(WARNING|CAUTION|NOTE|TIP|IMPORTANT|FOR_WOMEN|FOR_MEN)\]\s*/i);
+      if (m) {
+        const type = m[1].toUpperCase() as CalloutType;
+        const cfg = CALLOUT_CFG[type] ?? CALLOUT_CFG.NOTE;
+        const rest = firstText.slice(m[0].length);
+        const newPContent =
+          typeof pContent === "string"
+            ? rest
+            : [rest, ...(pContent as unknown[]).slice(1)];
+        const bodyItems = [
+          rest || (Array.isArray(pContent) && (pContent as unknown[]).length > 1)
+            ? React.cloneElement(
+                first as React.ReactElement<{ children: unknown }>,
+                { children: newPContent },
+              )
+            : null,
+          ...arr.slice(1),
+        ].filter(Boolean);
+
+        return (
+          <div className={`not-prose my-6 rounded-r-lg border-l-4 p-4 ${cfg.border} ${cfg.bg}`}>
+            <p className={`mb-2 flex items-center gap-2 text-sm font-semibold ${cfg.title}`}>
+              <span role="img" aria-label={cfg.label}>{cfg.emoji}</span>
+              {cfg.label}
+            </p>
+            <div className="text-sm leading-relaxed text-foreground/80">{bodyItems}</div>
+          </div>
+        );
+      }
+    }
+  }
+
+  return (
+    <blockquote className="my-4 border-l-4 border-border pl-4 italic text-muted-foreground">
+      {children}
+    </blockquote>
+  );
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function ResourceDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -272,7 +346,7 @@ export default function ResourceDetail() {
         </header>
 
         <div className="prose prose-neutral mt-10 max-w-none prose-headings:font-display prose-headings:text-burgundy prose-a:text-primary">
-          <ReactMarkdown>{body}</ReactMarkdown>
+          <ReactMarkdown components={{ blockquote: MdBlockquote }}>{body}</ReactMarkdown>
         </div>
 
         {faq?.length > 0 && (
