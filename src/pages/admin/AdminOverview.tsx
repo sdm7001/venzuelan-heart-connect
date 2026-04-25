@@ -42,7 +42,7 @@ export default function AdminOverview() {
       .select("value")
       .eq("key", "founding_member_enabled")
       .maybeSingle();
-    setFoundingEnabled(data?.value === true || (data?.value as any) === "true");
+    setFoundingEnabled(data?.value === true || String(data?.value) === "true");
   }
 
   useEffect(() => { void loadStats(); void loadFoundingSetting(); }, []);
@@ -56,13 +56,13 @@ export default function AdminOverview() {
       const { error } = await supabase
         .from("app_settings")
         .upsert(
-          { key: "founding_member_enabled", value: next as any, updated_by: user.id, updated_at: new Date().toISOString() },
+          { key: "founding_member_enabled", value: next as unknown as Record<string, unknown>, updated_by: user.id, updated_at: new Date().toISOString() },
           { onConflict: "key" },
         );
       if (error) throw error;
       await supabase.from("app_settings_history").insert({
         key: "founding_member_enabled",
-        value: next as any,
+        value: next as unknown as Record<string, unknown>,
         changed_by: user.id,
       });
       await supabase.from("audit_events").insert({
@@ -73,9 +73,9 @@ export default function AdminOverview() {
         metadata: { enabled: next },
       });
       toast.success(next ? "Founding Member auto-award enabled" : "Founding Member auto-award disabled");
-    } catch (e: any) {
+    } catch (e: unknown) {
       setFoundingEnabled(prev);
-      toast.error(e?.message ?? "Failed to update setting");
+      toast.error(e instanceof Error ? e.message : "Failed to update setting");
     } finally {
       setFoundingSaving(false);
     }

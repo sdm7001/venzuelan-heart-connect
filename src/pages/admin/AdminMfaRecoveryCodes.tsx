@@ -38,8 +38,8 @@ export default function AdminMfaRecoveryCodes() {
       setFreshCodes(plaintexts);
       await refresh();
       toast.success("New recovery codes generated. Save them now — they won't be shown again.");
-    } catch (e: any) {
-      toast.error(e.message ?? "Couldn't generate codes.");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Couldn't generate codes.");
     } finally {
       setBusy(false);
       setConfirmOpen(false);

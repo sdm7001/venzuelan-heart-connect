@@ -101,13 +101,13 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
       });
       if (rpcErr) throw rpcErr;
 
-      const expIso = (data as any)?.[0]?.expires_at as string | undefined;
+      const expIso = (data as { expires_at?: string }[] | null)?.[0]?.expires_at;
       setExpiresAt(expIso ? new Date(expIso).getTime() : Date.now() + 10 * 60 * 1000);
       setDevCode(plaintext); // dev fallback — remove once email is wired up
       setStep("enter_code");
       toast.success("Code generated. Check the dev panel below until email is live.");
-    } catch (e: any) {
-      setError(e.message ?? "Couldn't issue code.");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Couldn't issue code.");
     } finally {
       setBusy(false);
     }
@@ -124,7 +124,7 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
         _code_hash: codeHash,
       });
       if (rpcErr) throw rpcErr;
-      const row = (data as any)?.[0];
+      const row = (data as { verified?: boolean; reason?: string }[] | null)?.[0];
       if (row?.verified) {
         setVerified(true);
         setCode("");
@@ -149,8 +149,8 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
           setError("Incorrect code. Please try again.");
       }
       setCode("");
-    } catch (e: any) {
-      setError(e.message ?? "Couldn't verify code.");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Couldn't verify code.");
     } finally {
       setBusy(false);
     }
@@ -180,7 +180,7 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
       const codeHash = await sha256Hex(normalized);
       const { data, error: rpcErr } = await supabase.rpc("consume_staff_recovery_code", { _code_hash: codeHash });
       if (rpcErr) throw rpcErr;
-      const row = (data as any)?.[0];
+      const row = (data as { verified?: boolean; codes_remaining?: number }[] | null)?.[0];
       if (row?.verified) {
         setVerified(true);
         setRecoveryPassword("");
@@ -194,8 +194,8 @@ export function StaffOtpGate({ children }: { children: ReactNode }) {
         return;
       }
       setError("That code isn't valid or has already been used.");
-    } catch (e: any) {
-      setError(e.message ?? "Couldn't verify recovery code.");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Couldn't verify recovery code.");
     } finally {
       setBusy(false);
     }

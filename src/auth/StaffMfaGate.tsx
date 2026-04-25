@@ -23,7 +23,7 @@ const VALIDITY_MS = VALIDITY_HOURS * 60 * 60 * 1000;
  * with an Email-OTP variant (same props/contract) once email infra is ready
  * to upgrade to a true second factor.
  */
-function _LegacyStaffMfaGate({ children }: { children: ReactNode }) {
+function LegacyStaffMfaGate({ children }: { children: ReactNode }) {
   const { user, signOut } = useAuth();
   const [checked, setChecked] = useState(false);
   const [verified, setVerified] = useState(false);
