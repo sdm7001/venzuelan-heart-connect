@@ -19,10 +19,12 @@ type SeedSummary = {
 };
 
 export default function AdminOverview() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
   const [stats, setStats] = useState({ users: 0, reports: 0, flags: 0, verifications: 0 });
   const [seeding, setSeeding] = useState(false);
   const [result, setResult] = useState<SeedSummary | null>(null);
+  const [foundingEnabled, setFoundingEnabled] = useState<boolean | null>(null);
+  const [foundingSaving, setFoundingSaving] = useState(false);
 
   async function loadStats() {
     const [u, r, f, v] = await Promise.all([
@@ -33,7 +35,51 @@ export default function AdminOverview() {
     ]);
     setStats({ users: u.count ?? 0, reports: r.count ?? 0, flags: f.count ?? 0, verifications: v.count ?? 0 });
   }
-  useEffect(() => { void loadStats(); }, []);
+
+  async function loadFoundingSetting() {
+    const { data } = await supabase
+      .from("app_settings")
+      .select("value")
+      .eq("key", "founding_member_enabled")
+      .maybeSingle();
+    setFoundingEnabled(data?.value === true || (data?.value as any) === "true");
+  }
+
+  useEffect(() => { void loadStats(); void loadFoundingSetting(); }, []);
+
+  async function toggleFounding(next: boolean) {
+    if (!isAdmin || !user) return;
+    setFoundingSaving(true);
+    const prev = foundingEnabled;
+    setFoundingEnabled(next);
+    try {
+      const { error } = await supabase
+        .from("app_settings")
+        .upsert(
+          { key: "founding_member_enabled", value: next as any, updated_by: user.id, updated_at: new Date().toISOString() },
+          { onConflict: "key" },
+        );
+      if (error) throw error;
+      await supabase.from("app_settings_history").insert({
+        key: "founding_member_enabled",
+        value: next as any,
+        changed_by: user.id,
+      });
+      await supabase.from("audit_events").insert({
+        actor_id: user.id,
+        subject_id: user.id,
+        category: "moderation",
+        action: "founding_member_toggle",
+        metadata: { enabled: next },
+      });
+      toast.success(next ? "Founding Member auto-award enabled" : "Founding Member auto-award disabled");
+    } catch (e: any) {
+      setFoundingEnabled(prev);
+      toast.error(e?.message ?? "Failed to update setting");
+    } finally {
+      setFoundingSaving(false);
+    }
+  }
 
   async function runSeed() {
     setSeeding(true);
