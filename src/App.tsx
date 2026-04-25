@@ -40,6 +40,7 @@ import AdminPostEditor from "./pages/admin/AdminPostEditor";
 import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
 import AdminMfaRecoveryCodes from "./pages/admin/AdminMfaRecoveryCodes";
 import NotFound from "./pages/NotFound";
+import HeroPreview from "./pages/HeroPreview";
 import A11yAudit from "./pages/__A11yAudit";
 import ResponsiveQA from "./pages/__ResponsiveQA";
 
@@ -68,6 +69,7 @@ const App = () => (
               <Route path="/legal/anti-solicitation" element={<AntiSolicitation />} />
               <Route path="/legal/cookies" element={<CookiePolicy />} />
               <Route path="/legal/consent" element={<ConsentSettings />} />
+              <Route path="/__hero-preview" element={<HeroPreview />} />
 
               {/* Auth */}
               <Route path="/auth" element={<Auth />} />
