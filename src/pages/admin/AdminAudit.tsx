@@ -247,9 +247,8 @@ export default function AdminAudit() {
                 const isOpen = expanded === r.id;
                 const grp = actionGroup(r.action);
                 return (
-                  <>
+                  <tbody key={r.id} className="contents">
                     <tr
-                      key={r.id}
                       className="cursor-pointer border-t border-border hover:bg-muted/20"
                       onClick={() => setExpanded(isOpen ? null : r.id)}
                     >
