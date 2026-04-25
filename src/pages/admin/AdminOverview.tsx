@@ -187,6 +187,35 @@ export default function AdminOverview() {
         </div>
       )}
 
+      {isAdmin && (
+        <div className="mb-6 rounded-2xl border border-border bg-card p-5 shadow-card">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-primary/10">
+                <Award className="h-4 w-4 text-primary" />
+              </span>
+              <div>
+                <h3 className="font-display text-base font-semibold text-foreground">Founding Member auto-award</h3>
+                <p className="mt-1 max-w-xl text-xs text-muted-foreground">
+                  When enabled, every new signup is automatically granted the “Founding Member” trust badge. Turn off to stop awarding it to future accounts. Existing badges are not affected.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Label htmlFor="founding-toggle" className="text-xs text-muted-foreground">
+                {foundingEnabled === null ? "Loading…" : foundingEnabled ? "Enabled" : "Disabled"}
+              </Label>
+              <Switch
+                id="founding-toggle"
+                checked={!!foundingEnabled}
+                disabled={foundingEnabled === null || foundingSaving}
+                onCheckedChange={(v) => void toggleFounding(v)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid gap-4 md:grid-cols-4">
         {cards.map(c => (
           <div key={c.label} className="rounded-2xl border border-border bg-card p-5 shadow-card">
