@@ -3,11 +3,13 @@ import { AdminLayout, AdminPageHeader } from "@/components/layout/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Users, Flag, ShieldAlert, BadgeCheck, Sparkles, Copy, CheckCircle2 } from "lucide-react";
+import { Users, Flag, ShieldAlert, BadgeCheck, Sparkles, Copy, CheckCircle2, Award } from "lucide-react";
 import { toast } from "sonner";
 
 type SeedSummary = {
@@ -17,10 +19,12 @@ type SeedSummary = {
 };
 
 export default function AdminOverview() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
   const [stats, setStats] = useState({ users: 0, reports: 0, flags: 0, verifications: 0 });
   const [seeding, setSeeding] = useState(false);
   const [result, setResult] = useState<SeedSummary | null>(null);
+  const [foundingEnabled, setFoundingEnabled] = useState<boolean | null>(null);
+  const [foundingSaving, setFoundingSaving] = useState(false);
 
   async function loadStats() {
     const [u, r, f, v] = await Promise.all([
@@ -31,7 +35,51 @@ export default function AdminOverview() {
     ]);
     setStats({ users: u.count ?? 0, reports: r.count ?? 0, flags: f.count ?? 0, verifications: v.count ?? 0 });
   }
-  useEffect(() => { void loadStats(); }, []);
+
+  async function loadFoundingSetting() {
+    const { data } = await supabase
+      .from("app_settings")
+      .select("value")
+      .eq("key", "founding_member_enabled")
+      .maybeSingle();
+    setFoundingEnabled(data?.value === true || (data?.value as any) === "true");
+  }
+
+  useEffect(() => { void loadStats(); void loadFoundingSetting(); }, []);
+
+  async function toggleFounding(next: boolean) {
+    if (!isAdmin || !user) return;
+    setFoundingSaving(true);
+    const prev = foundingEnabled;
+    setFoundingEnabled(next);
+    try {
+      const { error } = await supabase
+        .from("app_settings")
+        .upsert(
+          { key: "founding_member_enabled", value: next as any, updated_by: user.id, updated_at: new Date().toISOString() },
+          { onConflict: "key" },
+        );
+      if (error) throw error;
+      await supabase.from("app_settings_history").insert({
+        key: "founding_member_enabled",
+        value: next as any,
+        changed_by: user.id,
+      });
+      await supabase.from("audit_events").insert({
+        actor_id: user.id,
+        subject_id: user.id,
+        category: "moderation",
+        action: "founding_member_toggle",
+        metadata: { enabled: next },
+      });
+      toast.success(next ? "Founding Member auto-award enabled" : "Founding Member auto-award disabled");
+    } catch (e: any) {
+      setFoundingEnabled(prev);
+      toast.error(e?.message ?? "Failed to update setting");
+    } finally {
+      setFoundingSaving(false);
+    }
+  }
 
   async function runSeed() {
     setSeeding(true);
@@ -134,6 +182,35 @@ export default function AdminOverview() {
                   <Copy className="mr-1 h-3 w-3" /> Copy all
                 </Button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isAdmin && (
+        <div className="mb-6 rounded-2xl border border-border bg-card p-5 shadow-card">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-primary/10">
+                <Award className="h-4 w-4 text-primary" />
+              </span>
+              <div>
+                <h3 className="font-display text-base font-semibold text-foreground">Founding Member auto-award</h3>
+                <p className="mt-1 max-w-xl text-xs text-muted-foreground">
+                  When enabled, every new signup is automatically granted the “Founding Member” trust badge. Turn off to stop awarding it to future accounts. Existing badges are not affected.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Label htmlFor="founding-toggle" className="text-xs text-muted-foreground">
+                {foundingEnabled === null ? "Loading…" : foundingEnabled ? "Enabled" : "Disabled"}
+              </Label>
+              <Switch
+                id="founding-toggle"
+                checked={!!foundingEnabled}
+                disabled={foundingEnabled === null || foundingSaving}
+                onCheckedChange={(v) => void toggleFounding(v)}
+              />
             </div>
           </div>
         </div>
