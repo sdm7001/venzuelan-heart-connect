@@ -1341,6 +1341,7 @@ export type Database = {
         | "income_verified"
         | "concierge_verified"
         | "profile_complete"
+        | "founding_member"
       verification_kind:
         | "social_verification"
         | "photo_verification"
@@ -1588,6 +1589,7 @@ export const Constants = {
         "income_verified",
         "concierge_verified",
         "profile_complete",
+        "founding_member",
       ],
       verification_kind: [
         "social_verification",
