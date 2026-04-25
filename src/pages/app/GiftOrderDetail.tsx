@@ -41,7 +41,7 @@ type Order = {
   sender_id: string;
   recipient_id: string;
   gift_id: string;
-  metadata: any;
+  metadata: Record<string, unknown> | null;
 };
 
 type EventRow = {
@@ -50,7 +50,7 @@ type EventRow = {
   status: string;
   notes: string | null;
   created_at: string;
-  metadata: any;
+  metadata: Record<string, unknown> | null;
 };
 
 type ProfileLite = { id: string; display_name: string | null };
@@ -143,8 +143,8 @@ export default function GiftOrderDetail() {
     setLoading(false);
   }
 
-  const tg = (t as any).gift?.detail ?? fallbackDetail;
-  const tCommon = (t as any).common ?? { back: "Back", loading: "Loading…" };
+  const tg = t.gift?.detail ?? fallbackDetail;
+  const tCommon = t.common ?? { back: "Back", loading: "Loading…" };
 
   const role: "sender" | "recipient" | "other" = useMemo(() => {
     if (!order || !user) return "other";
@@ -161,7 +161,7 @@ export default function GiftOrderDetail() {
     navigator.clipboard
       .writeText(order.id)
       .then(() => toast({ title: tg.copied }))
-      .catch(() => toast({ title: tg.copyFailed, variant: "destructive" as any }));
+      .catch(() => toast({ title: tg.copyFailed, variant: "destructive" }));
   }
 
   return (
@@ -412,8 +412,8 @@ function MessageBlock({
   t,
 }: {
   message: string;
-  metadata: any;
-  t: any;
+  metadata: Record<string, unknown> | null;
+  t: typeof fallbackDetail;
 }) {
   const m = metadata?.message ?? {};
   const original = m.original as string | undefined;

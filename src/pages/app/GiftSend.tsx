@@ -72,7 +72,7 @@ export default function GiftSend() {
   const recipientId = params.get("to") ?? "";
   const threadId = params.get("thread");
 
-  const [recipient, setRecipient] = useState<any>(null);
+  const [recipient, setRecipient] = useState<{ display_name?: string | null; [key: string]: unknown } | null>(null);
   const [recipientLang, setRecipientLang] = useState<"en" | "es" | null>(null);
   const [senderLang, setSenderLang] = useState<"en" | "es" | null>(null);
   const [gifts, setGifts] = useState<GiftRow[]>([]);
@@ -259,7 +259,7 @@ export default function GiftSend() {
         if (tError) throw tError;
         if (tData?.error) throw new Error(tData.error);
         translation = tData;
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.warn("Translation failed", e);
         toast.message(tg.toasts.translationFailed);
       }
@@ -286,7 +286,7 @@ export default function GiftSend() {
         ? { fulfillment: "pending_admin", note: "Physical gift requires admin processing" }
         : {};
 
-    const payload: any = {
+    const payload: Record<string, unknown> = {
       sender_id: user!.id,
       recipient_id: recipientId,
       gift_id: selected.id,
@@ -593,7 +593,7 @@ function GiftGrid({
 function RecipientStatusCard({
   recipient, eligible, trust, aBlocksB, bBlocksA,
 }: {
-  recipient: any;
+  recipient: { display_name?: string | null; [key: string]: unknown } | null;
   eligible: boolean | null;
   trust: TrustState | null;
   aBlocksB: boolean;
@@ -713,7 +713,7 @@ function GiftConfirmation({
     message: string | null;
     creditCost: number | null;
   };
-  recipient: any;
+  recipient: { display_name?: string | null; [key: string]: unknown } | null;
   threadId: string | null;
   onSendAnother: () => void;
 }) {

@@ -25,6 +25,7 @@ type Row = {
 };
 
 type PostInfo = { id: string; slug: string; title_en: string; title_es: string };
+type LinkEntry = { label: string; href: string; reason?: string };
 
 export default function AdminLinkSuggestions() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -46,7 +47,7 @@ export default function AdminLinkSuggestions() {
     if (ids.length) {
       const { data: ps } = await supabase.from("blog_posts").select("id,slug,title_en,title_es").in("id", ids);
       const map: Record<string, PostInfo> = {};
-      (ps ?? []).forEach((p: any) => { map[p.id] = p; });
+      (ps ?? []).forEach((p: PostInfo) => { map[p.id] = p; });
       setPosts(map);
     }
     setLoading(false);
@@ -73,7 +74,7 @@ export default function AdminLinkSuggestions() {
       const { data: post, error: postErr } = await supabase
         .from("blog_posts").select(`id,${col}`).eq("id", r.post_id).single();
       if (postErr) throw postErr;
-      const current: any[] = ((post as any)[col] as any[]) ?? [];
+      const current: LinkEntry[] = ((post as Record<string, unknown>)[col] as LinkEntry[] | null) ?? [];
 
       // Dedupe-aware validation: if the same href already exists we'll update
       // its label rather than reject — so only block on length / format.
@@ -103,14 +104,14 @@ export default function AdminLinkSuggestions() {
       const next = sameHref
         ? current.map(l => l === sameHref ? { label: e.label.trim(), href: e.href.trim(), reason: r.reason ?? undefined } : l)
         : [...current, { label: e.label.trim(), href: e.href.trim(), reason: r.reason ?? undefined }];
-      const update: any = { [col]: next };
+      const update: Record<string, unknown> = { [col]: next };
       const { error: writeErr } = await supabase.from("blog_posts").update(update).eq("id", r.post_id);
       if (writeErr) throw writeErr;
 
       toast.success("Approved and merged into post.");
       await load();
-    } catch (err: any) {
-      toast.error(err?.message ?? "Approve failed");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Approve failed");
     } finally {
       setBusy(null);
     }
@@ -133,8 +134,8 @@ export default function AdminLinkSuggestions() {
       if (error) throw error;
       toast.success("Rejected.");
       await load();
-    } catch (err: any) {
-      toast.error(err?.message ?? "Reject failed");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Reject failed");
     } finally {
       setBusy(null);
     }
@@ -152,7 +153,7 @@ export default function AdminLinkSuggestions() {
         title="Internal link suggestions"
         sub="Review AI-suggested internal links before they go live on a post."
         action={
-          <Tabs value={filter} onValueChange={v => setFilter(v as any)}>
+          <Tabs value={filter} onValueChange={v => setFilter(v as "pending" | "approved" | "rejected" | "all")}>
             <TabsList>
               <TabsTrigger value="pending">Pending</TabsTrigger>
               <TabsTrigger value="approved">Approved</TabsTrigger>

@@ -14,7 +14,7 @@ import { MyGiftsCard } from "@/components/dashboard/MyGiftsCard";
 export default function Dashboard() {
   const { t } = useI18n();
   const { user } = useAuth();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -80,7 +80,7 @@ function Card({ icon, title, value, children }: { icon: React.ReactNode; title: 
   );
 }
 
-function computeCompleteness(p: any): number {
+function computeCompleteness(p: Record<string, unknown> | null): number {
   const fields = ["display_name", "country", "city", "bio", "relationship_intention", "date_of_birth"];
   const filled = fields.filter(f => p?.[f]).length;
   return Math.round((filled / fields.length) * 100);

@@ -186,7 +186,6 @@ export function PolicyReacceptanceGate() {
       setBusy(false);
       // Surface to the user *and* to logs — this is a programmer error, not
       // user input, so we want it to be loud in development.
-      // eslint-disable-next-line no-console
       console.error("[PolicyReacceptanceGate] metadata validation failed", e, metadata);
       return toast.error("Could not record acceptance — please refresh and try again.");
     }
@@ -201,7 +200,7 @@ export function PolicyReacceptanceGate() {
       subject_id: user.id,
       category: "policy",
       action: "policy_reaccepted",
-      metadata: metadata as any,
+      metadata: metadata as Record<string, unknown>,
     };
     const MAX_ATTEMPTS = 3;
     let auditErr: { message: string } | null = null;
@@ -218,7 +217,6 @@ export function PolicyReacceptanceGate() {
     setBusy(false);
     setNeedsReaccept(false);
     if (auditErr) {
-      // eslint-disable-next-line no-console
       console.error(
         "[PolicyReacceptanceGate] audit insert failed after retries",
         auditErr,

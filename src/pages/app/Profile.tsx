@@ -13,7 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 export default function Profile() {
   const { t } = useI18n();
   const { user } = useAuth();
-  const [p, setP] = useState<any>({});
+  const [p, setP] = useState<Record<string, unknown>>({});
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function Profile() {
     supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => setP(data ?? {}));
   }, [user]);
 
-  function up<K extends string>(k: K, v: any) { setP({ ...p, [k]: v }); }
+  function up<K extends string>(k: K, v: unknown) { setP({ ...p, [k]: v }); }
 
   async function save() {
     if (!user) return;

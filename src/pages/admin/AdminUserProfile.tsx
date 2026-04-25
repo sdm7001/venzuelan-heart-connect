@@ -19,7 +19,7 @@ type Profile = {
 type Ack = { id: string; policy_key: string; policy_version: string; accepted_at: string };
 type AuditRow = {
   id: string; actor_id: string | null; subject_id: string | null;
-  action: string; metadata: any; created_at: string; category: string;
+  action: string; metadata: Record<string, unknown> | null; created_at: string; category: string;
 };
 type Reminder = {
   id: string; policy_version: string; missing_keys: string[];
@@ -158,7 +158,7 @@ export default function AdminUserProfile() {
           {/* Admin: account status + verification badges */}
           <UserManagementPanel
             userId={profile.id}
-            currentStatus={profile.account_status as any}
+            currentStatus={profile.account_status as "active" | "restricted" | "suspended" | "banned" | "pending_verification"}
             onChanged={() => {
               // Refresh just the status badge in the identity card.
               supabase.from("profiles")

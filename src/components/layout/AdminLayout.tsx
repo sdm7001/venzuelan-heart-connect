@@ -46,7 +46,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         </Link>
         <nav className="flex-1 space-y-0.5 px-3">
           {items.map(i => (
-            <NavLink key={i.to} to={i.to} end={i.end as any}
+            <NavLink key={i.to} to={i.to} end={!!i.end}
               className={({ isActive }) => cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
                 isActive && "bg-sidebar-accent text-sidebar-foreground"

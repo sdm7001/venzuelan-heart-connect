@@ -15,8 +15,14 @@ import { cn } from "@/lib/utils";
 const STATUS_FILTERS: (ReportStatus | "all")[] = ["all", "new", "in_review", "escalated", "actioned", "closed"];
 const SEVERITY_ORDER: ReportSeverity[] = ["critical", "high", "medium", "low"];
 
+type ReportRow = {
+  id: string; category: string; target: string | null;
+  severity: ReportSeverity; status: ReportStatus; created_at: string;
+  [key: string]: unknown;
+};
+
 export default function AdminReports() {
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<ReportRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<ReportStatus | "all">("all");
   const [severityFilter, setSeverityFilter] = useState<ReportSeverity | "all">("all");
@@ -74,7 +80,7 @@ export default function AdminReports() {
         <div className="ml-auto flex items-center gap-2">
           <select
             value={severityFilter}
-            onChange={e => setSeverityFilter(e.target.value as any)}
+            onChange={e => setSeverityFilter(e.target.value as ReportSeverity | "all")}
             className="h-9 rounded-md border border-border bg-card px-2 text-xs"
           >
             <option value="all">All severities</option>

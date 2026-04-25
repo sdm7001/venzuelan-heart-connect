@@ -92,14 +92,14 @@ export default function AdminPostEditor() {
         meta_description_en: data.meta_description_en,
         excerpt_en: data.excerpt_en,
         body_en: data.body_en,
-        faq_en: (data.faq_en as any) ?? [],
-        internal_links_en: (data.internal_links_en as any) ?? [],
+        faq_en: (data.faq_en as { question: string; answer: string }[]) ?? [],
+        internal_links_en: (data.internal_links_en as LinkSuggestion[]) ?? [],
         title_es: data.title_es,
         meta_description_es: data.meta_description_es,
         excerpt_es: data.excerpt_es,
         body_es: data.body_es,
-        faq_es: (data.faq_es as any) ?? [],
-        internal_links_es: (data.internal_links_es as any) ?? [],
+        faq_es: (data.faq_es as { question: string; answer: string }[]) ?? [],
+        internal_links_es: (data.internal_links_es as LinkSuggestion[]) ?? [],
       });
       setLoading(false);
       const { count } = await supabase
@@ -159,8 +159,8 @@ export default function AdminPostEditor() {
       setDismissed(new Set());
       if (!cands.length) toast.error("No candidates returned.");
       else toast.success(`Ranked ${cands.length} candidates. Review and accept below.`);
-    } catch (e: any) {
-      toast.error(e?.message ?? "Suggestion failed");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Suggestion failed");
     } finally {
       setSuggesting(false);
     }
@@ -219,8 +219,8 @@ export default function AdminPostEditor() {
         toast.success(
           `Sent to review queue (${filteredLangs.join(" + ").toUpperCase()})${skipped ? ` — ${skipped} skipped as duplicate` : ""}.`,
         );
-      } catch (e: any) {
-        toast.error(e?.message ?? "Accept failed");
+      } catch (e: unknown) {
+        toast.error(e instanceof Error ? e.message : "Accept failed");
       }
     })();
   }
@@ -272,8 +272,8 @@ export default function AdminPostEditor() {
         if (error) throw error;
         toast.success("Post saved");
       }
-    } catch (e: any) {
-      toast.error(e?.message ?? "Save failed");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Save failed");
     } finally {
       setSaving(false);
     }

@@ -129,7 +129,7 @@ export function MyGiftsCard() {
           .from("gifts")
           .select("id, name")
           .ilike("name", `%${debouncedSearch}%`);
-        allowedGiftIds = (matched ?? []).map((g: any) => g.id);
+        allowedGiftIds = (matched ?? []).map((g: { id: string }) => g.id);
         if (allowedGiftIds.length === 0) {
           if (reset) setOrders([]);
           setHasMore(false);
@@ -180,12 +180,12 @@ export function MyGiftsCard() {
             .order("created_at", { ascending: false }),
           newGiftIds.length > 0
             ? supabase.from("gifts").select("id, name").in("id", newGiftIds)
-            : Promise.resolve({ data: [] as any[] }),
+            : Promise.resolve({ data: [] as { id: string; name: string }[] }),
         ]);
 
         setEventsByOrder(prev => {
           const next = reset ? {} : { ...prev };
-          (ev ?? []).forEach((e: any) => {
+          (ev ?? []).forEach((e: EventRow) => {
             (next[e.order_id] ||= []).push(e as EventRow);
           });
           return next;
@@ -194,7 +194,7 @@ export function MyGiftsCard() {
         if ((gs ?? []).length > 0) {
           setGiftNames(prev => {
             const next = reset ? {} : { ...prev };
-            (gs ?? []).forEach((g: any) => {
+            (gs ?? []).forEach((g: { id: string; name: string }) => {
               next[g.id] = g.name;
             });
             return next;

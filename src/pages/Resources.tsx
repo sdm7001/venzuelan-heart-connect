@@ -164,7 +164,7 @@ export default function Resources() {
       if (cancel) return;
       const rows = data ?? [];
       setPosts(
-        rows.map((r: any) => ({
+        rows.map((r: Record<string, unknown>) => ({
           slug: r.slug,
           category: r.category,
           publishedAt: r.published_at,

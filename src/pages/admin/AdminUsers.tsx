@@ -9,9 +9,16 @@ import { Search, Eye, Settings2 } from "lucide-react";
 import { useAuth } from "@/auth/AuthProvider";
 import { ImpersonateDialog } from "@/components/admin/ImpersonateDialog";
 
+type ProfileRow = {
+  id: string; display_name: string | null; gender: string | null;
+  city: string | null; country: string | null; relationship_intention: string | null;
+  preferred_language: string | null; account_status: string; created_at: string;
+  [key: string]: unknown;
+};
+
 export default function AdminUsers() {
   const { isAdmin, user } = useAuth();
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<ProfileRow[]>([]);
   const [q, setQ] = useState("");
   const [target, setTarget] = useState<{ id: string; name: string } | null>(null);
 

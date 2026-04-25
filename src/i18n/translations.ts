@@ -95,7 +95,7 @@ const _translations = {
       entries: [
         {
           q: "Is MatchVenezuelan an escort, sugar, or adult site?",
-          a: "No. MatchVenezuelan is strictly a serious-relationship platform for adults seeking marriage, partnership, or a genuine cross-cultural connection. Solicitation, escort services, sugar arrangements framed as transactions, and adult content are explicitly prohibited by our Terms, our Acceptable Use Policy, and our Anti-Scam / Anti-Solicitation Policy. Accounts that violate these rules are removed and may be reported to authorities.",
+          a: "No. MatchVenezuelan is strictly a serious-relationship platform for adults seeking marriage, partnership, or a genuine cross-cultural connection. Solicitation, escort services, sugar arrangements framed as transactions, and adult content are explicitly prohibited by our Terms (/legal/terms), our Acceptable Use Policy (/legal/acceptable-use), and our Anti-Scam / Anti-Solicitation Policy (/legal/anti-solicitation). Accounts that violate these rules are removed and may be reported to authorities.",
         },
         {
           q: "Who can join the platform?",
@@ -131,7 +131,7 @@ const _translations = {
         },
         {
           q: "How does MatchVenezuelan prevent romance scams?",
-          a: "Several layers: identity and photo verification, AI-assisted detection of scam patterns (urgency, off-platform pivots, money requests, scripted language), human moderation, mandatory review for new accounts on suspicious devices, blocked-payment-keyword filters in messaging, and a strict policy that no MatchVenezuelan staff or member will ever ask you to send money. Read the Anti-Scam Policy for the full list of red flags.",
+          a: "Several layers: identity and photo verification, AI-assisted detection of scam patterns (urgency, off-platform pivots, money requests, scripted language), human moderation, mandatory review for new accounts on suspicious devices, blocked-payment-keyword filters in messaging, and a strict policy that no MatchVenezuelan staff or member will ever ask you to send money. Read the Anti-Scam Policy at /legal/anti-solicitation for the full list of red flags.",
         },
         {
           q: "Will anyone ever ask me for money on the platform?",
@@ -151,15 +151,15 @@ const _translations = {
         },
         {
           q: "Will my private photos stay private?",
-          a: "Yes. Photos are split into public, primary, and private categories. Private photos are never shown in search or browsing — they are only visible to members you explicitly grant access to, on a per-person basis, and you can revoke access at any time. All photos pass moderation before being shown to anyone, and screenshotting another member's private photos to share elsewhere is a violation of our Terms.",
+          a: "Yes. Photos are split into public, primary, and private categories. Private photos are never shown in search or browsing — they are only visible to members you explicitly grant access to, on a per-person basis, and you can revoke access at any time. All photos pass moderation before being shown to anyone, and screenshotting another member's private photos to share elsewhere is a violation of our Terms (/legal/terms).",
         },
         {
           q: "How is my personal data handled?",
-          a: "We collect only what we need to provide a safe matchmaking experience: account information, profile data you choose to share, photos, messages, billing data, and basic device information for fraud prevention. We never sell your data. You can request a full export of your data, correct inaccuracies, or request deletion at any time from Settings → Privacy. Read the Privacy Policy for full details on retention, sub-processors, and your rights under GDPR and similar laws.",
+          a: "We collect only what we need to provide a safe matchmaking experience: account information, profile data you choose to share, photos, messages, billing data, and basic device information for fraud prevention. We never sell your data. You can request a full export of your data, correct inaccuracies, or request deletion at any time from Settings → Privacy. Read the Privacy Policy at /legal/privacy for full details on retention, sub-processors, and your rights under GDPR and similar laws.",
         },
         {
           q: "Is meeting in person encouraged or discouraged?",
-          a: "We support members who choose to meet in person after building real trust online — that is the whole point of a serious-relationship platform. We strongly encourage taking your time: have multiple video calls first, search the other person's photos online, tell a friend or family member where you will be, meet in a public place, and never travel for a first meeting without a clear plan and your own funds for return travel. The Safety page has a complete first-meeting checklist.",
+          a: "We support members who choose to meet in person after building real trust online — that is the whole point of a serious-relationship platform. We strongly encourage taking your time: have multiple video calls first, search the other person's photos online, tell a friend or family member where you will be, meet in a public place, and never travel for a first meeting without a clear plan and your own funds for return travel. The Safety page (/safety) has a complete first-meeting checklist.",
         },
         {
           q: "What happens if I don't complete onboarding?",
@@ -699,7 +699,7 @@ const _translations = {
       entries: [
         {
           q: "¿MatchVenezuelan es un sitio de escorts, sugar o para adultos?",
-          a: "No. MatchVenezuelan es estrictamente una plataforma de relaciones serias para personas adultas que buscan matrimonio, pareja o una conexión intercultural genuina. La solicitación, los servicios de escort, los acuerdos sugar planteados como transacciones y el contenido para adultos están explícitamente prohibidos por nuestros Términos, nuestra Política de Uso Aceptable y nuestra Política Antiestafa / Anti-Solicitación. Las cuentas que infringen estas reglas se eliminan y pueden ser reportadas a las autoridades.",
+          a: "No. MatchVenezuelan es estrictamente una plataforma de relaciones serias para personas adultas que buscan matrimonio, pareja o una conexión intercultural genuina. La solicitación, los servicios de escort, los acuerdos sugar planteados como transacciones y el contenido para adultos están explícitamente prohibidos por nuestros Términos (/legal/terms), nuestra Política de Uso Aceptable (/legal/acceptable-use) y nuestra Política Antiestafa / Anti-Solicitación (/legal/anti-solicitation). Las cuentas que infringen estas reglas se eliminan y pueden ser reportadas a las autoridades.",
         },
         {
           q: "¿Quién puede unirse a la plataforma?",
@@ -723,11 +723,11 @@ const _translations = {
         },
         {
           q: "¿Cómo funcionan los mensajes?",
-          a: "Cuando dos personas muestran interés mutuo se abre un hilo de chat entre ambas. Los mensajes se analizan en busca de señales de seguridad (estafas, contacto fuera de la plataforma, acoso, solicitación sexual) antes de ser entregados y pueden retenerse para moderación si algo parece riesgoso. Puedes bloquear o reportar a la otra persona desde cualquier hilo; el bloqueo es mutuo e inmediato.",
+          a: "Cuando dos personas muestran interés mutuo se abre un hilo de chat entre ambas. Los mensajes se analizan en busca de señales de seguridad (estafas, contacto fuera de la plataforma, acoso, solicitación sexual; consulta /legal/anti-solicitation) antes de ser entregados y pueden retenerse para moderación si algo parece riesgoso. Puedes bloquear o reportar a la otra persona desde cualquier hilo; el bloqueo es mutuo e inmediato.",
         },
         {
           q: "¿Cómo reporto a alguien?",
-          a: "Cada perfil, foto y mensaje tiene un botón de reporte. Puedes reportar por acoso, estafas, perfiles falsos, pedidos de dinero fuera de la plataforma, solicitación sexual, sospecha de menores de edad o cualquier otra infracción. Los reportes llegan a nuestro equipo de moderación en minutos. Te avisamos cuando se toma una acción sobre un reporte que enviaste y los casos graves se escalan a las autoridades cuando corresponde.",
+          a: "Cada perfil, foto y mensaje tiene un botón de reporte. Puedes reportar por acoso, estafas, perfiles falsos, pedidos de dinero fuera de la plataforma, solicitación sexual (ver /legal/anti-solicitation), sospecha de menores de edad o cualquier otra infracción. Los reportes llegan a nuestro equipo de moderación en minutos. Te avisamos cuando se toma una acción sobre un reporte que enviaste y los casos graves se escalan a las autoridades cuando corresponde.",
         },
         {
           q: "¿Qué pasa después de que bloqueo o reporto a una persona?",
@@ -735,7 +735,7 @@ const _translations = {
         },
         {
           q: "¿Cómo previene MatchVenezuelan las estafas románticas?",
-          a: "Con varias capas: verificación de identidad y foto, detección asistida por IA de patrones de estafa (urgencia, traslado fuera de la plataforma, pedidos de dinero, lenguaje guionizado), moderación humana, revisión obligatoria para cuentas nuevas en dispositivos sospechosos, filtros de palabras clave de pago en la mensajería y una política estricta de que ningún miembro del equipo ni ninguna otra persona en la plataforma debe pedirte dinero. Lee la Política Antiestafa para ver la lista completa de señales de alerta.",
+          a: "Con varias capas: verificación de identidad y foto, detección asistida por IA de patrones de estafa (urgencia, traslado fuera de la plataforma, pedidos de dinero, lenguaje guionizado), moderación humana, revisión obligatoria para cuentas nuevas en dispositivos sospechosos, filtros de palabras clave de pago en la mensajería y una política estricta de que ningún miembro del equipo ni ninguna otra persona en la plataforma debe pedirte dinero. Lee la Política Antiestafa en /legal/anti-solicitation para ver la lista completa de señales de alerta.",
         },
         {
           q: "¿Alguien me pedirá dinero alguna vez en la plataforma?",
@@ -755,15 +755,15 @@ const _translations = {
         },
         {
           q: "¿Mis fotos privadas seguirán siendo privadas?",
-          a: "Sí. Las fotos se dividen en públicas, principal y privadas. Las fotos privadas nunca aparecen en búsquedas o listados: solo son visibles para las personas a las que les des acceso explícito, una por una, y puedes revocar el acceso en cualquier momento. Todas las fotos pasan por moderación antes de mostrarse a alguien, y hacer capturas de pantalla de las fotos privadas de otra persona para compartirlas en otro lugar es una infracción de los Términos.",
+          a: "Sí. Las fotos se dividen en públicas, principal y privadas. Las fotos privadas nunca aparecen en búsquedas o listados: solo son visibles para las personas a las que les des acceso explícito, una por una, y puedes revocar el acceso en cualquier momento. Todas las fotos pasan por moderación antes de mostrarse a alguien, y hacer capturas de pantalla de las fotos privadas de otra persona para compartirlas en otro lugar es una infracción de los Términos (/legal/terms).",
         },
         {
           q: "¿Cómo se manejan mis datos personales?",
-          a: "Recopilamos solo lo necesario para ofrecer una experiencia de matchmaking segura: información de cuenta, datos de perfil que decidas compartir, fotos, mensajes, datos de facturación e información básica del dispositivo para prevenir fraudes. Nunca vendemos tus datos. Puedes pedir una exportación completa, corregir errores o solicitar la eliminación en cualquier momento desde Configuración → Privacidad. Lee la Política de Privacidad para ver retención, sub-procesadores y tus derechos bajo el RGPD y leyes similares.",
+          a: "Recopilamos solo lo necesario para ofrecer una experiencia de matchmaking segura: información de cuenta, datos de perfil que decidas compartir, fotos, mensajes, datos de facturación e información básica del dispositivo para prevenir fraudes. Nunca vendemos tus datos. Puedes pedir una exportación completa, corregir errores o solicitar la eliminación en cualquier momento desde Configuración → Privacidad. Lee la Política de Privacidad en /legal/privacy para ver retención, sub-procesadores y tus derechos bajo el RGPD y leyes similares.",
         },
         {
           q: "¿Se recomienda o se desaconseja conocerse en persona?",
-          a: "Apoyamos a quienes deciden conocerse en persona después de construir una verdadera confianza en línea: ese es justamente el sentido de una plataforma de relaciones serias. Recomendamos firmemente tomarse tiempo: hacer varias videollamadas primero, buscar las fotos de la otra persona en internet, avisar a una amistad o familiar dónde estarás, encontrarse en un lugar público y nunca viajar para un primer encuentro sin un plan claro y con tus propios fondos para regresar. La página de Seguridad tiene una lista completa para el primer encuentro.",
+          a: "Apoyamos a quienes deciden conocerse en persona después de construir una verdadera confianza en línea: ese es justamente el sentido de una plataforma de relaciones serias. Recomendamos firmemente tomarse tiempo: hacer varias videollamadas primero, buscar las fotos de la otra persona en internet, avisar a una amistad o familiar dónde estarás, encontrarse en un lugar público y nunca viajar para un primer encuentro sin un plan claro y con tus propios fondos para regresar. La página de Seguridad (/safety) tiene una lista completa para el primer encuentro.",
         },
         {
           q: "¿Qué pasa si no completo el onboarding?",

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -71,7 +72,7 @@ export default {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
+    tailwindcssAnimate,
     // Pointer-type variants so we can apply touch-friendly hit areas only on
     // coarse pointers (touch), without bloating density on mouse/desktop.
     function ({ addVariant }: { addVariant: (name: string, value: string) => void }) {

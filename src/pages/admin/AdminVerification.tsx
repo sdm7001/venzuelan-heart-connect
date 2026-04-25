@@ -21,8 +21,8 @@ type Row = {
   type: string;
   status: VerificationStatus;
   step: string | null;
-  documents: any;
-  metadata: any;
+  documents: unknown[] | null;
+  metadata: Record<string, unknown> | null;
   reviewer_notes: string | null;
   reviewer_decision: string | null;
   submitted_at: string | null;
@@ -86,7 +86,7 @@ export default function AdminVerification() {
   async function setStatus(next: VerificationStatus) {
     if (!active) return;
     setWorking(true);
-    const patch: any = {
+    const patch: Record<string, unknown> = {
       status: next,
       reviewer_notes: notes || null,
       reviewer_decision: next,
@@ -210,7 +210,7 @@ export default function AdminVerification() {
                   <div className="text-xs font-medium text-muted-foreground mb-1">Documents</div>
                   {Array.isArray(active.documents) && active.documents.length > 0 ? (
                     <ul className="space-y-1">
-                      {active.documents.map((d: any, i: number) => (
+                      {active.documents.map((d: unknown, i: number) => (
                         <li key={i} className="text-xs font-mono break-all border border-border rounded px-2 py-1">
                           {typeof d === "string" ? d : JSON.stringify(d)}
                         </li>

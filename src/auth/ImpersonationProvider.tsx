@@ -61,7 +61,6 @@ export function ImpersonationProvider({ children }: { children: ReactNode }) {
       } else {
         setNow(Date.now());
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, 1000);
     return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,7 +115,6 @@ export function ImpersonationProvider({ children }: { children: ReactNode }) {
         end_note: note ?? "manual",
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   const remainingMs = session ? Math.max(0, MAX_DURATION_MS - (now - session.startedAt)) : 0;

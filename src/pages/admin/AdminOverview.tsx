@@ -90,8 +90,8 @@ export default function AdminOverview() {
       setResult(res);
       toast.success(`Seeded ${res.summary.users} users, ${res.summary.reports} reports, ${res.summary.billing_events} billing events.`);
       await loadStats();
-    } catch (e: any) {
-      toast.error(e?.message ?? "Seed failed");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Seed failed");
     } finally {
       setSeeding(false);
     }

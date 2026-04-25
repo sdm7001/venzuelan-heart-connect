@@ -69,8 +69,8 @@ export function AdminPolicies() {
     const cfg = data?.value
       ? {
           policy_version:
-            (data.value as any).policy_version ?? DEFAULT_POLICY_CONFIG.policy_version,
-          urls: { ...DEFAULT_POLICY_CONFIG.urls, ...((data.value as any).urls ?? {}) },
+            (data.value as { policy_version?: string; urls?: Record<string, string> } | null)?.policy_version ?? DEFAULT_POLICY_CONFIG.policy_version,
+          urls: { ...DEFAULT_POLICY_CONFIG.urls, ...((data.value as { policy_version?: string; urls?: Record<string, string> } | null)?.urls ?? {}) },
         }
       : await fetchPolicyConfig();
     setOriginal(cfg);
@@ -109,7 +109,7 @@ export function AdminPolicies() {
 
     const { error } = await supabase
       .from("app_settings")
-      .update({ value: draft as any, updated_by: user?.id ?? null })
+      .update({ value: draft as unknown as Record<string, unknown>, updated_by: user?.id ?? null })
       .eq("key", "policy_config");
 
     if (error) {
@@ -119,7 +119,7 @@ export function AdminPolicies() {
 
     await supabase.from("app_settings_history").insert({
       key: "policy_config",
-      value: draft as any,
+      value: draft as unknown as Record<string, unknown>,
       changed_by: user?.id ?? null,
     });
 
@@ -128,9 +128,9 @@ export function AdminPolicies() {
       category: "policy",
       action: versionChanged ? "policy_version_bumped" : "policy_urls_updated",
       metadata: {
-        previous: original as any,
-        next: draft as any,
-      } as any,
+        previous: original as unknown as Record<string, unknown>,
+        next: draft as unknown as Record<string, unknown>,
+      } as Record<string, unknown>,
     });
 
     toast.success(

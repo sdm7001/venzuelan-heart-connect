@@ -159,9 +159,10 @@ export default function ResourceDetail() {
     }
   };
   const onNativeShare = async () => {
-    if (typeof navigator !== "undefined" && (navigator as any).share) {
+    const nav = navigator as typeof navigator & { share?: (data: { title?: string; text?: string; url?: string }) => Promise<void> };
+    if (typeof navigator !== "undefined" && nav.share) {
       try {
-        await (navigator as any).share({ title, text: desc, url: shareUrl });
+        await nav.share({ title, text: desc, url: shareUrl });
       } catch { /* user cancelled */ }
     } else {
       onCopyLink();

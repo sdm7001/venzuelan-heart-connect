@@ -169,8 +169,8 @@ export function UserManagementPanel({
       }
       onChanged?.();
       setPending(null);
-    } catch (e: any) {
-      toast.error(e?.message ?? "Action failed");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Action failed");
     } finally {
       setWorking(false);
     }

@@ -26,7 +26,7 @@ type RiskRow = {
   category: string;
   severity: Severity;
   source: string | null;
-  metadata: any;
+  metadata: Record<string, unknown> | null;
   reviewed_by: string | null;
   reviewed_at: string | null;
   created_at: string;
@@ -111,7 +111,7 @@ export default function AdminRiskEvents() {
       return;
     }
     setWorking(true);
-    const payload: any = {
+    const payload: Record<string, unknown> = {
       user_id: fUserId.trim() || null,
       category: fCategory.trim(),
       severity: fSeverity,

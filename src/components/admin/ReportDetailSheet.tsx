@@ -72,7 +72,6 @@ export function ReportDetailSheet({
   useEffect(() => {
     if (!open || !reportId) return;
     void load(reportId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, reportId]);
 
   async function load(id: string) {
