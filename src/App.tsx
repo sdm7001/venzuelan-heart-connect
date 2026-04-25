@@ -15,6 +15,8 @@ import FAQ from "./pages/FAQ";
 import Resources from "./pages/Resources";
 import ResourceDetail from "./pages/ResourceDetail";
 import { Terms, Privacy, AcceptableUse, AntiSolicitation } from "./pages/Legal";
+import CookiePolicy from "./pages/CookiePolicy";
+import ConsentSettings from "./pages/ConsentSettings";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/app/Dashboard";
@@ -64,6 +66,8 @@ const App = () => (
               <Route path="/legal/privacy" element={<Privacy />} />
               <Route path="/legal/acceptable-use" element={<AcceptableUse />} />
               <Route path="/legal/anti-solicitation" element={<AntiSolicitation />} />
+              <Route path="/legal/cookies" element={<CookiePolicy />} />
+              <Route path="/legal/consent" element={<ConsentSettings />} />
 
               {/* Auth */}
               <Route path="/auth" element={<Auth />} />

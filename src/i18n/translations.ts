@@ -178,6 +178,7 @@ const _translations = {
     legal: {
       tos: "Terms of Service", privacy: "Privacy Policy", aup: "Acceptable Use Policy",
       antiSolicit: "Anti-Solicitation Policy",
+      cookies: "Cookie Policy", consent: "Consent Settings",
       tosBody: "By using MatchVenezuelan you agree to use the platform only for genuine, lawful relationship-building purposes. You agree not to impersonate others, post explicit content, request payments off-platform, or engage in any commercial sexual activity. We reserve the right to suspend or terminate accounts that violate these terms.",
       privacyBody: "We collect only what we need to provide a safe matchmaking experience: account information, profile data you choose to share, photos, messages, and basic device information. We never sell your data. You can request export or deletion at any time.",
       aupBody: "MatchVenezuelan is a serious-relationship platform. The following are prohibited: harassment, hate speech, explicit content, impersonation, scams or fraud, off-platform payment requests, soliciting commercial sexual services, and accounts of anyone under 18.",
@@ -781,6 +782,7 @@ const _translations = {
     legal: {
       tos: "Términos de Servicio", privacy: "Política de Privacidad", aup: "Política de Uso Aceptable",
       antiSolicit: "Política Anti-Solicitación",
+      cookies: "Política de Cookies", consent: "Preferencias de Consentimiento",
       tosBody: "Al usar MatchVenezuelan aceptas usar la plataforma únicamente con fines genuinos y legales para construir relaciones. Aceptas no suplantar a otros, no publicar contenido explícito, no solicitar pagos fuera de la plataforma ni participar en ninguna actividad sexual comercial.",
       privacyBody: "Solo recopilamos lo necesario para ofrecer una experiencia de matchmaking segura: información de cuenta, datos de perfil que decidas compartir, fotos, mensajes e información básica del dispositivo. Nunca vendemos tus datos.",
       aupBody: "MatchVenezuelan es una plataforma para relaciones serias. Está prohibido: acoso, discurso de odio, contenido explícito, suplantación, estafas o fraudes, pedidos de pago fuera de la plataforma, solicitación de servicios sexuales comerciales y cuentas de menores de 18 años.",
