@@ -162,6 +162,48 @@
   .transition-smooth { transition: all 0.3s var(--transition-smooth); }
   .text-balance { text-wrap: balance; }
 
+  /* Spacing scale utilities — use these instead of ad-hoc py-12 / p-6 / gap-4.
+     Keeps section rhythm consistent across marketing + dashboard. */
+  .py-section { padding-top: var(--space-section); padding-bottom: var(--space-section); }
+  .pt-section { padding-top: var(--space-section); }
+  .pb-section { padding-bottom: var(--space-section); }
+  .mb-block   { margin-bottom: var(--space-block); }
+  .mt-block   { margin-top: var(--space-block); }
+  .gap-stack  { gap: var(--space-stack); }
+  .gap-block  { gap: var(--space-block); }
+  .space-y-stack > * + * { margin-top: var(--space-stack); }
+  .space-y-block > * + * { margin-top: var(--space-block); }
+  .p-card     { padding: var(--space-card); }
+  .px-gutter  { padding-left: var(--space-gutter); padding-right: var(--space-gutter); }
+
+  @media (min-width: 768px) {
+    .py-section { padding-top: var(--space-section-md); padding-bottom: var(--space-section-md); }
+    .pt-section { padding-top: var(--space-section-md); }
+    .pb-section { padding-bottom: var(--space-section-md); }
+    .mb-block   { margin-bottom: var(--space-block-md); }
+    .mt-block   { margin-top: var(--space-block-md); }
+    .gap-stack  { gap: var(--space-stack-md); }
+    .gap-block  { gap: var(--space-block-md); }
+    .space-y-stack > * + * { margin-top: var(--space-stack-md); }
+    .space-y-block > * + * { margin-top: var(--space-block-md); }
+    .p-card     { padding: var(--space-card-md); }
+    .px-gutter  { padding-left: var(--space-gutter-md); padding-right: var(--space-gutter-md); }
+  }
+
+  @media (min-width: 1024px) {
+    .py-section { padding-top: var(--space-section-lg); padding-bottom: var(--space-section-lg); }
+    .pt-section { padding-top: var(--space-section-lg); }
+    .pb-section { padding-bottom: var(--space-section-lg); }
+    .mb-block   { margin-bottom: var(--space-block-lg); }
+    .mt-block   { margin-top: var(--space-block-lg); }
+    .gap-stack  { gap: var(--space-stack-lg); }
+    .gap-block  { gap: var(--space-block-lg); }
+    .space-y-stack > * + * { margin-top: var(--space-stack-lg); }
+    .space-y-block > * + * { margin-top: var(--space-block-lg); }
+    .p-card     { padding: var(--space-card-lg); }
+    .px-gutter  { padding-left: var(--space-gutter-lg); padding-right: var(--space-gutter-lg); }
+  }
+
   /* Tap target — guarantees 44x44 hit area on touch devices.
      Uses an invisible ::before overlay so the visual size of small icons /
      inline links isn't affected, only the clickable area. */
