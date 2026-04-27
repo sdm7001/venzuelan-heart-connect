@@ -58,7 +58,20 @@ export default function LandingPageTemplate({ content, isEs }: Props) {
     <PublicLayout>
       {/* Hero */}
       <section className="relative overflow-hidden gradient-hero">
-        <div className="container py-section px-gutter">
+        {content.heroImage && (
+          <>
+            <img
+              src={content.heroImage}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover object-center opacity-20"
+              loading="eager"
+              fetchPriority="high"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/40 to-background/10" />
+          </>
+        )}
+        <div className="relative container py-section px-gutter">
           <div className="mx-auto max-w-3xl text-center animate-fade-in">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/60 px-3 py-1 text-xs font-medium text-burgundy backdrop-blur">
               <Heart className="h-3.5 w-3.5 text-primary" fill="currentColor" />
