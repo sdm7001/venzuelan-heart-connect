@@ -56,7 +56,7 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
-              {/* Public */}
+              {/* Public — English */}
               <Route path="/" element={<Home />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/safety" element={<Safety />} />
@@ -69,6 +69,13 @@ const App = () => (
               <Route path="/legal/anti-solicitation" element={<AntiSolicitation />} />
               <Route path="/legal/cookies" element={<CookiePolicy />} />
               <Route path="/legal/consent" element={<ConsentSettings />} />
+
+              {/* Public — Spanish (/es/*) */}
+              <Route path="/es/" element={<Home />} />
+              <Route path="/es/faq" element={<FAQ />} />
+              <Route path="/es/safety" element={<Safety />} />
+              <Route path="/es/legal/terms" element={<Terms />} />
+              <Route path="/es/legal/privacy" element={<Privacy />} />
 
               {/* Auth */}
               <Route path="/auth" element={<Auth />} />

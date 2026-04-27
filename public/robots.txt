@@ -20,6 +20,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/
+Disallow: /app/
 Disallow: /dashboard
 Disallow: /onboarding
 Disallow: /messages

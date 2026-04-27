@@ -5,7 +5,20 @@ import { ShieldCheck, Check } from "lucide-react";
 
 export default function Safety() {
   const { t, lang } = useI18n();
-  useSeo({ title: t.safety.title, description: t.safety.sub, path: "/safety", lang }, [lang]);
+  useSeo(
+    {
+      title: t.safety.title,
+      description: t.safety.sub,
+      path: lang === "es" ? "/es/safety" : "/safety",
+      lang,
+      alternates: [
+        { hreflang: "en", href: "https://matchvenezuelan.com/safety" },
+        { hreflang: "es", href: "https://matchvenezuelan.com/es/safety" },
+        { hreflang: "x-default", href: "https://matchvenezuelan.com/safety" },
+      ],
+    },
+    [lang],
+  );
   const items = [t.safety.i1, t.safety.i2, t.safety.i3, t.safety.i4, t.safety.i5, t.safety.i6];
   const tips = [t.safety.t1, t.safety.t2, t.safety.t3, t.safety.t4, t.safety.t5];
   return (

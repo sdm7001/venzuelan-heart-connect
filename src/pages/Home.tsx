@@ -4,18 +4,30 @@ import { Button } from "@/components/ui/button";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo, SITE_NAME, SITE_URL } from "@/seo/seo";
+import StructuredData from "@/components/StructuredData";
+// TODO: Replace hero-portrait.jpg with a compressed WebP (<150KB) for Core Web Vitals.
 import heroImg from "@/assets/hero-portrait.jpg";
 
 export default function Home() {
   const { t, lang } = useI18n();
+  const isEs = lang === "es";
   useSeo(
     {
-      title: `${SITE_NAME} — ${t.hero.title}`,
+      title: isEs
+        ? "MatchVenezuelan — Citas serias con mujeres venezolanas"
+        : "MatchVenezuelan — Venezuelan Dating Site for Serious Relationships",
       titleAbsolute: true,
-      description: t.hero.sub,
-      path: "/",
+      description: isEs
+        ? "Conecta con mujeres venezolanas tradicionales y orientadas a la familia en una plataforma segura y bilingüe para relaciones serias y matrimonio."
+        : "Meet traditional, family-oriented Venezuelan women in a safe, bilingual dating platform built for serious relationships and marriage.",
+      path: isEs ? "/es/" : "/",
       lang,
       type: "website",
+      alternates: [
+        { hreflang: "en", href: `${SITE_URL}/` },
+        { hreflang: "es", href: `${SITE_URL}/es/` },
+        { hreflang: "x-default", href: `${SITE_URL}/` },
+      ],
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -32,6 +44,7 @@ export default function Home() {
   );
   return (
     <PublicLayout>
+      {!isEs && <StructuredData />}
       {/* HERO */}
       <section className="relative overflow-hidden gradient-hero">
         <div className="container grid gap-10 py-16 md:grid-cols-2 md:gap-12 md:py-24 lg:py-32">

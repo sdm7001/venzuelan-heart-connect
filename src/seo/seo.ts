@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import type { Lang } from "@/i18n/translations";
 
 export const SITE_NAME = "MatchVenezuelan";
-export const SITE_URL = "https://www.matchvenezulan.com";
+export const SITE_URL = "https://matchvenezuelan.com";
 export const DEFAULT_OG_IMAGE = "/logo.png";
 export const TWITTER_HANDLE = "@matchvenezuelan";
 

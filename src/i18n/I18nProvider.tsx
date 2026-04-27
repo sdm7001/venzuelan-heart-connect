@@ -6,6 +6,8 @@ const STORAGE_KEY = "mv.lang";
 
 function detectInitial(): Lang {
   if (typeof window === "undefined") return "en";
+  // /es/* routes explicitly select Spanish regardless of saved preference.
+  if (window.location.pathname.startsWith("/es")) return "es";
   const saved = localStorage.getItem(STORAGE_KEY) as Lang | null;
   if (saved === "en" || saved === "es") return saved;
   const nav = navigator.language?.toLowerCase() ?? "en";

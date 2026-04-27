@@ -74,8 +74,13 @@ export default function FAQ() {
     {
       title: t.faq.title,
       description: t.faq.intro.slice(0, 155),
-      path: "/faq",
+      path: lang === "es" ? "/es/faq" : "/faq",
       lang,
+      alternates: [
+        { hreflang: "en", href: "https://matchvenezuelan.com/faq" },
+        { hreflang: "es", href: "https://matchvenezuelan.com/es/faq" },
+        { hreflang: "x-default", href: "https://matchvenezuelan.com/faq" },
+      ],
       jsonLd: faqLd(entries.map((e) => ({ q: e.q, a: e.a }))),
     },
     [lang],

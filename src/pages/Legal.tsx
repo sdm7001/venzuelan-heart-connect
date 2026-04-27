@@ -27,10 +27,23 @@ export function LegalPage({ titleKey }: { titleKey: Key }) {
     antiSolicit: t.legal.antiSections,
   };
   const pathMap: Record<Key, string> = {
-    tos: "/legal/terms",
-    privacy: "/legal/privacy",
+    tos: lang === "es" ? "/es/legal/terms" : "/legal/terms",
+    privacy: lang === "es" ? "/es/legal/privacy" : "/legal/privacy",
     aup: "/legal/acceptable-use",
     antiSolicit: "/legal/anti-solicitation",
+  };
+
+  const alternatesMap: Partial<Record<Key, { hreflang: string; href: string }[]>> = {
+    tos: [
+      { hreflang: "en", href: "https://matchvenezuelan.com/legal/terms" },
+      { hreflang: "es", href: "https://matchvenezuelan.com/es/legal/terms" },
+      { hreflang: "x-default", href: "https://matchvenezuelan.com/legal/terms" },
+    ],
+    privacy: [
+      { hreflang: "en", href: "https://matchvenezuelan.com/legal/privacy" },
+      { hreflang: "es", href: "https://matchvenezuelan.com/es/legal/privacy" },
+      { hreflang: "x-default", href: "https://matchvenezuelan.com/legal/privacy" },
+    ],
   };
 
   const sections = sectionsMap[titleKey];
@@ -42,6 +55,7 @@ export function LegalPage({ titleKey }: { titleKey: Key }) {
       path: pathMap[titleKey],
       lang,
       robots: "index,follow",
+      ...(alternatesMap[titleKey] ? { alternates: alternatesMap[titleKey] } : {}),
     },
     [lang, titleKey],
   );
