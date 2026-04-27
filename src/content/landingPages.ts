@@ -1580,6 +1580,384 @@ export const landingPages: LandingPageContent[] = [
       ]
     }
   }
+  ,
+
+  // ─── GROUP G: Venezuelan Cities (targeting Venezuelan women to sign up) ──
+  {
+    slug: "venezuelan-women-in-caracas",
+    esSlug: "mujeres-venezolanas-en-caracas",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Caracas",
+    description: "Caracas is home to thousands of Venezuelan women ready for meaningful relationships. Join MatchVenezuelan to connect with verified men who respect and admire Venezuelan culture.",
+    h1: "Venezuelan Women in Caracas",
+    intro: "Caracas — Venezuela's capital and largest city — is a place of contrasts: a city of tremendous culture, intellectual life, and warmth despite everything its people have endured. Venezuelan women in Caracas are resilient, educated, and deeply proud of their identity. Many are professionals, artists, and entrepreneurs who have chosen to stay and build their futures at home. MatchVenezuelan connects Caraqueñas with serious, respectful men from around the world who appreciate everything Venezuelan women bring to a relationship.",
+    sections: [
+      {
+        heading: "For Venezuelan Women in Caracas Ready to Meet Someone Real",
+        body: "If you're a Venezuelan woman in Caracas looking for a genuine connection — with someone who values your culture, your warmth, and your resilience — MatchVenezuelan was built for you. Our platform connects Venezuelan women with verified men who are serious about building lasting relationships. No games, no superficiality. Just real people looking for real partnerships."
+      },
+      {
+        heading: "Why Men from Around the World Seek Venezuelan Women",
+        body: "Venezuelan women have a reputation that stretches far beyond South America: they are warm, family-oriented, passionate, and deeply loyal. Men who understand Venezuelan culture — the importance of family gatherings, the joy in Venezuelan cooking, the pride in national identity — seek Venezuelan women specifically because of these qualities. MatchVenezuelan's community includes men from the US, Canada, Europe, and Latin America who have chosen to look for a partner with Venezuelan roots."
+      },
+      {
+        heading: "Safe, Verified, and Serious",
+        body: "MatchVenezuelan prioritizes your safety. All profiles are verified, and our community standards prohibit solicitation, harassment, or disrespectful behavior. Every woman who joins controls her own profile, her own photos, and who she communicates with. If you're in Caracas and ready to meet someone who genuinely appreciates you, create your profile today."
+      }
+    ],
+    faq: [
+      { q: "Is MatchVenezuelan free for Venezuelan women?", a: "Yes — Venezuelan women join and use MatchVenezuelan's core features for free. We believe Venezuelan women should be able to connect without financial barriers." },
+      { q: "Are the men on MatchVenezuelan serious about relationships?", a: "MatchVenezuelan attracts men who are specifically seeking Venezuelan partners for committed, long-term relationships. Our verification process and community standards filter out those who aren't serious." },
+      { q: "Is it safe to use MatchVenezuelan from Caracas?", a: "Yes. Your personal information is protected, you control who sees your profile, and you set the pace of any conversation. We have zero tolerance for harassment or solicitation." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Maracaibo", href: "/venezuelan-women-in-maracaibo" },
+      { label: "Venezuelan Women in Valencia", href: "/venezuelan-women-in-valencia-venezuela" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" }
+    ],
+    es: {
+      title: "Mujeres Venezolanas en Caracas",
+      description: "Caracas alberga miles de mujeres venezolanas listas para relaciones significativas. Únete a MatchVenezuelan y conecta con hombres verificados que respetan la cultura venezolana.",
+      h1: "Mujeres Venezolanas en Caracas",
+      intro: "Caracas — la capital de Venezuela — es una ciudad de cultura, vida intelectual y calidez incomparable. Las mujeres venezolanas en Caracas son resilientes, educadas y profundamente orgullosas de su identidad. MatchVenezuelan conecta a las caraqueñas con hombres serios y respetuosos de todo el mundo que aprecian todo lo que las venezolanas aportan a una relación.",
+      sections: [
+        {
+          heading: "Para las Venezolanas en Caracas Listas para Conocer a Alguien Real",
+          body: "Si eres una mujer venezolana en Caracas que busca una conexión genuina con alguien que valore tu cultura, tu calidez y tu resiliencia, MatchVenezuelan fue creada para ti. Nuestra plataforma conecta a venezolanas con hombres verificados que buscan relaciones duraderas. Sin juegos, sin superficialidad."
+        },
+        {
+          heading: "Por Qué Hombres de Todo el Mundo Buscan Mujeres Venezolanas",
+          body: "Las venezolanas tienen una reputación que va mucho más allá de Sudamérica: son cálidas, orientadas a la familia, apasionadas y profundamente leales. MatchVenezuelan incluye hombres de EE.UU., Canadá, Europa y América Latina que han elegido buscar una pareja con raíces venezolanas."
+        },
+        {
+          heading: "Segura, Verificada y Seria",
+          body: "MatchVenezuelan prioriza tu seguridad. Todos los perfiles son verificados y nuestros estándares comunitarios prohíben el acoso. Tú controlas tu perfil, tus fotos y con quién te comunicas."
+        }
+      ],
+      faq: [
+        { q: "¿Es MatchVenezuelan gratis para las venezolanas?", a: "Sí — las venezolanas se unen y usan las funciones principales de MatchVenezuelan de forma gratuita." },
+        { q: "¿Los hombres en MatchVenezuelan son serios?", a: "MatchVenezuelan atrae a hombres que buscan específicamente parejas venezolanas para relaciones comprometidas a largo plazo." },
+        { q: "¿Es seguro usar MatchVenezuelan desde Caracas?", a: "Sí. Tu información personal está protegida y tú controlas el ritmo de cualquier conversación." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Maracaibo", href: "/es/venezuelan-women-in-maracaibo" },
+        { label: "Venezolanas en Valencia", href: "/es/venezuelan-women-in-valencia-venezuela" },
+        { label: "Conoce Mujeres Venezolanas", href: "/es/meet-venezuelan-women" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-maracaibo",
+    esSlug: "mujeres-venezolanas-en-maracaibo",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Maracaibo",
+    description: "Maracaibo's Venezuelan women are known for their warmth, beauty, and strong character. Join MatchVenezuelan to connect with serious men who appreciate everything Maracucha women bring.",
+    h1: "Venezuelan Women in Maracaibo",
+    intro: "Maracaibo — Venezuela's second-largest city and the cultural heart of Zulia state — has a character all its own. Maracuchas, as locals are known, are famous throughout Venezuela for their distinct accent, fierce pride, intense warmth, and legendary expressiveness. Venezuelan women from Maracaibo bring all of this into relationships: passion, loyalty, humor, and an unshakeable sense of identity. MatchVenezuelan connects Maracucha women with verified, serious men from around the world who are looking for exactly this kind of partner.",
+    sections: [
+      {
+        heading: "What Makes Maracucha Women Unique",
+        body: "Ask any Venezuelan and they'll tell you: Maracuchas are in a category of their own. Their regional accent is unmistakable, their humor is sharp, and their loyalty to family and friends is absolute. Women from Maracaibo tend to be direct — they say what they mean and mean what they say. They are expressive in love and expect the same sincerity in return. If you're a woman from Maracaibo, MatchVenezuelan connects you with men who are specifically drawn to Venezuelan warmth and character."
+      },
+      {
+        heading: "A Platform Built for Serious Connections",
+        body: "MatchVenezuelan isn't a casual dating app. It's a platform designed for Venezuelan women and the men who want to build real relationships with them. Every male profile is verified. Our community guidelines prohibit disrespectful behavior, unsolicited messages, and any form of solicitation. Maracucha women deserve a platform where they're treated with the respect they command."
+      },
+      {
+        heading: "Join MatchVenezuelan from Maracaibo",
+        body: "Creating a profile is free for Venezuelan women. You set your own terms: what you're looking for, what you share, and who you talk to. Men on the platform come from the US, Canada, Europe, and across Latin America — all specifically seeking Venezuelan women for meaningful, long-term relationships. Your Maracucha spirit is exactly what they're looking for."
+      }
+    ],
+    faq: [
+      { q: "Is MatchVenezuelan free for women in Maracaibo?", a: "Yes. Venezuelan women join and use core features for free. We want to make it as easy as possible for Venezuelan women to connect with serious men." },
+      { q: "Can I use MatchVenezuelan from Maracaibo?", a: "Absolutely. MatchVenezuelan serves Venezuelan women across all of Venezuela, including Maracaibo and Zulia state." },
+      { q: "What kind of men are on MatchVenezuelan?", a: "Men on MatchVenezuelan are specifically seeking Venezuelan women for committed relationships. They come from diverse backgrounds and nationalities, united by genuine appreciation for Venezuelan culture and character." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Caracas", href: "/venezuelan-women-in-caracas" },
+      { label: "Venezuelan Women in Valencia", href: "/venezuelan-women-in-valencia-venezuela" },
+      { label: "Why Venezuelan Women", href: "/why-venezuelan-women" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" }
+    ],
+    es: {
+      title: "Mujeres Venezolanas en Maracaibo",
+      description: "Las maracuchas son conocidas por su calidez, carácter fuerte y lealtad. Únete a MatchVenezuelan y conecta con hombres serios que aprecian todo lo que las venezolanas aportan.",
+      h1: "Mujeres Venezolanas en Maracaibo",
+      intro: "Maracaibo — segunda ciudad más grande de Venezuela y corazón cultural del estado Zulia — tiene un carácter único. Las maracuchas son famosas en toda Venezuela por su acento inconfundible, orgullo regional y calidez legendaria. MatchVenezuelan conecta a las maracuchas con hombres verificados y serios de todo el mundo.",
+      sections: [
+        { heading: "Lo Que Hace Únicas a las Maracuchas", body: "Las maracuchas son directas, expresivas y absolutamente leales. Su sentido del humor es agudo y su lealtad a la familia es inquebrantable. MatchVenezuelan te conecta con hombres que buscan específicamente la calidez y el carácter venezolanos." },
+        { heading: "Una Plataforma para Conexiones Serias", body: "MatchVenezuelan no es una app de citas casual. Está diseñada para venezolanas y los hombres que quieren construir relaciones reales con ellas. Cada perfil masculino es verificado y las directrices comunitarias prohíben comportamientos irrespetuosos." },
+        { heading: "Únete a MatchVenezuelan desde Maracaibo", body: "Crear un perfil es gratis para las venezolanas. Tú estableces tus propias condiciones. Los hombres en la plataforma vienen de EE.UU., Canadá, Europa y toda América Latina, buscando venezolanas para relaciones duraderas." }
+      ],
+      faq: [
+        { q: "¿Es gratis para las mujeres en Maracaibo?", a: "Sí. Las venezolanas se unen y usan las funciones principales gratis." },
+        { q: "¿Puedo usar MatchVenezuelan desde Maracaibo?", a: "Por supuesto. MatchVenezuelan sirve a venezolanas en toda Venezuela, incluyendo Maracaibo y el estado Zulia." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Caracas", href: "/es/venezuelan-women-in-caracas" },
+        { label: "Venezolanas en Valencia", href: "/es/venezuelan-women-in-valencia-venezuela" },
+        { label: "Sitio de Citas Venezolanas", href: "/es/venezuelan-dating-site" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-valencia-venezuela",
+    esSlug: "mujeres-venezolanas-en-valencia",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Valencia, Venezuela",
+    description: "Valencia is Venezuela's industrial heartland and home to thousands of accomplished Venezuelan women. Join MatchVenezuelan to find a genuine, lasting connection.",
+    h1: "Venezuelan Women in Valencia, Venezuela",
+    intro: "Valencia — capital of Carabobo state and Venezuela's third-largest city — is an industrial and commercial powerhouse with a population of warm, hardworking, and family-oriented people. Venezuelan women in Valencia have a reputation for being grounded and practical without losing an ounce of Venezuelan warmth. Many are professionals in manufacturing, healthcare, and education. MatchVenezuelan connects Valenciana women with serious, verified men from around the world who are looking for real partnerships built on mutual respect.",
+    sections: [
+      {
+        heading: "Valencia Women: Grounded, Warm, and Ready",
+        body: "Women from Valencia tend to have both feet on the ground. The city's working-class and middle-class roots produce women who are pragmatic about life but deeply warm in relationships. They value men who are consistent and hardworking — qualities they recognize in themselves. If you're a Venezuelan woman from Valencia looking for someone who matches your level of seriousness and values, MatchVenezuelan is where you'll find him."
+      },
+      {
+        heading: "Free to Join — Built for Venezuelan Women",
+        body: "MatchVenezuelan is free for Venezuelan women to join and use. We built this platform because Venezuelan women deserve a space where they're sought after for the right reasons — not stereotypes, but genuine appreciation of Venezuelan culture, family values, and warmth. Men on the platform are verified and have specifically chosen to seek Venezuelan partners."
+      },
+      {
+        heading: "Your Safety, Your Terms",
+        body: "We know that online safety matters — especially for women. MatchVenezuelan's verification system, privacy controls, and zero-tolerance policy on harassment mean you can explore connections confidently. You decide what you share, who you message, and how fast things move. No pressure, no games."
+      }
+    ],
+    faq: [
+      { q: "Can I use MatchVenezuelan from Valencia, Venezuela?", a: "Yes. MatchVenezuelan is available to Venezuelan women across all of Venezuela, including Valencia and Carabobo state." },
+      { q: "Is the platform safe for women?", a: "Safety is our top priority. All male profiles are verified, personal information is protected, and our team actively moderates for inappropriate behavior." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Caracas", href: "/venezuelan-women-in-caracas" },
+      { label: "Venezuelan Women in Maracaibo", href: "/venezuelan-women-in-maracaibo" },
+      { label: "Venezuelan Women in Barquisimeto", href: "/venezuelan-women-in-barquisimeto" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" }
+    ],
+    es: {
+      title: "Mujeres Venezolanas en Valencia, Venezuela",
+      description: "Valencia es el corazón industrial de Venezuela y hogar de miles de mujeres venezolanas. Únete a MatchVenezuelan para encontrar una conexión genuina y duradera.",
+      h1: "Mujeres Venezolanas en Valencia, Venezuela",
+      intro: "Valencia — capital del estado Carabobo — es una ciudad industrial y comercial con una población cálida y trabajadora. Las venezolanas de Valencia son conocidas por ser prácticas sin perder la calidez venezolana. MatchVenezuelan las conecta con hombres verificados y serios de todo el mundo.",
+      sections: [
+        { heading: "Mujeres de Valencia: Sólidas, Cálidas y Listas", body: "Las valencianas tienen los pies en la tierra. Sus raíces trabajadoras producen mujeres pragmáticas pero profundamente cálidas en las relaciones. Si buscas a alguien que combine tu nivel de seriedad y valores, MatchVenezuelan es donde lo encontrarás." },
+        { heading: "Gratis para Venezolanas", body: "MatchVenezuelan es gratuita para las venezolanas. Creamos esta plataforma porque las venezolanas merecen un espacio donde sean valoradas por las razones correctas." },
+        { heading: "Tu Seguridad, Tus Condiciones", body: "El sistema de verificación de MatchVenezuelan, los controles de privacidad y la política de tolerancia cero ante el acoso te permiten explorar conexiones con confianza." }
+      ],
+      faq: [
+        { q: "¿Puedo usar MatchVenezuelan desde Valencia?", a: "Sí. MatchVenezuelan está disponible para venezolanas en toda Venezuela, incluyendo Valencia y el estado Carabobo." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Caracas", href: "/es/venezuelan-women-in-caracas" },
+        { label: "Venezolanas en Maracaibo", href: "/es/venezuelan-women-in-maracaibo" },
+        { label: "Sitio de Citas Venezolanas", href: "/es/venezuelan-dating-site" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-barquisimeto",
+    esSlug: "mujeres-venezolanas-en-barquisimeto",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Barquisimeto",
+    description: "Barquisimeto — the musical capital of Venezuela — is home to warm, vibrant Venezuelan women. Join MatchVenezuelan and connect with serious men who appreciate Venezuelan culture.",
+    h1: "Venezuelan Women in Barquisimeto",
+    intro: "Barquisimeto, capital of Lara state, is known throughout Venezuela as the 'musical capital' — a city where culture, warmth, and community run deep. Venezuelan women from Barquisimeto carry this musical spirit into their personalities: expressive, joyful, and deeply connected to their roots. The city's strong agricultural and commercial backbone has produced women who are both grounded and vibrant. MatchVenezuelan connects Barquisimetana women with verified, serious men from around the world who are drawn to genuine Venezuelan warmth.",
+    sections: [
+      {
+        heading: "The Spirit of Barquisimeto Women",
+        body: "Lara state has a cultural richness that shapes its people. Women from Barquisimeto are known for their musicality, their community spirit, and their deep family ties. They celebrate Venezuelan traditions with full hearts — from Divina Pastora processions to local food festivals. These aren't abstract cultural traits; they show up in daily life, in how Barquisimetana women love, cook, gather, and build families. Men on MatchVenezuelan who connect with women from Barquisimeto consistently describe the experience as warm, authentic, and refreshing."
+      },
+      {
+        heading: "Why MatchVenezuelan Works for Barquisimeto Women",
+        body: "Barquisimeto may not have the international profile of Caracas or Maracaibo, but the women here are exactly what men seeking genuine Venezuelan partners are looking for. MatchVenezuelan's platform reaches men across the US, Europe, and Latin America who are actively seeking Venezuelan women from all cities — including Barquisimeto. Joining is free, verification protects you, and you control every aspect of your experience."
+      }
+    ],
+    faq: [
+      { q: "Is MatchVenezuelan available in Barquisimeto?", a: "Yes. MatchVenezuelan is available to Venezuelan women across all of Venezuela, including Barquisimeto and Lara state." },
+      { q: "Is it free for Venezuelan women to join?", a: "Yes. Venezuelan women join and use MatchVenezuelan's core features for free." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Valencia", href: "/venezuelan-women-in-valencia-venezuela" },
+      { label: "Venezuelan Women in Maracaibo", href: "/venezuelan-women-in-maracaibo" },
+      { label: "Venezuelan Women in Mérida", href: "/venezuelan-women-in-merida" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" }
+    ],
+    es: {
+      title: "Mujeres Venezolanas en Barquisimeto",
+      description: "Barquisimeto — la capital musical de Venezuela — alberga mujeres venezolanas cálidas y vibrantes. Únete a MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Barquisimeto",
+      intro: "Barquisimeto, capital del estado Lara, es conocida como la 'capital musical' de Venezuela. Las venezolanas de Barquisimeto llevan ese espíritu musical a su personalidad: expresivas, alegres y profundamente conectadas a sus raíces. MatchVenezuelan las conecta con hombres verificados y serios de todo el mundo.",
+      sections: [
+        { heading: "El Espíritu de las Mujeres de Barquisimeto", body: "Las mujeres de Lara son conocidas por su musicalidad, espíritu comunitario y fuertes lazos familiares. Celebran las tradiciones venezolanas de corazón. Los hombres en MatchVenezuelan que conectan con barquisimetanas describen la experiencia como cálida, auténtica y reconfortante." },
+        { heading: "Por Qué MatchVenezuelan Funciona para las Barquisimetanas", body: "MatchVenezuelan conecta a mujeres de Barquisimeto con hombres de EE.UU., Europa y América Latina que buscan activamente venezolanas de todas las ciudades. Unirse es gratis y tú controlas tu experiencia." }
+      ],
+      faq: [
+        { q: "¿Está disponible MatchVenezuelan en Barquisimeto?", a: "Sí. MatchVenezuelan está disponible para venezolanas en toda Venezuela, incluyendo Barquisimeto y el estado Lara." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Valencia", href: "/es/venezuelan-women-in-valencia-venezuela" },
+        { label: "Venezolanas en Maracaibo", href: "/es/venezuelan-women-in-maracaibo" },
+        { label: "Sitio de Citas Venezolanas", href: "/es/venezuelan-dating-site" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-maracay",
+    esSlug: "mujeres-venezolanas-en-maracay",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Maracay",
+    description: "Maracay — the Garden City of Venezuela — is home to vibrant, warm Venezuelan women ready for real connections. Join MatchVenezuelan today.",
+    h1: "Venezuelan Women in Maracay",
+    intro: "Maracay, the capital of Aragua state, earns its nickname 'the Garden City' through its lush green spaces and pleasant climate — and its people match the setting: relaxed, warm, and genuinely welcoming. Venezuelan women in Maracay are known for their beauty, their easy social manner, and their deep family roots in one of Venezuela's most liveable cities. MatchVenezuelan connects Maracayera women with verified men from around the world who are specifically seeking Venezuelan partners for meaningful, long-term relationships.",
+    sections: [
+      {
+        heading: "Maracay Women: The Garden City's Warmth",
+        body: "Maracay sits between Caracas and Valencia, blending the energy of both without the intensity of either. Women from Maracay tend to have a relaxed confidence — they're social without being overwhelming, ambitious without losing their warmth. The city's proximity to Aragua's natural beauty means outdoor culture, family outings, and community gatherings are central to social life. A man who connects with a Maracayera connects with someone who values balance: career and family, adventure and roots."
+      },
+      {
+        heading: "Join MatchVenezuelan Free from Maracay",
+        body: "MatchVenezuelan is free for Venezuelan women to join and use. Whether you're in Maracay's historic center, El Limon, or the surrounding areas of Aragua, the platform connects you with serious, verified men who are drawn to Venezuelan women specifically. You control your profile, your pace, and your connections — always on your terms."
+      }
+    ],
+    faq: [
+      { q: "Can women in Maracay use MatchVenezuelan?", a: "Yes. MatchVenezuelan is available across all of Venezuela, including Maracay and the wider Aragua state." },
+      { q: "What kind of men will I meet on MatchVenezuelan?", a: "Men on MatchVenezuelan come from the US, Canada, Europe, and Latin America. They've specifically chosen a platform focused on Venezuelan women because they genuinely value Venezuelan culture and are looking for serious relationships." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Valencia", href: "/venezuelan-women-in-valencia-venezuela" },
+      { label: "Venezuelan Women in Caracas", href: "/venezuelan-women-in-caracas" },
+      { label: "Venezuelan Women for Marriage", href: "/venezuelan-women-for-marriage" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ],
+    es: {
+      title: "Mujeres Venezolanas en Maracay",
+      description: "Maracay — la Ciudad Jardín de Venezuela — alberga mujeres venezolanas vibrantes y cálidas listas para conexiones reales. Únete a MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Maracay",
+      intro: "Maracay, capital del estado Aragua, es conocida como la 'Ciudad Jardín' por sus espacios verdes y su clima agradable. Las venezolanas de Maracay son conocidas por su calidez y facilidad social. MatchVenezuelan las conecta con hombres verificados de todo el mundo.",
+      sections: [
+        { heading: "Maracayeras: La Calidez de la Ciudad Jardín", body: "Las mujeres de Maracay tienen una confianza relajada. Son sociales sin ser abrumadoras, ambiciosas sin perder su calidez. La cercanía a la naturaleza de Aragua hace que la cultura al aire libre y las reuniones familiares sean centrales en la vida social." },
+        { heading: "Únete a MatchVenezuelan Gratis desde Maracay", body: "MatchVenezuelan es gratuita para las venezolanas. Controlas tu perfil, tu ritmo y tus conexiones — siempre en tus términos." }
+      ],
+      faq: [
+        { q: "¿Pueden las mujeres en Maracay usar MatchVenezuelan?", a: "Sí. MatchVenezuelan está disponible en toda Venezuela, incluyendo Maracay y el estado Aragua." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Valencia", href: "/es/venezuelan-women-in-valencia-venezuela" },
+        { label: "Venezolanas en Caracas", href: "/es/venezuelan-women-in-caracas" },
+        { label: "Sitio de Citas Venezolanas", href: "/es/venezuelan-dating-site" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-merida",
+    esSlug: "mujeres-venezolanas-en-merida",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Mérida",
+    description: "Mérida — Venezuela's university city in the Andes — is home to intellectual, adventurous Venezuelan women. Join MatchVenezuelan for real connections.",
+    h1: "Venezuelan Women in Mérida",
+    intro: "Mérida sits high in the Venezuelan Andes, a university city with a distinct character: intellectual, adventurous, and proud of its mountain culture. Venezuelan women from Mérida are often students, academics, or professionals shaped by one of Latin America's most respected universities. They combine Andean groundedness with Venezuelan warmth — thoughtful in conversation, loyal in relationships, and deeply connected to both nature and community. MatchVenezuelan connects Merideña women with serious, verified men from around the world who are drawn to this unique combination.",
+    sections: [
+      {
+        heading: "The Merideña Character",
+        body: "Women from Mérida are shaped by a city that prizes education and outdoor culture equally. Venezuela's longest cable car, the surrounding páramo landscapes, and a university student population of over 50,000 create a city that feels simultaneously intellectual and adventurous. Merideñas are thoughtful partners — they engage deeply in conversation, they're curious about the world, and they build relationships with intention. If you're a woman from Mérida looking for a man who matches your depth, MatchVenezuelan is where you'll find him."
+      },
+      {
+        heading: "Free, Safe, and Specifically for Venezuelan Women",
+        body: "MatchVenezuelan is free for Venezuelan women to join. The men on our platform come specifically to find Venezuelan women — not because of stereotypes but because of genuine appreciation for Venezuelan culture, warmth, and character. Merideñas often find that men from North America and Europe are drawn to the combination of Andean culture and Venezuelan warmth that defines women from this city."
+      }
+    ],
+    faq: [
+      { q: "Is MatchVenezuelan available in Mérida?", a: "Yes. MatchVenezuelan serves Venezuelan women across all of Venezuela, including Mérida and the Andes region." },
+      { q: "Are there men on MatchVenezuelan interested in university-educated Venezuelan women?", a: "Absolutely. Many men on MatchVenezuelan are professionals and academics themselves, specifically seeking educated, thoughtful Venezuelan partners." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Barquisimeto", href: "/venezuelan-women-in-barquisimeto" },
+      { label: "Venezuelan Women in Caracas", href: "/venezuelan-women-in-caracas" },
+      { label: "Venezuelan Women Family Values", href: "/venezuelan-women-family-values" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" }
+    ],
+    es: {
+      title: "Mujeres Venezolanas en Mérida",
+      description: "Mérida — la ciudad universitaria de Venezuela en los Andes — alberga mujeres venezolanas intelectuales y aventureras. Únete a MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Mérida",
+      intro: "Mérida se encuentra en los Andes venezolanos, una ciudad universitaria con un carácter distintivo: intelectual, aventurera y orgullosa de su cultura andina. Las merideñas combinan el arraigo andino con la calidez venezolana. MatchVenezuelan las conecta con hombres verificados y serios de todo el mundo.",
+      sections: [
+        { heading: "El Carácter Merideño", body: "Las mujeres de Mérida son formadas por una ciudad que valora tanto la educación como la cultura al aire libre. Son compañeras reflexivas que se involucran profundamente en la conversación y construyen relaciones con intención." },
+        { heading: "Gratuita, Segura y Específicamente para Venezolanas", body: "MatchVenezuelan es gratuita para las venezolanas. Los hombres en nuestra plataforma vienen específicamente a encontrar venezolanas, atraídos por la combinación de cultura andina y calidez venezolana que define a las merideñas." }
+      ],
+      faq: [
+        { q: "¿Está disponible MatchVenezuelan en Mérida?", a: "Sí. MatchVenezuelan sirve a venezolanas en toda Venezuela, incluyendo Mérida y la región andina." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Barquisimeto", href: "/es/venezuelan-women-in-barquisimeto" },
+        { label: "Venezolanas en Caracas", href: "/es/venezuelan-women-in-caracas" },
+        { label: "Sitio de Citas Venezolanas", href: "/es/venezuelan-dating-site" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-ciudad-guayana",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Ciudad Guayana",
+    description: "Ciudad Guayana — Venezuela's industrial eastern city — is home to resilient, hardworking Venezuelan women ready for meaningful relationships. Join MatchVenezuelan.",
+    h1: "Venezuelan Women in Ciudad Guayana",
+    intro: "Ciudad Guayana — formed from the merger of Puerto Ordaz and San Félix in Bolívar state — is Venezuela's planned industrial city, built around the confluence of the Orinoco and Caroní rivers. Venezuelan women from Ciudad Guayana are shaped by a city of industry, natural grandeur, and community resilience. They are hardworking, practical, and deeply loyal — qualities that translate powerfully into relationships. MatchVenezuelan connects women from the Guayana region with verified, serious men from around the world.",
+    sections: [
+      {
+        heading: "Women from Venezuela's Industrial Heartland",
+        body: "Ciudad Guayana's economy is built on steel, aluminum, and hydroelectric power — industries that shape a working population of practical, resilient people. Women from this region don't have the international visibility of Caraqueñas or Maracuchas, but men who connect with them consistently describe relationships of unusual depth and loyalty. The Guayana region's natural beauty — Angel Falls is nearby, the Orinoco is ever-present — gives its people a grounding in nature that shows up in how they live and love."
+      },
+      {
+        heading: "Join MatchVenezuelan from Ciudad Guayana",
+        body: "MatchVenezuelan reaches Venezuelan women across the country, including Ciudad Guayana and the broader Bolívar state. Joining is free. Men on the platform come from across the US, Canada, and Europe, specifically seeking Venezuelan women for committed relationships. Your resilience and warmth are exactly what they're looking for."
+      }
+    ],
+    faq: [
+      { q: "Is MatchVenezuelan available in Ciudad Guayana?", a: "Yes. MatchVenezuelan is available to Venezuelan women across all of Venezuela, including Ciudad Guayana, Puerto Ordaz, and Bolívar state." },
+      { q: "Is the platform free for women?", a: "Yes. Venezuelan women join and use MatchVenezuelan's core features for free." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Caracas", href: "/venezuelan-women-in-caracas" },
+      { label: "Venezuelan Women in Maturin", href: "/venezuelan-women-in-maturin" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ]
+  },
+  {
+    slug: "venezuelan-women-in-maturin",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Maturín",
+    description: "Maturín — Venezuela's oil capital in Monagas state — is home to warm, strong Venezuelan women ready for genuine connections. Join MatchVenezuelan.",
+    h1: "Venezuelan Women in Maturín",
+    intro: "Maturín, the capital of Monagas state in eastern Venezuela, is the country's oil capital — a city built on petroleum that has produced generations of hardworking, community-oriented Venezuelans. Women from Maturín carry the eastern Venezuelan warmth and openness that distinguishes the llanos and coastal regions: they're direct, genuinely warm, and deeply family-oriented. MatchVenezuelan connects Maturinesas with verified, serious men from around the world who are looking for real relationships.",
+    sections: [
+      {
+        heading: "Eastern Venezuelan Warmth",
+        body: "Eastern Venezuela has a cultural character distinct from the Andes or the capital. Women from Maturín and Monagas state tend to be open, direct, and naturally warm with strangers — qualities that translate into relationships of immediate authenticity. They're not guarded in the way city-dwellers in larger capitals can be. Men who connect with women from eastern Venezuela often describe the experience as refreshingly genuine. MatchVenezuelan makes it possible to reach this community from anywhere in the world."
+      },
+      {
+        heading: "Free to Join from Maturín",
+        body: "Venezuelan women in Maturín join MatchVenezuelan for free. You control your profile completely — what you share, who you talk to, and how fast things move. Men on the platform are specifically seeking Venezuelan partners; they've chosen this platform because they value Venezuelan culture and are committed to building real relationships."
+      }
+    ],
+    faq: [
+      { q: "Is MatchVenezuelan available in Maturín?", a: "Yes. MatchVenezuelan is available to Venezuelan women across all of Venezuela, including Maturín and Monagas state." },
+      { q: "What makes MatchVenezuelan different from other dating apps?", a: "MatchVenezuelan is built specifically for Venezuelan women and the men who genuinely appreciate Venezuelan culture. Every male profile is verified and the platform is designed for serious, long-term connections — not casual encounters." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Ciudad Guayana", href: "/venezuelan-women-in-ciudad-guayana" },
+      { label: "Venezuelan Women in Caracas", href: "/venezuelan-women-in-caracas" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" },
+      { label: "Serious Relationship Guide", href: "/serious-relationship-venezuelan-woman" }
+    ]
+  }
 ];
 
 // ── Lookup helpers ──────────────────────────────────────────────────────

@@ -144,6 +144,15 @@ const App = () => (
               <Route path="/venezuelan-women-in-bogota" element={<LandingPage />} />
               <Route path="/venezuelan-women-in-buenos-aires" element={<LandingPage />} />
               <Route path="/venezuelan-women-in-panama-city" element={<LandingPage />} />
+              {/* Venezuelan Cities */}
+              <Route path="/venezuelan-women-in-caracas" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-maracaibo" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-valencia-venezuela" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-barquisimeto" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-maracay" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-merida" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-ciudad-guayana" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-maturin" element={<LandingPage />} />
 
               {/* SEO Landing Pages — ES */}
               <Route path="/es/conocer-mujeres-venezolanas" element={<LandingPage />} />
@@ -168,6 +177,13 @@ const App = () => (
               <Route path="/es/mujeres-venezolanas-en-lima" element={<LandingPage />} />
               <Route path="/es/mujeres-venezolanas-en-bogota" element={<LandingPage />} />
               <Route path="/es/mujeres-venezolanas-en-ciudad-de-panama" element={<LandingPage />} />
+              {/* ES: Venezuelan Cities */}
+              <Route path="/es/mujeres-venezolanas-en-caracas" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-maracaibo" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-valencia" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-barquisimeto" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-maracay" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-merida" element={<LandingPage />} />
 
               {/* Dev-only audit harness — safe to remove. */}
               {import.meta.env.DEV && <Route path="/__a11y" element={<A11yAudit />} />}
