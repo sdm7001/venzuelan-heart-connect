@@ -14,14 +14,14 @@ export default function HowItWorks() {
   ];
   return (
     <PublicLayout>
-      <section className="container py-20 md:py-28">
+      <section className="container py-section px-gutter">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="font-display text-4xl font-semibold text-burgundy md:text-5xl text-balance">{t.how.title}</h1>
           <p className="mt-4 text-muted-foreground">{t.how.sub}</p>
         </div>
-        <div className="mx-auto mt-14 grid max-w-4xl gap-6 md:grid-cols-2">
+        <div className="mx-auto mt-block grid max-w-4xl gap-stack md:grid-cols-2">
           {steps.map((s, i) => (
-            <div key={i} className="rounded-2xl border border-border bg-card p-7 shadow-card">
+            <div key={i} className="rounded-2xl border border-border bg-card p-card shadow-card">
               <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-burgundy">{s.icon}</div>
               <h3 className="font-display text-lg font-semibold">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>

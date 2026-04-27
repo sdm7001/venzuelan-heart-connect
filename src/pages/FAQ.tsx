@@ -132,7 +132,7 @@ export default function FAQ() {
 
   return (
     <PublicLayout>
-      <section className="container py-16 md:py-24">
+      <section className="container py-section px-gutter">
         <div className="mx-auto max-w-3xl">
           <h1 className="font-display text-4xl font-semibold text-burgundy md:text-5xl text-balance">
             {t.faq.title}
@@ -140,7 +140,7 @@ export default function FAQ() {
           <p className="mt-4 text-muted-foreground leading-relaxed">{t.faq.intro}</p>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-6xl gap-10 lg:grid-cols-[240px_minmax(0,1fr)]">
+        <div className="mx-auto mt-block grid max-w-6xl gap-block lg:grid-cols-[240px_minmax(0,1fr)]">
           {/* Table of contents */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <nav aria-label={t.faq.tocTitle}>

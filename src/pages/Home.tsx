@@ -100,7 +100,7 @@ export default function Home() {
       </section>
 
       {/* Explore Guides */}
-      <section className="container py-16 md:py-20">
+      <section className="container py-section">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-3xl font-semibold text-burgundy md:text-4xl text-balance">
             {isEs ? "Guias para Empezar" : "Explore Our Guides"}
@@ -111,7 +111,7 @@ export default function Home() {
               : "Learn more about Venezuelan culture, online safety, and how to build a meaningful relationship."}
           </p>
         </div>
-        <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto mt-block grid max-w-4xl gap-stack sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
               label: isEs ? "Conocer Mujeres Venezolanas" : "Meet Venezuelan Women",

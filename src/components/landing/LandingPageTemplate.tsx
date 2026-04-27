@@ -58,7 +58,7 @@ export default function LandingPageTemplate({ content, isEs }: Props) {
     <PublicLayout>
       {/* Hero */}
       <section className="relative overflow-hidden gradient-hero">
-        <div className="container py-16 md:py-24 lg:py-28">
+        <div className="container py-section px-gutter">
           <div className="mx-auto max-w-3xl text-center animate-fade-in">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/60 px-3 py-1 text-xs font-medium text-burgundy backdrop-blur">
               <Heart className="h-3.5 w-3.5 text-primary" fill="currentColor" />
@@ -83,7 +83,7 @@ export default function LandingPageTemplate({ content, isEs }: Props) {
       </section>
 
       {/* Content Sections */}
-      <section className="container py-16 md:py-24">
+      <section className="container py-section px-gutter">
         <div className="mx-auto max-w-3xl space-y-14">
           {c.sections.map((s, i) => (
             <article key={i}>
@@ -103,7 +103,7 @@ export default function LandingPageTemplate({ content, isEs }: Props) {
       {/* FAQ Accordion */}
       {c.faq && c.faq.length > 0 && (
         <section className="bg-card/50 border-t border-border">
-          <div className="container py-16 md:py-20">
+          <div className="container py-section px-gutter">
             <div className="mx-auto max-w-3xl">
               <h2 className="font-display text-2xl font-semibold text-burgundy md:text-3xl text-balance">
                 {isEs ? "Preguntas Frecuentes" : "Frequently Asked Questions"}
@@ -127,7 +127,7 @@ export default function LandingPageTemplate({ content, isEs }: Props) {
 
       {/* Related Links */}
       {c.relatedLinks.length > 0 && (
-        <section className="container py-16 md:py-20">
+        <section className="container py-section px-gutter">
           <div className="mx-auto max-w-3xl">
             <h2 className="font-display text-xl font-semibold text-burgundy md:text-2xl">
               {isEs ? "Explorar Mas" : "Explore More"}
@@ -150,8 +150,8 @@ export default function LandingPageTemplate({ content, isEs }: Props) {
       )}
 
       {/* Bottom CTA Banner */}
-      <section className="container pb-20">
-        <div className="relative overflow-hidden rounded-3xl gradient-romance px-6 py-12 text-center text-primary-foreground shadow-elegant sm:px-10 md:px-16 md:py-16">
+      <section className="container pb-section px-gutter">
+        <div className="relative overflow-hidden rounded-3xl gradient-romance p-card text-center text-primary-foreground shadow-elegant">
           <h3 className="font-display text-2xl font-semibold sm:text-3xl text-balance">
             {isEs
               ? "Comienza Tu Viaje Hoy"

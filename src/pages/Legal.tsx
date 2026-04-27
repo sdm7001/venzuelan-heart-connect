@@ -62,7 +62,7 @@ export function LegalPage({ titleKey }: { titleKey: Key }) {
 
   return (
     <PublicLayout>
-      <section className="container py-20 md:py-28">
+      <section className="container py-section px-gutter">
         <div className="mx-auto max-w-3xl">
           <p className="text-xs uppercase tracking-widest text-muted-foreground">
             {t.legal.effective}: 2026-01-01 · {t.legal.lastUpdated}: 2026-04
