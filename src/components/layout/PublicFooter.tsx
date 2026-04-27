@@ -5,9 +5,9 @@ import logo from "@/assets/logo.png";
 export function PublicFooter() {
   const { t } = useI18n();
   return (
-    <footer className="mt-24 border-t border-black/10 bg-white text-black">
-      <div className="container py-12 md:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4">
+    <footer className="mt-block border-t border-black/10 bg-white text-black">
+      <div className="container py-section">
+        <div className="grid gap-block sm:grid-cols-2 md:grid-cols-4">
           <div>
             <Link to="/" className="flex items-center gap-2 font-display text-lg font-semibold text-black">
               <img src={logo} alt="MatchVenezuelan" className="h-14 w-14 object-contain sm:h-16 sm:w-16" />
@@ -33,7 +33,7 @@ export function PublicFooter() {
             { to: "/auth?mode=join", label: t.nav.join },
           ]} />
         </div>
-        <div className="mt-12 border-t border-black/10 pt-6 text-xs text-black/60">{t.footer.copyright}</div>
+        <div className="mt-block border-t border-black/10 pt-6 text-xs text-black/60">{t.footer.copyright}</div>
       </div>
     </footer>
   );
