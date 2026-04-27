@@ -1082,6 +1082,503 @@ export const landingPages: LandingPageContent[] = [
       { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" },
       { label: "Serious Relationship Guide", href: "/serious-relationship-venezuelan-woman" }
     ]
+  },
+
+  // ─── GROUP E: Additional US Cities ────────────────────────────────────
+  {
+    slug: "venezuelan-women-in-dallas",
+    esSlug: "mujeres-venezolanas-en-dallas",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Dallas, TX",
+    description: "Dallas has a growing Venezuelan community. Find genuine Venezuelan women in the DFW metroplex through MatchVenezuelan — the dating platform built for meaningful connections.",
+    h1: "Venezuelan Women in Dallas, Texas",
+    intro: "The Dallas–Fort Worth metroplex is home to one of the fastest-growing Venezuelan diaspora communities in the American South. Drawn by Texas's job market, affordable living, and Latin-friendly culture, thousands of Venezuelan women have built lives across Plano, Irving, Garland, and central Dallas. MatchVenezuelan connects you with verified Venezuelan women in DFW who are looking for real, lasting relationships.",
+    sections: [
+      {
+        heading: "Why Venezuelan Women Choose Dallas",
+        body: "Texas offered Venezuelans what they needed most: economic opportunity without culture shock. The DFW metro's large Hispanic population, Spanish-speaking neighborhoods, and booming job market made it a natural destination. Venezuelan women here are educated, ambitious, and community-oriented — many work in healthcare, engineering, and hospitality. They've built lives here while holding tight to Venezuelan warmth, family values, and culinary traditions."
+      },
+      {
+        heading: "Where to Connect in the DFW Area",
+        body: "Venezuelan and Latin social life in Dallas centers on neighborhoods like Oak Cliff, Irving, and Carrollton. Catholic parishes with Spanish-language Masses, Latin grocery markets along Belt Line Road, and Venezuelan-owned restaurants in Farmers Branch are natural gathering points. Venezuelan Independence Day celebrations in July and Carnaval events draw large crowds. MatchVenezuelan gives you a direct path to women who are open to dating — saving time compared to hoping for chance encounters."
+      },
+      {
+        heading: "What to Expect Dating a Venezuelan Woman in Dallas",
+        body: "Venezuelan women in Dallas balance two worlds skillfully. They've adapted to American professional norms at work while preserving Venezuelan home culture — hearty home cooking, close family ties, and weekend gatherings with friends. They appreciate men who are consistent, respectful, and genuinely curious about their background. Don't be surprised if a first date leads quickly to meeting her circle; Venezuelans are social and trust is built through community, not just one-on-one time."
+      }
+    ],
+    faq: [
+      { q: "How large is the Venezuelan community in Dallas?", a: "DFW has an estimated 40,000–60,000 Venezuelan residents, one of the largest concentrations in the South. The community has grown significantly since 2018." },
+      { q: "Are Venezuelan women in Dallas looking for serious relationships?", a: "Many Venezuelan women in Dallas immigrated to build stable lives and are actively seeking committed partnerships. MatchVenezuelan's verified profiles help you find women with serious intentions." },
+      { q: "Do I need to speak Spanish to date Venezuelan women in Dallas?", a: "Most Venezuelan women in Dallas speak English at a professional level. However, showing effort with basic Spanish is always appreciated and signals genuine interest in her culture." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Houston", href: "/venezuelan-women-in-houston" },
+      { label: "Venezuelan Women in Miami", href: "/venezuelan-women-in-miami" },
+      { label: "Venezuelan Women in Los Angeles", href: "/venezuelan-women-in-los-angeles" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ],
+    es: {
+      title: "Conoce Mujeres Venezolanas en Dallas, TX",
+      description: "Dallas tiene una creciente comunidad venezolana. Encuentra mujeres venezolanas genuinas en el área metropolitana de DFW a través de MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Dallas, Texas",
+      intro: "El área metropolitana de Dallas–Fort Worth alberga una de las comunidades venezolanas más dinámicas del sur de los Estados Unidos. Atraídas por el mercado laboral de Texas y el ambiente latino, miles de mujeres venezolanas han construido sus vidas en DFW. MatchVenezuelan te conecta con mujeres venezolanas verificadas que buscan relaciones serias.",
+      sections: [
+        { heading: "Por Qué las Venezolanas Eligen Dallas", body: "Texas ofrece lo que Venezuela no pudo: estabilidad económica sin perder la identidad cultural. El ambiente hispano del área de DFW, con sus vecindarios hispanohablantes y mercados latinos, hace que las venezolanas se sientan en casa mientras construyen su futuro." },
+        { heading: "Dónde Conectar en el Área de DFW", body: "La vida social venezolana y latina en Dallas se concentra en Oak Cliff, Irving y Carrollton. Parroquias católicas con misas en español, mercados latinos y restaurantes venezolanos en Farmers Branch son puntos de encuentro naturales. MatchVenezuelan te da acceso directo a mujeres que están abiertas a conocer parejas." },
+        { heading: "Qué Esperar al Salir con una Venezolana en Dallas", body: "Las venezolanas en Dallas equilibran hábilmente dos mundos: profesionalismo americano en el trabajo y calidez venezolana en casa. Valoran a los hombres constantes y respetuosos que muestran interés genuino por su cultura." }
+      ],
+      faq: [
+        { q: "¿Qué tan grande es la comunidad venezolana en Dallas?", a: "DFW tiene entre 40,000 y 60,000 residentes venezolanos, una de las concentraciones más grandes del sur." },
+        { q: "¿Las venezolanas en Dallas buscan relaciones serias?", a: "Muchas venezolanas en Dallas emigraron para construir vidas estables y buscan activamente una pareja comprometida." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Houston", href: "/es/venezuelan-women-in-houston" },
+        { label: "Venezolanas en Miami", href: "/es/venezuelan-women-in-miami" },
+        { label: "Conoce Mujeres Venezolanas", href: "/es/meet-venezuelan-women" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-orlando",
+    esSlug: "mujeres-venezolanas-en-orlando",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Orlando, FL",
+    description: "Orlando's Venezuelan community is vibrant and welcoming. Connect with Venezuelan women in Central Florida through MatchVenezuelan — verified profiles, real connections.",
+    h1: "Venezuelan Women in Orlando, Florida",
+    intro: "Central Florida has become one of the most significant Venezuelan diaspora hubs in the United States. Orlando and its surrounding communities — Kissimmee, Osceola County, and the I-4 corridor — are home to tens of thousands of Venezuelan families. Many arrived via Colombia or other transit countries and chose Central Florida for its strong existing Latin community, year-round tourism economy, and welcoming climate. MatchVenezuelan helps you find Venezuelan women in Orlando who are ready for genuine relationships.",
+    sections: [
+      {
+        heading: "Orlando's Venezuelan Community",
+        body: "The Venezuelan presence in Orlando exploded between 2017 and 2022 as immigration accelerated. Kissimmee — already heavily Puerto Rican — absorbed large numbers of Venezuelans who found it culturally familiar. The Osceola County corridor has Venezuelan bakeries (panaderías), areperas, and cultural associations that keep community bonds strong. Venezuelan women here are typically young professionals, nurses, teachers, or entrepreneurs who've rebuilt their careers in Florida."
+      },
+      {
+        heading: "Meeting Venezuelan Women in Central Florida",
+        body: "Beyond organized community events, Venezuelan women in Orlando socialize at Latin dance venues, Venezuelan-owned restaurants on Orange Blossom Trail, and Spanish-language churches. The annual Venezuelan Independence Day celebration draws hundreds to the Orlando area. MatchVenezuelan cuts through the noise — our platform is specifically built for men seeking Venezuelan women for serious relationships, not casual encounters."
+      },
+      {
+        heading: "Dating Culture in Orlando's Venezuelan Community",
+        body: "Venezuelan women in Orlando value stability and consistency highly — qualities that were scarce during Venezuela's crisis years. They tend to move deliberately in relationships, building trust over time. Family approval matters even at a distance; video calls with parents back home or in other countries are common. Show genuine interest in her journey, her resilience, and her plans — Orlando's Venezuelans are builders, and they want partners who match that energy."
+      }
+    ],
+    faq: [
+      { q: "Where do Venezuelan women in Orlando socialize?", a: "Kissimmee's restaurant strip, Venezuelan cultural events in Osceola County, Latin dance venues, and Spanish-language churches are the main social hubs for Venezuelan women in Central Florida." },
+      { q: "Is MatchVenezuelan available in Orlando?", a: "Yes. MatchVenezuelan serves all US cities with Venezuelan populations, including Orlando, Kissimmee, and the broader I-4 corridor." },
+      { q: "What do Venezuelan women in Orlando look for in a partner?", a: "Stability, respect, and genuine curiosity about their culture top the list. Many Venezuelan women in Orlando have been through significant upheaval and value partners who are grounded, consistent, and family-oriented." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Miami", href: "/venezuelan-women-in-miami" },
+      { label: "Venezuelan Women in New York", href: "/venezuelan-women-in-new-york" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ],
+    es: {
+      title: "Conoce Mujeres Venezolanas en Orlando, FL",
+      description: "La comunidad venezolana de Orlando es vibrante y acogedora. Conéctate con mujeres venezolanas en el centro de Florida a través de MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Orlando, Florida",
+      intro: "El centro de Florida se ha convertido en uno de los centros de la diáspora venezolana más importantes de Estados Unidos. Orlando, Kissimmee y el corredor de la I-4 albergan decenas de miles de familias venezolanas. MatchVenezuelan te ayuda a encontrar venezolanas en Orlando que buscan relaciones genuinas.",
+      sections: [
+        { heading: "La Comunidad Venezolana de Orlando", body: "La presencia venezolana en Orlando creció enormemente entre 2017 y 2022. Kissimmee absorbió grandes cantidades de venezolanos que encontraron allí un ambiente culturalmente familiar, con panaderías, areperas y asociaciones culturales venezolanas." },
+        { heading: "Cómo Conocer Venezolanas en el Centro de Florida", body: "Las venezolanas de Orlando socializan en restaurantes de la Orange Blossom Trail, iglesias hispanas y eventos culturales venezolanos. MatchVenezuelan está diseñada específicamente para hombres que buscan venezolanas para relaciones serias." },
+        { heading: "Cultura de Citas en la Comunidad Venezolana de Orlando", body: "Las venezolanas en Orlando valoran la estabilidad y consistencia. Se mueven con cuidado en las relaciones y la aprobación familiar importa mucho, incluso a distancia." }
+      ],
+      faq: [
+        { q: "¿Dónde socializan las venezolanas en Orlando?", a: "En Kissimmee, eventos culturales venezolanos en el condado de Osceola, venues de baile latino e iglesias en español." },
+        { q: "¿Qué buscan las venezolanas en Orlando en una pareja?", a: "Estabilidad, respeto y curiosidad genuina por su cultura. Valoran compañeros arraigados y orientados a la familia." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Miami", href: "/es/venezuelan-women-in-miami" },
+        { label: "Venezolanas en Nueva York", href: "/es/venezuelan-women-in-new-york" },
+        { label: "Conoce Mujeres Venezolanas", href: "/es/meet-venezuelan-women" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-atlanta",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Atlanta, GA",
+    description: "Atlanta's Latin population is booming — including a significant Venezuelan community. Find Venezuelan women in Atlanta through MatchVenezuelan for authentic, serious connections.",
+    h1: "Venezuelan Women in Atlanta, Georgia",
+    intro: "Atlanta has emerged as an unexpected but significant destination for Venezuelan immigrants. The city's robust job market, affordable cost of living relative to coastal cities, and growing Latin infrastructure have attracted thousands of Venezuelan professionals and families since 2018. Venezuelan women in Atlanta span a wide range — healthcare workers, engineers, restaurant owners, and recent graduates all building new lives in the New South. MatchVenezuelan connects you with verified Venezuelan women in the Atlanta metro area.",
+    sections: [
+      {
+        heading: "Atlanta's Emerging Venezuelan Community",
+        body: "The Venezuelan community in Atlanta is younger and less established than Miami or Houston, which makes it dynamic and tight-knit. Neighborhoods like Chamblee, Doraville, and Buford Highway have long been Atlanta's Latin corridor, and Venezuelans have layered into that existing infrastructure. Venezuelan women here often have strong professional backgrounds — many were doctors, lawyers, or educators in Venezuela and are rebuilding credentials in the US."
+      },
+      {
+        heading: "Social Life for Venezuelan Women in Atlanta",
+        body: "The Buford Highway corridor hosts Latin restaurants, bakeries, and social clubs where Venezuelans gather. Spanish-language Catholic Masses in Chamblee draw community members weekly. Informal WhatsApp groups and Venezuelan cultural associations organize events around holidays and Independence Day. Dating apps with a broad focus often miss this community entirely — MatchVenezuelan is purpose-built to find it."
+      },
+      {
+        heading: "What Makes Venezuelan Women in Atlanta Different",
+        body: "Atlanta's Venezuelan women tend to be highly adaptable — the city demands it. They've learned to code-switch between Latino warmth and Southern professionalism. They're entrepreneurial: Atlanta has seen Venezuelan-owned restaurants, cleaning companies, and beauty businesses launch in the last five years. A partner who respects both her professional ambitions and her cultural roots will thrive in this relationship dynamic."
+      }
+    ],
+    faq: [
+      { q: "How many Venezuelans live in Atlanta?", a: "Estimates suggest 15,000–25,000 Venezuelans in the Atlanta metro, a number that has grown rapidly since 2019. The community is concentrated along the Buford Highway corridor in Chamblee and Doraville." },
+      { q: "Is it hard to meet Venezuelan women in Atlanta organically?", a: "Atlanta's Venezuelan community is still relatively scattered compared to Miami or Houston. MatchVenezuelan makes it much easier by connecting you directly with Venezuelan women in the Atlanta area who are open to meeting someone." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Miami", href: "/venezuelan-women-in-miami" },
+      { label: "Venezuelan Women in Houston", href: "/venezuelan-women-in-houston" },
+      { label: "Venezuelan Women in Orlando", href: "/venezuelan-women-in-orlando" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" }
+    ]
+  },
+  {
+    slug: "venezuelan-women-in-chicago",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Chicago, IL",
+    description: "Chicago's diverse Latin community includes a growing Venezuelan population. Connect with Venezuelan women in Chicago through MatchVenezuelan — real profiles, genuine relationships.",
+    h1: "Venezuelan Women in Chicago, Illinois",
+    intro: "Chicago may not be the first city that comes to mind for Venezuelan dating, but the Windy City has a meaningful and growing Venezuelan community woven into its broader Latin fabric. Pilsen, Little Village, and Logan Square host long-established Mexican and Puerto Rican communities that Venezuelan newcomers have joined. Venezuelan women in Chicago are often highly educated, professionally driven, and culturally rich — and they face a dating pool that rarely understands their specific background. MatchVenezuelan changes that.",
+    sections: [
+      {
+        heading: "Venezuela Meets the Midwest",
+        body: "Chicago's cold winters are a cultural shock for Venezuelans used to tropical heat — and yet thousands have chosen it for its economic opportunity, world-class hospitals and universities, and diverse Latin neighborhoods. Venezuelan women in Chicago often arrived via professional visa programs or family sponsorship, meaning they're typically educated and established. They've embraced Chicago while staying deeply connected to Venezuelan identity through food, music, and community WhatsApp networks."
+      },
+      {
+        heading: "Where Venezuelan Women in Chicago Gather",
+        body: "Chicago doesn't have a dedicated Venezuelan neighborhood, but the community gathers through Venezuelan-owned restaurants scattered across Pilsen and Wicker Park, Spanish-language churches, and professional networks. Venezuelan Independence Day events in July attract the community citywide. Soccer leagues, Latin dance studios, and cultural festivals are regular social outlets. MatchVenezuelan's platform means you don't have to rely on these chance encounters."
+      },
+      {
+        heading: "Dating Venezuelan Women in Chicago",
+        body: "Venezuelan women in Chicago value warmth in a city that can feel impersonal. They respond well to men who are genuinely curious — about their home country, their immigration story, their culture. Chicago's Venezuelan women have typically made difficult choices to be here; they respect partners who show similar determination and intentionality in their own lives. Family, food, and community remain central even in the Midwest."
+      }
+    ],
+    faq: [
+      { q: "Where is the Venezuelan community in Chicago?", a: "Chicago's Venezuelan community is spread across neighborhoods like Pilsen, Little Village, Logan Square, and parts of the North Shore suburbs. There's no single 'Venezuelan neighborhood' — the community connects through events, restaurants, and social networks." },
+      { q: "Does MatchVenezuelan have members in Chicago?", a: "Yes. MatchVenezuelan serves Venezuelan women and their potential partners across all major US cities, including Chicago and the surrounding suburbs." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in New York", href: "/venezuelan-women-in-new-york" },
+      { label: "Venezuelan Women in Miami", href: "/venezuelan-women-in-miami" },
+      { label: "Venezuelan Women in Los Angeles", href: "/venezuelan-women-in-los-angeles" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ]
+  },
+  {
+    slug: "venezuelan-women-in-washington-dc",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Washington DC",
+    description: "Washington DC's policy community and diverse Latin population include many Venezuelan professionals. Find Venezuelan women in DC through MatchVenezuelan.",
+    h1: "Venezuelan Women in Washington DC",
+    intro: "Washington DC has a distinct Venezuelan community shaped by the city's political and diplomatic character. Venezuelan women in DC include policy analysts, human rights advocates, journalists, NGO workers, and academics who arrived with professional backgrounds and stayed to build careers in one of the world's most influential cities. Beyond the policy world, the broader DMV area (DC, Maryland, Virginia) has a substantial Venezuelan working-class and middle-class community in areas like Arlington, Rockville, and Prince George's County. MatchVenezuelan connects you with Venezuelan women across the full DMV spectrum.",
+    sections: [
+      {
+        heading: "Two Venezuelan Communities in One Region",
+        body: "DC's Venezuelan population splits somewhat by profile. Inside the Beltway and in Arlington, you'll find Venezuelan professionals working at think tanks, embassies, NGOs, and tech companies. In the outer suburbs of Maryland and Northern Virginia, a larger working-class Venezuelan community has established roots in construction, hospitality, and healthcare. Both communities share strong family values, political awareness of Venezuela's situation, and tight social bonds."
+      },
+      {
+        heading: "Social and Cultural Life",
+        body: "Venezuelan social events in DC concentrate around cultural organizations like Venezuelan American associations, Spanish-language churches in Arlington and Rockville, and informal gatherings that mark Venezuelan holidays. Adams Morgan, Columbia Heights, and Arlington's Clarendon neighborhood all have Latin restaurant scenes where Venezuelan women socialize. MatchVenezuelan reaches women across the entire DMV area who are actively seeking meaningful connections."
+      },
+      {
+        heading: "What to Know Before Dating Venezuelan Women in DC",
+        body: "Venezuelan women in DC are often deeply informed about Venezuela's political and humanitarian crisis — it's personal history, not just news. Showing awareness and empathy about what Venezuela has gone through signals emotional intelligence. DC Venezuelans are also accustomed to a fast-paced, career-focused environment; they appreciate partners who have direction and ambition of their own. The combination of intellectual engagement and Latin warmth defines this community."
+      }
+    ],
+    faq: [
+      { q: "Are there many Venezuelan women in Washington DC?", a: "The DMV area has an estimated 20,000–35,000 Venezuelan residents. The community is particularly concentrated in Arlington, VA and Rockville, MD, with a significant professional community inside DC proper." },
+      { q: "What makes dating Venezuelan women in DC unique?", a: "DC's Venezuelan women tend to be highly educated and politically aware. Intellectual conversation, awareness of Venezuela's history, and professional ambition are qualities they value in a partner." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in New York", href: "/venezuelan-women-in-new-york" },
+      { label: "Venezuelan Women in Miami", href: "/venezuelan-women-in-miami" },
+      { label: "Verified Venezuelan Dating Profiles", href: "/verified-venezuelan-dating-profiles" },
+      { label: "Serious Relationship Guide", href: "/serious-relationship-venezuelan-woman" }
+    ]
+  },
+  {
+    slug: "venezuelan-women-in-boston",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Boston, MA",
+    description: "Boston's university and healthcare sectors have drawn Venezuelan professionals. Find Venezuelan women in Boston through MatchVenezuelan for genuine, lasting connections.",
+    h1: "Venezuelan Women in Boston, Massachusetts",
+    intro: "Boston's world-class universities, hospitals, and research institutions have attracted Venezuelan professionals at every career stage — from medical residents to PhD students to established specialists. Venezuelan women in Boston are among the most educated in the diaspora. East Boston and Chelsea have longer-standing Latin communities that include working-class Venezuelan families as well. Whether you're in Cambridge, Brookline, or East Boston, MatchVenezuelan can connect you with Venezuelan women in Greater Boston who are ready for something real.",
+    sections: [
+      {
+        heading: "Venezuelan Professionals in Boston",
+        body: "Boston's concentration of medical and academic institutions has made it a magnet for Venezuelan professionals seeking to rebuild or advance careers outside Venezuela. Venezuelan women in Boston frequently hold graduate degrees and work in medicine, research, education, and technology. This community is smaller than Miami's or Houston's, which means it's tightly networked — most Venezuelan women in Boston know each other through overlapping professional and social circles."
+      },
+      {
+        heading: "Community and Social Life",
+        body: "Boston's Venezuelan community gathers through professional associations, Venezuelan cultural events, and the broader Latin community in East Boston and Chelsea. Harvard and MIT have student groups that draw Venezuelan graduate students. Spanish-language masses in Jamaica Plain and East Boston serve as community anchors. MatchVenezuelan gives you direct access to women in this community who are actively looking to meet someone outside their immediate professional network."
+      },
+      {
+        heading: "Dating Venezuelan Women in Boston",
+        body: "Venezuelan women in Boston navigate a city that's famously reserved — the 'Boston freeze' is real. They often find Boston's social culture harder to penetrate than their home country's open warmth. A man who breaks through that reserve with genuine warmth and curiosity about their culture stands out dramatically. Academic achievement is respected, but so is emotional intelligence and family orientation. Don't try to impress with credentials alone — show that you're a whole person."
+      }
+    ],
+    faq: [
+      { q: "Where do Venezuelan women in Boston socialize?", a: "Professional networks, university events, East Boston and Chelsea's Latin restaurants, Spanish-language churches, and Venezuelan cultural gatherings are the main social spaces for Venezuelan women in Greater Boston." },
+      { q: "Is the Venezuelan community in Boston large?", a: "Boston's Venezuelan community is smaller than Miami or Houston — estimated at 8,000–15,000 in the Greater Boston area — but it's well-connected and concentrated around professional and academic institutions." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in New York", href: "/venezuelan-women-in-new-york" },
+      { label: "Venezuelan Women in Washington DC", href: "/venezuelan-women-in-washington-dc" },
+      { label: "Verified Venezuelan Dating Profiles", href: "/verified-venezuelan-dating-profiles" },
+      { label: "Venezuelan Dating Site", href: "/venezuelan-dating-site" }
+    ]
+  },
+
+  // ─── GROUP F: Latin American Expat Hubs ──────────────────────────────
+  {
+    slug: "venezuelan-women-in-santiago",
+    esSlug: "mujeres-venezolanas-en-santiago",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Santiago, Chile",
+    description: "Santiago hosts one of the largest Venezuelan diaspora communities in South America. Connect with Venezuelan women in Chile through MatchVenezuelan for authentic relationships.",
+    h1: "Venezuelan Women in Santiago, Chile",
+    intro: "Chile received more Venezuelan immigrants than almost any other South American country — over 500,000 Venezuelans now call Chile home, with Santiago as the primary destination. Venezuelan women in Santiago have built remarkable lives in what was an unfamiliar country: they've integrated into Chilean society while preserving their culture, and many are now Chilean citizens or permanent residents. If you're in Chile or willing to meet someone there, MatchVenezuelan connects you with Venezuelan women in Santiago who are looking for serious partnerships.",
+    sections: [
+      {
+        heading: "Why Santiago Has So Many Venezuelan Women",
+        body: "Chile's relative economic and political stability during Venezuela's crisis made it an attractive destination. Venezuelan women in Santiago arrived in waves from 2015 onward, often with professional backgrounds but few local credentials. Many rebuilt careers in healthcare, education, retail, and food service. Barrio Yungay, La Florida, and Pudahuel have significant Venezuelan populations. After years of establishing themselves, many Venezuelan women in Santiago are ready to build lasting relationships — not just survive."
+      },
+      {
+        heading: "Cultural Dynamics: Venezuelan Women and Chilean Society",
+        body: "The Venezuelan-Chilean cultural contrast is notable. Chileans tend to be reserved; Venezuelans are warm, expressive, and outgoing. Venezuelan women in Santiago often describe feeling culturally distinct even after years of integration. They maintain tight connections to Venezuelan food, music, and friend networks. A man who appreciates and engages with Venezuelan culture — rather than assuming she's now 'basically Chilean' — earns enormous respect."
+      },
+      {
+        heading: "Dating Venezuelan Women in Santiago",
+        body: "Venezuelan women in Santiago have often navigated significant hardship — border crossings, credential recognition struggles, cultural adjustment. They value consistency, honesty, and emotional stability in a partner. The dating scene in Santiago can feel transactional; Venezuelan women who've experienced this respond warmly to someone who approaches the relationship with genuine long-term intention. MatchVenezuelan is built for exactly this."
+      }
+    ],
+    faq: [
+      { q: "How many Venezuelan women are in Chile?", a: "Chile hosts approximately 500,000–600,000 Venezuelans, making it one of the largest Venezuelan diaspora communities in the world. The majority live in Santiago and the Metropolitan Region." },
+      { q: "Do Venezuelan women in Santiago speak English?", a: "Most Venezuelan women in Santiago speak Spanish as their primary language. English proficiency varies — younger, educated women often have intermediate English, while others may have limited English. Spanish fluency or sincere effort to learn greatly improves your chances." },
+      { q: "Can I meet Venezuelan women in Santiago through MatchVenezuelan?", a: "Yes. MatchVenezuelan serves Venezuelan women across Latin America and worldwide, including Santiago. Create a profile to connect with verified Venezuelan women in Chile." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Lima", href: "/venezuelan-women-in-lima" },
+      { label: "Venezuelan Women in Colombia", href: "/venezuelan-women-in-bogota" },
+      { label: "Dating in Venezuela Safely", href: "/dating-in-venezuela-safely" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ],
+    es: {
+      title: "Conoce Mujeres Venezolanas en Santiago, Chile",
+      description: "Santiago alberga una de las comunidades venezolanas más grandes de América del Sur. Conecta con mujeres venezolanas en Chile a través de MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Santiago, Chile",
+      intro: "Chile recibió más de 500,000 venezolanos, con Santiago como principal destino. Las mujeres venezolanas en Santiago han construido vidas notables y muchas están listas para relaciones duraderas. MatchVenezuelan te conecta con venezolanas en Chile que buscan compañeros serios.",
+      sections: [
+        { heading: "Por Qué Santiago Tiene Tantas Venezolanas", body: "La estabilidad relativa de Chile durante la crisis venezolana lo convirtió en un destino atractivo. Las venezolanas en Santiago reconstruyeron carreras y vidas, y después de años de establecerse, muchas están listas para construir relaciones duraderas." },
+        { heading: "Dinámica Cultural: Venezolanas en la Sociedad Chilena", body: "Los chilenos tienden a ser reservados; las venezolanas son cálidas y expresivas. Un hombre que aprecia la cultura venezolana —en lugar de asumir que ella ya es 'básicamente chilena'— gana un enorme respeto." },
+        { heading: "Salir con Venezolanas en Santiago", body: "Las venezolanas en Santiago valoran la consistencia, honestidad y estabilidad emocional. Responden con calidez a alguien que se acerca con intención genuina a largo plazo." }
+      ],
+      faq: [
+        { q: "¿Cuántas venezolanas hay en Chile?", a: "Chile alberga aproximadamente 500,000–600,000 venezolanos, la mayoría en Santiago y la Región Metropolitana." },
+        { q: "¿Puedo conocer venezolanas en Santiago a través de MatchVenezuelan?", a: "Sí. MatchVenezuelan sirve a venezolanas en toda América Latina, incluyendo Santiago." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Lima", href: "/es/venezuelan-women-in-lima" },
+        { label: "Venezolanas en Bogotá", href: "/es/venezuelan-women-in-bogota" },
+        { label: "Conoce Mujeres Venezolanas", href: "/es/meet-venezuelan-women" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-lima",
+    esSlug: "mujeres-venezolanas-en-lima",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Lima, Peru",
+    description: "Lima hosts hundreds of thousands of Venezuelan women who've built lives in Peru. Connect through MatchVenezuelan for meaningful, lasting relationships.",
+    h1: "Venezuelan Women in Lima, Peru",
+    intro: "Peru became one of the primary destinations for Venezuelan migration, with Lima absorbing the largest share. Over 1 million Venezuelans live in Peru, and Lima's districts of Los Olivos, San Juan de Lurigancho, and Ate have become home to large Venezuelan communities. Venezuelan women in Lima work across all sectors — from healthcare and education to gastronomy and commerce — and have become a visible, contributing part of the city's cultural fabric. MatchVenezuelan connects you with Venezuelan women in Lima who are ready for genuine relationships.",
+    sections: [
+      {
+        heading: "Venezuela's Largest Neighbor Community",
+        body: "Peru hosts one of the world's largest Venezuelan diaspora populations relative to the receiving country's size. Venezuelan women in Lima arrived in huge numbers from 2017–2020, many walking border routes through Colombia and Ecuador. Despite immense challenges, they've built entrepreneurial businesses, obtained temporary protection status, and created a cultural imprint on Lima through Venezuelan food, music, and community associations. Venezuelan restaurants are now a fixture across the city."
+      },
+      {
+        heading: "Social Life and Community in Lima",
+        body: "Venezuelan women in Lima maintain strong community ties through WhatsApp networks, cultural events around Venezuelan holidays, and Venezuelan-owned businesses. The Miraflores boardwalk, Larcomar mall, and downtown Lima's central parks are common social spaces. Venezuelan cultural associations organize events that draw hundreds. MatchVenezuelan provides a focused alternative to hope-for encounters in an enormous city."
+      },
+      {
+        heading: "Dating Venezuelan Women in Lima",
+        body: "Venezuelan women in Lima have often faced discrimination and hardship in Peru — being Venezuelan carries a complicated social reputation in some circles. A man who treats Venezuelan women with respect and genuine interest in their culture makes a powerful impression. They value loyalty and consistency highly after experiencing instability. Long-term intention, honesty about your situation, and cultural curiosity are the qualities that resonate most."
+      }
+    ],
+    faq: [
+      { q: "How many Venezuelan women live in Lima?", a: "Peru hosts over 1 million Venezuelans, with the majority concentrated in Lima. It's one of the largest Venezuelan diaspora populations in the world." },
+      { q: "Is it safe to meet Venezuelan women in Lima?", a: "Yes, with standard precautions. Meeting through MatchVenezuelan with verified profiles in public settings is always recommended for initial meetings anywhere." },
+      { q: "Do Venezuelan women in Lima want to leave Peru?", a: "Many Venezuelan women in Lima have built lives they value in Peru and aren't necessarily looking to relocate. Others are open to moving for the right relationship. This varies individually — it's worth discussing openly." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Santiago", href: "/venezuelan-women-in-santiago" },
+      { label: "Venezuelan Women in Buenos Aires", href: "/venezuelan-women-in-buenos-aires" },
+      { label: "Travel to Meet Venezuelan Women", href: "/travel-to-meet-venezuelan-women" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ],
+    es: {
+      title: "Conoce Mujeres Venezolanas en Lima, Perú",
+      description: "Lima alberga cientos de miles de venezolanas que han construido sus vidas en Perú. Conecta a través de MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Lima, Perú",
+      intro: "Perú se convirtió en uno de los principales destinos de la migración venezolana, con Lima absorbiendo la mayor parte. Más de 1 millón de venezolanos viven en Perú. MatchVenezuelan te conecta con venezolanas en Lima que buscan relaciones genuinas.",
+      sections: [
+        { heading: "La Comunidad Venezolana Más Grande del Vecindario", body: "Las venezolanas en Lima llegaron en grandes números desde 2017, construyendo negocios y una huella cultural notable a través de restaurantes, música y asociaciones comunitarias." },
+        { heading: "Vida Social en Lima", body: "Las venezolanas mantienen lazos fuertes a través de WhatsApp, eventos culturales y negocios venezolanos. MatchVenezuelan ofrece una alternativa enfocada para conectar en una ciudad enorme." },
+        { heading: "Salir con Venezolanas en Lima", body: "Un hombre que trata a las venezolanas con respeto y genuino interés en su cultura causa un impacto poderoso. Valoran la lealtad y la consistencia tras años de inestabilidad." }
+      ],
+      faq: [
+        { q: "¿Cuántas venezolanas viven en Lima?", a: "Perú alberga más de 1 millón de venezolanos, la mayoría en Lima." },
+        { q: "¿Las venezolanas en Lima quieren salir del país?", a: "Muchas han construido vidas valiosas en Perú. Otras están abiertas a reubicarse por la relación correcta. Vale la pena hablarlo abiertamente." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Santiago", href: "/es/venezuelan-women-in-santiago" },
+        { label: "Venezolanas en Buenos Aires", href: "/es/venezuelan-women-in-buenos-aires" },
+        { label: "Conoce Mujeres Venezolanas", href: "/es/meet-venezuelan-women" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-bogota",
+    esSlug: "mujeres-venezolanas-en-bogota",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Bogotá, Colombia",
+    description: "Bogotá has received millions of Venezuelan migrants. Find Venezuelan women in Colombia through MatchVenezuelan — authentic profiles, meaningful relationships.",
+    h1: "Venezuelan Women in Bogotá, Colombia",
+    intro: "Colombia shares a long border with Venezuela and has received the largest number of Venezuelan migrants of any country in the world — over 2.4 million Venezuelans call Colombia home, with Bogotá hosting the largest urban concentration. Venezuelan women in Bogotá are deeply woven into the city's social and economic fabric, working in healthcare, education, gastronomy, and commerce. Despite being neighbors with related cultures, Venezuelan and Colombian identities remain distinct. MatchVenezuelan helps you find Venezuelan women specifically in Bogotá who are ready for genuine relationships.",
+    sections: [
+      {
+        heading: "Bogotá's Venezuelan Community",
+        body: "Bogotá's Venezuelan population is massive and diverse, spanning all socioeconomic levels. Neighborhoods like Kennedy, Suba, and Bosa have large Venezuelan working-class communities, while Chapinero and Usaquén host Venezuelan professionals and entrepreneurs. Venezuelan women in Bogotá are culturally distinct from their Colombian hosts — they're generally warmer, more expressive, and more openly romantic in social interactions. The cultural difference is small enough to navigate easily but real enough to notice."
+      },
+      {
+        heading: "Cultural Life and Social Connections",
+        body: "Venezuelan culture is very present in Bogotá — arepas, hallacas, Venezuelan music, and cultural events mark the community's presence. Venezuelan Independence Day celebrations in July draw large crowds. Community WhatsApp groups, Venezuelan-owned restaurants, and cultural associations are the connective tissue. Many Venezuelan women in Bogotá also have legal status through Colombia's temporary protection statute, giving them greater stability and freedom to build relationships."
+      },
+      {
+        heading: "Dating Venezuelan Women in Bogotá",
+        body: "Venezuelan women in Bogotá are discerning — Bogotá is a large, competitive city and they've learned to read people quickly. They value directness, honesty, and warmth. Unlike the reserved dating culture of some South American cities, Venezuelan women tend to be open about their feelings and expectations once trust is established. Show genuine interest in their Venezuelan identity — don't confuse them with Colombians — and approach with clear, respectful intentions."
+      }
+    ],
+    faq: [
+      { q: "How many Venezuelan women are in Bogotá?", a: "Colombia hosts 2.4+ million Venezuelans — the largest Venezuelan diaspora population worldwide. Bogotá has the largest concentration, with hundreds of thousands of Venezuelan women living and working in the city." },
+      { q: "What's the difference between Venezuelan and Colombian women?", a: "While culturally related, Venezuelan women tend to be warmer, more outgoing, and more expressive in social settings than their Colombian counterparts. Venezuelan cultural pride — in food, music, and national identity — remains very strong even in the diaspora." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Lima", href: "/venezuelan-women-in-lima" },
+      { label: "Venezuelan Women in Santiago", href: "/venezuelan-women-in-santiago" },
+      { label: "Dating in Venezuela Safely", href: "/dating-in-venezuela-safely" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ],
+    es: {
+      title: "Conoce Mujeres Venezolanas en Bogotá, Colombia",
+      description: "Bogotá ha recibido millones de migrantes venezolanos. Encuentra venezolanas en Colombia a través de MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Bogotá, Colombia",
+      intro: "Colombia alberga más de 2.4 millones de venezolanos —la mayor diáspora venezolana del mundo— con Bogotá como el principal centro urbano. MatchVenezuelan te conecta con venezolanas en Bogotá que buscan relaciones genuinas.",
+      sections: [
+        { heading: "La Comunidad Venezolana de Bogotá", body: "La comunidad venezolana de Bogotá es masiva y diversa. Las venezolanas son generalmente más cálidas y expresivas que sus anfitrionas colombianas — una diferencia pequeña pero real y notable." },
+        { heading: "Vida Cultural y Conexiones Sociales", body: "La cultura venezolana es muy presente en Bogotá: arepas, hallacas, música y eventos culturales. La presencia legal de muchas venezolanas bajo el estatuto de protección temporal les da mayor estabilidad." },
+        { heading: "Salir con Venezolanas en Bogotá", body: "Las venezolanas en Bogotá son perspicaces. Valoran la honestidad y la calidez, y son abiertas sobre sus sentimientos una vez establecida la confianza. No las confundas con colombianas — su identidad venezolana es importante para ellas." }
+      ],
+      faq: [
+        { q: "¿Cuántas venezolanas hay en Bogotá?", a: "Colombia alberga 2.4+ millones de venezolanos. Bogotá tiene la mayor concentración, con cientos de miles de mujeres venezolanas." },
+        { q: "¿Cuál es la diferencia entre venezolanas y colombianas?", a: "Las venezolanas tienden a ser más cálidas y expresivas. Su orgullo cultural venezolano —en comida, música e identidad— permanece muy fuerte incluso en la diáspora." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Lima", href: "/es/venezuelan-women-in-lima" },
+        { label: "Venezolanas en Santiago", href: "/es/venezuelan-women-in-santiago" },
+        { label: "Conoce Mujeres Venezolanas", href: "/es/meet-venezuelan-women" }
+      ]
+    }
+  },
+  {
+    slug: "venezuelan-women-in-buenos-aires",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Buenos Aires, Argentina",
+    description: "Buenos Aires has a growing Venezuelan expat community among its cosmopolitan population. Find Venezuelan women in Argentina through MatchVenezuelan.",
+    h1: "Venezuelan Women in Buenos Aires, Argentina",
+    intro: "Buenos Aires — cosmopolitan, European-influenced, and culturally rich — has attracted a distinct wave of Venezuelan immigrants, many of them professionals, artists, and entrepreneurs. Argentina's economic volatility paradoxically made it accessible: during periods of peso weakness, Venezuela's remaining dollar savings stretched further there than anywhere else. Venezuelan women in Buenos Aires form a smaller but highly educated and artistically active community. MatchVenezuelan connects you with Venezuelan women in Argentina for meaningful relationships.",
+    sections: [
+      {
+        heading: "A Unique Venezuelan Community in the Southern Cone",
+        body: "Buenos Aires attracts Venezuelan women with a particular profile: creatives, tech professionals, medical specialists, and entrepreneurs who value the city's cultural infrastructure — theater, art, architecture, café culture. Neighborhoods like Palermo, Villa Crespo, and San Telmo have visible Venezuelan presences. Venezuelan women in Buenos Aires have often built bicultural identities that blend Porteño sophistication with Venezuelan warmth — a compelling combination."
+      },
+      {
+        heading: "Social Life for Venezuelan Women in BA",
+        body: "Buenos Aires' Venezuelan community is tightly networked for its size. Venezuelan restaurants have appeared in Palermo and Belgrano. Independence Day events draw the community together. The city's tango culture and café scene provide natural meeting points where Venezuelans and Argentines mix freely. Venezuelan women here are typically socially confident and comfortable in cosmopolitan settings — MatchVenezuelan helps you reach them specifically."
+      },
+      {
+        heading: "Dating Venezuelan Women in Buenos Aires",
+        body: "Argentine culture is already warm and expressive compared to much of South America — and Venezuelan women in Buenos Aires have layered Venezuelan expressiveness on top of that. They're direct, romantically engaged, and appreciate intellectual conversation. BA's dating culture is active and social; Venezuelan women participate fully while bringing their own cultural flavor. A man who combines warmth, intelligence, and genuine curiosity about Venezuela will resonate strongly."
+      }
+    ],
+    faq: [
+      { q: "Why did Venezuelan women choose Buenos Aires?", a: "Buenos Aires offers cultural richness, European-style infrastructure, and during certain economic periods, affordability for those with dollar savings. Venezuelan women with professional, artistic, or entrepreneurial backgrounds are particularly drawn to the city." },
+      { q: "Is the Venezuelan community in Buenos Aires large?", a: "Argentina has an estimated 180,000–250,000 Venezuelan residents, with Buenos Aires hosting the largest share. It's a smaller community than Colombia, Chile, or Peru — but well-educated and well-networked." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Santiago", href: "/venezuelan-women-in-santiago" },
+      { label: "Venezuelan Women in Lima", href: "/venezuelan-women-in-lima" },
+      { label: "Travel to Meet Venezuelan Women", href: "/travel-to-meet-venezuelan-women" },
+      { label: "Serious Relationship Guide", href: "/serious-relationship-venezuelan-woman" }
+    ]
+  },
+  {
+    slug: "venezuelan-women-in-panama-city",
+    esSlug: "mujeres-venezolanas-en-ciudad-de-panama",
+    group: "city",
+    lang: "en",
+    title: "Meet Venezuelan Women in Panama City",
+    description: "Panama City is a major transit and destination hub for Venezuelan women. Connect through MatchVenezuelan for authentic relationships in one of Latin America's most dynamic cities.",
+    h1: "Venezuelan Women in Panama City, Panama",
+    intro: "Panama City occupies a unique position in the Venezuelan diaspora story: it's both a major transit point and a permanent destination. Thousands of Venezuelan women have settled in Panama City, attracted by its dollarized economy, political stability, growing financial sector, and geographic position as a hub between South America and North America. Venezuelan women in Panama City are often professionals or entrepreneurs who chose Panama for its opportunity and stayed for its quality of life. MatchVenezuelan connects you with Venezuelan women in Panama for real relationships.",
+    sections: [
+      {
+        heading: "Why Venezuelan Women Choose Panama City",
+        body: "Panama's dollarized economy eliminated exchange rate risk that plagued Venezuelans in other countries. The country's booming financial, logistics, and tourism sectors offered employment that matched Venezuelan professional backgrounds. The Casco Viejo neighborhood, El Cangrejo, and San Francisco districts have visible Venezuelan presences. Venezuelan women in Panama City are often legally established — many have permanent residency — and are building long-term lives rather than waiting to move elsewhere."
+      },
+      {
+        heading: "Social Life and Community",
+        body: "Panama City's Venezuelan community is vibrant and professionally oriented. Venezuelan restaurants and businesses operate across the city. Cultural events for Venezuelan Independence Day attract significant crowds. The city's international character means Venezuelan women mix freely with professionals from across Latin America, the US, and Europe. MatchVenezuelan's platform is used across Latin America, making it an ideal way to meet Venezuelan women in Panama City."
+      },
+      {
+        heading: "Dating Venezuelan Women in Panama City",
+        body: "Venezuelan women in Panama City are accustomed to a cosmopolitan, international dating environment. They're comfortable meeting people from different backgrounds and nationalities. Panama's professional culture means they respect ambition and directness. Venezuelan warmth and expressiveness stand out in Panama City's somewhat more reserved social scene — these women are genuinely enthusiastic partners for men who match their energy and intention."
+      }
+    ],
+    faq: [
+      { q: "How many Venezuelan women are in Panama City?", a: "Panama hosts approximately 100,000–150,000 Venezuelans, with the majority in Panama City. The community is well-established and growing." },
+      { q: "Is Panama City a good place to meet Venezuelan women?", a: "Yes — Panama City combines a large Venezuelan community with an international, cosmopolitan environment that makes meeting and building relationships natural. MatchVenezuelan has members throughout Panama." }
+    ],
+    relatedLinks: [
+      { label: "Venezuelan Women in Bogotá", href: "/venezuelan-women-in-bogota" },
+      { label: "Venezuelan Women in Miami", href: "/venezuelan-women-in-miami" },
+      { label: "Travel to Meet Venezuelan Women", href: "/travel-to-meet-venezuelan-women" },
+      { label: "Meet Venezuelan Women", href: "/meet-venezuelan-women" }
+    ],
+    es: {
+      title: "Conoce Mujeres Venezolanas en Ciudad de Panamá",
+      description: "Ciudad de Panamá es un importante centro de destino para mujeres venezolanas. Conéctate a través de MatchVenezuelan.",
+      h1: "Mujeres Venezolanas en Ciudad de Panamá",
+      intro: "Ciudad de Panamá es tanto un punto de tránsito como un destino permanente para miles de venezolanas, atraídas por la economía dolarizada, estabilidad política y oportunidades profesionales. MatchVenezuelan te conecta con venezolanas en Panamá para relaciones reales.",
+      sections: [
+        { heading: "Por Qué las Venezolanas Eligen Panamá", body: "La economía dolarizada de Panamá eliminó el riesgo cambiario. Los sectores de finanzas, logística y turismo ofrecieron empleo acorde con los perfiles profesionales venezolanos. Muchas venezolanas tienen residencia permanente y construyen vidas a largo plazo." },
+        { heading: "Vida Social y Comunidad", body: "La comunidad venezolana en Ciudad de Panamá es vibrante y profesional. Restaurantes venezolanos, eventos culturales y la naturaleza internacional de la ciudad crean un ambiente de encuentro natural." },
+        { heading: "Salir con Venezolanas en Ciudad de Panamá", body: "Las venezolanas en Panamá están acostumbradas a un ambiente cosmopolita internacional. Valoran la ambición y la honestidad. Su calidez venezolana destaca en el ambiente social relativamente reservado de Panamá." }
+      ],
+      faq: [
+        { q: "¿Cuántas venezolanas hay en Ciudad de Panamá?", a: "Panamá alberga aproximadamente 100,000–150,000 venezolanos, la mayoría en Ciudad de Panamá." },
+        { q: "¿Es Ciudad de Panamá un buen lugar para conocer venezolanas?", a: "Sí — combina una gran comunidad venezolana con un ambiente cosmopolita que hace natural conocer personas. MatchVenezuelan tiene miembros en toda Panamá." }
+      ],
+      relatedLinks: [
+        { label: "Venezolanas en Bogotá", href: "/es/venezuelan-women-in-bogota" },
+        { label: "Venezolanas en Miami", href: "/es/venezuelan-women-in-miami" },
+        { label: "Conoce Mujeres Venezolanas", href: "/es/meet-venezuelan-women" }
+      ]
+    }
   }
 ];
 
