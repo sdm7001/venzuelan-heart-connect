@@ -47,7 +47,7 @@ export default function Home() {
       {!isEs && <StructuredData />}
       {/* HERO */}
       <section className="relative overflow-hidden gradient-hero">
-        <div className="container grid gap-10 py-16 md:grid-cols-2 md:gap-12 md:py-24 lg:py-32">
+        <div className="container grid gap-block py-section md:grid-cols-2 md:items-center">
           <div className="flex flex-col justify-center animate-fade-in">
             <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-card/60 px-3 py-1 text-xs font-medium text-burgundy backdrop-blur">
               <ShieldCheck className="h-3.5 w-3.5 text-primary" />
