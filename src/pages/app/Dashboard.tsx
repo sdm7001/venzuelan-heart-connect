@@ -69,7 +69,7 @@ export default function Dashboard() {
 
 function Card({ icon, title, value, children }: { icon: React.ReactNode; title: string; value: string; children?: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
+    <div className="rounded-2xl border border-border bg-card p-card shadow-card">
       <div className="flex items-center gap-2 text-muted-foreground">
         <span className="text-primary">{icon}</span>
         <span className="text-xs font-medium uppercase tracking-wider">{title}</span>

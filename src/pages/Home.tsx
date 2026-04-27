@@ -47,7 +47,7 @@ export default function Home() {
       {!isEs && <StructuredData />}
       {/* HERO */}
       <section className="relative overflow-hidden gradient-hero">
-        <div className="container grid gap-10 py-16 md:grid-cols-2 md:gap-12 md:py-24 lg:py-32">
+        <div className="container grid gap-block py-section md:grid-cols-2 md:items-center">
           <div className="flex flex-col justify-center animate-fade-in">
             <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-card/60 px-3 py-1 text-xs font-medium text-burgundy backdrop-blur">
               <ShieldCheck className="h-3.5 w-3.5 text-primary" />
@@ -86,12 +86,12 @@ export default function Home() {
       </section>
 
       {/* PILLARS */}
-      <section className="container py-20 md:py-28">
+      <section className="container py-section">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-3xl font-semibold text-burgundy md:text-4xl text-balance">{t.home.pillarsTitle}</h2>
           <p className="mt-4 text-muted-foreground">{t.home.pillarsSub}</p>
         </div>
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-block grid gap-stack md:grid-cols-2 lg:grid-cols-4">
           <Pillar icon={<ShieldCheck />} title={t.home.p1Title} body={t.home.p1Body} />
           <Pillar icon={<Lock />} title={t.home.p2Title} body={t.home.p2Body} />
           <Pillar icon={<Sparkles />} title={t.home.p3Title} body={t.home.p3Body} />
@@ -100,8 +100,8 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="container pb-20">
-        <div className="relative overflow-hidden rounded-3xl gradient-romance px-6 py-12 text-center text-primary-foreground shadow-elegant sm:px-10 md:px-16 md:py-20">
+      <section className="container pb-section">
+        <div className="relative overflow-hidden rounded-3xl gradient-romance p-card text-center text-primary-foreground shadow-elegant sm:px-10 md:px-16">
           <h3 className="font-display text-2xl font-semibold sm:text-3xl md:text-4xl text-balance">{t.home.ctaTitle}</h3>
           <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/90 sm:text-base">{t.home.ctaSub}</p>
           <Button asChild size="lg" variant="secondary" className="mt-7"><Link to="/auth?mode=join">{t.hero.ctaPrimary}</Link></Button>
@@ -122,7 +122,7 @@ function TrustChip({ icon, label }: { icon: React.ReactNode; label: string }) {
 
 function Pillar({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
-    <div className="group rounded-2xl border border-border bg-card p-6 shadow-card transition-smooth hover:-translate-y-1 hover:shadow-elegant">
+    <div className="group rounded-2xl border border-border bg-card p-card shadow-card transition-smooth hover:-translate-y-1 hover:shadow-elegant">
       <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-burgundy [&>svg]:h-5 [&>svg]:w-5">{icon}</div>
       <h3 className="font-display text-lg font-semibold text-foreground">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
