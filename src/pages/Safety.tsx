@@ -23,7 +23,7 @@ export default function Safety() {
   const tips = [t.safety.t1, t.safety.t2, t.safety.t3, t.safety.t4, t.safety.t5];
   return (
     <PublicLayout>
-      <section className="container py-20 md:py-28">
+      <section className="container py-section px-gutter">
         <div className="mx-auto max-w-3xl text-center">
           <span className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card px-3 py-1 text-xs font-medium text-burgundy">
             <ShieldCheck className="h-3.5 w-3.5 text-primary" /> {t.safety.eyebrow}
@@ -31,7 +31,7 @@ export default function Safety() {
           <h1 className="font-display text-4xl font-semibold text-burgundy md:text-5xl text-balance">{t.safety.title}</h1>
           <p className="mt-4 text-muted-foreground">{t.safety.sub}</p>
         </div>
-        <div className="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-2">
+        <div className="mx-auto mt-block grid max-w-5xl gap-stack md:grid-cols-2">
           <Card title={t.safety.itemsTitle} items={items} />
           <Card title={t.safety.tipsTitle} items={tips} />
         </div>
@@ -42,7 +42,7 @@ export default function Safety() {
 
 function Card({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-7 shadow-card">
+    <div className="rounded-2xl border border-border bg-card p-card shadow-card">
       <h2 className="font-display text-xl font-semibold text-burgundy">{title}</h2>
       <ul className="mt-4 space-y-3">
         {items.map((it, i) => (
