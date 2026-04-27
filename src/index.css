@@ -83,6 +83,28 @@
     /* Transitions */
     --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
+    /* Spacing scale — premium rhythm. Use these instead of ad-hoc values.
+       section: vertical breathing between major page bands.
+       block:   spacing between sub-sections inside a section.
+       stack:   gap between sibling cards / list items.
+       card:    inner padding of cards / panels.
+       gutter:  horizontal page padding. */
+    --space-section: 3.5rem;
+    --space-section-md: 5rem;
+    --space-section-lg: 7rem;
+    --space-block: 2rem;
+    --space-block-md: 2.5rem;
+    --space-block-lg: 3rem;
+    --space-stack: 1rem;
+    --space-stack-md: 1.25rem;
+    --space-stack-lg: 1.5rem;
+    --space-card: 1.25rem;
+    --space-card-md: 1.75rem;
+    --space-card-lg: 2.25rem;
+    --space-gutter: 1.25rem;
+    --space-gutter-md: 2rem;
+    --space-gutter-lg: 3rem;
+
     /* Sidebar (admin) — deep navy */
     --sidebar-background: 222 70% 17%;
     --sidebar-foreground: 48 50% 96%;
