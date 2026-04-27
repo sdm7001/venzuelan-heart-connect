@@ -10,6 +10,7 @@ import { formatDate } from "@/i18n/datetime";
 import { supabase } from "@/integrations/supabase/client";
 import type { Lang } from "@/i18n/translations";
 import { useSeo, blogPostingLd, breadcrumbLd } from "@/seo/seo";
+import heroImg from "@/assets/hero-resources.jpg";
 
 type Post = {
   slug: string;
@@ -246,16 +247,25 @@ export default function Resources() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="border-b border-border/60 bg-gradient-to-b from-primary-soft/30 to-background">
-        <div className="container py-16 md:py-24">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-muted-foreground">
+      <section className="relative isolate overflow-hidden border-b border-border/60">
+        <img
+          src={heroImg}
+          alt=""
+          aria-hidden="true"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-burgundy/75 via-burgundy/55 to-background" />
+        <div className="relative container py-16 md:py-24">
+          <div className="mx-auto max-w-3xl text-center text-primary-foreground animate-fade-in">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-background/15 px-3 py-1 text-xs font-medium backdrop-blur">
               <BookOpen className="h-3.5 w-3.5" /> {copy.eyebrow}
             </span>
-            <h1 className="mt-4 font-display text-4xl font-semibold text-burgundy md:text-5xl text-balance">
+            <h1 className="mt-4 font-display text-4xl font-semibold md:text-5xl text-balance drop-shadow-sm">
               {copy.title}
             </h1>
-            <p className="mt-4 text-muted-foreground">{copy.sub}</p>
+            <p className="mt-4 text-primary-foreground/90 md:text-lg">{copy.sub}</p>
           </div>
         </div>
       </section>
