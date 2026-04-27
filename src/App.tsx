@@ -40,6 +40,7 @@ import AdminPosts from "./pages/admin/AdminPosts";
 import AdminPostEditor from "./pages/admin/AdminPostEditor";
 import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
 import AdminMfaRecoveryCodes from "./pages/admin/AdminMfaRecoveryCodes";
+import LandingPage from "./pages/LandingPage";
 import NotFound from "./pages/NotFound";
 import A11yAudit from "./pages/__A11yAudit";
 import ResponsiveQA from "./pages/__ResponsiveQA";
@@ -106,6 +107,47 @@ const App = () => (
               <Route path="/admin/posts/:id" element={<RequireStaff><AdminPostEditor /></RequireStaff>} />
               <Route path="/admin/link-suggestions" element={<RequireStaff><AdminLinkSuggestions /></RequireStaff>} />
               <Route path="/admin/mfa-recovery" element={<RequireStaff><AdminMfaRecoveryCodes /></RequireStaff>} />
+
+              {/* SEO Landing Pages — EN */}
+              <Route path="/meet-venezuelan-women" element={<LandingPage />} />
+              <Route path="/venezuelan-dating-site" element={<LandingPage />} />
+              <Route path="/venezuelan-women-for-marriage" element={<LandingPage />} />
+              <Route path="/why-venezuelan-women" element={<LandingPage />} />
+              <Route path="/dating-in-venezuela-safely" element={<LandingPage />} />
+              <Route path="/venezuelan-women-family-values" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-united-states" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-canada" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-united-kingdom" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-spain" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-australia" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-miami" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-houston" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-los-angeles" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-new-york" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-madrid" element={<LandingPage />} />
+              <Route path="/venezuelan-women-in-barcelona" element={<LandingPage />} />
+              <Route path="/travel-to-meet-venezuelan-women" element={<LandingPage />} />
+              <Route path="/visit-venezuela-for-dating" element={<LandingPage />} />
+              <Route path="/venezuelan-dating-culture" element={<LandingPage />} />
+              <Route path="/serious-relationship-venezuelan-woman" element={<LandingPage />} />
+              <Route path="/verified-venezuelan-dating-profiles" element={<LandingPage />} />
+
+              {/* SEO Landing Pages — ES */}
+              <Route path="/es/conocer-mujeres-venezolanas" element={<LandingPage />} />
+              <Route path="/es/sitio-de-citas-venezolanas" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-para-matrimonio" element={<LandingPage />} />
+              <Route path="/es/por-que-mujeres-venezolanas" element={<LandingPage />} />
+              <Route path="/es/citas-en-venezuela-con-seguridad" element={<LandingPage />} />
+              <Route path="/es/valores-familiares-venezolanas" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-estados-unidos" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-canada" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-reino-unido" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-espana" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-australia" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-miami" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-houston" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-los-angeles" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-nueva-york" element={<LandingPage />} />
 
               {/* Dev-only audit harness — safe to remove. */}
               {import.meta.env.DEV && <Route path="/__a11y" element={<A11yAudit />} />}

@@ -108,4 +108,306 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Landing Pages: Core (EN + ES) -->
+  <url>
+    <loc>https://matchvenezuelan.com/meet-venezuelan-women</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/meet-venezuelan-women"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/conocer-mujeres-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/meet-venezuelan-women"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/conocer-mujeres-venezolanas</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/meet-venezuelan-women"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/conocer-mujeres-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/meet-venezuelan-women"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-dating-site</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-dating-site"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/sitio-de-citas-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-dating-site"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/sitio-de-citas-venezolanas</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-dating-site"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/sitio-de-citas-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-dating-site"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-for-marriage</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-for-marriage"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-para-matrimonio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-for-marriage"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-para-matrimonio</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-for-marriage"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-para-matrimonio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-for-marriage"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/why-venezuelan-women</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/why-venezuelan-women"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/por-que-mujeres-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/why-venezuelan-women"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/por-que-mujeres-venezolanas</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/why-venezuelan-women"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/por-que-mujeres-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/why-venezuelan-women"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/dating-in-venezuela-safely</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/dating-in-venezuela-safely"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/citas-en-venezuela-con-seguridad"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/dating-in-venezuela-safely"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/citas-en-venezuela-con-seguridad</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/dating-in-venezuela-safely"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/citas-en-venezuela-con-seguridad"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/dating-in-venezuela-safely"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-family-values</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-family-values"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/valores-familiares-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-family-values"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/valores-familiares-venezolanas</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-family-values"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/valores-familiares-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-family-values"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Landing Pages: Country (EN + ES) -->
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-united-states</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-united-states"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-estados-unidos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-united-states"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-estados-unidos</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-united-states"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-estados-unidos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-united-states"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-canada</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-canada"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-canada"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-canada"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-canada</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-canada"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-canada"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-canada"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-united-kingdom</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-united-kingdom"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-reino-unido"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-united-kingdom"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-reino-unido</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-united-kingdom"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-reino-unido"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-united-kingdom"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-spain</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-spain"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-espana"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-spain"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-espana</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-spain"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-espana"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-spain"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-australia</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-australia"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-australia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-australia"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-australia</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-australia"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-australia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-australia"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Landing Pages: City (EN + some ES) -->
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-miami</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-miami"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-miami"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-miami"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-miami</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-miami"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-miami"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-miami"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-houston</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-houston"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-houston"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-houston"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-houston</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-houston"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-houston"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-houston"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-los-angeles</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-los-angeles"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-los-angeles"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-los-angeles"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-los-angeles</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-los-angeles"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-los-angeles"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-los-angeles"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-new-york</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-new-york"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-nueva-york"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-new-york"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-nueva-york</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-new-york"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-nueva-york"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-new-york"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-madrid</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-women-in-barcelona</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Landing Pages: Travel -->
+  <url>
+    <loc>https://matchvenezuelan.com/travel-to-meet-venezuelan-women</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/visit-venezuela-for-dating</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Landing Pages: Intent/Feature -->
+  <url>
+    <loc>https://matchvenezuelan.com/venezuelan-dating-culture</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/serious-relationship-venezuelan-woman</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://matchvenezuelan.com/verified-venezuelan-dating-profiles</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

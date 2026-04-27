@@ -99,6 +99,57 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Explore Guides */}
+      <section className="container py-16 md:py-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="font-display text-3xl font-semibold text-burgundy md:text-4xl text-balance">
+            {isEs ? "Guias para Empezar" : "Explore Our Guides"}
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            {isEs
+              ? "Aprende mas sobre la cultura venezolana, la seguridad en linea y como construir una relacion significativa."
+              : "Learn more about Venezuelan culture, online safety, and how to build a meaningful relationship."}
+          </p>
+        </div>
+        <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              label: isEs ? "Conocer Mujeres Venezolanas" : "Meet Venezuelan Women",
+              href: isEs ? "/es/conocer-mujeres-venezolanas" : "/meet-venezuelan-women",
+            },
+            {
+              label: isEs ? "Sitio de Citas Venezolanas" : "Venezuelan Dating Site",
+              href: isEs ? "/es/sitio-de-citas-venezolanas" : "/venezuelan-dating-site",
+            },
+            {
+              label: isEs ? "Mujeres para Matrimonio" : "Venezuelan Women for Marriage",
+              href: isEs ? "/es/mujeres-venezolanas-para-matrimonio" : "/venezuelan-women-for-marriage",
+            },
+            {
+              label: isEs ? "Citas con Seguridad" : "Dating in Venezuela Safely",
+              href: isEs ? "/es/citas-en-venezuela-con-seguridad" : "/dating-in-venezuela-safely",
+            },
+            {
+              label: isEs ? "Valores Familiares" : "Venezuelan Family Values",
+              href: isEs ? "/es/valores-familiares-venezolanas" : "/venezuelan-women-family-values",
+            },
+            {
+              label: isEs ? "Por Que Mujeres Venezolanas" : "Why Venezuelan Women",
+              href: isEs ? "/es/por-que-mujeres-venezolanas" : "/why-venezuelan-women",
+            },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              to={link.href}
+              className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-5 text-sm font-medium text-foreground shadow-card transition-smooth hover:-translate-y-0.5 hover:shadow-elegant"
+            >
+              <Heart className="h-4 w-4 shrink-0 text-primary" />
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="container pb-section">
         <div className="relative overflow-hidden rounded-3xl gradient-romance p-card text-center text-primary-foreground shadow-elegant sm:px-10 md:px-16">
