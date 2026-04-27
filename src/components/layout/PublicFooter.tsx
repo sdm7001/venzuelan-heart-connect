@@ -41,9 +41,9 @@ export function PublicFooter() {
 
 function FooterCol({ title, links }: { title: string; links: { to: string; label: string }[] }) {
   return (
-    <div>
-      <h4 className="mb-2 font-display text-xs font-semibold uppercase tracking-wide text-black sm:mb-3 sm:text-sm sm:tracking-normal sm:normal-case">{title}</h4>
-      <ul className="space-y-1.5 text-sm sm:space-y-2">
+    <div className="flex flex-col gap-stack">
+      <h4 className="font-display text-xs font-semibold uppercase tracking-wide text-black sm:text-sm sm:tracking-normal sm:normal-case">{title}</h4>
+      <ul className="flex flex-col gap-stack text-sm">
         {links.map(l => (
           <li key={l.to}>
             <Link to={l.to} className="inline-block py-0.5 text-black/70 transition-smooth hover:text-black">
