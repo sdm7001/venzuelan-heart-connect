@@ -1184,6 +1184,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_exec_blog_update: { Args: { _sql: string }; Returns: undefined }
       award_badge_from_verification: {
         Args: { _verification_id: string }
         Returns: string
