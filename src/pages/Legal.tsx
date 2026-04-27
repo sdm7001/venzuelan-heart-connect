@@ -1,6 +1,7 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo } from "@/seo/seo";
+import heroImg from "@/assets/hero-legal.jpg";
 
 type Section = { readonly heading: string; readonly items: readonly string[] };
 type Key = "tos" | "privacy" | "aup" | "antiSolicit";
@@ -62,14 +63,31 @@ export function LegalPage({ titleKey }: { titleKey: Key }) {
 
   return (
     <PublicLayout>
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden">
+        <img
+          src={heroImg}
+          alt=""
+          aria-hidden="true"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/65 to-background" />
+        <div className="relative container py-section px-gutter">
+          <div className="mx-auto max-w-3xl text-primary-foreground animate-fade-in">
+            <p className="text-xs uppercase tracking-widest text-primary-foreground/80">
+              {t.legal.effective}: 2026-01-01 · {t.legal.lastUpdated}: 2026-04
+            </p>
+            <h1 className="mt-2 font-display text-4xl font-semibold md:text-5xl text-balance drop-shadow-sm">
+              {titleMap[titleKey]}
+            </h1>
+          </div>
+        </div>
+      </section>
+
       <section className="container py-section px-gutter">
         <div className="mx-auto max-w-3xl">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">
-            {t.legal.effective}: 2026-01-01 · {t.legal.lastUpdated}: 2026-04
-          </p>
-          <h1 className="mt-2 font-display text-4xl font-semibold text-burgundy md:text-5xl text-balance">
-            {titleMap[titleKey]}
-          </h1>
 
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
             {leadMap[titleKey]}

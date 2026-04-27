@@ -9,7 +9,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import { LifeBuoy, Mail } from "lucide-react";
+import { LifeBuoy, Mail, HelpCircle } from "lucide-react";
+import heroImg from "@/assets/hero-faq.jpg";
 
 const SUPPORT_EMAIL = "support@matchvenezuelan.com";
 
@@ -132,15 +133,33 @@ export default function FAQ() {
 
   return (
     <PublicLayout>
-      <section className="container py-section px-gutter">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="font-display text-4xl font-semibold text-burgundy md:text-5xl text-balance">
-            {t.faq.title}
-          </h1>
-          <p className="mt-4 text-muted-foreground leading-relaxed">{t.faq.intro}</p>
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden">
+        <img
+          src={heroImg}
+          alt=""
+          aria-hidden="true"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-burgundy/70 via-burgundy/55 to-background" />
+        <div className="relative container py-section px-gutter">
+          <div className="mx-auto max-w-3xl text-primary-foreground animate-fade-in">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-background/15 px-3 py-1 text-xs font-medium backdrop-blur">
+              <HelpCircle className="h-3.5 w-3.5" /> {t.faq.title}
+            </span>
+            <h1 className="font-display text-4xl font-semibold md:text-5xl text-balance drop-shadow-sm">
+              {t.faq.title}
+            </h1>
+            <p className="mt-4 text-primary-foreground/90 leading-relaxed md:text-lg">{t.faq.intro}</p>
+          </div>
         </div>
+      </section>
 
-        <div className="mx-auto mt-block grid max-w-6xl gap-block lg:grid-cols-[240px_minmax(0,1fr)]">
+      <section className="container py-section px-gutter">
+
+        <div className="mx-auto grid max-w-6xl gap-block lg:grid-cols-[240px_minmax(0,1fr)]">
           {/* Table of contents */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <nav aria-label={t.faq.tocTitle}>
