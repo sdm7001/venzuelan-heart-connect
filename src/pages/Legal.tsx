@@ -2,6 +2,7 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo } from "@/seo/seo";
 import heroImg from "@/assets/hero-legal.jpg";
+import { ParallaxHeroImage } from "@/components/layout/ParallaxHeroImage";
 
 type Section = { readonly heading: string; readonly items: readonly string[] };
 type Key = "tos" | "privacy" | "aup" | "antiSolicit";
@@ -65,14 +66,7 @@ export function LegalPage({ titleKey }: { titleKey: Key }) {
     <PublicLayout>
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
-        <img
-          src={heroImg}
-          alt=""
-          aria-hidden="true"
-          width={1920}
-          height={1080}
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
+        <ParallaxHeroImage src={heroImg} />
         <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/65 to-background" />
         <div className="relative container py-section px-gutter">
           <div className="mx-auto max-w-3xl text-primary-foreground animate-fade-in">

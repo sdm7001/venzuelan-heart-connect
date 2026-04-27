@@ -3,6 +3,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo } from "@/seo/seo";
 import { UserPlus, BadgeCheck, MessageCircle, Plane } from "lucide-react";
 import heroImg from "@/assets/hero-how-it-works.jpg";
+import { ParallaxHeroImage } from "@/components/layout/ParallaxHeroImage";
 
 export default function HowItWorks() {
   const { t, lang } = useI18n();
@@ -17,14 +18,7 @@ export default function HowItWorks() {
     <PublicLayout>
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
-        <img
-          src={heroImg}
-          alt=""
-          aria-hidden="true"
-          width={1920}
-          height={1080}
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
+        <ParallaxHeroImage src={heroImg} />
         <div className="absolute inset-0 bg-gradient-to-b from-burgundy/70 via-burgundy/55 to-background" />
         <div className="relative container py-section px-gutter">
           <div className="mx-auto max-w-2xl text-center text-primary-foreground animate-fade-in">

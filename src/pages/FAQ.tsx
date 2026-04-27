@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { LifeBuoy, Mail, HelpCircle } from "lucide-react";
 import heroImg from "@/assets/hero-faq.jpg";
+import { ParallaxHeroImage } from "@/components/layout/ParallaxHeroImage";
 
 const SUPPORT_EMAIL = "support@matchvenezuelan.com";
 
@@ -135,14 +136,7 @@ export default function FAQ() {
     <PublicLayout>
       {/* Hero */}
       <section className="relative isolate overflow-hidden">
-        <img
-          src={heroImg}
-          alt=""
-          aria-hidden="true"
-          width={1920}
-          height={1080}
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
+        <ParallaxHeroImage src={heroImg} />
         <div className="absolute inset-0 bg-gradient-to-b from-burgundy/70 via-burgundy/55 to-background" />
         <div className="relative container py-section px-gutter">
           <div className="mx-auto max-w-3xl text-primary-foreground animate-fade-in">
