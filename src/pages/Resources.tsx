@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Lang } from "@/i18n/translations";
 import { useSeo, blogPostingLd, breadcrumbLd } from "@/seo/seo";
 import heroImg from "@/assets/hero-resources.jpg";
+import { ParallaxHeroImage } from "@/components/layout/ParallaxHeroImage";
 
 type Post = {
   slug: string;
@@ -248,14 +249,7 @@ export default function Resources() {
     <PublicLayout>
       {/* Hero */}
       <section className="relative isolate overflow-hidden border-b border-border/60">
-        <img
-          src={heroImg}
-          alt=""
-          aria-hidden="true"
-          width={1920}
-          height={1080}
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
+        <ParallaxHeroImage src={heroImg} />
         <div className="absolute inset-0 bg-gradient-to-b from-burgundy/75 via-burgundy/55 to-background" />
         <div className="relative container py-16 md:py-24">
           <div className="mx-auto max-w-3xl text-center text-primary-foreground animate-fade-in">
