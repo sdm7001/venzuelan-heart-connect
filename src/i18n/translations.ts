@@ -869,186 +869,272 @@ const _translations = {
       tos: "Términos de Servicio", privacy: "Política de Privacidad", aup: "Política de Uso Aceptable",
       antiSolicit: "Política Anti-Solicitación",
       cookies: "Política de Cookies", consent: "Preferencias de Consentimiento",
-      tosBody: "Al usar MatchVenezuelan aceptas usar la plataforma únicamente con fines genuinos y legales para construir relaciones. Aceptas no suplantar a otros, no publicar contenido explícito, no solicitar pagos fuera de la plataforma ni participar en ninguna actividad sexual comercial.",
-      privacyBody: "Solo recopilamos lo necesario para ofrecer una experiencia de matchmaking segura: información de cuenta, datos de perfil que decidas compartir, fotos, mensajes e información básica del dispositivo. Nunca vendemos tus datos.",
-      aupBody: "MatchVenezuelan es una plataforma para relaciones serias. Está prohibido: acoso, discurso de odio, contenido explícito, suplantación, estafas o fraudes, pedidos de pago fuera de la plataforma, solicitación de servicios sexuales comerciales y cuentas de menores de 18 años.",
-      antiBody: "MatchVenezuelan prohíbe estrictamente la prostitución, los servicios de escort, los arreglos sugar enmarcados como transacciones comerciales y cualquier solicitación de dinero a cambio de contacto romántico o sexual. Las violaciones resultan en terminación inmediata de la cuenta.",
+      tosBody: "Estos Términos de Servicio constituyen un acuerdo legal vinculante entre tú y MatchVenezuelan. Rigen tu acceso y uso de nuestro sitio web, app y cualquier servicio relacionado. Léelos con atención: incluyen disposiciones importantes sobre elegibilidad, conducta prohibida, pagos, terminación de cuenta, exenciones de garantía, limitación de responsabilidad, indemnización, resolución de disputas obligatoria y renuncia a acciones colectivas.",
+      privacyBody: "Esta Política de Privacidad explica qué datos personales recopila MatchVenezuelan, cómo y por qué los tratamos, con quién los compartimos, dónde se almacenan, cuánto tiempo los conservamos y los derechos que tienes bajo las leyes aplicables, incluido el RGPD de la UE/Reino Unido, la Ley de Privacidad del Consumidor de California (CCPA/CPRA), la LGPD de Brasil y otros regímenes comparables. No vendemos tus datos personales y nunca los compartimos con anunciantes para publicidad conductual entre contextos.",
+      aupBody: "MatchVenezuelan es una plataforma para relaciones serias. Esta Política de Uso Aceptable forma parte de los Términos de Servicio y enumera la conducta, el contenido y las actividades que no se permiten en la plataforma, la cooperación de verificación que esperamos de los miembros y las medidas de aplicación que podemos tomar. Las violaciones pueden derivar en eliminación de contenido, restricción de funciones, suspensión, terminación permanente sin reembolso y reportes a las autoridades.",
+      antiBody: "MatchVenezuelan prohíbe estrictamente la prostitución, los servicios de escort, los arreglos 'sugar' planteados como dinero a cambio de compañía, las estafas románticas, el lavado de dinero a través de regalos o créditos, y cualquier solicitación, oferta o transferencia de dinero, criptomonedas, tarjetas de regalo, mesadas u otra contraprestación a cambio de contacto romántico, sexual o de compañía. Esta política no es negociable, prevalece sobre cualquier acuerdo privado entre miembros y las violaciones confirmadas resultan en terminación permanente inmediata y, cuando corresponda, reportes a fuerzas del orden, unidades de delitos financieros y autoridades de protección infantil.",
       lastUpdated: "Última actualización",
       effective: "Vigente desde",
       intro: "Introducción",
       tosSections: [
-        { heading: "1. Quiénes somos y qué es esto", items: [
-          "MatchVenezuelan es una plataforma internacional de relaciones que conecta a mujeres venezolanas con hombres de todo el mundo que buscan relaciones serias y duraderas.",
-          "Estos Términos de Servicio ('Términos') constituyen un acuerdo vinculante entre tú y MatchVenezuelan. Al crear una cuenta, acceder al sitio o usar cualquier función, aceptas estos Términos.",
-          "Si no estás de acuerdo, debes dejar de usar la plataforma y eliminar tu cuenta.",
+        { heading: "1. Quiénes somos y aceptación de estos Términos", items: [
+          "MatchVenezuelan ('MatchVenezuelan', 'nosotros') opera una plataforma internacional de relaciones que conecta a mujeres venezolanas con hombres adultos de todo el mundo que buscan relaciones serias y duraderas. La entidad legal operadora, el domicilio registrado y los identificadores fiscales figuran en nuestro Aviso Legal y están disponibles a solicitud en legal@matchvenezuelan.com.",
+          "Estos Términos de Servicio ('Términos') forman un acuerdo vinculante entre tú y MatchVenezuelan e incorporan por referencia la Política de Privacidad, la Política de Uso Aceptable, la Política Anti-Solicitación, la Política de Cookies y cualquier término específico del producto (p. ej. pagos, regalos, verificación) que se te presente en la app.",
+          "Al crear una cuenta, acceder al sitio, hacer clic en 'Acepto' o usar cualquier función, confirmas que has leído, entendido y aceptado quedar vinculado por estos Términos y por todas las políticas incorporadas. Si no estás de acuerdo, no debes acceder ni usar la plataforma y debes cerrar cualquier cuenta que hayas creado.",
+          "Podemos publicar versiones traducidas de estos Términos por conveniencia. En caso de conflicto, prevalece la versión en inglés, salvo cuando la legislación de consumo obligatoria de tu país de residencia exija lo contrario.",
         ]},
-        { heading: "2. Elegibilidad", items: [
-          "Debes tener al menos 18 años. No aceptamos cuentas de menores bajo ninguna circunstancia.",
-          "Debes tener capacidad legal para celebrar acuerdos vinculantes en tu país de residencia.",
-          "No debes figurar en un registro de delincuentes sexuales, en listas de sanciones, ni haber sido vetado de una cuenta anterior de MatchVenezuelan.",
+        { heading: "2. Elegibilidad, verificación de edad y usuarios prohibidos", items: [
+          "Debes tener al menos 18 años en el momento del registro. La plataforma es estrictamente para personas adultas. Usamos atestación de edad, verificación de identidad, señales de comportamiento y revisión humana para detectar a menores. Toda cuenta sospechosa de pertenecer a un menor se suspende de inmediato, los datos se preservan según lo exija la ley y, cuando el menor sea representado sexualmente, se reporta al Centro Nacional para Niños Desaparecidos y Explotados de EE. UU. (NCMEC) y/o autoridades equivalentes.",
+          "Debes tener plena capacidad legal para celebrar acuerdos vinculantes en tu país de residencia. Si accedes desde una jurisdicción donde el uso de servicios de citas en línea o de este tipo de plataformas transfronterizas esté restringido, prohibido o sujeto a licencia específica, no debes usar la plataforma.",
+          "No puedes usar la plataforma si: (a) figuras en cualquier lista de sanciones, terroristas o partes denegadas de EE. UU., UE, Reino Unido, ONU u otra aplicable; (b) te encuentras en un país con sanciones integrales donde la ley prohíbe la prestación de servicios; (c) figuras en un registro de delincuentes sexuales; (d) estás actualmente baneado de MatchVenezuelan; (e) actúas en nombre de un competidor para replicar, hacer scraping o benchmarking; o (f) usas la plataforma en nombre o en conexión con una agencia, burdel, servicio de escort, reclutador u operación de trata.",
+          "Solo puedes tener una cuenta. Operar varias cuentas, evadir un veto o compartir tu cuenta con otra persona es un incumplimiento material de estos Términos.",
         ]},
-        { heading: "3. Perfiles honestos e identidad", items: [
-          "Tu perfil debe usar tu nombre real (o un primer nombre reconocible) y solo fotos actuales tuyas.",
-          "No puedes suplantar a otra persona, usar rostros generados por IA ni reciclar fotos robadas.",
-          "Podemos requerir verificación de identidad, foto, redes sociales o ingresos en cualquier momento, y restringir funciones hasta que se complete la verificación.",
+        { heading: "3. Registro de cuenta, seguridad y autenticación", items: [
+          "Te comprometes a proporcionar información precisa, actual y completa al registrarte y a mantenerla actualizada. Proporcionar información falsa a sabiendas es un incumplimiento de estos Términos y puede constituir fraude.",
+          "Eres responsable de mantener la confidencialidad de tus credenciales, de habilitar las funciones de seguridad disponibles (incluida la autenticación de dos factores cuando se ofrezca) y de toda la actividad que ocurra bajo tu cuenta. Debes notificarnos de inmediato a security@matchvenezuelan.com sobre cualquier acceso no autorizado o sospecha de compromiso.",
+          "Podemos exigirte volver a autenticarte, completar verificación adicional o restringir temporalmente el acceso cuando detectemos señales de riesgo (p. ej. inicios de sesión desde nuevas ubicaciones, anomalías de pago, sospechas de automatización o vínculos con una cuenta previamente baneada).",
+          "Aceptas recibir comunicaciones electrónicas nuestras — incluyendo avisos de servicio, correos transaccionales, mensajes en la app, alertas de seguridad y avisos legales requeridos — en el correo y las preferencias de idioma asociadas a tu cuenta, y aceptas que dichas comunicaciones electrónicas satisfacen cualquier requisito legal de comunicación por escrito.",
         ]},
-        { heading: "4. Conducta aceptable", items: [
-          "Trata a cada miembro con respeto, especialmente a las mujeres, que son el corazón de esta comunidad.",
-          "Sin acoso, discurso de odio, amenazas, coerción sexual ni comportamiento discriminatorio.",
-          "Sin desnudez explícita, mensajes sexualmente explícitos ni material pornográfico en ninguna parte de la plataforma.",
-          "Sin spam, scraping, automatización, estafas ni intentos de monetizar la plataforma fuera de nuestras herramientas oficiales.",
+        { heading: "4. Perfiles honestos, identidad y verificación", items: [
+          "Tu perfil debe usar tu nombre real (o una forma reconocible) y solo fotografías actuales tuyas. No puedes usar rostros generados por IA, deepfakes, fotos de archivo, fotos de otras personas ni imágenes muy retocadas que distorsionen tu apariencia.",
+          "Podemos requerir, a nuestra entera discreción y en cualquier momento, verificación de identidad, foto, presencia social, origen de fondos o ingresos, incluyendo (cuando se ofrezca) revisión de documentos, verificaciones biométricas con selfie, videollamadas con nuestro equipo y cuestionarios complementarios. Hasta que la verificación se complete, podemos restringir mensajería, regalos, pagos, exposición en descubrimiento u otras funciones.",
+          "Reconoces expresamente que MatchVenezuelan no realiza verificaciones exhaustivas de antecedentes penales, verificaciones del registro de delincuentes sexuales más allá de medios razonablemente disponibles, verificaciones de estado civil ni due diligence financiera de los miembros, salvo cuando se anuncie de forma específica y destacada como parte de un sello de verificación. La presencia de un sello de verificación confirma únicamente el atributo descrito y no es garantía de seguridad, carácter, intención, estado civil, medios financieros ni conducta futura.",
         ]},
-        { heading: "5. Pagos, regalos y créditos", items: [
-          "Las suscripciones, paquetes de créditos y regalos se cobran a través de nuestro proveedor de pagos. Los precios se muestran antes de comprar y pueden incluir impuestos locales.",
-          "Los créditos y regalos digitales no son reembolsables, salvo cuando la ley lo exija (por ejemplo, el derecho de desistimiento de 14 días en la UE cuando aplique).",
-          "Los regalos físicos están sujetos a las reglas de cumplimiento, entrega y aduanas del país del destinatario y pueden ser rechazados o devueltos por motivos de seguridad.",
+        { heading: "5. Conducta aceptable (incorporada por referencia)", items: [
+          "Tu uso de la plataforma también se rige por la Política de Uso Aceptable y la Política Anti-Solicitación, ambas parte de estos Términos. Al aceptar estos Términos también aceptas esas políticas.",
+          "Sin limitar dichas políticas, aceptas no: acosar, amenazar, difamar, acechar ni discriminar a ninguna persona; publicar o transmitir desnudez, contenido sexualmente explícito, contenido que sexualice a menores, gore, discurso de odio o contenido de autolesión; suplantar a otra persona; tergiversar tu edad, género, estado civil, ubicación o intención; usar la plataforma para reclutar para cualquier otro servicio, negocio, organización religiosa o política, MLM, OnlyFans, agencia de escort o actividad sexual comercial; recopilar, hacer scraping, copiar, indexar o cosechar contenido o datos de miembros; eludir moderación, límites de tasa, paywalls o restricciones geográficas; usar bots, scripts o herramientas automatizadas; entrenar modelos de aprendizaje automático con datos, fotos o mensajes de miembros; o intentar burlar los sistemas antifraude, antispam o de moderación.",
         ]},
-        { heading: "6. Moderación, suspensión y terminación", items: [
-          "Revisamos activamente perfiles, fotos y mensajes. Podemos eliminar contenido, ocultar un perfil, restringir funciones, suspender o terminar permanentemente cualquier cuenta que viole estos Términos o nuestras políticas.",
-          "Las violaciones graves — incluyendo solicitación de sexo comercial, fraude o contacto con menores — resultan en terminación inmediata y permanente, y pueden ser reportadas a las autoridades.",
-          "Puedes cerrar tu cuenta en cualquier momento desde tu configuración. Algunos datos se conservan durante un período limitado por razones de seguridad y legales.",
+        { heading: "6. Contenido del usuario y licencia", items: [
+          "Conservas la propiedad de las fotos, texto, audio, video, información de perfil y demás contenido que envíes ('Contenido del Usuario'). Declaras y garantizas que tienes todos los derechos necesarios para enviar tu Contenido y que no infringe ningún derecho de terceros ni la ley aplicable.",
+          "Otorgas a MatchVenezuelan una licencia mundial, no exclusiva, libre de regalías y sublicenciable para alojar, almacenar, reproducir, mostrar, adaptar (para redimensionar, convertir formato, marcar al agua y moderar), transmitir y distribuir tu Contenido únicamente para operar, asegurar, moderar, promover (dentro de la plataforma) y mejorar el servicio, y para cumplir obligaciones legales. Esta licencia termina en un plazo razonable tras la eliminación del Contenido o el cierre de tu cuenta, salvo copias de respaldo, auditoría, seguridad y cumplimiento legal según se describe en la Política de Privacidad.",
+          "También otorgas a otros miembros una licencia limitada para ver tu Contenido dentro de la plataforma según lo previsto. No puedes descargar, hacer scraping, republicar ni redistribuir el contenido de otro miembro fuera de la plataforma.",
+          "Renuncias a cualquier derecho moral sobre tu Contenido en la medida necesaria para permitir el funcionamiento normal de la plataforma, y aceptas no presentar reclamaciones de derechos morales que impidan moderar, eliminar, marcar al agua o cambiar funciones.",
+          "No puedes enviar Contenido que no poseas o no estés autorizado a enviar, que infrinja derechos de autor, marcas, derechos de publicidad o privacidad u otros derechos, que sea ilegal, difamatorio, obsceno, amenazante, acosador o fraudulento, ni que contenga malware o código destinado a dañar la plataforma o a sus usuarios.",
         ]},
-        { heading: "7. Propiedad intelectual", items: [
-          "MatchVenezuelan, el logo, los diseños y el código de la plataforma nos pertenecen y están protegidos por las leyes de propiedad intelectual.",
-          "Conservas la propiedad del contenido que subes, pero nos otorgas una licencia mundial y libre de regalías para alojarlo, mostrarlo y procesarlo únicamente para operar el servicio.",
+        { heading: "7. Derechos de autor, DMCA y aviso-y-retiro", items: [
+          "Respetamos los derechos de propiedad intelectual y respondemos a notificaciones claras de presunta infracción. Para enviar una notificación de copyright bajo la DMCA de EE. UU. (o regímenes equivalentes como la Directiva de Copyright de la UE), escribe a copyright@matchvenezuelan.com con: (i) tus datos de contacto y firma; (ii) identificación de la obra protegida; (iii) URL o ubicación precisa del material presuntamente infractor; (iv) declaración de buena fe de que el uso no está autorizado; (v) declaración bajo pena de perjurio de que la información es exacta y de que estás autorizado a actuar; y (vi) el idioma en el que deseas recibir la correspondencia.",
+          "Podemos eliminar o deshabilitar el acceso al contenido presuntamente infractor y terminar las cuentas de infractores reincidentes en circunstancias apropiadas. Las contranotificaciones se envían a la misma dirección.",
         ]},
-        { heading: "8. Descargos y limitación de responsabilidad", items: [
-          "MatchVenezuelan ofrece una plataforma para conocer personas. No garantizamos resultados románticos, compatibilidad ni la conducta de ningún miembro fuera de la plataforma.",
-          "En la máxima medida permitida por la ley, nuestra responsabilidad agregada por cualquier reclamo relacionado con el servicio se limita al monto que nos pagaste en los 12 meses anteriores al reclamo.",
+        { heading: "8. Pagos, suscripciones, regalos, créditos y reembolsos", items: [
+          "Las suscripciones, paquetes de créditos, regalos virtuales y regalos físicos se cobran en la moneda, frecuencia y monto mostrados en el checkout, incluyendo impuestos aplicables (IVA, ventas) calculados según tu país y, cuando aplique, identificación fiscal.",
+          "Las suscripciones se renuevan automáticamente al precio vigente por períodos sucesivos a menos que se cancelen antes de la fecha de renovación. Puedes gestionar y cancelar la renovación automática en cualquier momento desde tu configuración de facturación; la cancelación entra en vigor al final del período actual y conservas el acceso hasta entonces.",
+          "Los créditos, regalos virtuales y demás contenido digital se prestan como servicios digitales de consumo inmediato. Cuando la ley lo exija (por ejemplo, el derecho de desistimiento de 14 días de UE/Reino Unido), podrías ser elegible para un reembolso solo si aún no has comenzado a usar el contenido digital; al comprar y usar inmediatamente créditos o regalos, solicitas expresamente la ejecución inmediata y reconoces que pierdes cualquier derecho de desistimiento legal una vez iniciado el consumo. Fuera de tales derechos obligatorios de protección al consumidor, todas las compras digitales son finales y no reembolsables.",
+          "Los regalos físicos están sujetos a las normas de cumplimiento, entrega, aduanas, sanciones e importación del país del destinatario. Podemos rechazar, cancelar o reembolsar cualquier pedido que consideremos presenta riesgo de seguridad, legal, sanciones o lavado de dinero, que exceda los límites razonables por destinatario o que el destinatario rechace.",
+          "Nos autorizas a nosotros y a nuestros procesadores de pago a cargar tu método de pago por todos los importes adeudados. Te comprometes a mantener tu información de pago precisa. Eres responsable de impuestos, comisiones de conversión de moneda o cargos bancarios aplicados por tu emisor o país.",
+          "Las contracargos, reversos de pago o reclamaciones de pago fraudulentas que determinemos injustificadas son un incumplimiento de estos Términos. Podemos disputar contracargos con evidencia (incluyendo IP, huella de dispositivo, actividad de cuenta, extractos de mensajes y registros de entrega del producto), suspender o terminar la cuenta, recuperar el monto vía cobranza y prohibir el re-registro.",
+          "Las ofertas promocionales, descuentos, pruebas gratuitas y créditos bonus están sujetos a los términos específicos presentados al momento de la oferta y pueden ser revocados por abuso.",
         ]},
-        { heading: "9. Ley aplicable y disputas", items: [
-          "Estos Términos se rigen por las leyes de la jurisdicción donde MatchVenezuelan está constituida, sin considerar reglas de conflicto de leyes.",
-          "Las disputas se abordarán primero de forma informal con nuestro equipo de soporte. Las disputas no resueltas podrán llevarse ante los tribunales competentes de esa jurisdicción, sujeto a las protecciones obligatorias del consumidor en tu país.",
+        { heading: "9. Moderación, suspensión, terminación y apelaciones", items: [
+          "Usamos una combinación de sistemas automatizados, moderadores humanos capacitados, reportes de miembros y socios externos para revisar perfiles, fotos, mensajes y conducta. Podemos, a nuestra entera discreción y sin previo aviso, eliminar contenido, ocultar un perfil, restringir funciones, exigir verificación adicional, retener regalos pendientes de revisión, suspender o terminar permanentemente cualquier cuenta que consideremos que viola estos Términos, nuestras políticas, la ley aplicable o que crea riesgo a otros miembros.",
+          "Las violaciones graves — incluida la solicitación de sexo comercial, material de abuso sexual infantil, fraude o estafas, amenazas de violencia, doxxing, coerción de pago fuera de la plataforma, fraude de identidad, violaciones de sanciones o ALD, evasión de veto o manipulación de la plataforma — resultan en terminación inmediata y permanente y pueden ser reportadas a las fuerzas del orden, unidades de inteligencia financiera, agencias de protección infantil, redes de pago u otras autoridades, con preservación de datos relevantes según lo exija la ley.",
+          "Puedes cerrar tu cuenta en cualquier momento desde tu configuración. Tras el cierre conservamos ciertos datos según se describe en la Política de Privacidad (por razones de seguridad, legales, fiscales y de auditoría) y podemos seguir aplicando registros de seguridad (p. ej. listas de veto, señales de fraude) para proteger a la comunidad.",
+          "Puedes apelar una decisión de moderación escribiendo a appeals@matchvenezuelan.com dentro de los 30 días. Apuntamos a responder en un plazo razonable. Las apelaciones son revisadas por una persona que no estuvo involucrada en la decisión original cuando sea posible. Las decisiones de apelación son definitivas.",
+          "La terminación no da derecho a reembolso de suscripción, créditos, regalos virtuales o físicos, salvo cuando la ley obligatoria de consumo lo exija.",
         ]},
-        { heading: "10. Cambios a estos Términos", items: [
-          "Podemos actualizar estos Términos para reflejar cambios de producto, legales o de seguridad. Los cambios materiales se anunciarán en la app y por correo cuando tengamos uno registrado.",
-          "El uso continuado después de que un cambio entre en vigor significa que aceptas los Términos actualizados.",
+        { heading: "10. Reportes, contenido ilegal y cooperación con autoridades", items: [
+          "Los reportes de contenido ilegal (incluido sospecha de material de abuso sexual infantil, contenido terrorista, trata, amenazas de violencia o imágenes íntimas no consentidas) pueden hacerse mediante la herramienta de Reporte en la app o escribiendo a trust@matchvenezuelan.com.",
+          "Cooperamos con solicitudes legales válidas de autoridades y reguladores en las jurisdicciones donde operamos, y podemos divulgar información sin previo aviso al usuario cuando lo exija la ley, una orden judicial o cuando creamos que la divulgación es necesaria para prevenir un daño inminente, fraude, terrorismo o explotación sexual.",
         ]},
-        { heading: "11. Contacto", items: [
-          "Las preguntas sobre estos Términos pueden enviarse a legal@matchvenezuelan.com.",
+        { heading: "11. Servicios y enlaces de terceros", items: [
+          "La plataforma puede contener enlaces o integraciones con servicios de terceros (p. ej. procesadores de pago, proveedores de verificación de ID, analítica, traducción, mapas, herramientas de soporte). No somos responsables del contenido, políticas, exactitud o prácticas de ningún servicio de terceros, y tu uso se rige por sus propios términos y avisos de privacidad.",
+        ]},
+        { heading: "12. Exenciones y servicio 'TAL CUAL'", items: [
+          "EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, LA PLATAFORMA Y TODO SU CONTENIDO, FUNCIONES Y SERVICIOS SE PROPORCIONAN 'TAL CUAL' Y 'SEGÚN DISPONIBILIDAD', SIN GARANTÍAS DE NINGÚN TIPO, EXPRESAS, IMPLÍCITAS O LEGALES, INCLUIDAS GARANTÍAS DE COMERCIABILIDAD, IDONEIDAD PARA UN FIN PARTICULAR, NO INFRACCIÓN, EXACTITUD, DISPONIBILIDAD, FIABILIDAD O QUE EL SERVICIO SERÁ ININTERRUMPIDO, SEGURO O LIBRE DE ERRORES.",
+          "MatchVenezuelan no garantiza ningún resultado romántico, sexual, marital, migratorio, financiero o de otro tipo. No garantizamos compatibilidad, veracidad de los perfiles, conducta de ningún miembro dentro o fuera de la plataforma, ni la seguridad de cualquier encuentro organizado a través de la plataforma.",
+          "MatchVenezuelan no es un agente matrimonial, consultor de inmigración, servicio de escort, coach de citas, asesor financiero ni autoridad policial. No realizamos verificaciones exhaustivas de antecedentes penales. Los miembros son los únicos responsables de sus decisiones, comunicaciones y encuentros.",
+          "Algunas jurisdicciones no permiten la exclusión de ciertas garantías; en tales jurisdicciones las exclusiones anteriores aplican solo en la máxima medida permitida por la ley y no afectan derechos de protección al consumidor irrenunciables.",
+        ]},
+        { heading: "13. Limitación de responsabilidad", items: [
+          "EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, EN NINGÚN CASO MATCHVENEZUELAN, SUS AFILIADOS, FUNCIONARIOS, DIRECTORES, EMPLEADOS, AGENTES, LICENCIANTES O PROVEEDORES SERÁN RESPONSABLES POR DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES, CONSECUENTES, EJEMPLARES O PUNITIVOS, INCLUIDA LA PÉRDIDA DE BENEFICIOS, INGRESOS, DATOS, FONDO DE COMERCIO, ANGUSTIA EMOCIONAL, REPUTACIÓN, O PÉRDIDAS QUE SURJAN DE (a) TU USO O INCAPACIDAD DE USAR EL SERVICIO; (b) LA CONDUCTA, CONTENIDO O COMUNICACIONES DE OTRO USUARIO O TERCERO DENTRO O FUERA DE LA PLATAFORMA; (c) CUALQUIER ENCUENTRO, RELACIÓN, MATRIMONIO, TRANSACCIÓN FINANCIERA, RESULTADO MIGRATORIO O DAÑO RESULTANTE; O (d) ACCESO NO AUTORIZADO O ALTERACIÓN DE TUS DATOS — YA SEA POR GARANTÍA, CONTRATO, RESPONSABILIDAD CIVIL (INCLUIDA NEGLIGENCIA) O CUALQUIER OTRA TEORÍA LEGAL, Y CON INDEPENDENCIA DE QUE SE NOS HAYA INFORMADO DE LA POSIBILIDAD DE TALES DAÑOS.",
+          "EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, NUESTRA RESPONSABILIDAD AGREGADA TOTAL POR TODAS LAS RECLAMACIONES RELACIONADAS CON EL SERVICIO EN UN PERÍODO DE 12 MESES SE LIMITA AL MAYOR DE (i) EL IMPORTE QUE NOS PAGASTE EN LOS 12 MESES PREVIOS AL HECHO GENERADOR, O (ii) USD 100.",
+          "Nada en estos Términos excluye o limita la responsabilidad que no pueda excluirse o limitarse bajo la ley aplicable (p. ej. responsabilidad por muerte o lesiones personales causadas por negligencia grave, fraude o derechos otorgados a consumidores por ley imperativa).",
+        ]},
+        { heading: "14. Indemnización", items: [
+          "Aceptas indemnizar, defender y mantener indemne a MatchVenezuelan, sus afiliados, funcionarios, directores, empleados, contratistas y agentes frente a toda reclamación, demanda, pérdida, responsabilidad, daño, sentencia, multa, sanción, costo y gasto (incluidos honorarios legales razonables) que surja de o se relacione con: (a) tu Contenido del Usuario; (b) tu uso o mal uso del servicio; (c) tu incumplimiento de estos Términos o de cualquier política incorporada; (d) tu violación de cualquier ley o derecho de terceros; (e) cualquier encuentro, comunicación o transacción con otro usuario; o (f) cualquier disputa de pago, contracargo u obligación fiscal asociada a tu cuenta.",
+          "Podemos, a nuestra opción, asumir la defensa y control exclusivos de cualquier asunto sujeto a indemnización, en cuyo caso aceptas cooperar plenamente.",
+        ]},
+        { heading: "15. Resolución de disputas, arbitraje y renuncia a acciones colectivas", items: [
+          "Resolución informal: antes de presentar cualquier reclamación formal, aceptas contactar a legal@matchvenezuelan.com con una descripción escrita de la disputa e intentar de buena fe resolverla por al menos 60 días.",
+          "Arbitraje vinculante: cuando la ley lo permita, cualquier disputa, reclamación o controversia no resuelta que surja de o se relacione con estos Términos o el servicio se resolverá mediante arbitraje individual final y vinculante bajo las reglas de una institución arbitral reconocida en la jurisdicción donde MatchVenezuelan está constituida, en inglés (o en tu idioma local a tu solicitud y costa), por un único árbitro. La sentencia podrá registrarse en cualquier tribunal con jurisdicción competente.",
+          "Renuncia a acciones colectivas y a juicio con jurado: EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, TÚ Y MATCHVENEZUELAN ACEPTAN PRESENTAR RECLAMACIONES SOLO A TÍTULO INDIVIDUAL Y NO COMO DEMANDANTE O MIEMBRO DE CLASE EN NINGÚN PROCEDIMIENTO COLECTIVO, REPRESENTATIVO O CONSOLIDADO, Y AMBAS PARTES RENUNCIAN A CUALQUIER DERECHO A JUICIO POR JURADO.",
+          "Excepciones: cualquiera de las partes puede presentar (i) una reclamación individual ante un tribunal de menor cuantía con jurisdicción competente, o (ii) una acción judicial para medidas cautelares o equitativas en materia de propiedad intelectual o acceso no autorizado.",
+          "Derechos de consumidor: si eres consumidor en la UE/Reino Unido u otra jurisdicción cuya ley imperativa te otorga el derecho a entablar procedimientos en tus tribunales locales y/o a optar por no participar en arbitraje, esos derechos no se ven afectados. Los consumidores de la UE también pueden usar la plataforma de resolución de disputas en línea de la Comisión Europea.",
+        ]},
+        { heading: "16. Ley aplicable, foro y controles de exportación", items: [
+          "Estos Términos se rigen por las leyes de la jurisdicción donde MatchVenezuelan está constituida, excluyendo sus normas de conflicto de leyes y la Convención de la ONU sobre Contratos de Compraventa Internacional de Mercaderías. Las leyes imperativas de protección al consumidor de tu país de residencia siguen aplicándose.",
+          "Sujeto a la cláusula de arbitraje y a los derechos imperativos del consumidor, los tribunales de esa jurisdicción tienen competencia exclusiva sobre cualquier disputa no sujeta a arbitraje.",
+          "Aceptas cumplir con todas las leyes aplicables de control de exportaciones, sanciones y antilavado, incluidas las de Estados Unidos, la Unión Europea y el Reino Unido, y declaras que no te encuentras en, no resides ordinariamente en, ni estás sujeto a sanciones integrales.",
+        ]},
+        { heading: "17. Fuerza mayor", items: [
+          "No somos responsables de ningún incumplimiento o demora causados por eventos fuera de nuestro control razonable, incluidos actos de Dios, guerra, terrorismo, disturbios civiles, pandemia, acción gubernamental, sanciones, cortes de internet o de hosting, ciberataques o fallos de servicios de terceros.",
+        ]},
+        { heading: "18. Modificación del servicio y de estos Términos", items: [
+          "Podemos modificar, suspender o discontinuar el servicio (o cualquier función) en cualquier momento, con o sin previo aviso, incluyendo por motivos legales, de seguridad, comerciales o de producto.",
+          "Podemos actualizar estos Términos para reflejar cambios de producto, legales o de seguridad. Los cambios materiales se anunciarán en la app y, cuando tengamos tu correo verificado, por correo al menos 14 días antes de su entrada en vigor, salvo cuando se requiera un plazo más corto por ley o para abordar un riesgo inmediato de seguridad o legal. El uso continuado tras la fecha efectiva constituye aceptación; si no aceptas, debes dejar de usar la plataforma y cerrar tu cuenta.",
+        ]},
+        { heading: "19. Cesión, divisibilidad, acuerdo íntegro, no renuncia", items: [
+          "No puedes ceder ni transferir estos Términos ni los derechos derivados sin nuestro consentimiento previo por escrito. Nosotros podemos ceder estos Términos libremente, incluso en relación con una fusión, adquisición, financiamiento o venta de activos.",
+          "Si alguna disposición de estos Términos se considera inválida o inejecutable, las demás disposiciones permanecen en pleno vigor, y la disposición inválida se modificará en la medida mínima necesaria para hacerla ejecutable.",
+          "Estos Términos (junto con las políticas que incorporan) constituyen el acuerdo íntegro entre tú y MatchVenezuelan respecto del servicio y reemplazan cualquier acuerdo previo.",
+          "Nuestra falta de exigir un derecho o disposición no constituye renuncia.",
+        ]},
+        { heading: "20. Contacto", items: [
+          "Legal general: legal@matchvenezuelan.com · Privacidad: privacy@matchvenezuelan.com · Confianza y seguridad: trust@matchvenezuelan.com · Copyright/DMCA: copyright@matchvenezuelan.com · Seguridad: security@matchvenezuelan.com.",
         ]},
       ],
       privacySections: [
-        { heading: "1. Alcance", items: [
-          "Esta Política de Privacidad explica qué información personal recopila MatchVenezuelan, cómo la usamos, con quién la compartimos y los derechos que tienes sobre ella.",
-          "Aplica a nuestro sitio web, app y cualquier servicio relacionado.",
+        { heading: "1. Responsable, alcance y contacto", items: [
+          "El responsable del tratamiento de los datos personales tratados en relación con la plataforma es MatchVenezuelan (entidad legal, domicilio registrado e identificadores fiscales disponibles a solicitud en privacy@matchvenezuelan.com).",
+          "Esta Política de Privacidad aplica a nuestro sitio web, app, soporte al cliente y cualquier servicio relacionado. No aplica a servicios de terceros que decidas usar (p. ej. apps de mensajería externas si decides comunicarte fuera de la plataforma), regidos por sus propios avisos de privacidad.",
+          "Para preguntas de privacidad o ejercer tus derechos, contacta a privacy@matchvenezuelan.com. Los usuarios de UE/Reino Unido también pueden contactar a nuestro Delegado de Protección de Datos (DPO) en dpo@matchvenezuelan.com.",
         ]},
-        { heading: "2. Datos que recopilamos", items: [
-          "Datos de cuenta: correo, contraseña (con hash), nombre visible, género, confirmación de edad, país, idioma preferido.",
-          "Datos de perfil: bio, ciudad, idiomas hablados, intención de relación, fotos y cualquier dato opcional que decidas compartir.",
-          "Datos de verificación: documentos y selfies que envías para verificar identidad, foto, redes sociales o ingresos (gestionados por revisores capacitados y almacenados con acceso restringido).",
-          "Datos de actividad: mensajes que envías, regalos que pides, favoritos, bloqueos, reportes y registros básicos de interacción.",
-          "Datos técnicos: dirección IP, tipo de dispositivo y navegador, idioma, ubicación aproximada (país/región) y cookies necesarias para autenticación y seguridad.",
-          "Datos de facturación: gestionados por nuestro procesador de pagos. Solo guardamos registros mínimos (id de transacción, monto, estado) — nunca números de tarjeta completos.",
+        { heading: "2. Categorías de datos personales que recopilamos", items: [
+          "Datos de cuenta: correo electrónico, contraseña con hash, nombre visible, género, confirmación de edad, país y ciudad, idioma preferido, estado de la cuenta y rol.",
+          "Datos de perfil: bio, idiomas hablados, intención de relación, educación y ocupación (si las proporcionas), intereses, fotos, presentaciones en video y demás datos opcionales que decidas compartir.",
+          "Datos de verificación: imágenes de identificación oficial, selfies (incluida geometría facial biométrica para verificaciones de vida cuando aplique), comprobantes de domicilio o de ingresos que envíes y el estado de verificación correspondiente.",
+          "Datos de comunicaciones: mensajes que envías y recibes en la plataforma (incluidas versiones traducidas), pedidos y mensajes de regalos, reportes que presentas e interacciones con nuestro equipo de soporte.",
+          "Datos de actividad: visualizaciones de perfil, favoritos, bloqueos, reportes, historial de inicios de sesión, uso de funciones, historial de suscripción y créditos, y registros básicos de interacción.",
+          "Datos de dispositivo y técnicos: dirección IP, tipo de dispositivo, sistema operativo, navegador, idioma, zona horaria, ubicación aproximada (típicamente país y región derivada de IP), registros de fallos y rendimiento, y cookies/tecnologías similares según se describe en nuestra Política de Cookies.",
+          "Datos de pago: gestionados por nuestros procesadores de pago certificados PCI. Solo guardamos registros mínimos (id de transacción, monto, moneda, estado, últimos cuatro dígitos y marca de tarjeta cuando los devuelva el procesador) — nunca números de tarjeta completos, CVV ni credenciales bancarias.",
+          "Datos inferidos: señales derivadas como puntajes de riesgo, señales de fraude, preferencias de idioma y señales de coincidencia, generadas por nuestros sistemas a partir de los datos anteriores.",
         ]},
-        { heading: "3. Cómo usamos tus datos", items: [
-          "Operar funciones esenciales: crear tu cuenta, mostrar tu perfil a otros miembros, entregar mensajes, procesar regalos y suscripciones.",
-          "Confianza y seguridad: verificar identidades, detectar fraudes, estafas y violaciones de políticas, hacer cumplir bloqueos y vetos, y moderar contenido.",
-          "Comunicación: notificaciones de cuenta, facturación y seguridad. Correos de marketing solo con tu consentimiento y puedes darte de baja en cualquier momento.",
-          "Cumplimiento legal: responder a solicitudes legales y proteger los derechos de los miembros y de la empresa.",
+        { heading: "3. Fuentes de los datos personales", items: [
+          "Directamente de ti cuando te registras, completas tu perfil, te comunicas con otros miembros, contactas a soporte o envías verificación.",
+          "Automáticamente desde tus dispositivos cuando interactúas con el servicio (p. ej. cookies, archivos de registro).",
+          "De terceros como procesadores de pago, proveedores de verificación de identidad, antifraude, hosting, proveedores de inicio de sesión social (cuando elijas usarlos) y autoridades u órdenes judiciales.",
         ]},
-        { heading: "4. Bases legales (RGPD / leyes similares)", items: [
-          "Ejecución del contrato: para prestar el servicio en el que te registraste.",
-          "Interés legítimo: mantener la plataforma segura, prevenir fraude y mejorar funciones.",
-          "Consentimiento: correos de marketing, cookies opcionales y documentos de verificación sensibles.",
-          "Obligación legal: impuestos, contabilidad, antifraude y solicitudes legales.",
+        { heading: "4. Fines y bases legales del tratamiento", items: [
+          "Prestación del servicio (base legal: ejecución del contrato, RGPD art. 6(1)(b)): crear y mantener tu cuenta, mostrar tu perfil a otros miembros, entregar mensajes, procesar pagos, regalos y verificaciones.",
+          "Confianza, seguridad y prevención de abusos (interés legítimo, art. 6(1)(f); cumplimiento de obligaciones legales, art. 6(1)(c)): verificar identidad, detectar fraude, estafas, esquemas románticos, señales de lavado de dinero, coincidencias con sanciones, acoso y violaciones de políticas; aplicar bloqueos y vetos; moderar contenido; prevenir solicitación, trata y material de abuso sexual infantil.",
+          "Comunicaciones (ejecución del contrato; intereses legítimos; consentimiento para marketing): notificaciones de cuenta, facturación y seguridad; actualizaciones de producto; correos de marketing solo con tu consentimiento y hasta que te des de baja.",
+          "Personalización y mejora del producto (intereses legítimos): sugerir matches, ordenar el descubrimiento, mejorar funciones, depurar, analítica en forma agregada o seudonimizada.",
+          "Cumplimiento legal, defensa y aplicación (obligación legal; intereses legítimos): impuestos, contabilidad, antifraude, antilavado, solicitudes legales, ejercicio o defensa de reclamaciones legales, aplicación de nuestros Términos.",
+          "Datos sensibles y categorías especiales: la información de perfil que pueda revelar vida sexual u orientación sexual, y los datos biométricos usados para verificaciones de vida durante la verificación de ID, se tratan con base en tu consentimiento explícito (RGPD art. 9(2)(a)) y/o motivos sustanciales de interés público cuando aplique.",
+          "Decisiones automatizadas: usamos sistemas automatizados para marcar conducta sospechosa, limitar la automatización sospechada y priorizar colas de moderación. Las decisiones con efectos significativos (p. ej. terminación de cuenta) son revisadas por humanos cuando se requiera, y puedes solicitar revisión humana escribiendo a appeals@matchvenezuelan.com.",
         ]},
-        { heading: "5. Compartición", items: [
-          "Proveedores de servicios que actúan en nuestro nombre (hosting, correo, pagos, antifraude, verificación de identidad) bajo términos escritos de confidencialidad y protección de datos.",
-          "Otros miembros solo ven lo que tu perfil, ajustes y conversaciones eligen compartir con ellos.",
-          "Autoridades cuando la ley lo exija o para prevenir daños graves. Nunca vendemos tus datos personales.",
+        { heading: "5. Destinatarios y divulgaciones", items: [
+          "Proveedores de servicios (encargados del tratamiento) que actúan según nuestras instrucciones documentadas: hosting e infraestructura, entrega de correo y SMS, procesamiento de pagos, verificación de identidad y domicilio, prevención de fraude, atención al cliente, traducción, analítica, monitoreo de errores y herramientas de seguridad. Todos los encargados están vinculados por acuerdos escritos de protección de datos.",
+          "Otros miembros: solo ven la información de perfil, fotos y mensajes que tu configuración de privacidad y tus conversaciones les expongan. Nunca divulgamos tu correo, teléfono, datos de pago o ubicación precisa a otros miembros.",
+          "Autoridades y terceros: cuando lo exija la ley aplicable, una orden judicial, proceso legal válido, o cuando creamos de buena fe que la divulgación es necesaria para (i) cumplir una obligación legal, (ii) proteger los derechos, propiedad o seguridad de MatchVenezuelan, nuestros miembros o el público, (iii) detectar, prevenir o atender fraude, problemas de seguridad o técnicos, o (iv) reportar sospecha de explotación sexual infantil al NCMEC u organismos equivalentes.",
+          "Operaciones corporativas: en relación con una fusión, adquisición, financiamiento, reorganización, quiebra o venta de activos, los datos personales pueden transferirse a la contraparte correspondiente sujeto a confidencialidad apropiada y protección continuada.",
+          "No vendemos tus datos personales y no los compartimos con anunciantes o brokers de datos para publicidad conductual entre contextos.",
         ]},
-        { heading: "6. Transferencias internacionales", items: [
-          "Tus datos pueden procesarse en países distintos al tuyo. Cuando se requiera, usamos cláusulas contractuales tipo u otros mecanismos de transferencia aprobados.",
+        { heading: "6. Transferencias internacionales de datos", items: [
+          "Como la plataforma es internacional, tus datos personales pueden tratarse y almacenarse en países distintos a tu país de residencia, incluidos países que pueden no proporcionar el mismo nivel de protección que tu jurisdicción. Cuando se requiera (p. ej. transferencias desde la UE/Reino Unido a terceros países), nos basamos en las Cláusulas Contractuales Tipo de la Comisión Europea, el Adendum de Transferencia Internacional de Datos del Reino Unido u otro mecanismo de transferencia aprobado, y aplicamos medidas técnicas y organizativas complementarias cuando proceda.",
         ]},
-        { heading: "7. Conservación", items: [
+        { heading: "7. Conservación de datos", items: [
           "Los datos de cuenta activa se conservan mientras tu cuenta exista.",
-          "Tras la eliminación, registros básicos de seguridad (p. ej. historial de vetos, marcas de moderación) se conservan por un período limitado para proteger a la comunidad.",
-          "Los registros de facturación se conservan durante el período exigido por la ley fiscal en nuestra jurisdicción.",
+          "Tras el cierre de la cuenta, los datos básicos se eliminan o anonimizan en un plazo razonable, salvo: (a) los registros de veto, señales de fraude, marcas de moderación previas e identificadores necesarios para impedir el re-registro, conservados durante el tiempo necesario para proteger a la comunidad; (b) los datos de verificación se conservan el período necesario para demostrar cumplimiento y detectar fraude reincidente, tras lo cual se eliminan o anonimizan; (c) los registros de facturación, fiscales y contables se conservan durante el período exigido por ley aplicable (típicamente 5–10 años según la jurisdicción); (d) los datos sujetos a investigación, disputa o retención legal en curso se conservan hasta su resolución.",
+          "Los respaldos rotan según un calendario definido y los datos previamente eliminados se purgan de los respaldos dentro de ese ciclo.",
         ]},
         { heading: "8. Tus derechos", items: [
-          "Acceder, corregir, exportar o eliminar tus datos personales desde tu configuración o escribiendo a privacy@matchvenezuelan.com.",
-          "Retirar el consentimiento en cualquier momento para tratamientos basados en consentimiento.",
-          "Oponerte o restringir ciertos tratamientos, y presentar una reclamación ante tu autoridad local de protección de datos.",
+          "Según tu jurisdicción, tienes derecho a: acceder a los datos personales que tenemos sobre ti; rectificar datos inexactos o incompletos; suprimir tus datos ('derecho al olvido') en ciertas circunstancias; restringir u oponerte al tratamiento; portabilidad de datos; retirar el consentimiento en cualquier momento (sin afectar el tratamiento previo lícito); y a no ser objeto de decisiones únicamente automatizadas con efectos significativos sin revisión humana.",
+          "Los usuarios de UE/Reino Unido pueden presentar reclamación ante su autoridad de control local. Los residentes de California tienen derechos adicionales bajo CCPA/CPRA, incluido el derecho a saber, suprimir, corregir, limitar el uso de información personal sensible y a no sufrir discriminación por ejercer sus derechos — no 'vendemos' ni 'compartimos' información personal según se definen en la CCPA. Los usuarios brasileños tienen derechos bajo la LGPD; los usuarios de otras jurisdicciones pueden tener derechos similares.",
+          "Para ejercer tus derechos, usa las herramientas en la app cuando estén disponibles o escribe a privacy@matchvenezuelan.com. Verificaremos tu identidad (típicamente mediante tus credenciales) antes de responder y responderemos dentro del plazo legal.",
         ]},
         { heading: "9. Seguridad", items: [
-          "Usamos cifrado en tránsito, contraseñas con hash, controles de acceso por rol, registro de auditoría y acceso restringido a revisores para los datos sensibles de verificación.",
-          "Ningún sistema es 100 % seguro — usa una contraseña fuerte y única y mantén segura tu cuenta de correo.",
+          "Implementamos medidas técnicas y organizativas estándar de la industria, incluido cifrado en tránsito (HTTPS/TLS), cifrado de datos sensibles en reposo cuando aplique, contraseñas con sal y hash, controles de acceso por rol, principio de privilegio mínimo, registro de auditoría, acceso restringido a datos de verificación por revisores capacitados, segmentación de red, revisiones de seguridad de proveedores, gestión de vulnerabilidades y formación continua del personal.",
+          "Ningún sistema puede garantizarse 100% seguro. Usa una contraseña fuerte y única, habilita las funciones de seguridad disponibles y mantén segura tu cuenta de correo. En caso de una violación de datos personales que afecte tus derechos, te notificaremos a ti y a la autoridad de control correspondiente según lo exija la ley aplicable (típicamente dentro de 72 horas cuando se requiera).",
         ]},
-        { heading: "10. Menores", items: [
-          "MatchVenezuelan es estrictamente para mayores de 18 años. No recopilamos a sabiendas datos de menores y eliminamos esas cuentas de inmediato cuando se descubren.",
+        { heading: "10. Cookies y tecnologías similares", items: [
+          "Usamos cookies estrictamente necesarias para autenticación, seguridad y funcionalidad básica, y — solo con tu consentimiento cuando se requiera — cookies funcionales, de analítica y (raramente) de marketing. Consulta nuestra Política de Cookies para más detalles y para gestionar tus preferencias.",
         ]},
-        { heading: "11. Cambios y contacto", items: [
-          "Los cambios materiales se anunciarán en la app y, cuando corresponda, por correo. Preguntas: privacy@matchvenezuelan.com.",
+        { heading: "11. Menores", items: [
+          "MatchVenezuelan es estrictamente para personas adultas de 18 años o más. No recopilamos a sabiendas datos personales de menores de 18. Si descubrimos una cuenta de un menor, eliminamos la cuenta y los datos asociados, preservamos material según lo exija la ley y reportamos la explotación sexual al NCMEC o autoridades equivalentes.",
+        ]},
+        { heading: "12. Cambios a esta Política de Privacidad", items: [
+          "Los cambios materiales se anunciarán en la app y, cuando tengamos tu correo verificado, por correo. La fecha 'Última actualización' al inicio de esta página indica la revisión más reciente. El uso continuado tras la fecha efectiva constituye aceptación de la Política actualizada cuando la ley lo permita.",
+        ]},
+        { heading: "13. Contacto", items: [
+          "Preguntas de privacidad, solicitudes de derechos y reclamaciones: privacy@matchvenezuelan.com. DPO de UE/Reino Unido: dpo@matchvenezuelan.com.",
         ]},
       ],
       aupSections: [
-        { heading: "1. Propósito", items: [
-          "MatchVenezuelan existe para ayudar a adultos a construir relaciones reales y respetuosas a través de fronteras. Esta Política de Uso Aceptable describe el comportamiento que exigimos de cada miembro.",
+        { heading: "1. Propósito y alcance", items: [
+          "MatchVenezuelan existe para ayudar a personas adultas a construir relaciones reales, respetuosas y serias a través de fronteras. Esta Política de Uso Aceptable ('PUA') forma parte de los Términos de Servicio y describe la conducta, contenido y actividades que se requieren, restringen o prohíben en la plataforma. Aplica a cada cuenta, función e interacción (perfil, fotos, mensajería, regalos, llamadas, soporte).",
         ]},
-        { heading: "2. Sé honesto", items: [
-          "Usa información precisa sobre quién eres: nombre real (o primer nombre reconocible), edad real, fotos reales.",
-          "No tergiverses tu estado civil, intenciones, país de residencia o situación financiera.",
+        { heading: "2. Sé honesto sobre quién eres", items: [
+          "Usa información precisa: nombre real (o forma reconocible), edad real, fotos reales tuyas, país y ciudad reales, estado civil e intención reales.",
+          "No tergiverses tu identidad, edad, género, estado civil, país de residencia, empleo, situación financiera, ni tus razones para estar en la plataforma.",
+          "No suplantes a otra persona, figura pública o personaje ficticio. No uses rostros generados por IA, deepfakes ni fotografías robadas.",
         ]},
-        { heading: "3. Sé respetuoso", items: [
-          "Trata a cada miembro con dignidad, especialmente a las mujeres, centrales en esta comunidad.",
-          "Sin acoso, amenazas, discurso de odio, racismo, sexismo ni discriminación por nacionalidad, religión, cuerpo o nivel socioeconómico.",
-          "Acepta el 'no' como 'no', incluido el silencio tras un mensaje inicial.",
+        { heading: "3. Sé respetuoso — especialmente con las mujeres", items: [
+          "Trata a cada miembro con dignidad. Las mujeres son el corazón de esta comunidad y el acoso a mujeres en cualquier forma se trata como una violación grave.",
+          "Sin acoso, amenazas, intimidación, coerción sexual, discurso de odio, racismo, sexismo, xenofobia o discriminación por nacionalidad, religión, cuerpo, discapacidad, idioma o nivel socioeconómico.",
+          "Acepta el 'no' como 'no'. El contacto repetido no deseado tras ser rechazado, bloqueado o tras silencio luego de un mensaje inicial es acoso.",
         ]},
-        { heading: "4. Mantenlo apropiado", items: [
-          "Sin desnudez, imágenes sexualmente explícitas ni contenido pornográfico en perfiles, fotos o mensajes.",
-          "Sin violencia gráfica, autolesiones ni contenido que sexualice a menores. Ese contenido se reporta a las autoridades.",
+        { heading: "4. Mantén el contenido apropiado", items: [
+          "Sin desnudez, imágenes sexualmente sugerentes, mensajes sexualmente explícitos, contenido fetichista o pornográfico en perfiles, fotos, videos, notas de voz, regalos o mensajes.",
+          "Sin contenido que sexualice, represente o solicite a menores en ninguna forma. Tal contenido se preserva y se reporta al NCMEC y/o a las autoridades locales, y la cuenta se termina de forma permanente.",
+          "Sin violencia gráfica, gore, crueldad animal, contenido de autolesión, contenido que promueva trastornos alimentarios, terrorismo, ideología extremista o que glorifique actividad delictiva.",
         ]},
-        { heading: "5. Sin estafas ni monetización fuera de la plataforma", items: [
-          "No solicites, pidas ni envíes dinero, cripto, tarjetas de regalo o transferencias fuera de la plataforma — ni siquiera enmarcado como 'ayuda', 'visa', 'viaje' o 'emergencia'.",
-          "No promociones servicios externos, OnlyFans, escort, arreglos sugar ni ninguna actividad sexual comercial.",
-          "No uses MatchVenezuelan para reclutar para otras plataformas, negocios o esquemas de romance.",
+        { heading: "5. Sin solicitación, estafas ni monetización fuera de la plataforma", items: [
+          "No solicites, pidas, ofrezcas ni envíes dinero, cripto, tarjetas de regalo, transferencias, mesadas, alquiler, matrícula, gastos de visa o cualquier otra contraprestación fuera de la plataforma — ni siquiera enmarcado como 'ayuda', 'emergencia', 'viaje', 'médico' o 'familia'.",
+          "No promociones servicios externos, OnlyFans, sitios de escort, arreglos sugar, 'oportunidades' de modelaje, sitios de cámara, MLM, esquemas cripto, organizaciones religiosas o políticas, ni actividad sexual comercial.",
+          "No uses MatchVenezuelan para reclutar miembros para otras plataformas, negocios, agencias o esquemas de romance, ni para cosechar contactos.",
+          "Las estafas románticas, fraude de tarifa anticipada, esquemas 'pig-butchering' y similares están absolutamente prohibidos y serán reportados a las fuerzas del orden y unidades de delitos financieros.",
         ]},
-        { heading: "6. Protege a la comunidad", items: [
-          "No compartas información privada, fotos o conversaciones de otros miembros fuera de la plataforma.",
-          "No esquives la moderación, no evadas vetos, no operes múltiples cuentas, ni uses bots o scrapers.",
-          "Reporta comportamientos inseguros. El reporte es confidencial y nuestro equipo revisa cada uno.",
+        { heading: "6. Protege a la comunidad y a la plataforma", items: [
+          "No compartas información privada, fotos, videos o conversaciones de otro miembro fuera de la plataforma sin su consentimiento explícito. Las imágenes íntimas no consentidas están estrictamente prohibidas y pueden reportarse a las autoridades.",
+          "No esquives la moderación, no evadas vetos, no operes múltiples cuentas, no compartas cuentas, no uses bots, scripts, scrapers ni automatización de ningún tipo.",
+          "No intentes acceder a otra cuenta, interferir con el servicio, sondear vulnerabilidades (salvo a través de nuestro canal de divulgación responsable), subir malware ni entrenar modelos de aprendizaje automático con datos, fotos o mensajes de miembros.",
+          "Reporta comportamientos inseguros con prontitud mediante la herramienta de Reporte en la app. Los reportes son confidenciales y revisados por nuestro equipo. Presentar reportes deliberadamente falsos también es una violación.",
         ]},
-        { heading: "7. Cooperación con la verificación", items: [
-          "Cuando se te pida, completa el paso de verificación solicitado (identidad, foto, red social o ingresos). La negativa puede limitar tu capacidad de mensajear, enviar regalos o aparecer en descubrimiento destacado.",
+        { heading: "7. Verificación y cooperación", items: [
+          "Cuando se te pida, completa el paso de verificación solicitado (identidad, foto, redes sociales, origen de fondos o ingresos). La negativa puede limitar tu capacidad de mensajear, enviar regalos, retirar fondos, aparecer en descubrimiento destacado u otras funciones.",
+          "Coopera con honestidad con nuestro equipo de confianza y seguridad. Mentir a moderadores, fabricar evidencia o presentar documentos falsificados es una violación grave.",
         ]},
-        { heading: "8. Consecuencias", items: [
-          "Los problemas menores y por primera vez suelen resultar en una advertencia y eliminación de contenido.",
-          "Las violaciones repetidas o graves resultan en restricciones de funciones, suspensión o terminación permanente de tu cuenta, sin reembolso.",
-          "El comportamiento ilegal se reporta a las autoridades competentes.",
+        { heading: "8. Privacidad de los demás", items: [
+          "No recopiles, hagas scraping, copies, indexes, almacenes ni agregues datos de otros miembros. No fotografíes ni grabes la pantalla de un perfil o mensajes de otro miembro y los publiques. No contactes a la familia, empleador o comunidad de otro miembro para perjudicarlo.",
+        ]},
+        { heading: "9. Aplicación y consecuencias", items: [
+          "Usamos sistemas automatizados, reportes de miembros y moderadores humanos capacitados para hacer cumplir esta política. Según la gravedad, historial y contexto, las consecuencias pueden incluir: advertencia, eliminación de contenido, re-revisión de foto/perfil, verificación obligatoria, restricción de funciones (p. ej. mensajería limitada, sin regalos), degradación oculta en descubrimiento, suspensión temporal, terminación permanente, bloqueos antievasión por dispositivos e identificadores, y reportes a las autoridades, redes de pago, NCMEC, UIF u otros organismos.",
+          "La terminación por violación no da derecho a reembolso de suscripción, créditos, regalos virtuales o físicos, salvo cuando la ley imperativa lo exija.",
+          "Puedes apelar una decisión de aplicación escribiendo a appeals@matchvenezuelan.com dentro de los 30 días. Las apelaciones son atendidas por una persona que no estuvo involucrada en la decisión original cuando sea posible.",
+        ]},
+        { heading: "10. Reportes y contacto", items: [
+          "Reporta contenido ilegal, estafas o acoso mediante la herramienta de Reporte en la app o trust@matchvenezuelan.com. Si hay peligro inmediato, contacta primero a los servicios de emergencia locales.",
         ]},
       ],
       antiSections: [
         { heading: "1. Por qué existe esta política", items: [
-          "MatchVenezuelan es una plataforma para relaciones serias. Muchas miembros son mujeres en situación económica vulnerable. Permitir conductas transaccionales o coercitivas de dinero por contacto las pondría en riesgo y traicionaría el propósito de esta comunidad.",
-          "Por ello, esta Política Anti-Solicitación se aplica estrictamente y prevalece sobre cualquier acuerdo privado al que dos miembros intenten llegar.",
+          "MatchVenezuelan es una plataforma para relaciones serias. Muchas de nuestras miembros mujeres viven condiciones económicas difíciles, lo que hace que las conductas transaccionales o coercitivas de dinero por contacto sean especialmente dañinas. Esta Política Anti-Solicitación protege a los miembros de la explotación, protege a MatchVenezuelan de ser usada como conducto de escort o trata, y protege la integridad de cada relación genuina formada en la plataforma.",
+          "Esta política no es negociable. Forma parte de los Términos de Servicio y de la PUA y prevalece sobre cualquier acuerdo privado al que dos miembros intenten llegar.",
         ]},
-        { heading: "2. Lo que está estrictamente prohibido", items: [
-          "La prostitución, los servicios de escort y cualquier actividad sexual comercial en cualquier forma.",
-          "Los arreglos 'sugar' donde se ofrece dinero, regalos, mesadas, alquiler, matrícula o visas a cambio de contacto romántico o sexual.",
-          "Toda solicitación, petición u oferta de dinero — incluyendo cripto, tarjetas de regalo, transferencias, efectivo a la llegada, 'ayuda con cuentas', 'fondos de viaje' o 'gastos de visa' — a cambio de mensajes, fotos, videollamadas, citas o relaciones.",
-          "Proxenetismo, reclutamiento, organización o facilitación de cualquiera de las anteriores para ti o para otros.",
+        { heading: "2. Lo estrictamente prohibido", items: [
+          "La prostitución, los servicios de escort, burdeles, 'compañía' por contratación y cualquier actividad sexual comercial en cualquier forma, ya sea descrita en esos términos o disfrazada de otra cosa.",
+          "Los arreglos 'sugar', 'arrangement dating', relaciones por 'mesada', o cualquier marco en el que se ofrezca, solicite, insinúe o implique dinero, regalos, mesadas, alquiler, matrícula, pago de deudas, cirugía estética, visas, viajes, boletos o cualquier otra contraprestación a cambio de contacto romántico, sexual o de compañía.",
+          "Toda solicitación, petición, oferta, promesa o transferencia de dinero — incluyendo efectivo, transferencia bancaria, wire, cripto, tarjetas de regalo, prepagas, moneda en juegos, vales, 'ayuda con cuentas', 'fondos de viaje', 'gastos de visa', 'recargas de teléfono', 'efectivo a la llegada' o equivalentes — a cambio de mensajes, fotos, videos, videollamadas, citas, encuentros o relaciones.",
+          "Proxenetismo, reclutamiento, organización, publicidad, intermediación o facilitación de cualquiera de las anteriores para ti o para otros, incluida la operación de una 'agencia' que maneja cuentas en nombre de mujeres.",
+          "Hacerse pasar por agencia, manager o 'traductor' para negociar arreglos financieros entre miembros.",
         ]},
-        { heading: "3. Pedidos de pago fuera de la plataforma", items: [
-          "Los miembros no deben presionar, insinuar ni pedir directamente a otro miembro que envíe dinero fuera de la plataforma por ningún motivo conectado a su relación en la plataforma.",
-          "Los regalos legítimos pueden enviarse mediante el sistema oficial de regalos de la plataforma, que es moderado y auditable.",
+        { heading: "3. Pedidos de pago fuera de la plataforma y flujos de dinero", items: [
+          "Los miembros no deben presionar, insinuar, sugerir ni pedir directamente a otro miembro que envíe dinero, cripto, tarjetas de regalo o cualquier valor fuera de la plataforma por ningún motivo conectado a su relación en la plataforma — incluyendo 'emergencias familiares', 'cuentas médicas', 'costos de viaje', 'gastos de visa', 'cuentas de teléfono', 'alquiler', 'estudios', 'oportunidades de inversión' o 'ayuda para negocio'.",
+          "Los gestos legítimos de generosidad pueden enviarse mediante el sistema oficial de regalos de la plataforma, moderado y auditable, dentro de los límites publicados.",
+          "Los miembros no pueden usar MatchVenezuelan como un lugar para presentar a víctimas a estafas de inversión, esquemas cripto, MLM u otros esquemas financieros fraudulentos ('pig butchering', 'inversión romántica', 'trading love-baited').",
         ]},
-        { heading: "4. Estafas románticas y suplantación", items: [
-          "Fingir estar enamorado, en peligro, varado, enfermo o en crisis para obtener dinero es fraude.",
-          "Fingir ser una persona, edad, género o nacionalidad distinta para ganar confianza es fraude de identidad.",
-          "Ambas conductas conllevan veto inmediato y permanente y pueden ser reportadas a las autoridades.",
+        { heading: "4. Estafas románticas, fraude de identidad y coerción", items: [
+          "Fingir estar enamorado, en peligro, varado, enfermo, desplegado en el ejército, trabajando en una plataforma petrolera o en cualquier crisis para extraer dinero, regalos o asistencia es fraude.",
+          "Fingir ser una persona, edad, género, nacionalidad, estado civil o nivel de riqueza distintos para ganar confianza es fraude de identidad.",
+          "Coaccionar a otro miembro a contenido sexual, encuentros o transferencias de dinero — incluido a través de amenazas, chantaje, sextorsión o amenazas de imágenes íntimas no consentidas — es un delito grave.",
+          "Todo lo anterior se baneará inmediata y permanentemente, la cuenta se preservará según lo exija la ley y la conducta puede reportarse a las fuerzas del orden, unidades de delitos financieros y listas de vigilancia entre plataformas.",
         ]},
-        { heading: "5. Reportes", items: [
-          "Si alguien solicita dinero, sexo por dinero, escort o arreglos sugar, usa el botón de Reporte en la app y selecciona 'Solicitación / estafa'.",
-          "Los reportes son confidenciales. No compartimos tu identidad con la persona reportada.",
+        { heading: "5. Trata, explotación y seguridad infantil (tolerancia cero)", items: [
+          "Cualquier indicio de trata de personas, contrabando, matrimonio forzado, servidumbre por deudas, explotación organizada de mujeres o cualquier explotación sexual de menores activa la terminación inmediata de la cuenta, la preservación de evidencia y reportes al NCMEC, INTERPOL, autoridades nacionales de protección infantil y/o grupos antitrata según corresponda.",
+          "Cooperamos con organizaciones antitrata y de apoyo a víctimas debidamente acreditadas y podemos compartir la información necesaria con ellas mediante acuerdos legales.",
         ]},
-        { heading: "6. Aplicación", items: [
-          "Las violaciones confirmadas resultan en terminación inmediata y permanente de la cuenta en toda la plataforma, sin reembolso de suscripción activa, créditos o regalos.",
-          "Conservamos un registro de la violación para impedir que la persona se vuelva a registrar.",
-          "Cuando la conducta pueda ser delito, cooperamos plenamente con las autoridades competentes.",
+        { heading: "6. Reportes", items: [
+          "Si alguien solicita dinero, sexo por dinero, escort, arreglos sugar o intenta una estafa romántica, usa la herramienta de Reporte en la app y selecciona 'Solicitación / estafa' (o la categoría más cercana disponible), o escribe a trust@matchvenezuelan.com.",
+          "Los reportes son confidenciales. No compartimos tu identidad con la persona reportada. Presentar reportes deliberadamente falsos viola la PUA.",
         ]},
-        { heading: "7. Reafirmación", items: [
-          "Al usar MatchVenezuelan reafirmas que buscas una relación genuina — no una transacción — y te comprometes a tratar a cada miembro, especialmente a las mujeres, en consecuencia.",
+        { heading: "7. Aplicación", items: [
+          "Las violaciones confirmadas resultan en terminación inmediata y permanente de la cuenta en toda la plataforma, sin reembolso de suscripción activa, créditos, regalos virtuales o físicos, salvo cuando la ley imperativa lo exija.",
+          "Conservamos un registro de la violación e identificadores asociados (correo, dispositivo, pago) para impedir el re-registro.",
+          "Cuando la conducta pueda ser delito, cooperamos plenamente con las autoridades y podemos reportar proactivamente (incluido bajo leyes de reporte obligatorio para sospecha de material de abuso sexual infantil).",
+          "También podemos bloquear o reembolsar pagos asociados a conducta prohibida y proporcionar evidencia a redes de pago y bancos para defensa de contracargos.",
+        ]},
+        { heading: "8. Reafirmación", items: [
+          "Al usar MatchVenezuelan reafirmas que buscas una relación genuina — no una transacción — y te comprometes a tratar a cada miembro, especialmente a las mujeres, con dignidad, honestidad y respeto.",
         ]},
       ],
     },
