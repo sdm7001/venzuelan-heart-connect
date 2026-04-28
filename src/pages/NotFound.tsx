@@ -183,6 +183,13 @@ const NotFound = () => {
         contact: "Think this is a mistake?",
         contactCta: "Contact us",
         imgAlt: "Love letter sealed with a gold heart, drifting among tropical petals and a compass rose.",
+        searchLabel: "Search the site",
+        searchPlaceholder: "Search (e.g. safety, cookies, FAQ)…",
+        searchHintEmpty: "Start typing to see suggestions.",
+        searchHintResults: (n: number) => `${n} ${n === 1 ? "result" : "results"} · Enter to go`,
+        searchNoResults: "No matches. Try a different word.",
+        searchClear: "Clear search",
+        searchKbd: "↑ ↓ to navigate · Enter to go · Esc to clear",
       };
 
   return (
