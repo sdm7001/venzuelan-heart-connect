@@ -1,11 +1,20 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, Compass, Home, HelpCircle, Mail, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Compass, CornerDownLeft, Home, HelpCircle, Mail, Search, ShieldCheck, X } from "lucide-react";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo } from "@/seo/seo";
+import { cn } from "@/lib/utils";
 import notFoundIllustration from "@/assets/not-found-letter.jpg";
+
+type SearchEntry = {
+  to: string;
+  label: string;
+  desc: string;
+  keywords: string;
+};
 
 const NotFound = () => {
   const location = useLocation();
@@ -37,6 +46,81 @@ const NotFound = () => {
       navigate(homeHref, { replace: true });
     }
   }, [navigate, homeHref]);
+
+  // --- Lightweight site search -------------------------------------------------
+  // Curated, language-aware index of public pages findable from the 404.
+  // Only include routes that ACTUALLY exist for the current language.
+  const searchIndex = useMemo<SearchEntry[]>(() => {
+    return isEs
+      ? [
+          { to: "/es/", label: "Inicio", desc: "Página principal", keywords: "inicio home principal portada" },
+          { to: "/es/safety", label: "Seguridad", desc: "Verificación, moderación y reportes", keywords: "seguridad verificacion moderacion reportar trust safety" },
+          { to: "/es/faq", label: "Preguntas frecuentes", desc: "Respuestas a las dudas más comunes", keywords: "faq preguntas frecuentes ayuda dudas" },
+          { to: "/es/legal/terms", label: "Términos de servicio", desc: "Condiciones de uso del servicio", keywords: "terminos servicio condiciones legal" },
+          { to: "/es/legal/privacy", label: "Política de privacidad", desc: "Cómo tratamos tus datos personales", keywords: "privacidad datos personales rgpd gdpr" },
+          { to: "/es/legal/cookies", label: "Política de cookies", desc: "Cookies que usamos y por qué", keywords: "cookies rastreo tracking" },
+          { to: "/es/legal/consent", label: "Preferencias de consentimiento", desc: "Cambia tus preferencias de cookies", keywords: "consentimiento preferencias cookies privacidad" },
+          { to: "/es/legal/community-guidelines", label: "Normas de la comunidad", desc: "Cómo nos tratamos aquí", keywords: "normas comunidad reglas convivencia" },
+          { to: "/es/legal/refunds", label: "Política de reembolsos", desc: "Reembolsos y derecho de desistimiento", keywords: "reembolso devolucion desistimiento facturacion" },
+          { to: "/es/legal/disclaimer", label: "Aviso legal", desc: "Descargo de responsabilidad", keywords: "aviso legal descargo responsabilidad" },
+        ]
+      : [
+          { to: "/", label: "Home", desc: "Main landing page", keywords: "home start landing main" },
+          { to: "/how-it-works", label: "How it works", desc: "The journey, step by step", keywords: "how it works steps onboarding journey" },
+          { to: "/safety", label: "Safety", desc: "Verification, moderation and reporting", keywords: "safety trust verification moderation report" },
+          { to: "/faq", label: "FAQ", desc: "Answers to common questions", keywords: "faq questions help support" },
+          { to: "/resources", label: "Resources", desc: "Articles, guides and culture notes", keywords: "resources blog articles guides" },
+          { to: "/legal/terms", label: "Terms of service", desc: "Service terms and conditions", keywords: "terms conditions legal tos" },
+          { to: "/legal/privacy", label: "Privacy policy", desc: "How we handle your data", keywords: "privacy data gdpr ccpa" },
+          { to: "/legal/cookies", label: "Cookie policy", desc: "Cookies we use and why", keywords: "cookies tracking" },
+          { to: "/legal/consent", label: "Consent preferences", desc: "Change your cookie settings", keywords: "consent preferences cookies privacy" },
+          { to: "/legal/community-guidelines", label: "Community guidelines", desc: "How we treat each other here", keywords: "community guidelines rules conduct" },
+          { to: "/legal/refunds", label: "Refund policy", desc: "Refunds and right of withdrawal", keywords: "refund return billing withdrawal" },
+          { to: "/legal/disclaimer", label: "Legal disclaimer", desc: "Limits of liability and scope", keywords: "disclaimer liability legal" },
+          { to: "/legal/acceptable-use", label: "Acceptable use", desc: "What's allowed on the platform", keywords: "acceptable use abuse rules" },
+          { to: "/auth", label: "Sign in / Join", desc: "Access your account or create one", keywords: "sign in login signup join register account" },
+        ];
+  }, [isEs]);
+
+  const [query, setQuery] = useState("");
+  const [activeIdx, setActiveIdx] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [] as SearchEntry[];
+    const tokens = q.split(/\s+/).filter(Boolean);
+    return searchIndex
+      .filter((e) => {
+        const hay = `${e.label} ${e.desc} ${e.keywords} ${e.to}`.toLowerCase();
+        return tokens.every((tok) => hay.includes(tok));
+      })
+      .slice(0, 6);
+  }, [query, searchIndex]);
+
+  // Reset highlighted result whenever the result set changes.
+  useEffect(() => { setActiveIdx(0); }, [query, isEs]);
+
+  const onSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (results.length) setActiveIdx((i) => (i + 1) % results.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (results.length) setActiveIdx((i) => (i - 1 + results.length) % results.length);
+    } else if (e.key === "Enter") {
+      const target = results[activeIdx];
+      if (target) {
+        e.preventDefault();
+        navigate(target.to);
+      }
+    } else if (e.key === "Escape") {
+      if (query) {
+        e.preventDefault();
+        setQuery("");
+      }
+    }
+  };
 
   useSeo(
     {
@@ -73,6 +157,13 @@ const NotFound = () => {
         contact: "¿Crees que esto es un error?",
         contactCta: "Escríbenos",
         imgAlt: "Carta de amor sellada con corazón dorado, perdida entre flores tropicales y una rosa de los vientos.",
+        searchLabel: "Busca una sección",
+        searchPlaceholder: "Buscar (ej. seguridad, cookies, FAQ)…",
+        searchHintEmpty: "Empieza a escribir para ver sugerencias.",
+        searchHintResults: (n: number) => `${n} ${n === 1 ? "resultado" : "resultados"} · Enter para ir`,
+        searchNoResults: "Sin resultados. Prueba con otra palabra.",
+        searchClear: "Limpiar búsqueda",
+        searchKbd: "↑ ↓ para navegar · Enter para ir · Esc para limpiar",
       }
     : {
         eyebrow: "Error 404",
@@ -92,6 +183,13 @@ const NotFound = () => {
         contact: "Think this is a mistake?",
         contactCta: "Contact us",
         imgAlt: "Love letter sealed with a gold heart, drifting among tropical petals and a compass rose.",
+        searchLabel: "Search the site",
+        searchPlaceholder: "Search (e.g. safety, cookies, FAQ)…",
+        searchHintEmpty: "Start typing to see suggestions.",
+        searchHintResults: (n: number) => `${n} ${n === 1 ? "result" : "results"} · Enter to go`,
+        searchNoResults: "No matches. Try a different word.",
+        searchClear: "Clear search",
+        searchKbd: "↑ ↓ to navigate · Enter to go · Esc to clear",
       };
 
   return (
@@ -124,6 +222,92 @@ const NotFound = () => {
             <div className="mt-4 inline-flex max-w-full items-center gap-2 rounded-lg border border-dashed border-border bg-card/60 px-3 py-2 text-xs text-muted-foreground">
               <span className="font-semibold uppercase tracking-wider text-[10px] text-burgundy">{t.path}</span>
               <code className="truncate font-mono text-[12px] text-foreground">{location.pathname}</code>
+            </div>
+
+            {/* Site search */}
+            <div className="mt-7" role="search" aria-label={t.searchLabel}>
+              <label htmlFor="nf-search" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-burgundy">
+                {t.searchLabel}
+              </label>
+              <div className="relative">
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden
+                />
+                <Input
+                  id="nf-search"
+                  ref={inputRef}
+                  type="search"
+                  inputMode="search"
+                  autoComplete="off"
+                  spellCheck={false}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={onSearchKeyDown}
+                  placeholder={t.searchPlaceholder}
+                  aria-controls="nf-search-results"
+                  aria-expanded={results.length > 0}
+                  aria-activedescendant={results[activeIdx] ? `nf-result-${activeIdx}` : undefined}
+                  className="h-11 pl-10 pr-10 text-sm"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => { setQuery(""); inputRef.current?.focus(); }}
+                    aria-label={t.searchClear}
+                    className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent/40 hover:text-foreground"
+                  >
+                    <X className="h-4 w-4" aria-hidden />
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-2 min-h-[1.25rem] text-[11px] text-muted-foreground" aria-live="polite">
+                {query.trim() === ""
+                  ? t.searchHintEmpty
+                  : results.length === 0
+                    ? t.searchNoResults
+                    : t.searchHintResults(results.length)}
+              </div>
+
+              {results.length > 0 && (
+                <ul
+                  id="nf-search-results"
+                  role="listbox"
+                  aria-label={t.searchLabel}
+                  className="mt-2 overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)]"
+                >
+                  {results.map((r, idx) => {
+                    const active = idx === activeIdx;
+                    return (
+                      <li key={r.to} role="option" id={`nf-result-${idx}`} aria-selected={active}>
+                        <Link
+                          to={r.to}
+                          onMouseEnter={() => setActiveIdx(idx)}
+                          className={cn(
+                            "flex items-center gap-3 px-3 py-2.5 text-sm transition-colors",
+                            active ? "bg-primary-soft/60" : "hover:bg-primary-soft/30",
+                          )}
+                        >
+                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-background text-burgundy">
+                            <ArrowRight className="h-4 w-4" aria-hidden />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate font-medium text-foreground">{r.label}</span>
+                            <span className="block truncate text-xs text-muted-foreground">{r.desc}</span>
+                          </span>
+                          <code className="hidden truncate font-mono text-[11px] text-muted-foreground sm:block">{r.to}</code>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+
+              <p className="mt-2 hidden items-center gap-1 text-[11px] text-muted-foreground sm:flex">
+                <CornerDownLeft className="h-3 w-3" aria-hidden />
+                {t.searchKbd}
+              </p>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
