@@ -8,6 +8,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo } from "@/seo/seo";
 import { cn } from "@/lib/utils";
 import notFoundIllustration from "@/assets/not-found-letter.jpg";
+import { ReportMissingPageForm } from "@/components/not-found/ReportMissingPageForm";
 
 type SearchEntry = {
   to: string;
@@ -320,6 +321,9 @@ const NotFound = () => {
                 <ArrowLeft className="mr-2 h-4 w-4" aria-hidden /> {t.goBack}
               </Button>
             </div>
+
+            {/* Report missing page */}
+            <ReportMissingPageForm brokenPath={location.pathname} language={isEs ? "es" : "en"} />
           </div>
 
           {/* Illustration */}
