@@ -129,11 +129,11 @@ const NotFound = () => {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to={`${prefix}/`}>
+                <Link to={homeHref}>
                   <Home className="mr-2 h-4 w-4" aria-hidden /> {t.backHome}
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" onClick={() => navigate(-1)}>
+              <Button variant="outline" size="lg" onClick={goBack}>
                 <ArrowLeft className="mr-2 h-4 w-4" aria-hidden /> {t.goBack}
               </Button>
             </div>
