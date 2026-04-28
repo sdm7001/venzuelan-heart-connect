@@ -275,3 +275,181 @@ export default function CookiePolicy() {
     </PublicLayout>
   );
 }
+
+type CookieRow = {
+  name: string;
+  party: "first" | "third";
+  provider: string;
+  category: "necessary" | "functional" | "analytics" | "security" | "payment" | "marketing";
+  purpose_en: string;
+  purpose_es: string;
+  duration_en: string;
+  duration_es: string;
+};
+
+const COOKIE_INVENTORY: CookieRow[] = [
+  // First-party — strictly necessary
+  { name: "sb-access-token", party: "first", provider: "MatchVenezuelan", category: "necessary",
+    purpose_en: "Holds your short-lived authentication token so you stay signed in across pages.",
+    purpose_es: "Guarda tu token de autenticación de corta duración para mantenerte conectado entre páginas.",
+    duration_en: "Session (≈1 hour, auto-refreshed)", duration_es: "Sesión (≈1 hora, refresco automático)" },
+  { name: "sb-refresh-token", party: "first", provider: "MatchVenezuelan", category: "necessary",
+    purpose_en: "Allows your session to be silently renewed without forcing you to log in again.",
+    purpose_es: "Permite renovar tu sesión silenciosamente sin pedirte volver a iniciar sesión.",
+    duration_en: "Up to 30 days or until logout", duration_es: "Hasta 30 días o hasta cerrar sesión" },
+  { name: "mv-csrf", party: "first", provider: "MatchVenezuelan", category: "security",
+    purpose_en: "Anti-CSRF token attached to sensitive form submissions (profile changes, payments, account deletion).",
+    purpose_es: "Token anti-CSRF adjunto a envíos de formularios sensibles (cambios de perfil, pagos, baja de cuenta).",
+    duration_en: "Session", duration_es: "Sesión" },
+  { name: "mv-rate", party: "first", provider: "MatchVenezuelan", category: "security",
+    purpose_en: "Tracks request frequency to mitigate brute-force, scraping and abuse.",
+    purpose_es: "Registra la frecuencia de peticiones para mitigar fuerza bruta, scraping y abuso.",
+    duration_en: "15 minutes (rolling window)", duration_es: "15 minutos (ventana móvil)" },
+  { name: "mv-consent", party: "first", provider: "MatchVenezuelan", category: "necessary",
+    purpose_en: "Stores your cookie/consent choices, the policy version accepted and the timestamp.",
+    purpose_es: "Guarda tus elecciones de cookies/consentimiento, la versión aceptada y la marca temporal.",
+    duration_en: "12 months", duration_es: "12 meses" },
+  { name: "mv-step-up", party: "first", provider: "MatchVenezuelan", category: "security",
+    purpose_en: "Marks recent step-up verification (MFA / re-authentication) for sensitive staff and admin actions.",
+    purpose_es: "Marca la verificación reforzada reciente (MFA / reautenticación) para acciones sensibles de staff y administración.",
+    duration_en: "15 minutes", duration_es: "15 minutos" },
+
+  // First-party — functional / preferences
+  { name: "mv-lang", party: "first", provider: "MatchVenezuelan", category: "functional",
+    purpose_en: "Remembers your preferred interface language (English or Spanish).",
+    purpose_es: "Recuerda tu idioma preferido de la interfaz (inglés o español).",
+    duration_en: "12 months", duration_es: "12 meses" },
+  { name: "mv-theme", party: "first", provider: "MatchVenezuelan", category: "functional",
+    purpose_en: "Remembers your light/dark appearance preference.",
+    purpose_es: "Recuerda tu preferencia de apariencia clara/oscura.",
+    duration_en: "12 months", duration_es: "12 meses" },
+  { name: "mv-tz", party: "first", provider: "MatchVenezuelan", category: "functional",
+    purpose_en: "Stores your detected time zone so dates and times display correctly.",
+    purpose_es: "Almacena tu zona horaria detectada para mostrar fechas y horas correctamente.",
+    duration_en: "12 months", duration_es: "12 meses" },
+  { name: "mv-search-filters", party: "first", provider: "MatchVenezuelan", category: "functional",
+    purpose_en: "Saves the last search filters you used (age range, country, intention) for convenience.",
+    purpose_es: "Guarda los últimos filtros de búsqueda que usaste (rango de edad, país, intención) por comodidad.",
+    duration_en: "30 days", duration_es: "30 días" },
+  { name: "mv-banner-dismissed", party: "first", provider: "MatchVenezuelan", category: "functional",
+    purpose_en: "Remembers which informational banners or onboarding tips you have already dismissed.",
+    purpose_es: "Recuerda qué banners informativos o tips de onboarding ya cerraste.",
+    duration_en: "6 months", duration_es: "6 meses" },
+
+  // First-party — analytics (consent-gated where required)
+  { name: "mv-analytics-id", party: "first", provider: "MatchVenezuelan", category: "analytics",
+    purpose_en: "Pseudonymous identifier used to aggregate product usage events (page views, feature adoption, errors).",
+    purpose_es: "Identificador seudonimizado usado para agregar eventos de uso del producto (vistas, adopción de funciones, errores).",
+    duration_en: "13 months", duration_es: "13 meses" },
+  { name: "mv-analytics-session", party: "first", provider: "MatchVenezuelan", category: "analytics",
+    purpose_en: "Distinguishes one browsing session from another for aggregated funnel and performance reporting.",
+    purpose_es: "Distingue una sesión de navegación de otra para informes agregados de embudo y rendimiento.",
+    duration_en: "30 minutes", duration_es: "30 minutos" },
+
+  // Third-party — auth, payment, infra
+  { name: "__stripe_mid", party: "third", provider: "Stripe", category: "payment",
+    purpose_en: "Used by Stripe to detect fraud and securely process card payments and subscriptions.",
+    purpose_es: "Usada por Stripe para detectar fraude y procesar pagos con tarjeta y suscripciones de forma segura.",
+    duration_en: "1 year", duration_es: "1 año" },
+  { name: "__stripe_sid", party: "third", provider: "Stripe", category: "payment",
+    purpose_en: "Stripe session identifier used during checkout to prevent fraudulent transactions.",
+    purpose_es: "Identificador de sesión de Stripe usado durante el pago para prevenir transacciones fraudulentas.",
+    duration_en: "30 minutes", duration_es: "30 minutos" },
+  { name: "m", party: "third", provider: "Stripe", category: "payment",
+    purpose_en: "Stripe device fingerprint cookie used to recognize returning customers and reduce payment fraud.",
+    purpose_es: "Cookie de huella de dispositivo de Stripe para reconocer clientes recurrentes y reducir el fraude.",
+    duration_en: "2 years", duration_es: "2 años" },
+  { name: "G_ENABLED_IDPS / g_state", party: "third", provider: "Google (Sign-in with Google)", category: "necessary",
+    purpose_en: "Set when you choose to sign in with Google; maintains the federated login state.",
+    purpose_es: "Se activa cuando eliges iniciar sesión con Google; mantiene el estado del inicio de sesión federado.",
+    duration_en: "Up to 6 months", duration_es: "Hasta 6 meses" },
+  { name: "__cf_bm", party: "third", provider: "Cloudflare", category: "security",
+    purpose_en: "Cloudflare bot-management cookie that distinguishes humans from automated traffic to protect the site.",
+    purpose_es: "Cookie de gestión de bots de Cloudflare que distingue humanos de tráfico automatizado para proteger el sitio.",
+    duration_en: "30 minutes", duration_es: "30 minutos" },
+  { name: "cf_clearance", party: "third", provider: "Cloudflare", category: "security",
+    purpose_en: "Confirms you have passed a Cloudflare security challenge (e.g. after suspicious traffic).",
+    purpose_es: "Confirma que pasaste un desafío de seguridad de Cloudflare (p. ej. tras tráfico sospechoso).",
+    duration_en: "30 days", duration_es: "30 días" },
+  { name: "resend-tracking-pixel", party: "third", provider: "Resend (transactional email)", category: "necessary",
+    purpose_en: "Pixel used in transactional emails (verification, receipts, security alerts) to confirm delivery and opens.",
+    purpose_es: "Píxel usado en correos transaccionales (verificación, recibos, alertas de seguridad) para confirmar entrega y aperturas.",
+    duration_en: "Per email open", duration_es: "Por cada apertura del correo" },
+];
+
+function CookieInventoryTable({ lang }: { lang: "en" | "es" }) {
+  const isEs = lang === "es";
+  const labels = {
+    title: isEs ? "Inventario detallado de cookies" : "Detailed cookie inventory",
+    intro: isEs
+      ? "La siguiente tabla enumera cada cookie individual o tecnología similar que se puede establecer a través de MatchVenezuelan, su finalidad, duración y si es propia (first-party) o de un tercero (third-party). Esta lista se mantiene actualizada y puede cambiar a medida que evoluciona el producto."
+      : "The table below lists each individual cookie or similar technology that may be set through MatchVenezuelan, its purpose, lifetime, and whether it is first-party (set by us) or third-party (set by a vendor). This inventory is kept up to date and may change as the product evolves.",
+    name: isEs ? "Nombre" : "Name",
+    provider: isEs ? "Proveedor" : "Provider",
+    party: isEs ? "Origen" : "Party",
+    category: isEs ? "Categoría" : "Category",
+    purpose: isEs ? "Finalidad" : "Purpose",
+    duration: isEs ? "Duración" : "Duration",
+    first: isEs ? "Propia" : "First-party",
+    third: isEs ? "Tercero" : "Third-party",
+    cat: {
+      necessary: isEs ? "Estrictamente necesaria" : "Strictly necessary",
+      functional: isEs ? "Funcional" : "Functional",
+      analytics: isEs ? "Analítica" : "Analytics",
+      security: isEs ? "Seguridad" : "Security",
+      payment: isEs ? "Pago" : "Payment",
+      marketing: isEs ? "Marketing" : "Marketing",
+    } as const,
+  };
+
+  return (
+    <section className="mt-10 rounded-2xl border border-border bg-card/50 p-5 md:p-6">
+      <h2 className="font-display text-xl font-semibold text-burgundy md:text-2xl">{labels.title}</h2>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{labels.intro}</p>
+
+      <div className="mt-5 -mx-5 overflow-x-auto md:mx-0">
+        <table className="w-full min-w-[760px] border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b border-border bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
+              <th scope="col" className="px-3 py-3 font-semibold">{labels.name}</th>
+              <th scope="col" className="px-3 py-3 font-semibold">{labels.provider}</th>
+              <th scope="col" className="px-3 py-3 font-semibold">{labels.party}</th>
+              <th scope="col" className="px-3 py-3 font-semibold">{labels.category}</th>
+              <th scope="col" className="px-3 py-3 font-semibold">{labels.purpose}</th>
+              <th scope="col" className="px-3 py-3 font-semibold">{labels.duration}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {COOKIE_INVENTORY.map((c) => (
+              <tr key={c.name} className="border-b border-border/60 align-top last:border-0 hover:bg-muted/30">
+                <td className="px-3 py-3 font-mono text-xs text-foreground">{c.name}</td>
+                <td className="px-3 py-3 text-foreground/90">{c.provider}</td>
+                <td className="px-3 py-3">
+                  <span
+                    className={
+                      c.party === "first"
+                        ? "inline-flex rounded-full bg-primary-soft px-2 py-0.5 text-[11px] font-medium text-burgundy"
+                        : "inline-flex rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                    }
+                  >
+                    {c.party === "first" ? labels.first : labels.third}
+                  </span>
+                </td>
+                <td className="px-3 py-3 text-foreground/90">{labels.cat[c.category]}</td>
+                <td className="px-3 py-3 text-muted-foreground">{isEs ? c.purpose_es : c.purpose_en}</td>
+                <td className="px-3 py-3 text-foreground/90 whitespace-nowrap">{isEs ? c.duration_es : c.duration_en}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p className="mt-4 text-xs text-muted-foreground">
+        {isEs
+          ? "Los nombres exactos de las cookies de proveedores externos pueden variar ligeramente con el tiempo a medida que esos proveedores actualizan sus SDKs. Las categorías, finalidades y duraciones máximas se mantienen como se describen aquí."
+          : "Exact cookie names from third-party providers may vary slightly over time as those vendors update their SDKs. The categories, purposes and maximum lifetimes remain as described here."}
+      </p>
+    </section>
+  );
+}
+
