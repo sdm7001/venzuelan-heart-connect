@@ -97,15 +97,148 @@
   <!-- How It Works -->
   <url>
     <loc>https://matchvenezuelan.com/how-it-works</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/how-it-works"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/how-it-works"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/how-it-works"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/how-it-works</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/how-it-works"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/how-it-works"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/how-it-works"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- About -->
+  <url>
+    <loc>https://matchvenezuelan.com/about</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/about"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 
   <!-- Resources blog index -->
   <url>
     <loc>https://matchvenezuelan.com/resources</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/resources"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/recursos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/resources"/>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/recursos</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/resources"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/recursos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/resources"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog Posts -->
+  <url>
+    <loc>https://matchvenezuelan.com/resources/arepa-and-the-venezuelan-table</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/first-message-that-actually-gets-a-reply</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/what-trust-badges-mean</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/five-romance-scam-patterns</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/meeting-her-family</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/long-distance-pacing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/what-makes-a-profile-trustworthy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/the-first-video-call</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/venezuelan-music-primer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/naming-your-intention-early</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/what-concierge-verification-feels-like</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/never-send-money</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/essential-spanish-phrases-for-dating</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/pacing-intimacy-online</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/what-the-plans-really-buy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/what-to-share-and-what-to-hold</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/venezuelan-holidays-that-matter</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/your-real-deal-breakers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/how-to-report-and-what-happens-after</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/resources/what-it-takes-to-build-a-life-across-cultures</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 
   <!-- Landing Pages: Core (EN + ES) -->
@@ -297,108 +430,6 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Blog Posts -->
-  <url>
-    <loc>https://matchvenezuelan.com/resources/arepa-and-the-venezuelan-table</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/first-message-that-actually-gets-a-reply</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/what-trust-badges-mean</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/five-romance-scam-patterns</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/meeting-her-family</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/long-distance-pacing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/what-makes-a-profile-trustworthy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/the-first-video-call</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/venezuelan-music-primer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/naming-your-intention-early</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/what-concierge-verification-feels-like</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/never-send-money</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/essential-spanish-phrases-for-dating</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/pacing-intimacy-online</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/what-the-plans-really-buy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/what-to-share-and-what-to-hold</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/venezuelan-holidays-that-matter</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/your-real-deal-breakers</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/how-to-report-and-what-happens-after</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://matchvenezuelan.com/resources/what-it-takes-to-build-a-life-across-cultures</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
   <!-- Landing Pages: City (EN + some ES) -->
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-women-in-miami</loc>
@@ -470,6 +501,19 @@
 
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-women-in-madrid</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-madrid"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-madrid"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-madrid"/>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/mujeres-venezolanas-en-madrid</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-madrid"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-madrid"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-madrid"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -486,6 +530,7 @@
     <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-dallas"/>
     <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-dallas"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-dallas"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -494,6 +539,7 @@
     <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-dallas"/>
     <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-dallas"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-dallas"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -503,6 +549,7 @@
     <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-orlando"/>
     <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-orlando"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-orlando"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -511,30 +558,35 @@
     <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-women-in-orlando"/>
     <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/mujeres-venezolanas-en-orlando"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-women-in-orlando"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-women-in-atlanta</loc>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-women-in-chicago</loc>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-women-in-washington-dc</loc>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-women-in-boston</loc>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -719,32 +771,65 @@
 
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-women-in-ciudad-guayana</loc>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
-  <url>
-    <loc>https://matchvenezuelan.com/venezuelan-women-in-maturin</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Landing Pages: Travel -->
+  <!-- Landing Pages: Travel & Intent (EN + ES) -->
   <url>
     <loc>https://matchvenezuelan.com/travel-to-meet-venezuelan-women</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/travel-to-meet-venezuelan-women"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/viajar-para-conocer-mujeres-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/travel-to-meet-venezuelan-women"/>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/viajar-para-conocer-mujeres-venezolanas</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/travel-to-meet-venezuelan-women"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/viajar-para-conocer-mujeres-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/travel-to-meet-venezuelan-women"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://matchvenezuelan.com/visit-venezuela-for-dating</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/visit-venezuela-for-dating"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/visitar-venezuela-para-citas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/visit-venezuela-for-dating"/>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/visitar-venezuela-para-citas</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/visit-venezuela-for-dating"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/visitar-venezuela-para-citas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/visit-venezuela-for-dating"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <!-- Landing Pages: Intent/Feature -->
   <url>
     <loc>https://matchvenezuelan.com/venezuelan-dating-culture</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-dating-culture"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/cultura-de-citas-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-dating-culture"/>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://matchvenezuelan.com/es/cultura-de-citas-venezolanas</loc>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://matchvenezuelan.com/venezuelan-dating-culture"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://matchvenezuelan.com/es/cultura-de-citas-venezolanas"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://matchvenezuelan.com/venezuelan-dating-culture"/>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

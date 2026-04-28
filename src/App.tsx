@@ -89,6 +89,7 @@ const App = () => (
               {/* Public — Spanish (/es/*) */}
               <Route path="/es/" element={<Home />} />
               <Route path="/es/faq" element={<FAQ />} />
+              <Route path="/es/how-it-works" element={<HowItWorks />} />
               <Route path="/es/safety" element={<Safety />} />
               <Route path="/es/recursos" element={<EsRecursos />} />
               <Route path="/es/legal/terms" element={<Terms />} />

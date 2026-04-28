@@ -118,10 +118,11 @@ export default function HowItWorks() {
       title: copy.metaTitle,
       titleAbsolute: true,
       description: copy.metaDesc,
-      path: "/how-it-works",
+      path: lang === "es" ? "/es/how-it-works" : "/how-it-works",
       lang,
       alternates: [
         { hreflang: "en", href: "https://matchvenezuelan.com/how-it-works" },
+        { hreflang: "es", href: "https://matchvenezuelan.com/es/how-it-works" },
         { hreflang: "x-default", href: "https://matchvenezuelan.com/how-it-works" },
       ],
     },

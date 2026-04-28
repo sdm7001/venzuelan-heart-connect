@@ -5,5 +5,8 @@
 /rss.xml          https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=rss&lang=en  200
 /rss-es.xml       https://txuwrnczbisfpnpiouqk.supabase.co/functions/v1/seo-feed?type=rss&lang=es  200
 
+# True 301s for merged/removed pages — must come before SPA catch-all
+/venezuelan-women-in-maturin  /meet-venezuelan-women  301
+
 # SPA catch-all — must be last; sends all unmatched paths to React Router
 /*                /index.html  200
