@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, Compass, Home, HelpCircle, Mail, Search } from "lucide-react";
+import { ArrowLeft, Compass, Home, HelpCircle, Mail, ShieldCheck } from "lucide-react";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -10,14 +10,33 @@ import notFoundIllustration from "@/assets/not-found-letter.jpg";
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { lang } = useI18n();
-  const isEs = lang === "es";
-  const prefix = isEs ? "/es" : "";
+  const { lang, setLang } = useI18n();
+
+  // Derive language from the URL itself so the page renders correctly on
+  // first paint even before the I18nProvider's effect runs (important for
+  // direct hits to /es/<broken-url>).
+  const isEs = location.pathname === "/es" || location.pathname.startsWith("/es/");
+  const homeHref = isEs ? "/es/" : "/";
+
+  // Keep the global provider in sync so header/footer/SEO match the URL.
+  useEffect(() => {
+    const target = isEs ? "es" : "en";
+    if (lang !== target) setLang(target);
+  }, [isEs, lang, setLang]);
 
   useEffect(() => {
     // Useful for analytics on broken inbound links.
     console.warn("404 — route not found:", location.pathname);
   }, [location.pathname]);
+
+  const goBack = useCallback(() => {
+    // history.length > 1 means there is at least one prior entry in this tab.
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate(homeHref, { replace: true });
+    }
+  }, [navigate, homeHref]);
 
   useSeo(
     {
@@ -26,12 +45,15 @@ const NotFound = () => {
         ? "Esta página parece haberse perdido en el camino. Vuelve al inicio o explora nuestras secciones principales."
         : "This page seems to have lost its way. Head back home or explore our main sections.",
       path: location.pathname,
-      lang,
+      lang: isEs ? "es" : "en",
       robots: "noindex,follow",
     },
-    [lang, location.pathname],
+    [isEs, location.pathname],
   );
 
+  // Only link to routes that actually exist for the current language so the
+  // "helpful" cards never hand the user another 404.
+  // ES public routes today: /es/, /es/faq, /es/safety, /es/legal/*.
   const t = isEs
     ? {
         eyebrow: "Error 404",
@@ -43,10 +65,10 @@ const NotFound = () => {
         exploreTitle: "¿Y ahora?",
         exploreSub: "Algunos lugares populares para retomar tu visita:",
         links: [
-          { to: `${prefix}/how-it-works`, label: "Cómo funciona", icon: Compass, desc: "Conoce el camino paso a paso." },
-          { to: `${prefix}/safety`, label: "Seguridad", icon: HelpCircle, desc: "Verificación y moderación." },
-          { to: `${prefix}/faq`, label: "Preguntas frecuentes", icon: Search, desc: "Respuestas claras y honestas." },
-          { to: `${prefix}/`, label: "Inicio", icon: Home, desc: "Vuelve a la página principal." },
+          { to: "/es/", label: "Inicio", icon: Home, desc: "Vuelve a la página principal." },
+          { to: "/es/safety", label: "Seguridad", icon: ShieldCheck, desc: "Verificación y moderación." },
+          { to: "/es/faq", label: "Preguntas frecuentes", icon: HelpCircle, desc: "Respuestas claras y honestas." },
+          { to: "/es/legal/community-guidelines", label: "Normas de la comunidad", icon: Compass, desc: "Cómo nos tratamos aquí." },
         ],
         contact: "¿Crees que esto es un error?",
         contactCta: "Escríbenos",
@@ -62,10 +84,10 @@ const NotFound = () => {
         exploreTitle: "Where to next?",
         exploreSub: "A few popular places to pick up where you left off:",
         links: [
-          { to: `${prefix}/how-it-works`, label: "How it works", icon: Compass, desc: "Get the lay of the land." },
-          { to: `${prefix}/safety`, label: "Safety", icon: HelpCircle, desc: "Verification & moderation." },
-          { to: `${prefix}/faq`, label: "FAQ", icon: Search, desc: "Clear, honest answers." },
-          { to: `${prefix}/`, label: "Home", icon: Home, desc: "Return to the homepage." },
+          { to: "/", label: "Home", icon: Home, desc: "Return to the homepage." },
+          { to: "/how-it-works", label: "How it works", icon: Compass, desc: "Get the lay of the land." },
+          { to: "/safety", label: "Safety", icon: ShieldCheck, desc: "Verification & moderation." },
+          { to: "/faq", label: "FAQ", icon: HelpCircle, desc: "Clear, honest answers." },
         ],
         contact: "Think this is a mistake?",
         contactCta: "Contact us",
@@ -106,11 +128,11 @@ const NotFound = () => {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to={`${prefix}/`}>
+                <Link to={homeHref}>
                   <Home className="mr-2 h-4 w-4" aria-hidden /> {t.backHome}
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" onClick={() => navigate(-1)}>
+              <Button variant="outline" size="lg" onClick={goBack}>
                 <ArrowLeft className="mr-2 h-4 w-4" aria-hidden /> {t.goBack}
               </Button>
             </div>
