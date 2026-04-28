@@ -157,6 +157,13 @@ const NotFound = () => {
         contact: "¿Crees que esto es un error?",
         contactCta: "Escríbenos",
         imgAlt: "Carta de amor sellada con corazón dorado, perdida entre flores tropicales y una rosa de los vientos.",
+        searchLabel: "Busca una sección",
+        searchPlaceholder: "Buscar (ej. seguridad, cookies, FAQ)…",
+        searchHintEmpty: "Empieza a escribir para ver sugerencias.",
+        searchHintResults: (n: number) => `${n} ${n === 1 ? "resultado" : "resultados"} · Enter para ir`,
+        searchNoResults: "Sin resultados. Prueba con otra palabra.",
+        searchClear: "Limpiar búsqueda",
+        searchKbd: "↑ ↓ para navegar · Enter para ir · Esc para limpiar",
       }
     : {
         eyebrow: "Error 404",
