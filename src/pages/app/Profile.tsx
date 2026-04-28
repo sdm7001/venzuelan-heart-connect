@@ -13,7 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 export default function Profile() {
   const { t } = useI18n();
   const { user } = useAuth();
-  const [p, setP] = useState<Record<string, unknown>>({});
+  const [p, setP] = useState<Record<string, any>>({});
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
