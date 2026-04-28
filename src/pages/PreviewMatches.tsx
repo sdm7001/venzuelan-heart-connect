@@ -60,7 +60,6 @@ export default function PreviewMatches() {
       path: isEs ? "/es/preview" : "/preview",
       lang,
       type: "website",
-      noindex: true,
     },
     [lang],
   );
