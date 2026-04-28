@@ -425,6 +425,7 @@ function FeaturedCard({
   copy: (typeof COPY)[Lang];
 }) {
   const i = post.i18n[lang];
+  const CANONICAL_PATH = lang === "es" ? CANONICAL_PATH_ES : CANONICAL_PATH_EN;
   return (
     <article
       id={post.slug}
