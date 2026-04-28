@@ -89,6 +89,8 @@ const App = () => (
               <Route path="/es/legal/disclaimer" element={<Disclaimer />} />
               <Route path="/es/legal/refunds" element={<RefundPolicy />} />
               <Route path="/es/legal/community-guidelines" element={<CommunityGuidelines />} />
+              <Route path="/es/legal/cookies" element={<CookiePolicy />} />
+              <Route path="/es/legal/consent" element={<ConsentSettings />} />
 
               {/* Auth */}
               <Route path="/auth" element={<Auth />} />

@@ -217,6 +217,20 @@ export default function CookiePolicy() {
         <div className="mx-auto max-w-3xl">
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{intro}</p>
 
+          <div className="mt-6 flex flex-wrap items-center gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm">
+            <span className="flex-1 text-foreground">
+              {lang === "es"
+                ? "¿Quieres ajustar lo que aceptas? Hazlo en un clic en Preferencias de Consentimiento."
+                : "Want to adjust what you accept? Do it in one click on the Consent Preferences page."}
+            </span>
+            <Link
+              to={lang === "es" ? "/es/legal/consent" : "/legal/consent"}
+              className="inline-flex items-center rounded-md bg-primary px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-primary-foreground shadow-sm transition-smooth hover:opacity-90"
+            >
+              {lang === "es" ? "Abrir preferencias" : "Open preferences"}
+            </Link>
+          </div>
+
           <nav
             aria-label={lang === "es" ? "Índice" : "Table of contents"}
             className="mt-10 rounded-2xl border border-border bg-muted/30 p-5"
