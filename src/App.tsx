@@ -41,6 +41,7 @@ import AdminPostEditor from "./pages/admin/AdminPostEditor";
 import AdminLinkSuggestions from "./pages/admin/AdminLinkSuggestions";
 import AdminMfaRecoveryCodes from "./pages/admin/AdminMfaRecoveryCodes";
 import LandingPage from "./pages/LandingPage";
+import PreviewMatches from "./pages/PreviewMatches";
 import NotFound from "./pages/NotFound";
 import A11yAudit from "./pages/__A11yAudit";
 import ResponsiveQA from "./pages/__ResponsiveQA";
@@ -70,6 +71,8 @@ const App = () => (
               <Route path="/legal/anti-solicitation" element={<AntiSolicitation />} />
               <Route path="/legal/cookies" element={<CookiePolicy />} />
               <Route path="/legal/consent" element={<ConsentSettings />} />
+              <Route path="/preview" element={<PreviewMatches />} />
+              <Route path="/es/preview" element={<PreviewMatches />} />
 
               {/* Public — Spanish (/es/*) */}
               <Route path="/es/" element={<Home />} />
