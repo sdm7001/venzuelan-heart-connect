@@ -159,7 +159,7 @@ export default function ResourceDetail() {
             publishedTime: post.published_at,
             section: CAT_LABEL[post.category]?.[lang] ?? post.category,
             tags: post.tags,
-            authorName: "MatchVenezuelan",
+            authorName: "Valentina Reyes",
           },
           jsonLd: [
             blogPostingLd({
@@ -274,6 +274,17 @@ export default function ResourceDetail() {
             <Badge variant="secondary" className="text-[11px]">
               <BookOpen className="mr-1 h-3 w-3" /> {catLabel}
             </Badge>
+            <span className="text-xs text-muted-foreground">
+              {lang === "en" ? "By" : "Por"}{" "}
+              <span
+                itemProp="author"
+                itemScope
+                itemType="https://schema.org/Person"
+                className="font-medium text-foreground"
+              >
+                <span itemProp="name">Valentina Reyes</span>
+              </span>
+            </span>
             <time
               dateTime={post.published_at}
               className="text-xs text-muted-foreground"

@@ -49,7 +49,10 @@ import NotFound from "./pages/NotFound";
 import Unsubscribe from "./pages/Unsubscribe";
 import A11yAudit from "./pages/__A11yAudit";
 import ResponsiveQA from "./pages/__ResponsiveQA";
+import About from "./pages/About";
+import EsRecursos from "./pages/EsRecursos";
 import { CookieConsentBanner } from "@/components/consent/CookieConsentBanner";
+import { Navigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +73,7 @@ const App = () => (
               <Route path="/faq" element={<FAQ />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/resources/:slug" element={<ResourceDetail />} />
+              <Route path="/about" element={<About />} />
               <Route path="/legal/terms" element={<Terms />} />
               <Route path="/legal/privacy" element={<Privacy />} />
               <Route path="/legal/acceptable-use" element={<AcceptableUse />} />
@@ -86,6 +90,7 @@ const App = () => (
               <Route path="/es/" element={<Home />} />
               <Route path="/es/faq" element={<FAQ />} />
               <Route path="/es/safety" element={<Safety />} />
+              <Route path="/es/recursos" element={<EsRecursos />} />
               <Route path="/es/legal/terms" element={<Terms />} />
               <Route path="/es/legal/privacy" element={<Privacy />} />
               <Route path="/es/legal/disclaimer" element={<Disclaimer />} />
@@ -168,7 +173,8 @@ const App = () => (
               <Route path="/venezuelan-women-in-maracay" element={<LandingPage />} />
               <Route path="/venezuelan-women-in-merida" element={<LandingPage />} />
               <Route path="/venezuelan-women-in-ciudad-guayana" element={<LandingPage />} />
-              <Route path="/venezuelan-women-in-maturin" element={<LandingPage />} />
+              {/* Maturín — merged into meet-venezuelan-women (thin page, too similar to Ciudad Guayana) */}
+              <Route path="/venezuelan-women-in-maturin" element={<Navigate to="/meet-venezuelan-women" replace />} />
 
               {/* SEO Landing Pages — ES */}
               <Route path="/es/conocer-mujeres-venezolanas" element={<LandingPage />} />
@@ -189,6 +195,11 @@ const App = () => (
               {/* ES: Additional Cities */}
               <Route path="/es/mujeres-venezolanas-en-dallas" element={<LandingPage />} />
               <Route path="/es/mujeres-venezolanas-en-orlando" element={<LandingPage />} />
+              <Route path="/es/mujeres-venezolanas-en-madrid" element={<LandingPage />} />
+              {/* ES: Intent/travel pages */}
+              <Route path="/es/cultura-de-citas-venezolanas" element={<LandingPage />} />
+              <Route path="/es/viajar-para-conocer-mujeres-venezolanas" element={<LandingPage />} />
+              <Route path="/es/visitar-venezuela-para-citas" element={<LandingPage />} />
               <Route path="/es/mujeres-venezolanas-en-santiago" element={<LandingPage />} />
               <Route path="/es/mujeres-venezolanas-en-lima" element={<LandingPage />} />
               <Route path="/es/mujeres-venezolanas-en-bogota" element={<LandingPage />} />

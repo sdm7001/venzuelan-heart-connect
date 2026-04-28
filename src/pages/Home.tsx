@@ -28,17 +28,49 @@ export default function Home() {
         { hreflang: "es", href: `${SITE_URL}/es/` },
         { hreflang: "x-default", href: `${SITE_URL}/` },
       ],
-      jsonLd: {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: SITE_NAME,
-        url: SITE_URL,
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${SITE_URL}/resources?q={search_term_string}`,
-          "query-input": "required name=search_term_string",
+      jsonLd: [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: SITE_NAME,
+          url: SITE_URL,
+          potentialAction: {
+            "@type": "SearchAction",
+            target: `${SITE_URL}/resources?q={search_term_string}`,
+            "query-input": "required name=search_term_string",
+          },
         },
-      },
+        {
+          "@context": "https://schema.org",
+          "@type": "DatingService",
+          name: SITE_NAME,
+          url: SITE_URL,
+          description: isEs
+            ? "Plataforma de citas bilingüe para relaciones serias entre mujeres venezolanas y hombres de todo el mundo. Perfiles verificados, moderación humana, gratis para mujeres."
+            : "Bilingual serious-relationship dating platform connecting Venezuelan women and Western men worldwide. Verified profiles, human moderation, free for women.",
+          inLanguage: ["en", "es"],
+          serviceType: "Online dating",
+          audience: {
+            "@type": "PeopleAudience",
+            suggestedMinAge: 18,
+          },
+          offers: {
+            "@type": "Offer",
+            price: "0",
+            priceCurrency: "USD",
+            eligibleCustomerType: "Women",
+            description: isEs
+              ? "Las mujeres se unen y usan las funciones principales de forma gratuita."
+              : "Women join and use core features for free.",
+          },
+          provider: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: SITE_URL,
+          },
+          areaServed: "Worldwide",
+        },
+      ],
     },
     [lang],
   );

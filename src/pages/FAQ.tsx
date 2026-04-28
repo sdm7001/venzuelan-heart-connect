@@ -72,10 +72,17 @@ export default function FAQ() {
   const entries = t.faq.entries;
   const categoryLabels = t.faq.categories;
 
+  const faqSeoTitle = lang === "es"
+    ? "Preguntas Frecuentes sobre MatchVenezuelan | Verificación, Seguridad y Citas"
+    : "Venezuelan Dating FAQ | Verification, Safety & How MatchVenezuelan Works";
+  const faqSeoDesc = lang === "es"
+    ? "Respuestas a las preguntas más comunes sobre MatchVenezuelan: cómo funciona la verificación, qué medidas de seguridad existen, precios, privacidad y cómo denunciar."
+    : "Answers to the most common questions about MatchVenezuelan — how verification works, what safety measures exist, pricing, privacy, and how to report.";
   useSeo(
     {
-      title: t.faq.title,
-      description: t.faq.intro.slice(0, 155),
+      title: faqSeoTitle,
+      titleAbsolute: true,
+      description: faqSeoDesc,
       path: lang === "es" ? "/es/faq" : "/faq",
       lang,
       alternates: [

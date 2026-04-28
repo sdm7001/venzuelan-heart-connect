@@ -106,10 +106,12 @@ const COPY: Record<Lang, {
   },
 };
 
-const CANONICAL_PATH = "/resources";
+const CANONICAL_PATH_EN = "/resources";
+const CANONICAL_PATH_ES = "/es/recursos";
 
 export default function Resources() {
   const { lang } = useI18n();
+  const CANONICAL_PATH = lang === "es" ? CANONICAL_PATH_ES : CANONICAL_PATH_EN;
   const copy = COPY[lang];
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -228,6 +230,11 @@ export default function Resources() {
       path: CANONICAL_PATH,
       lang,
       type: "website",
+      alternates: [
+        { hreflang: "en", href: "https://matchvenezuelan.com/resources" },
+        { hreflang: "es", href: "https://matchvenezuelan.com/es/recursos" },
+        { hreflang: "x-default", href: "https://matchvenezuelan.com/resources" },
+      ],
       feeds: [
         { title: "MatchVenezuelan — Resources (EN)", href: "/rss.xml" },
         { title: "MatchVenezuelan — Recursos (ES)", href: "/rss-es.xml" },
