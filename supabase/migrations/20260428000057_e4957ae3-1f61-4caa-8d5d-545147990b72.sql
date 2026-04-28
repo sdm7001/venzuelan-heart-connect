@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS public.admin_exec_blog_update(text);
