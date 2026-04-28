@@ -1090,11 +1090,15 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          cancel_at_period_end: boolean
           canceled_at: string | null
           created_at: string
           current_period_end: string | null
           current_period_start: string | null
+          environment: string
           id: string
+          price_id: string | null
+          product_id: string | null
           status: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -1103,11 +1107,15 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          cancel_at_period_end?: boolean
           canceled_at?: string | null
           created_at?: string
           current_period_end?: string | null
           current_period_start?: string | null
+          environment?: string
           id?: string
+          price_id?: string | null
+          product_id?: string | null
           status?: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -1116,11 +1124,15 @@ export type Database = {
           user_id: string
         }
         Update: {
+          cancel_at_period_end?: boolean
           canceled_at?: string | null
           created_at?: string
           current_period_end?: string | null
           current_period_start?: string | null
+          environment?: string
           id?: string
+          price_id?: string | null
+          product_id?: string | null
           status?: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -1407,6 +1419,8 @@ export type Database = {
         | "credit_purchase"
         | "refund"
         | "failed_payment"
+        | "subscription_upgraded"
+        | "subscription_downgraded"
       flag_kind:
         | "mass_messaging"
         | "copy_paste_intro"
@@ -1464,6 +1478,8 @@ export type Database = {
         | "past_due"
         | "canceled"
         | "refunded"
+        | "trialing"
+        | "incomplete"
       subscription_tier:
         | "level_1"
         | "level_2"
@@ -1647,6 +1663,8 @@ export const Constants = {
         "credit_purchase",
         "refund",
         "failed_payment",
+        "subscription_upgraded",
+        "subscription_downgraded",
       ],
       flag_kind: [
         "mass_messaging",
@@ -1710,6 +1728,8 @@ export const Constants = {
         "past_due",
         "canceled",
         "refunded",
+        "trialing",
+        "incomplete",
       ],
       subscription_tier: [
         "level_1",
