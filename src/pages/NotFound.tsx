@@ -47,6 +47,81 @@ const NotFound = () => {
     }
   }, [navigate, homeHref]);
 
+  // --- Lightweight site search -------------------------------------------------
+  // Curated, language-aware index of public pages findable from the 404.
+  // Only include routes that ACTUALLY exist for the current language.
+  const searchIndex = useMemo<SearchEntry[]>(() => {
+    return isEs
+      ? [
+          { to: "/es/", label: "Inicio", desc: "Página principal", keywords: "inicio home principal portada" },
+          { to: "/es/safety", label: "Seguridad", desc: "Verificación, moderación y reportes", keywords: "seguridad verificacion moderacion reportar trust safety" },
+          { to: "/es/faq", label: "Preguntas frecuentes", desc: "Respuestas a las dudas más comunes", keywords: "faq preguntas frecuentes ayuda dudas" },
+          { to: "/es/legal/terms", label: "Términos de servicio", desc: "Condiciones de uso del servicio", keywords: "terminos servicio condiciones legal" },
+          { to: "/es/legal/privacy", label: "Política de privacidad", desc: "Cómo tratamos tus datos personales", keywords: "privacidad datos personales rgpd gdpr" },
+          { to: "/es/legal/cookies", label: "Política de cookies", desc: "Cookies que usamos y por qué", keywords: "cookies rastreo tracking" },
+          { to: "/es/legal/consent", label: "Preferencias de consentimiento", desc: "Cambia tus preferencias de cookies", keywords: "consentimiento preferencias cookies privacidad" },
+          { to: "/es/legal/community-guidelines", label: "Normas de la comunidad", desc: "Cómo nos tratamos aquí", keywords: "normas comunidad reglas convivencia" },
+          { to: "/es/legal/refunds", label: "Política de reembolsos", desc: "Reembolsos y derecho de desistimiento", keywords: "reembolso devolucion desistimiento facturacion" },
+          { to: "/es/legal/disclaimer", label: "Aviso legal", desc: "Descargo de responsabilidad", keywords: "aviso legal descargo responsabilidad" },
+        ]
+      : [
+          { to: "/", label: "Home", desc: "Main landing page", keywords: "home start landing main" },
+          { to: "/how-it-works", label: "How it works", desc: "The journey, step by step", keywords: "how it works steps onboarding journey" },
+          { to: "/safety", label: "Safety", desc: "Verification, moderation and reporting", keywords: "safety trust verification moderation report" },
+          { to: "/faq", label: "FAQ", desc: "Answers to common questions", keywords: "faq questions help support" },
+          { to: "/resources", label: "Resources", desc: "Articles, guides and culture notes", keywords: "resources blog articles guides" },
+          { to: "/legal/terms", label: "Terms of service", desc: "Service terms and conditions", keywords: "terms conditions legal tos" },
+          { to: "/legal/privacy", label: "Privacy policy", desc: "How we handle your data", keywords: "privacy data gdpr ccpa" },
+          { to: "/legal/cookies", label: "Cookie policy", desc: "Cookies we use and why", keywords: "cookies tracking" },
+          { to: "/legal/consent", label: "Consent preferences", desc: "Change your cookie settings", keywords: "consent preferences cookies privacy" },
+          { to: "/legal/community-guidelines", label: "Community guidelines", desc: "How we treat each other here", keywords: "community guidelines rules conduct" },
+          { to: "/legal/refunds", label: "Refund policy", desc: "Refunds and right of withdrawal", keywords: "refund return billing withdrawal" },
+          { to: "/legal/disclaimer", label: "Legal disclaimer", desc: "Limits of liability and scope", keywords: "disclaimer liability legal" },
+          { to: "/legal/acceptable-use", label: "Acceptable use", desc: "What's allowed on the platform", keywords: "acceptable use abuse rules" },
+          { to: "/auth", label: "Sign in / Join", desc: "Access your account or create one", keywords: "sign in login signup join register account" },
+        ];
+  }, [isEs]);
+
+  const [query, setQuery] = useState("");
+  const [activeIdx, setActiveIdx] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [] as SearchEntry[];
+    const tokens = q.split(/\s+/).filter(Boolean);
+    return searchIndex
+      .filter((e) => {
+        const hay = `${e.label} ${e.desc} ${e.keywords} ${e.to}`.toLowerCase();
+        return tokens.every((tok) => hay.includes(tok));
+      })
+      .slice(0, 6);
+  }, [query, searchIndex]);
+
+  // Reset highlighted result whenever the result set changes.
+  useEffect(() => { setActiveIdx(0); }, [query, isEs]);
+
+  const onSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (results.length) setActiveIdx((i) => (i + 1) % results.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (results.length) setActiveIdx((i) => (i - 1 + results.length) % results.length);
+    } else if (e.key === "Enter") {
+      const target = results[activeIdx];
+      if (target) {
+        e.preventDefault();
+        navigate(target.to);
+      }
+    } else if (e.key === "Escape") {
+      if (query) {
+        e.preventDefault();
+        setQuery("");
+      }
+    }
+  };
+
   useSeo(
     {
       title: isEs ? "Página no encontrada (404)" : "Page not found (404)",
