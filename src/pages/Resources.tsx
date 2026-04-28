@@ -168,7 +168,7 @@ export default function Resources() {
       setPosts(
         rows.map((r: Record<string, any>): Post => ({
           slug: r.slug as string,
-          category: r.category as string,
+          category: r.category as Post["category"],
           publishedAt: r.published_at as string,
           readMin: r.reading_minutes as number,
           featured: r.featured as boolean,
