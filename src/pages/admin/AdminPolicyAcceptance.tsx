@@ -257,7 +257,7 @@ export default function AdminPolicyAcceptance() {
         accepted_keys_at_send: t.accepted_keys,
       } as Record<string, unknown>,
     }));
-    const { error: auditErr } = await supabase.from("audit_events").insert(events);
+    const { error: auditErr } = await supabase.from("audit_events").insert(events as never);
     if (auditErr) {
       setSending(false);
       setConfirmOpen(false);

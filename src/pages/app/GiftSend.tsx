@@ -300,7 +300,7 @@ export default function GiftSend() {
 
     const { data: inserted, error } = await supabase
       .from("gift_orders")
-      .insert(payload)
+      .insert(payload as never)
       .select("id, created_at, kind, credit_cost, message")
       .single();
     setSending(false);

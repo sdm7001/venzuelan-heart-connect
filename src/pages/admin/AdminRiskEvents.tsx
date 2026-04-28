@@ -118,7 +118,7 @@ export default function AdminRiskEvents() {
       source: fSource.trim() || null,
       metadata: fNotes.trim() ? { notes: fNotes.trim() } : {},
     };
-    const { error } = await supabase.from("risk_events").insert(payload);
+    const { error } = await supabase.from("risk_events").insert(payload as never);
     setWorking(false);
     if (error) {
       toast.error(error.message);
