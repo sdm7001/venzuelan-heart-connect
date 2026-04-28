@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useI18n } from "@/i18n/I18nProvider";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 
 export function PublicFooter() {
   const { t, lang } = useI18n();

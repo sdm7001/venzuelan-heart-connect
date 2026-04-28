@@ -6,8 +6,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo, SITE_NAME, SITE_URL } from "@/seo/seo";
 import StructuredData from "@/components/StructuredData";
 import MatchSearchTile from "@/components/home/MatchSearchTile";
-// TODO: Replace hero-portrait.jpg with a compressed WebP (<150KB) for Core Web Vitals.
-import heroImg from "@/assets/hero-portrait.jpg";
+import heroImg from "@/assets/hero-portrait.webp";
 
 export default function Home() {
   const { t, lang } = useI18n();
@@ -71,7 +70,7 @@ export default function Home() {
           <div className="relative animate-fade-in-slow">
             <div className="absolute -inset-6 rounded-[2rem] gradient-romance opacity-30 blur-3xl" />
             <div className="relative overflow-hidden rounded-[2rem] shadow-elegant ring-1 ring-primary/10">
-              <img src={heroImg} alt="Western man and Venezuelan woman embracing" className="h-full w-full object-cover" />
+              <img src={heroImg} alt="Western man and Venezuelan woman embracing" className="h-full w-full object-cover" fetchPriority="high" loading="eager" />
               <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3 rounded-2xl bg-card/85 p-3 backdrop-blur-md ring-1 ring-border">
                 <div className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground">
                   <Heart className="h-4 w-4" fill="currentColor" />

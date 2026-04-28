@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
 import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { t } = useI18n();

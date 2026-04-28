@@ -7,7 +7,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useAuth } from "@/auth/AuthProvider";
 import { LanguageToggle } from "./LanguageToggle";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";

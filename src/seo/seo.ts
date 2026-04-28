@@ -12,7 +12,7 @@ import type { Lang } from "@/i18n/translations";
 
 export const SITE_NAME = "MatchVenezuelan";
 export const SITE_URL = "https://matchvenezuelan.com";
-export const DEFAULT_OG_IMAGE = "/logo.png";
+export const DEFAULT_OG_IMAGE = "/logo.webp";
 export const TWITTER_HANDLE = "@matchvenezuelan";
 
 export type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
@@ -188,12 +188,13 @@ export function applySeo(opts: SeoOptions) {
   // Canonical (no hreflang attr — distinct from alternates)
   setLink("canonical", url);
 
-  // hreflang alternates — clear & rewrite each call
+  // hreflang alternates — clear & rewrite each call.
+  // Default (no alternates passed) = EN-only page: declare only en + x-default.
+  // Bilingual pages must pass their own alternates array explicitly.
   clearManagedAlternates();
   const alternates: SeoAlternate[] =
     opts.alternates ?? [
       { hreflang: "en", href: url },
-      { hreflang: "es", href: url },
       { hreflang: "x-default", href: url },
     ];
   alternates.forEach((alt) =>
@@ -215,6 +216,11 @@ export function applySeo(opts: SeoOptions) {
     name: SITE_NAME,
     url: SITE_URL,
     logo: absUrl(DEFAULT_OG_IMAGE),
+    sameAs: [
+      "https://x.com/matchvenezuelan",
+      "https://www.instagram.com/matchvenezuelan/",
+      "https://www.facebook.com/matchvenezuelan",
+    ],
   };
   const provided = Array.isArray(opts.jsonLd)
     ? (opts.jsonLd as JsonLd[])
