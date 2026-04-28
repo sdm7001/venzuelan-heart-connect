@@ -48,6 +48,7 @@ import PreviewMatches from "./pages/PreviewMatches";
 import NotFound from "./pages/NotFound";
 import A11yAudit from "./pages/__A11yAudit";
 import ResponsiveQA from "./pages/__ResponsiveQA";
+import { CookieConsentBanner } from "@/components/consent/CookieConsentBanner";
 
 const queryClient = new QueryClient();
 
@@ -205,6 +206,7 @@ const App = () => (
 
               <Route path="*" element={<NotFound />} />
               </Routes>
+              <CookieConsentBanner />
             </BrowserRouter>
           </TooltipProvider>
         </ImpersonationProvider>
