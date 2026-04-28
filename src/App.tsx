@@ -16,6 +16,9 @@ import Resources from "./pages/Resources";
 import ResourceDetail from "./pages/ResourceDetail";
 import { Terms, Privacy, AcceptableUse, AntiSolicitation } from "./pages/Legal";
 import CookiePolicy from "./pages/CookiePolicy";
+import Disclaimer from "./pages/Disclaimer";
+import RefundPolicy from "./pages/RefundPolicy";
+import CommunityGuidelines from "./pages/CommunityGuidelines";
 import ConsentSettings from "./pages/ConsentSettings";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
@@ -71,6 +74,9 @@ const App = () => (
               <Route path="/legal/anti-solicitation" element={<AntiSolicitation />} />
               <Route path="/legal/cookies" element={<CookiePolicy />} />
               <Route path="/legal/consent" element={<ConsentSettings />} />
+              <Route path="/legal/disclaimer" element={<Disclaimer />} />
+              <Route path="/legal/refunds" element={<RefundPolicy />} />
+              <Route path="/legal/community-guidelines" element={<CommunityGuidelines />} />
               <Route path="/preview" element={<PreviewMatches />} />
               <Route path="/es/preview" element={<PreviewMatches />} />
 
@@ -80,6 +86,9 @@ const App = () => (
               <Route path="/es/safety" element={<Safety />} />
               <Route path="/es/legal/terms" element={<Terms />} />
               <Route path="/es/legal/privacy" element={<Privacy />} />
+              <Route path="/es/legal/disclaimer" element={<Disclaimer />} />
+              <Route path="/es/legal/refunds" element={<RefundPolicy />} />
+              <Route path="/es/legal/community-guidelines" element={<CommunityGuidelines />} />
 
               {/* Auth */}
               <Route path="/auth" element={<Auth />} />

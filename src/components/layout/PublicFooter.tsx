@@ -3,7 +3,8 @@ import { useI18n } from "@/i18n/I18nProvider";
 import logo from "@/assets/logo.png";
 
 export function PublicFooter() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const isEs = lang === "es";
   return (
     <footer className="mt-block border-t border-black/10 bg-white text-black">
       <div className="container py-section px-gutter">
@@ -27,6 +28,9 @@ export function PublicFooter() {
             { to: "/legal/consent", label: t.legal.consent },
             { to: "/legal/acceptable-use", label: t.legal.aup },
             { to: "/legal/anti-solicitation", label: t.legal.antiSolicit },
+            { to: "/legal/community-guidelines", label: isEs ? "Normas de la Comunidad" : "Community Guidelines" },
+            { to: "/legal/refunds", label: isEs ? "Política de Reembolsos" : "Refund Policy" },
+            { to: "/legal/disclaimer", label: isEs ? "Aviso Legal" : "Legal Disclaimer" },
           ]} />
           <FooterCol title={t.footer.company} links={[
             { to: "/", label: t.nav.home },
