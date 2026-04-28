@@ -56,15 +56,15 @@ export default function AdminOverview() {
       const { error } = await supabase
         .from("app_settings")
         .upsert(
-          { key: "founding_member_enabled", value: next as unknown as Record<string, unknown>, updated_by: user.id, updated_at: new Date().toISOString() },
+          { key: "founding_member_enabled", value: next as never, updated_by: user.id, updated_at: new Date().toISOString() } as never,
           { onConflict: "key" },
         );
       if (error) throw error;
       await supabase.from("app_settings_history").insert({
         key: "founding_member_enabled",
-        value: next as unknown as Record<string, unknown>,
+        value: next as never,
         changed_by: user.id,
-      });
+      } as never);
       await supabase.from("audit_events").insert({
         actor_id: user.id,
         subject_id: user.id,

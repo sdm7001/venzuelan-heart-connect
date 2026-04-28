@@ -251,7 +251,7 @@ export default function Auth() {
                     <Label>{t.auth.iAm}</Label>
                     <RadioGroup
                       value={accountType}
-                      onValueChange={(v: string) => setAccountType(v)}
+                      onValueChange={(v: string) => setAccountType(v as "female_user" | "male_user")}
                       className="grid grid-cols-2 gap-2"
                     >
                       <label className={cn(
@@ -273,7 +273,7 @@ export default function Auth() {
 
                   <div className="space-y-1.5">
                     <Label htmlFor="intention">{t.auth.intentionLabel}</Label>
-                    <Select value={intention} onValueChange={(v: string) => setIntention(v)}>
+                    <Select value={intention} onValueChange={(v: string) => setIntention(v as "marriage"|"serious_relationship"|"travel_and_meet"|"friendship_first")}>
                       <SelectTrigger id="intention" className="w-full min-w-0">
                         <SelectValue />
                       </SelectTrigger>

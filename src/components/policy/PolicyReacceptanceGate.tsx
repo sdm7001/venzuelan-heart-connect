@@ -205,7 +205,7 @@ export function PolicyReacceptanceGate() {
     const MAX_ATTEMPTS = 3;
     let auditErr: { message: string } | null = null;
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-      const { error } = await supabase.from("audit_events").insert(auditPayload);
+      const { error } = await supabase.from("audit_events").insert(auditPayload as never);
       if (!error) { auditErr = null; break; }
       auditErr = error;
       if (attempt < MAX_ATTEMPTS) {
