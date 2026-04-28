@@ -16,7 +16,6 @@ const NotFound = () => {
   // first paint even before the I18nProvider's effect runs (important for
   // direct hits to /es/<broken-url>).
   const isEs = location.pathname === "/es" || location.pathname.startsWith("/es/");
-  const prefix = isEs ? "/es" : "";
   const homeHref = isEs ? "/es/" : "/";
 
   // Keep the global provider in sync so header/footer/SEO match the URL.
