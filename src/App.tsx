@@ -30,7 +30,10 @@ import GiftOrderDetail from "./pages/app/GiftOrderDetail";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminReports from "./pages/admin/AdminReports";
-import { AdminFlags, AdminBilling } from "./pages/admin/AdminPlaceholders";
+import { AdminFlags } from "./pages/admin/AdminPlaceholders";
+import AdminBilling from "./pages/admin/AdminBilling";
+import Pricing from "./pages/app/Pricing";
+import CheckoutReturn from "./pages/app/CheckoutReturn";
 import AdminAudit from "./pages/admin/AdminAudit";
 import AdminVerification from "./pages/admin/AdminVerification";
 import AdminRiskEvents from "./pages/admin/AdminRiskEvents";
@@ -110,6 +113,9 @@ const App = () => (
               <Route path="/messages" element={<RequireAuth><Messages /></RequireAuth>} />
               <Route path="/gifts/send" element={<RequireAuth><GiftSend /></RequireAuth>} />
               <Route path="/gifts/:orderId" element={<RequireAuth><GiftOrderDetail /></RequireAuth>} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/es/pricing" element={<Pricing />} />
+              <Route path="/billing/return" element={<RequireAuth><CheckoutReturn /></RequireAuth>} />
 
               {/* Admin */}
               <Route path="/admin" element={<RequireStaff><AdminOverview /></RequireStaff>} />
