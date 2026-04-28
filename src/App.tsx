@@ -46,6 +46,7 @@ import AdminMfaRecoveryCodes from "./pages/admin/AdminMfaRecoveryCodes";
 import LandingPage from "./pages/LandingPage";
 import PreviewMatches from "./pages/PreviewMatches";
 import NotFound from "./pages/NotFound";
+import Unsubscribe from "./pages/Unsubscribe";
 import A11yAudit from "./pages/__A11yAudit";
 import ResponsiveQA from "./pages/__ResponsiveQA";
 import { CookieConsentBanner } from "@/components/consent/CookieConsentBanner";
@@ -204,6 +205,8 @@ const App = () => (
               {import.meta.env.DEV && <Route path="/__a11y" element={<A11yAudit />} />}
               {import.meta.env.DEV && <Route path="/__responsive" element={<ResponsiveQA />} />}
 
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
+              <Route path="/es/unsubscribe" element={<Unsubscribe />} />
               <Route path="*" element={<NotFound />} />
               </Routes>
               <CookieConsentBanner />
