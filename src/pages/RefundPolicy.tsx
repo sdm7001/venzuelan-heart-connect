@@ -119,59 +119,91 @@ export default function RefundPolicy() {
         ]},
       ]
     : [
-        { heading: "1. Summary", items: [
+        { heading: "1. Summary",
+          summary: "The essentials in a few lines.",
+          callout: { tone: "info", title: "In short",
+            body: "Women never pay. Men can cancel auto-renewal at any time. Refunds follow the sections below and applicable law." },
+          items: [
           "Subscriptions are charged in advance for the period you select (monthly, quarterly, annual). After a successful purchase, you immediately receive access to the digital content and paid features.",
           "Women do not pay to use the service, so this policy does not apply to female accounts.",
           "Men can cancel auto-renewal at any time from Settings → Billing. Canceling stops future charges but does not, by itself, refund the period already paid for, except as set out in the sections below and as required by applicable law.",
         ]},
-        { heading: "2. Right of withdrawal (EU / EEA / UK)", items: [
+        { heading: "2. Right of withdrawal (EU / EEA / UK)",
+          summary: "14 days to withdraw from a digital service, with caveats.",
+          callout: { tone: "legal", title: "Your statutory right",
+            body: "EU/EEA/UK residents: 14 calendar days from purchase to withdraw, except for the portion already consumed. Email billing@matchvenezuelan.com." },
+          items: [
           "If you reside in the EU, EEA or UK, you have the right to withdraw from a digital-services contract within 14 calendar days of purchase, without giving any reason.",
           "Important: when starting your subscription or using your credits/gifts, you are asked to expressly acknowledge that the digital service begins immediately and that, as a result, you lose the right of withdrawal over the portion already consumed (messages sent, contacts initiated, gifts delivered, credits spent, verification performed). This follows Article 16(m) of EU Directive 2011/83 on consumer rights and equivalent local law.",
           "To exercise the right of withdrawal within 14 days, email billing@matchvenezuelan.com with your name, account email, purchase date and transaction ID. We will refund the unused portion via the original payment method within 14 days of receiving your request.",
         ]},
-        { heading: "3. Subscriptions (Level 1, Level 2, Premium)", items: [
+        { heading: "3. Subscriptions (Level 1, Level 2, Premium)",
+          summary: "Renewal, cancellation, technical failures and plan changes.",
+          items: [
           "Auto-renewal: subscriptions automatically renew at the end of the current period at the then-current price. You will receive a reminder email before annual renewals.",
           "Cancellation: you can cancel auto-renewal at any time from Settings → Billing. You keep access until the end of the paid period and you will not be charged again.",
           "Pro-rated refund for technical failure: if an outage attributable to us materially prevents use of your subscription for more than 72 continuous hours, you may request a credit or pro-rated refund for the affected days.",
           "Plan changes: when you upgrade or downgrade, we pro-rate the remaining period. Downgrades do not produce a cash refund: the remaining balance is applied as credit to the new plan.",
           "No refund for voluntary partial use: if you simply choose not to use the service during the contracted period, no partial refund is owed beyond the 14-day right of withdrawal in the EU/UK.",
         ]},
-        { heading: "4. Credit packs", items: [
+        { heading: "4. Credit packs",
+          summary: "Once the first credit is spent, the pack is no longer refundable.",
+          items: [
           "Purchased credits are non-refundable once at least one credit from the purchased pack has been spent, since the digital service has been delivered and consumed in a personalized way.",
           "If you have not spent any credits from the pack, you may request a refund within 14 days of purchase (EU/UK) or within 7 days (other jurisdictions, as a goodwill courtesy).",
           "Credits do not expire while your account is active. If you voluntarily close your account, unused credits are forfeited and not refunded, unless required by law.",
         ]},
-        { heading: "5. Virtual gifts", items: [
+        { heading: "5. Virtual gifts",
+          summary: "Delivered instantly — and therefore non-refundable once sent.",
+          items: [
           "Virtual gifts (P2) are delivered instantly to the recipient and are non-refundable once sent.",
           "If a virtual gift is rejected, held by moderation, or cannot be delivered for system reasons, we will automatically return the credits or equivalent amount within 7 days, with no need to request it.",
           "Gifts sent to accounts that are later banned for fraud or another serious violation may be refunded to the sender, in credits, on a case-by-case basis.",
         ]},
-        { heading: "6. Physical gifts (when available)", items: [
+        { heading: "6. Physical gifts (when available)",
+          summary: "Specific rules for physical shipments via external vendors.",
+          items: [
           "Physical gifts (P3) are fulfilled by external vendors (florists, gift baskets, jewelry, etc.). Once the order is confirmed and sent to the vendor, we cannot accept cancellations.",
           "If the vendor cannot deliver the gift, or the recipient refuses it, we will arrange an equivalent re-delivery or, if not possible, refund the amount paid, less vendor fees where applicable.",
           "Damage or defects must be reported within 72 hours of delivery, with photos. We will arrange a replacement or refund subject to the vendor's terms.",
         ]},
-        { heading: "7. Duplicate charges, errors and fraud", items: [
+        { heading: "7. Duplicate charges, errors and fraud",
+          summary: "What to do if you see a charge you do not recognize.",
+          callout: { tone: "warning", title: "Before opening a chargeback",
+            body: "Email billing@matchvenezuelan.com first. We resolve most issues within days and avoid automatic account suspensions." },
+          items: [
           "If you spot a duplicate charge, an unauthorized charge or a charge for an incorrect amount, email billing@matchvenezuelan.com within 60 days of the charge date. We will investigate and, where appropriate, refund in full.",
           "If your account or payment method was used by a third party without your authorization, report it immediately. We will cooperate with your bank and, if we confirm fraud, refund the affected charges.",
           "Disputes (chargebacks) opened without first contacting support may result in your account being suspended until resolution, in line with card-network and payment-processor rules.",
         ]},
-        { heading: "8. Accounts suspended or terminated for violation", items: [
+        { heading: "8. Accounts suspended or terminated for violation",
+          summary: "Material breaches do not entitle you to a refund of unused periods.",
+          items: [
           "If we suspend or terminate your account for a material breach of the Terms, the Acceptable Use Policy or the Anti-Solicitation Policy (including soliciting paid sexual acts, fraud, impersonation or abusive behavior), no refund will be granted for the unused period, remaining credits or pending gifts, in line with section 9 of the Terms.",
           "Where mandatory law in your country requires a partial refund, we will honor it.",
         ]},
-        { heading: "9. How to request a refund", items: [
+        { heading: "9. How to request a refund",
+          summary: "The process, the timelines and what to include.",
+          callout: { tone: "success", title: "Response timelines",
+            body: "Acknowledgement within 2 business days. Most cases resolved within 10 business days." },
+          items: [
           "Email billing@matchvenezuelan.com from the address associated with your account. Include: your full name, account ID or email, transaction date and amount, transaction ID (if known) and the reason for the request.",
           "We acknowledge receipt within 2 business days and resolve most requests within 10 business days. Approved refunds are processed to the original payment method; the time it takes to appear depends on your bank or issuer.",
           "If you need urgent help due to security or suspected fraud, also email trust@matchvenezuelan.com.",
         ]},
-        { heading: "10. Taxes", items: [
+        { heading: "10. Taxes",
+          summary: "How taxes are treated in refunds.",
+          items: [
           "Displayed prices may include or exclude taxes depending on your country. On full or partial refunds, taxes collected are refunded proportionally in line with applicable rules.",
         ]},
-        { heading: "11. Changes to this Policy", items: [
+        { heading: "11. Changes to this Policy",
+          summary: "Reasonable advance notice for material changes.",
+          items: [
           "We may update this policy to reflect changes in the product, payment providers or regulation. We will announce material changes with reasonable advance notice and, where appropriate, notify you by email.",
         ]},
-        { heading: "12. Contact", items: [
+        { heading: "12. Contact",
+          summary: "Where to write depending on the topic.",
+          items: [
           "Billing and refunds: billing@matchvenezuelan.com · Trust & Safety: trust@matchvenezuelan.com · Legal: legal@matchvenezuelan.com.",
         ]},
       ];
