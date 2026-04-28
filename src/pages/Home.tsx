@@ -5,6 +5,7 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo, SITE_NAME, SITE_URL } from "@/seo/seo";
 import StructuredData from "@/components/StructuredData";
+import MatchSearchTile from "@/components/home/MatchSearchTile";
 // TODO: Replace hero-portrait.jpg with a compressed WebP (<150KB) for Core Web Vitals.
 import heroImg from "@/assets/hero-portrait.jpg";
 
@@ -84,6 +85,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Search / Match Preview Tile */}
+      <MatchSearchTile />
 
       {/* PILLARS */}
       <section className="container py-section">
