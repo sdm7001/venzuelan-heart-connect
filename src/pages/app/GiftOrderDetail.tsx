@@ -415,7 +415,7 @@ function MessageBlock({
   metadata: Record<string, unknown> | null;
   t: typeof fallbackDetail;
 }) {
-  const m = metadata?.message ?? {};
+  const m = (metadata?.message ?? {}) as any;
   const original = m.original as string | undefined;
   const translated = m.translated as string | undefined;
   const origLang = m.original_lang as string | undefined;

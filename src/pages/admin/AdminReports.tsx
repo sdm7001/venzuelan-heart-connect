@@ -48,7 +48,7 @@ export default function AdminReports() {
     return rows
       .filter(r => statusFilter === "all" || r.status === statusFilter)
       .filter(r => severityFilter === "all" || r.severity === severityFilter)
-      .filter(r => !q || r.category.includes(q.toLowerCase()) || (r.description ?? "").toLowerCase().includes(q.toLowerCase()))
+      .filter(r => !q || r.category.includes(q.toLowerCase()) || ((r.description as string | null) ?? "").toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => {
         const sa = SEVERITY_ORDER.indexOf(a.severity);
         const sb = SEVERITY_ORDER.indexOf(b.severity);

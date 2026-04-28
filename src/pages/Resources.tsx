@@ -166,15 +166,15 @@ export default function Resources() {
       if (cancel) return;
       const rows = data ?? [];
       setPosts(
-        rows.map((r: Record<string, unknown>) => ({
-          slug: r.slug,
-          category: r.category,
-          publishedAt: r.published_at,
-          readMin: r.reading_minutes,
-          featured: r.featured,
+        rows.map((r: Record<string, any>): Post => ({
+          slug: r.slug as string,
+          category: r.category as Post["category"],
+          publishedAt: r.published_at as string,
+          readMin: r.reading_minutes as number,
+          featured: r.featured as boolean,
           i18n: {
-            en: { title: r.title_en, excerpt: r.excerpt_en, keywords: r.tags ?? [] },
-            es: { title: r.title_es, excerpt: r.excerpt_es, keywords: r.tags ?? [] },
+            en: { title: r.title_en as string, excerpt: r.excerpt_en as string, keywords: (r.tags ?? []) as string[] },
+            es: { title: r.title_es as string, excerpt: r.excerpt_es as string, keywords: (r.tags ?? []) as string[] },
           },
         })),
       );

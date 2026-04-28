@@ -257,7 +257,7 @@ export default function AdminPolicyAcceptance() {
         accepted_keys_at_send: t.accepted_keys,
       } as Record<string, unknown>,
     }));
-    const { error: auditErr } = await supabase.from("audit_events").insert(events);
+    const { error: auditErr } = await supabase.from("audit_events").insert(events as never);
     if (auditErr) {
       setSending(false);
       setConfirmOpen(false);
@@ -591,20 +591,22 @@ export default function AdminPolicyAcceptance() {
                           {a.subject_id ? a.subject_id.slice(0, 8) : "—"}
                         </TableCell>
                         <TableCell className="text-xs text-muted-foreground">
-                          {a.action === "policy_version_bumped" && a.metadata?.next?.policy_version && (
-                            <>v{a.metadata.previous?.policy_version ?? "?"} → v{a.metadata.next.policy_version}</>
+                          {(() => { const m = a.metadata as any; return (<>
+                          {a.action === "policy_version_bumped" && m?.next?.policy_version && (
+                            <>v{m.previous?.policy_version ?? "?"} → v{m.next.policy_version}</>
                           )}
                           {a.action === "policy_urls_updated" && "URLs updated"}
-                          {a.action === "policy_reaccepted" && a.metadata?.policy_version && (
-                            <>Re-accepted v{a.metadata.policy_version}</>
+                          {a.action === "policy_reaccepted" && m?.policy_version && (
+                            <>Re-accepted v{m.policy_version}</>
                           )}
                           {a.action === "policy_reminder_sent" && (
                             <>
-                              Reminder for v{a.metadata?.policy_version ?? "?"} ·{" "}
-                              <span className="font-mono">{(a.metadata?.missing_keys ?? []).join(", ") || "—"}</span>
-                              {a.metadata?.channel ? <> · {a.metadata.channel}</> : null}
+                              Reminder for v{m?.policy_version ?? "?"} ·{" "}
+                              <span className="font-mono">{(m?.missing_keys ?? []).join(", ") || "—"}</span>
+                              {m?.channel ? <> · {m.channel}</> : null}
                             </>
                           )}
+                          </>); })()}
                         </TableCell>
                       </TableRow>
                     ))}

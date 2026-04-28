@@ -331,10 +331,12 @@ export default function AdminUserProfile() {
                           <Badge variant="outline" className="font-mono text-[10px]">{e.action}</Badge>
                         </TableCell>
                         <TableCell className="text-xs text-muted-foreground">
-                          {e.metadata?.policy_version && <>v{e.metadata.policy_version} </>}
-                          {e.metadata?.missing_keys?.length ? (
-                            <span className="font-mono">{e.metadata.missing_keys.join(", ")}</span>
+                          {(() => { const m = e.metadata as any; return (<>
+                          {m?.policy_version && <>v{m.policy_version} </>}
+                          {m?.missing_keys?.length ? (
+                            <span className="font-mono">{m.missing_keys.join(", ")}</span>
                           ) : null}
+                          </>); })()}
                         </TableCell>
                       </TableRow>
                     ))}

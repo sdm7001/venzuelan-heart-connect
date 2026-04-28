@@ -109,7 +109,7 @@ export function AdminPolicies() {
 
     const { error } = await supabase
       .from("app_settings")
-      .update({ value: draft as unknown as Record<string, unknown>, updated_by: user?.id ?? null })
+      .update({ value: draft as never, updated_by: user?.id ?? null } as never)
       .eq("key", "policy_config");
 
     if (error) {
@@ -119,19 +119,19 @@ export function AdminPolicies() {
 
     await supabase.from("app_settings_history").insert({
       key: "policy_config",
-      value: draft as unknown as Record<string, unknown>,
+      value: draft as never,
       changed_by: user?.id ?? null,
-    });
+    } as never);
 
     await supabase.from("audit_events").insert({
       actor_id: user?.id ?? null,
       category: "policy",
       action: versionChanged ? "policy_version_bumped" : "policy_urls_updated",
       metadata: {
-        previous: original as unknown as Record<string, unknown>,
-        next: draft as unknown as Record<string, unknown>,
-      } as Record<string, unknown>,
-    });
+        previous: original,
+        next: draft,
+      } as never,
+    } as never);
 
     toast.success(
       versionChanged
