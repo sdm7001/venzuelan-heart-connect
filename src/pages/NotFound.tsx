@@ -1,11 +1,20 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, Compass, Home, HelpCircle, Mail, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Compass, CornerDownLeft, Home, HelpCircle, Mail, Search, ShieldCheck, X } from "lucide-react";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useSeo } from "@/seo/seo";
+import { cn } from "@/lib/utils";
 import notFoundIllustration from "@/assets/not-found-letter.jpg";
+
+type SearchEntry = {
+  to: string;
+  label: string;
+  desc: string;
+  keywords: string;
+};
 
 const NotFound = () => {
   const location = useLocation();
