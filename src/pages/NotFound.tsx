@@ -224,6 +224,92 @@ const NotFound = () => {
               <code className="truncate font-mono text-[12px] text-foreground">{location.pathname}</code>
             </div>
 
+            {/* Site search */}
+            <div className="mt-7" role="search" aria-label={t.searchLabel}>
+              <label htmlFor="nf-search" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-burgundy">
+                {t.searchLabel}
+              </label>
+              <div className="relative">
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden
+                />
+                <Input
+                  id="nf-search"
+                  ref={inputRef}
+                  type="search"
+                  inputMode="search"
+                  autoComplete="off"
+                  spellCheck={false}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={onSearchKeyDown}
+                  placeholder={t.searchPlaceholder}
+                  aria-controls="nf-search-results"
+                  aria-expanded={results.length > 0}
+                  aria-activedescendant={results[activeIdx] ? `nf-result-${activeIdx}` : undefined}
+                  className="h-11 pl-10 pr-10 text-sm"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => { setQuery(""); inputRef.current?.focus(); }}
+                    aria-label={t.searchClear}
+                    className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent/40 hover:text-foreground"
+                  >
+                    <X className="h-4 w-4" aria-hidden />
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-2 min-h-[1.25rem] text-[11px] text-muted-foreground" aria-live="polite">
+                {query.trim() === ""
+                  ? t.searchHintEmpty
+                  : results.length === 0
+                    ? t.searchNoResults
+                    : t.searchHintResults(results.length)}
+              </div>
+
+              {results.length > 0 && (
+                <ul
+                  id="nf-search-results"
+                  role="listbox"
+                  aria-label={t.searchLabel}
+                  className="mt-2 overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)]"
+                >
+                  {results.map((r, idx) => {
+                    const active = idx === activeIdx;
+                    return (
+                      <li key={r.to} role="option" id={`nf-result-${idx}`} aria-selected={active}>
+                        <Link
+                          to={r.to}
+                          onMouseEnter={() => setActiveIdx(idx)}
+                          className={cn(
+                            "flex items-center gap-3 px-3 py-2.5 text-sm transition-colors",
+                            active ? "bg-primary-soft/60" : "hover:bg-primary-soft/30",
+                          )}
+                        >
+                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-background text-burgundy">
+                            <ArrowRight className="h-4 w-4" aria-hidden />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate font-medium text-foreground">{r.label}</span>
+                            <span className="block truncate text-xs text-muted-foreground">{r.desc}</span>
+                          </span>
+                          <code className="hidden truncate font-mono text-[11px] text-muted-foreground sm:block">{r.to}</code>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+
+              <p className="mt-2 hidden items-center gap-1 text-[11px] text-muted-foreground sm:flex">
+                <CornerDownLeft className="h-3 w-3" aria-hidden />
+                {t.searchKbd}
+              </p>
+            </div>
+
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
                 <Link to={homeHref}>
