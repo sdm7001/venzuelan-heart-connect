@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, Compass, Home, HelpCircle, Mail, Search } from "lucide-react";
+import { ArrowLeft, Compass, Home, HelpCircle, Mail, ShieldCheck } from "lucide-react";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -10,14 +10,34 @@ import notFoundIllustration from "@/assets/not-found-letter.jpg";
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { lang } = useI18n();
-  const isEs = lang === "es";
+  const { lang, setLang } = useI18n();
+
+  // Derive language from the URL itself so the page renders correctly on
+  // first paint even before the I18nProvider's effect runs (important for
+  // direct hits to /es/<broken-url>).
+  const isEs = location.pathname === "/es" || location.pathname.startsWith("/es/");
   const prefix = isEs ? "/es" : "";
+  const homeHref = isEs ? "/es/" : "/";
+
+  // Keep the global provider in sync so header/footer/SEO match the URL.
+  useEffect(() => {
+    const target = isEs ? "es" : "en";
+    if (lang !== target) setLang(target);
+  }, [isEs, lang, setLang]);
 
   useEffect(() => {
     // Useful for analytics on broken inbound links.
     console.warn("404 — route not found:", location.pathname);
   }, [location.pathname]);
+
+  const goBack = useCallback(() => {
+    // history.length > 1 means there is at least one prior entry in this tab.
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate(homeHref, { replace: true });
+    }
+  }, [navigate, homeHref]);
 
   useSeo(
     {
