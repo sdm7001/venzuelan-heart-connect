@@ -232,6 +232,27 @@ export default function Pricing() {
           </p>
         </div>
       </main>
+
+      <AlertDialog open={!!pendingChange} onOpenChange={(open) => !open && !changeLoading && setPendingChange(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {isUpgrade ? "Upgrade your plan" : "Schedule a downgrade"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {isUpgrade
+                ? `You'll be charged a prorated amount for the rest of this billing period and your new ${pendingChange?.tier.replace("_", " ")} plan will be active immediately.`
+                : `Your ${currentTier?.replace("_", " ")} plan stays active until the end of this billing period. You'll then automatically switch to ${pendingChange?.tier.replace("_", " ")}. No charge today.`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={changeLoading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={(e) => { e.preventDefault(); void confirmChange(); }} disabled={changeLoading}>
+              {changeLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : isUpgrade ? "Confirm upgrade" : "Schedule downgrade"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
