@@ -34,6 +34,7 @@ import { AdminFlags } from "./pages/admin/AdminPlaceholders";
 import AdminBilling from "./pages/admin/AdminBilling";
 import Pricing from "./pages/app/Pricing";
 import CheckoutReturn from "./pages/app/CheckoutReturn";
+import CheckoutPremium from "./pages/app/CheckoutPremium";
 import AdminAudit from "./pages/admin/AdminAudit";
 import AdminVerification from "./pages/admin/AdminVerification";
 import AdminRiskEvents from "./pages/admin/AdminRiskEvents";
@@ -116,6 +117,8 @@ const App = () => (
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/es/pricing" element={<Pricing />} />
               <Route path="/billing/return" element={<RequireAuth><CheckoutReturn /></RequireAuth>} />
+              <Route path="/checkout/premium" element={<RequireAuth><CheckoutPremium /></RequireAuth>} />
+              <Route path="/es/checkout/premium" element={<RequireAuth><CheckoutPremium /></RequireAuth>} />
 
               {/* Admin */}
               <Route path="/admin" element={<RequireStaff><AdminOverview /></RequireStaff>} />
