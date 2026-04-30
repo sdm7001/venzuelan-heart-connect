@@ -61,8 +61,9 @@ const PLANS: Array<{
 ];
 
 export default function Pricing() {
-  const { user } = useAuth();
+  const { user, roles } = useAuth();
   const navigate = useNavigate();
+  const isFemale = roles.includes("female_user");
   const [currentTier, setCurrentTier] = useState<Tier | null>(null);
   const [loading, setLoading] = useState(false);
   const [pendingChange, setPendingChange] = useState<{ tier: Tier; priceId: string } | null>(null);
