@@ -118,9 +118,117 @@ Deno.serve(async (req) => {
     // Recent webhook deliveries from billing_events as a proxy for "did webhooks land"
     const { data: recentBilling } = await supabase
       .from("billing_events")
-      .select("event_type, created_at, metadata")
+      .select("event_type, created_at, metadata, user_id, amount_cents, currency")
       .order("created_at", { ascending: false })
       .limit(20);
+
+    // ── Customers: subscriptions in this environment, joined with profile + role
+    const { data: subsRaw } = await supabase
+      .from("subscriptions")
+      .select("id, user_id, tier, status, current_period_start, current_period_end, cancel_at_period_end, stripe_customer_id, stripe_subscription_id, price_id, created_at, updated_at")
+      .eq("environment", env)
+      .order("updated_at", { ascending: false })
+      .limit(200);
+
+    const userIds = Array.from(new Set((subsRaw ?? []).map((s) => s.user_id)));
+    const profilesById = new Map<string, { display_name: string | null; country: string | null }>();
+    const rolesById = new Map<string, string[]>();
+    let emailsById = new Map<string, string | null>();
+
+    if (userIds.length > 0) {
+      const [{ data: profs }, { data: rls }] = await Promise.all([
+        supabase.from("profiles").select("id, display_name, country").in("id", userIds),
+        supabase.from("user_roles").select("user_id, role").in("user_id", userIds),
+      ]);
+      (profs ?? []).forEach((p: any) => profilesById.set(p.id, { display_name: p.display_name, country: p.country }));
+      (rls ?? []).forEach((r: any) => {
+        const arr = rolesById.get(r.user_id) ?? [];
+        arr.push(r.role);
+        rolesById.set(r.user_id, arr);
+      });
+
+      // Emails (admin only) — admin API; soft-fail to keep page working
+      if (isAdmin) {
+        try {
+          const results = await Promise.all(
+            userIds.map((uid) =>
+              supabase.auth.admin.getUserById(uid).then(
+                (r) => [uid, r.data?.user?.email ?? null] as const,
+                () => [uid, null] as const,
+              ),
+            ),
+          );
+          emailsById = new Map(results);
+        } catch (e) {
+          console.warn("auth.admin.getUserById failed:", (e as Error).message);
+        }
+      }
+    }
+
+    const customers = (subsRaw ?? []).map((s: any) => {
+      const prof = profilesById.get(s.user_id);
+      return {
+        user_id: s.user_id,
+        display_name: prof?.display_name ?? null,
+        country: prof?.country ?? null,
+        email: isAdmin ? (emailsById.get(s.user_id) ?? null) : null,
+        roles: rolesById.get(s.user_id) ?? [],
+        subscription: {
+          id: s.id,
+          tier: s.tier,
+          status: s.status,
+          price_id: s.price_id,
+          current_period_start: s.current_period_start,
+          current_period_end: s.current_period_end,
+          cancel_at_period_end: s.cancel_at_period_end,
+          stripe_customer_id: isAdmin ? s.stripe_customer_id : null,
+          stripe_subscription_id: isAdmin ? s.stripe_subscription_id : null,
+          created_at: s.created_at,
+          updated_at: s.updated_at,
+        },
+      };
+    });
+
+    // ── Payment history: recent billing_events with money attached
+    const { data: paymentsRaw } = await supabase
+      .from("billing_events")
+      .select("id, event_type, user_id, amount_cents, currency, created_at, metadata")
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    const paymentUserIds = Array.from(new Set((paymentsRaw ?? []).map((p) => p.user_id).filter(Boolean) as string[]));
+    const newIds = paymentUserIds.filter((id) => !profilesById.has(id));
+    if (newIds.length > 0) {
+      const { data: extra } = await supabase
+        .from("profiles")
+        .select("id, display_name, country")
+        .in("id", newIds);
+      (extra ?? []).forEach((p: any) => profilesById.set(p.id, { display_name: p.display_name, country: p.country }));
+    }
+
+    const payments = (paymentsRaw ?? []).map((p: any) => ({
+      id: p.id,
+      event_type: p.event_type,
+      user_id: p.user_id,
+      display_name: p.user_id ? (profilesById.get(p.user_id)?.display_name ?? null) : null,
+      amount_cents: isAdmin ? p.amount_cents : null,
+      currency: p.currency,
+      created_at: p.created_at,
+      metadata: p.metadata,
+    }));
+
+    // Aggregate counters
+    const stats = {
+      total_customers: customers.length,
+      active: customers.filter((c) => ["active", "trialing"].includes(c.subscription.status)).length,
+      past_due: customers.filter((c) => c.subscription.status === "past_due").length,
+      canceled: customers.filter((c) => c.subscription.status === "canceled").length,
+      by_tier: customers.reduce((acc: Record<string, number>, c) => {
+        const k = c.subscription.tier ?? "unknown";
+        acc[k] = (acc[k] ?? 0) + 1;
+        return acc;
+      }, {}),
+    };
 
     return new Response(
       JSON.stringify({
@@ -128,6 +236,9 @@ Deno.serve(async (req) => {
         is_admin: isAdmin,
         pricing,
         recent_sessions: recentSessions,
+        customers,
+        payments,
+        stats,
         webhook: {
           expected_url: webhookUrl,
           sandbox_secret_set: sandboxSecretSet,
