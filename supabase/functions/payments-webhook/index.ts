@@ -223,9 +223,9 @@ async function handleSubscriptionUpdated(subscription: any, env: StripeEnv) {
       await logBillingAudit(userId, eventType, meta);
     }
   }
-}
 
-async function handleSubscriptionDeleted(subscription: any, env: StripeEnv) {
+  await syncEntitlement(userId, env);
+}
   const userId = subscription.metadata?.userId;
   await getSupabase()
     .from("subscriptions")
