@@ -155,10 +155,10 @@ async function handleSubscriptionUpdated(subscription: any, env: StripeEnv) {
   const periodEnd = item?.current_period_end ?? subscription.current_period_end;
   const newTier = priceIdToTier(priceId);
 
-  // Find existing row to detect upgrade/downgrade
+  // Find existing row to detect tier transitions and cancel-at-period-end toggles
   const { data: existing } = await getSupabase()
     .from("subscriptions")
-    .select("tier, status")
+    .select("tier, status, cancel_at_period_end")
     .eq("stripe_subscription_id", subscription.id)
     .eq("environment", env)
     .maybeSingle();
@@ -178,16 +178,39 @@ async function handleSubscriptionUpdated(subscription: any, env: StripeEnv) {
     .eq("stripe_subscription_id", subscription.id)
     .eq("environment", env);
 
+  const ctx = subscriptionContext(subscription, env);
+
+  // Always record the raw update in audit_events (full provider snapshot)
+  await logBillingAudit(userId ?? null, "subscription_updated", {
+    ...ctx,
+    from_tier: existing?.tier ?? null,
+    to_tier: newTier,
+    from_status: existing?.status ?? null,
+    from_cancel_at_period_end: existing?.cancel_at_period_end ?? null,
+  });
+
+  // Detect cancel-at-period-end toggle (user scheduled or reverted a cancel)
+  const prevCancel = existing?.cancel_at_period_end ?? false;
+  const nowCancel = subscription.cancel_at_period_end ?? false;
+  if (userId && prevCancel !== nowCancel) {
+    await logBillingAudit(
+      userId,
+      nowCancel ? "subscription_cancel_scheduled" : "subscription_cancel_reverted",
+      ctx,
+    );
+  }
+
   if (userId && existing?.tier && newTier && newTier !== existing.tier) {
     const cmp = compareTier(newTier, existing.tier as string);
-    if (cmp > 0) {
-      await logBilling(userId, "subscription_upgraded", item?.price?.unit_amount ?? null, item?.price?.currency ?? null, {
-        from_tier: existing.tier, to_tier: newTier, stripe_subscription_id: subscription.id, environment: env,
-      });
-    } else if (cmp < 0) {
-      await logBilling(userId, "subscription_downgraded", item?.price?.unit_amount ?? null, item?.price?.currency ?? null, {
-        from_tier: existing.tier, to_tier: newTier, stripe_subscription_id: subscription.id, environment: env,
-      });
+    const eventType = cmp > 0 ? "subscription_upgraded" : cmp < 0 ? "subscription_downgraded" : null;
+    if (eventType) {
+      const meta = {
+        ...ctx,
+        from_tier: existing.tier,
+        to_tier: newTier,
+      };
+      await logBilling(userId, eventType, item?.price?.unit_amount ?? null, item?.price?.currency ?? null, meta);
+      await logBillingAudit(userId, eventType, meta);
     }
   }
 }
