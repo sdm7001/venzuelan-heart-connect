@@ -4,6 +4,16 @@ import { Check, Loader2, Settings } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useAuth } from "@/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { getStripeEnvironment, PRICE_IDS } from "@/lib/stripe";
@@ -12,6 +22,7 @@ import { PaymentTestModeBanner } from "@/components/payments/PaymentTestModeBann
 import { toast } from "sonner";
 
 type Tier = "level_1" | "level_2" | "premium";
+const TIER_RANK: Record<Tier, number> = { level_1: 1, level_2: 2, premium: 3 };
 
 const PLANS: Array<{
   tier: Tier;
