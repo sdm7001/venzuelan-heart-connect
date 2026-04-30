@@ -145,21 +145,36 @@ Deno.serve(async (req) => {
       resultMessage = "Downgrade scheduled. You'll keep your current plan until the end of this billing period, then switch automatically.";
     }
 
-    // Audit log
+    // Audit log: billing_events for finance trail + audit_events for the
+    // canonical project audit log. Webhook will also fire when Stripe applies
+    // the change, so the trail captures both "user requested" and "provider
+    // applied" sides with timestamps.
+    const auditMeta = {
+      from_tier: sub.tier,
+      to_tier: newTier,
+      from_price_id: sub.price_id,
+      to_price_id: newPriceId,
+      stripe_subscription_id: sub.stripe_subscription_id,
+      effective,
+      scheduled: !isUpgrade,
+      environment: env,
+      requested_at: new Date().toISOString(),
+    };
+
     await supabase.from("billing_events").insert({
       user_id: user.id,
       event_type: isUpgrade ? "subscription_upgraded" : "subscription_downgraded",
       amount_cents: null,
       currency: "USD",
-      metadata: {
-        from_tier: sub.tier,
-        to_tier: newTier,
-        from_price_id: sub.price_id,
-        to_price_id: newPriceId,
-        effective,
-        scheduled: !isUpgrade,
-        environment: env,
-      },
+      metadata: auditMeta,
+    } as never);
+
+    await supabase.from("audit_events").insert({
+      actor_id: user.id,
+      subject_id: user.id,
+      category: "billing",
+      action: isUpgrade ? "subscription_upgrade_requested" : "subscription_downgrade_scheduled",
+      metadata: { ...auditMeta, source: "user_action" },
     } as never);
 
     return new Response(JSON.stringify({
