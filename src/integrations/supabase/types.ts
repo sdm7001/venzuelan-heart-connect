@@ -245,6 +245,36 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_events: {
+        Row: {
+          created_at: string
+          environment: string
+          id: string
+          period_end: string | null
+          period_start: string
+          recipient_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          environment?: string
+          id?: string
+          period_end?: string | null
+          period_start: string
+          recipient_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          environment?: string
+          id?: string
+          period_end?: string | null
+          period_start?: string
+          recipient_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       credit_transactions: {
         Row: {
           created_at: string
@@ -1210,6 +1240,65 @@ export type Database = {
           },
         ]
       }
+      user_entitlements: {
+        Row: {
+          cancel_at_period_end: boolean
+          contacts_used_this_period: number
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          environment: string
+          id: string
+          is_active: boolean
+          monthly_contact_limit: number | null
+          source_subscription_id: string | null
+          status: Database["public"]["Enums"]["subscription_status"]
+          tier: Database["public"]["Enums"]["subscription_tier"] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          contacts_used_this_period?: number
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
+          id?: string
+          is_active?: boolean
+          monthly_contact_limit?: number | null
+          source_subscription_id?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          tier?: Database["public"]["Enums"]["subscription_tier"] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          contacts_used_this_period?: number
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
+          id?: string
+          is_active?: boolean
+          monthly_contact_limit?: number | null
+          source_subscription_id?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          tier?: Database["public"]["Enums"]["subscription_tier"] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_entitlements_source_subscription_id_fkey"
+            columns: ["source_subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1311,6 +1400,15 @@ export type Database = {
         Args: { _verification_id: string }
         Returns: string
       }
+      consume_contact: {
+        Args: { _env: string; _recipient_id: string }
+        Returns: {
+          allowed: boolean
+          contacts_used: number
+          monthly_limit: number
+          reason: string
+        }[]
+      }
       consume_staff_recovery_code: {
         Args: { _code_hash: string }
         Returns: {
@@ -1381,6 +1479,10 @@ export type Database = {
         }[]
       }
       recompute_trust_state: { Args: { _user_id: string }; Returns: undefined }
+      recompute_user_entitlement: {
+        Args: { _env: string; _user_id: string }
+        Returns: undefined
+      }
       user_trust_state: {
         Args: { _user_id: string }
         Returns: {
