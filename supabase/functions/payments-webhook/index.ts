@@ -68,6 +68,15 @@ async function logBillingAudit(
   } as never);
 }
 
+async function syncEntitlement(userId: string | null | undefined, env: StripeEnv) {
+  if (!userId) return;
+  const { error } = await getSupabase().rpc("recompute_user_entitlement" as never, {
+    _user_id: userId,
+    _env: env,
+  } as never);
+  if (error) console.error("recompute_user_entitlement failed:", error);
+}
+
 function subscriptionContext(subscription: any, env: StripeEnv) {
   const item = subscription.items?.data?.[0];
   const priceId = item?.price?.metadata?.lovable_external_id || item?.price?.id;
@@ -144,6 +153,7 @@ async function handleSubscriptionCreated(subscription: any, env: StripeEnv) {
     { ...ctx, tier },
   );
   await logBillingAudit(userId, "subscription_created", { ...ctx, tier });
+  await syncEntitlement(userId, env);
 }
 
 async function handleSubscriptionUpdated(subscription: any, env: StripeEnv) {
@@ -213,6 +223,8 @@ async function handleSubscriptionUpdated(subscription: any, env: StripeEnv) {
       await logBillingAudit(userId, eventType, meta);
     }
   }
+
+  await syncEntitlement(userId, env);
 }
 
 async function handleSubscriptionDeleted(subscription: any, env: StripeEnv) {
@@ -232,6 +244,7 @@ async function handleSubscriptionDeleted(subscription: any, env: StripeEnv) {
     await logBilling(userId, "subscription_canceled", null, null, ctx);
   }
   await logBillingAudit(userId ?? null, "subscription_canceled", ctx);
+  await syncEntitlement(userId, env);
 }
 
 async function handleInvoicePaymentSucceeded(invoice: any, env: StripeEnv) {
@@ -267,6 +280,7 @@ async function handleInvoicePaymentSucceeded(invoice: any, env: StripeEnv) {
     meta,
   );
   await logBillingAudit(sub.user_id as string, "subscription_renewed", meta);
+  await syncEntitlement(sub.user_id as string, env);
 }
 
 async function handleInvoicePaymentFailed(invoice: any, env: StripeEnv) {
@@ -301,6 +315,7 @@ async function handleInvoicePaymentFailed(invoice: any, env: StripeEnv) {
     meta,
   );
   await logBillingAudit(sub.user_id as string, "payment_failed", meta);
+  await syncEntitlement(sub.user_id as string, env);
 }
 
 async function handleWebhook(req: Request, env: StripeEnv) {
