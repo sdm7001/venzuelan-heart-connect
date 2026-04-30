@@ -111,8 +111,10 @@ export default function Pricing() {
       window.location.href = "/auth";
       return;
     }
+    // Existing subscriber: route to in-app upgrade/downgrade flow with confirmation
     if (currentTier) {
-      toast.message("You already have an active subscription. Use Manage Subscription to change plans.");
+      if (currentTier === tier) return;
+      setPendingChange({ tier, priceId });
       return;
     }
     if (tier === "premium") {
@@ -125,6 +127,32 @@ export default function Pricing() {
       userId: user.id,
     });
   }
+
+  async function confirmChange() {
+    if (!pendingChange) return;
+    setChangeLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("change-subscription", {
+        body: {
+          newPriceId: pendingChange.priceId,
+          environment: getStripeEnvironment(),
+        },
+      });
+      if (error) throw new Error(error.message);
+      if (data?.error) throw new Error(data.error);
+      toast.success(data?.message ?? "Subscription change applied.");
+      setPendingChange(null);
+      await loadCurrentTier();
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setChangeLoading(false);
+    }
+  }
+
+  const isUpgrade = pendingChange && currentTier
+    ? TIER_RANK[pendingChange.tier] > TIER_RANK[currentTier]
+    : false;
 
   return (
     <>
