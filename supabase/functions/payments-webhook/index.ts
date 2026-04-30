@@ -315,6 +315,7 @@ async function handleInvoicePaymentFailed(invoice: any, env: StripeEnv) {
     meta,
   );
   await logBillingAudit(sub.user_id as string, "payment_failed", meta);
+  await syncEntitlement(sub.user_id as string, env);
 }
 
 async function handleWebhook(req: Request, env: StripeEnv) {
