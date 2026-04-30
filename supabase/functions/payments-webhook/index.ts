@@ -40,6 +40,55 @@ async function logBilling(
   } as never);
 }
 
+/**
+ * Mirror every billing transition into audit_events so the full provider
+ * trail (subscription id, customer id, price id, status, period dates) is
+ * queryable alongside non-monetary events.
+ */
+async function logBillingAudit(
+  userId: string | null,
+  action:
+    | "subscription_created"
+    | "subscription_updated"
+    | "subscription_canceled"
+    | "subscription_renewed"
+    | "subscription_upgraded"
+    | "subscription_downgraded"
+    | "subscription_cancel_scheduled"
+    | "subscription_cancel_reverted"
+    | "payment_failed",
+  metadata: Record<string, unknown>,
+) {
+  await getSupabase().from("audit_events").insert({
+    actor_id: null,
+    subject_id: userId,
+    category: "billing",
+    action,
+    metadata: { ...metadata, source: "stripe_webhook", recorded_at: new Date().toISOString() },
+  } as never);
+}
+
+function subscriptionContext(subscription: any, env: StripeEnv) {
+  const item = subscription.items?.data?.[0];
+  const priceId = item?.price?.metadata?.lovable_external_id || item?.price?.id;
+  const periodStart = item?.current_period_start ?? subscription.current_period_start;
+  const periodEnd = item?.current_period_end ?? subscription.current_period_end;
+  return {
+    environment: env,
+    stripe_subscription_id: subscription.id,
+    stripe_customer_id: subscription.customer,
+    stripe_price_id: item?.price?.id,
+    lovable_price_id: priceId,
+    product_id: item?.price?.product,
+    status: subscription.status,
+    cancel_at_period_end: subscription.cancel_at_period_end ?? false,
+    current_period_start: tsToIso(periodStart),
+    current_period_end: tsToIso(periodEnd),
+    cancel_at: tsToIso(subscription.cancel_at),
+    canceled_at: tsToIso(subscription.canceled_at),
+  };
+}
+
 async function handleSubscriptionCreated(subscription: any, env: StripeEnv) {
   const userId = subscription.metadata?.userId;
   if (!userId) {
