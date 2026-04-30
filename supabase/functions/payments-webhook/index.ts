@@ -135,13 +135,15 @@ async function handleSubscriptionCreated(subscription: any, env: StripeEnv) {
     { onConflict: "stripe_subscription_id" },
   );
 
+  const ctx = subscriptionContext(subscription, env);
   await logBilling(
     userId,
     "subscription_created",
     item?.price?.unit_amount ?? null,
     item?.price?.currency ?? null,
-    { stripe_subscription_id: subscription.id, price_id: priceId, tier, environment: env },
+    { ...ctx, tier },
   );
+  await logBillingAudit(userId, "subscription_created", { ...ctx, tier });
 }
 
 async function handleSubscriptionUpdated(subscription: any, env: StripeEnv) {
