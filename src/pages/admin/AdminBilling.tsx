@@ -180,7 +180,7 @@ export default function AdminBilling() {
       )}
 
       {data && (
-        <Tabs defaultValue="pricing" className="space-y-4">
+        <Tabs defaultValue="customers" className="space-y-4">
           <TabsList className="flex-wrap h-auto">
             <TabsTrigger value="customers"><Users className="h-4 w-4 mr-1.5" />Customers</TabsTrigger>
             <TabsTrigger value="payments"><Wallet className="h-4 w-4 mr-1.5" />Payment history</TabsTrigger>
