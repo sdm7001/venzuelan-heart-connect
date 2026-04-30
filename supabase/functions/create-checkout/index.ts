@@ -39,6 +39,24 @@ Deno.serve(async (req) => {
 
     const env: StripeEnv = environment;
 
+    // Block: women never pay. Enforced server-side regardless of client UI.
+    if (userId) {
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId);
+      const roleSet = new Set((roles ?? []).map((r) => r.role as string));
+      if (roleSet.has("female_user")) {
+        return new Response(
+          JSON.stringify({
+            error: "free_membership",
+            message: "Women have free membership on MatchVenezuelan and do not need to subscribe.",
+          }),
+          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+    }
+
     // Prevent duplicate subscriptions: block if user already has an active sub in this env
     if (userId) {
       const { data: existing } = await supabase

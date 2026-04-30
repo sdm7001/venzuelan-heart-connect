@@ -61,8 +61,9 @@ const PLANS: Array<{
 ];
 
 export default function Pricing() {
-  const { user } = useAuth();
+  const { user, roles } = useAuth();
   const navigate = useNavigate();
+  const isFemale = roles.includes("female_user");
   const [currentTier, setCurrentTier] = useState<Tier | null>(null);
   const [loading, setLoading] = useState(false);
   const [pendingChange, setPendingChange] = useState<{ tier: Tier; priceId: string } | null>(null);
@@ -153,6 +154,27 @@ export default function Pricing() {
   const isUpgrade = pendingChange && currentTier
     ? TIER_RANK[pendingChange.tier] > TIER_RANK[currentTier]
     : false;
+
+  if (isFemale) {
+    return (
+      <main className="min-h-screen bg-muted/30 py-16 px-4">
+        <div className="max-w-2xl mx-auto text-center space-y-5">
+          <Badge variant="secondary" className="mx-auto">Free membership</Badge>
+          <h1 className="text-3xl md:text-4xl font-display font-semibold text-burgundy">
+            Your membership is free — always
+          </h1>
+          <p className="text-muted-foreground">
+            Women on MatchVenezuelan never pay. You can browse, match, message, and use core
+            safety features at no cost. Optional services like concierge verification or
+            in-person event support may be offered separately, but are never required.
+          </p>
+          <div className="pt-2">
+            <Button onClick={() => navigate("/app")}>Back to your dashboard</Button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>

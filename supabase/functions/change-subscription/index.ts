@@ -42,6 +42,21 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Block: women never pay (defense in depth alongside DB trigger).
+    const { data: roles } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id);
+    if ((roles ?? []).some((r) => (r.role as string) === "female_user")) {
+      return new Response(
+        JSON.stringify({
+          error: "free_membership",
+          message: "Women have free membership and cannot change paid plans.",
+        }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     // Look up the user's current active subscription in this env
     const { data: sub } = await supabase
       .from("subscriptions")
