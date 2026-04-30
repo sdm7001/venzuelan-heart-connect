@@ -227,11 +227,11 @@ async function handleSubscriptionDeleted(subscription: any, env: StripeEnv) {
     .eq("stripe_subscription_id", subscription.id)
     .eq("environment", env);
 
+  const ctx = subscriptionContext(subscription, env);
   if (userId) {
-    await logBilling(userId, "subscription_canceled", null, null, {
-      stripe_subscription_id: subscription.id, environment: env,
-    });
+    await logBilling(userId, "subscription_canceled", null, null, ctx);
   }
+  await logBillingAudit(userId ?? null, "subscription_canceled", ctx);
 }
 
 async function handleInvoicePaymentSucceeded(invoice: any, env: StripeEnv) {
@@ -242,19 +242,31 @@ async function handleInvoicePaymentSucceeded(invoice: any, env: StripeEnv) {
 
   const { data: sub } = await getSupabase()
     .from("subscriptions")
-    .select("user_id")
+    .select("user_id, stripe_customer_id, price_id, tier, environment")
     .eq("stripe_subscription_id", subId)
     .eq("environment", env)
     .maybeSingle();
   if (!sub?.user_id) return;
+
+  const meta = {
+    environment: env,
+    stripe_subscription_id: subId,
+    stripe_customer_id: sub.stripe_customer_id,
+    invoice_id: invoice.id,
+    lovable_price_id: sub.price_id,
+    tier: sub.tier,
+    amount_paid: invoice.amount_paid ?? null,
+    currency: invoice.currency ?? null,
+  };
 
   await logBilling(
     sub.user_id as string,
     "subscription_renewed",
     invoice.amount_paid ?? null,
     invoice.currency ?? null,
-    { stripe_subscription_id: subId, invoice_id: invoice.id, environment: env },
+    meta,
   );
+  await logBillingAudit(sub.user_id as string, "subscription_renewed", meta);
 }
 
 async function handleInvoicePaymentFailed(invoice: any, env: StripeEnv) {
@@ -262,19 +274,33 @@ async function handleInvoicePaymentFailed(invoice: any, env: StripeEnv) {
   if (!subId) return;
   const { data: sub } = await getSupabase()
     .from("subscriptions")
-    .select("user_id")
+    .select("user_id, stripe_customer_id, price_id, tier")
     .eq("stripe_subscription_id", subId)
     .eq("environment", env)
     .maybeSingle();
   if (!sub?.user_id) return;
+
+  const meta = {
+    environment: env,
+    stripe_subscription_id: subId,
+    stripe_customer_id: sub.stripe_customer_id,
+    invoice_id: invoice.id,
+    lovable_price_id: sub.price_id,
+    tier: sub.tier,
+    amount_due: invoice.amount_due ?? null,
+    currency: invoice.currency ?? null,
+    attempt_count: invoice.attempt_count ?? null,
+    next_payment_attempt: tsToIso(invoice.next_payment_attempt),
+  };
 
   await logBilling(
     sub.user_id as string,
     "failed_payment",
     invoice.amount_due ?? null,
     invoice.currency ?? null,
-    { stripe_subscription_id: subId, invoice_id: invoice.id, environment: env },
+    meta,
   );
+  await logBillingAudit(sub.user_id as string, "payment_failed", meta);
 }
 
 async function handleWebhook(req: Request, env: StripeEnv) {
