@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Check, Loader2, Settings } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -51,6 +51,7 @@ const PLANS: Array<{
 
 export default function Pricing() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [currentTier, setCurrentTier] = useState<Tier | null>(null);
   const [loading, setLoading] = useState(false);
   const { openCheckout, checkoutElement, isOpen, closeCheckout } = useStripeCheckout();
@@ -89,13 +90,17 @@ export default function Pricing() {
     }
   }
 
-  function handleSelect(priceId: string) {
+  function handleSelect(tier: Tier, priceId: string) {
     if (!user) {
       window.location.href = "/auth";
       return;
     }
     if (currentTier) {
       toast.message("You already have an active subscription. Use Manage Subscription to change plans.");
+      return;
+    }
+    if (tier === "premium") {
+      navigate("/checkout/premium");
       return;
     }
     openCheckout({
@@ -161,7 +166,7 @@ export default function Pricing() {
                         className="w-full"
                         variant={p.highlight ? "default" : "outline"}
                         disabled={isCurrent}
-                        onClick={() => handleSelect(p.priceId)}
+                        onClick={() => handleSelect(p.tier, p.priceId)}
                       >
                         {isCurrent ? "Current plan" : currentTier ? "Change in portal" : "Choose plan"}
                       </Button>
