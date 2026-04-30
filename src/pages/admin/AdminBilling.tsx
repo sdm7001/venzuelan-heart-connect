@@ -40,6 +40,46 @@ type WebhookData = {
   recent_events: Array<{ event_type: string; created_at: string; metadata: Record<string, unknown> | null }>;
 };
 
+type Customer = {
+  user_id: string;
+  display_name: string | null;
+  country: string | null;
+  email: string | null;
+  roles: string[];
+  subscription: {
+    id: string;
+    tier: string | null;
+    status: string;
+    price_id: string | null;
+    current_period_start: string | null;
+    current_period_end: string | null;
+    cancel_at_period_end: boolean;
+    stripe_customer_id: string | null;
+    stripe_subscription_id: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+};
+
+type Payment = {
+  id: string;
+  event_type: string;
+  user_id: string | null;
+  display_name: string | null;
+  amount_cents: number | null;
+  currency: string | null;
+  created_at: string;
+  metadata: Record<string, unknown> | null;
+};
+
+type Stats = {
+  total_customers: number;
+  active: number;
+  past_due: number;
+  canceled: number;
+  by_tier: Record<string, number>;
+};
+
 type GoLiveStep = { id: string; label: string; status: "complete" | "in_progress" | "action_required" | "locked" };
 
 type Overview = {
@@ -47,6 +87,9 @@ type Overview = {
   is_admin: boolean;
   pricing: Pricing[];
   recent_sessions: Session[];
+  customers: Customer[];
+  payments: Payment[];
+  stats: Stats;
   webhook: WebhookData;
 };
 
