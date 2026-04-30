@@ -68,6 +68,15 @@ async function logBillingAudit(
   } as never);
 }
 
+async function syncEntitlement(userId: string | null | undefined, env: StripeEnv) {
+  if (!userId) return;
+  const { error } = await getSupabase().rpc("recompute_user_entitlement" as never, {
+    _user_id: userId,
+    _env: env,
+  } as never);
+  if (error) console.error("recompute_user_entitlement failed:", error);
+}
+
 function subscriptionContext(subscription: any, env: StripeEnv) {
   const item = subscription.items?.data?.[0];
   const priceId = item?.price?.metadata?.lovable_external_id || item?.price?.id;
