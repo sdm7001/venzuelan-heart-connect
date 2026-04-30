@@ -53,6 +53,21 @@ async function handleSubscriptionCreated(subscription: any, env: StripeEnv) {
   const periodEnd = item?.current_period_end ?? subscription.current_period_end;
   const tier = priceIdToTier(priceId);
 
+  // Defense-in-depth: ensure no other "active-like" rows exist for this user+env.
+  // The DB has a partial unique index enforcing this, but we proactively demote
+  // any stray rows (e.g. from out-of-order webhook delivery) to avoid conflicts.
+  await getSupabase()
+    .from("subscriptions")
+    .update({
+      status: "canceled",
+      canceled_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    } as never)
+    .eq("user_id", userId)
+    .eq("environment", env)
+    .neq("stripe_subscription_id", subscription.id)
+    .in("status", ["active", "trialing", "past_due"]);
+
   await getSupabase().from("subscriptions").upsert(
     {
       user_id: userId,
