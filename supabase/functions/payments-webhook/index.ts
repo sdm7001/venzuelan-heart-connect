@@ -244,6 +244,7 @@ async function handleSubscriptionDeleted(subscription: any, env: StripeEnv) {
     await logBilling(userId, "subscription_canceled", null, null, ctx);
   }
   await logBillingAudit(userId ?? null, "subscription_canceled", ctx);
+  await syncEntitlement(userId, env);
 }
 
 async function handleInvoicePaymentSucceeded(invoice: any, env: StripeEnv) {
