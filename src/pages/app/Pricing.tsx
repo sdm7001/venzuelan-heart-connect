@@ -212,7 +212,13 @@ export default function Pricing() {
                         disabled={isCurrent}
                         onClick={() => handleSelect(p.tier, p.priceId)}
                       >
-                        {isCurrent ? "Current plan" : currentTier ? "Change in portal" : "Choose plan"}
+                        {isCurrent
+                          ? "Current plan"
+                          : currentTier
+                            ? TIER_RANK[p.tier] > TIER_RANK[currentTier]
+                              ? "Upgrade"
+                              : "Downgrade"
+                            : "Choose plan"}
                       </Button>
                     </CardContent>
                   </Card>
