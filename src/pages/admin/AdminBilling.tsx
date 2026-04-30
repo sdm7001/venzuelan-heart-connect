@@ -13,8 +13,9 @@ import { useAuth } from "@/auth/AuthProvider";
 import { getStripeEnvironment } from "@/lib/stripe";
 import {
   AlertCircle, CheckCircle2, CreditCard, ExternalLink, Loader2, Receipt, RefreshCw,
-  ShieldCheck, Webhook,
+  ShieldCheck, Users, Wallet, Webhook,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 type Pricing = {
