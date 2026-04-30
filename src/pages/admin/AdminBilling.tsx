@@ -13,8 +13,9 @@ import { useAuth } from "@/auth/AuthProvider";
 import { getStripeEnvironment } from "@/lib/stripe";
 import {
   AlertCircle, CheckCircle2, CreditCard, ExternalLink, Loader2, Receipt, RefreshCw,
-  ShieldCheck, Webhook,
+  ShieldCheck, Users, Wallet, Webhook,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 type Pricing = {
@@ -39,6 +40,46 @@ type WebhookData = {
   recent_events: Array<{ event_type: string; created_at: string; metadata: Record<string, unknown> | null }>;
 };
 
+type Customer = {
+  user_id: string;
+  display_name: string | null;
+  country: string | null;
+  email: string | null;
+  roles: string[];
+  subscription: {
+    id: string;
+    tier: string | null;
+    status: string;
+    price_id: string | null;
+    current_period_start: string | null;
+    current_period_end: string | null;
+    cancel_at_period_end: boolean;
+    stripe_customer_id: string | null;
+    stripe_subscription_id: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+};
+
+type Payment = {
+  id: string;
+  event_type: string;
+  user_id: string | null;
+  display_name: string | null;
+  amount_cents: number | null;
+  currency: string | null;
+  created_at: string;
+  metadata: Record<string, unknown> | null;
+};
+
+type Stats = {
+  total_customers: number;
+  active: number;
+  past_due: number;
+  canceled: number;
+  by_tier: Record<string, number>;
+};
+
 type GoLiveStep = { id: string; label: string; status: "complete" | "in_progress" | "action_required" | "locked" };
 
 type Overview = {
@@ -46,6 +87,9 @@ type Overview = {
   is_admin: boolean;
   pricing: Pricing[];
   recent_sessions: Session[];
+  customers: Customer[];
+  payments: Payment[];
+  stats: Stats;
   webhook: WebhookData;
 };
 
@@ -136,13 +180,169 @@ export default function AdminBilling() {
       )}
 
       {data && (
-        <Tabs defaultValue="pricing" className="space-y-4">
-          <TabsList>
+        <Tabs defaultValue="customers" className="space-y-4">
+          <TabsList className="flex-wrap h-auto">
+            <TabsTrigger value="customers"><Users className="h-4 w-4 mr-1.5" />Customers</TabsTrigger>
+            <TabsTrigger value="payments"><Wallet className="h-4 w-4 mr-1.5" />Payment history</TabsTrigger>
             <TabsTrigger value="pricing"><CreditCard className="h-4 w-4 mr-1.5" />Pricing</TabsTrigger>
             <TabsTrigger value="sessions"><Receipt className="h-4 w-4 mr-1.5" />Checkout sessions</TabsTrigger>
             <TabsTrigger value="golive"><ShieldCheck className="h-4 w-4 mr-1.5" />Go-live</TabsTrigger>
             <TabsTrigger value="webhooks"><Webhook className="h-4 w-4 mr-1.5" />Webhooks</TabsTrigger>
           </TabsList>
+
+          {/* CUSTOMERS */}
+          <TabsContent value="customers" className="space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <Card><CardContent className="p-4">
+                <div className="text-xs text-muted-foreground">Total customers</div>
+                <div className="text-2xl font-semibold mt-1">{data.stats.total_customers}</div>
+              </CardContent></Card>
+              <Card><CardContent className="p-4">
+                <div className="text-xs text-muted-foreground">Active</div>
+                <div className="text-2xl font-semibold mt-1 text-emerald-600">{data.stats.active}</div>
+              </CardContent></Card>
+              <Card><CardContent className="p-4">
+                <div className="text-xs text-muted-foreground">Past due</div>
+                <div className="text-2xl font-semibold mt-1 text-amber-600">{data.stats.past_due}</div>
+              </CardContent></Card>
+              <Card><CardContent className="p-4">
+                <div className="text-xs text-muted-foreground">Canceled</div>
+                <div className="text-2xl font-semibold mt-1 text-muted-foreground">{data.stats.canceled}</div>
+              </CardContent></Card>
+            </div>
+
+            {Object.keys(data.stats.by_tier).length > 0 && (
+              <div className="flex flex-wrap gap-2 text-xs">
+                {Object.entries(data.stats.by_tier).map(([tier, count]) => (
+                  <Badge key={tier} variant="outline">{tier}: {count}</Badge>
+                ))}
+              </div>
+            )}
+
+            <Card>
+              <CardHeader><CardTitle className="text-base">Subscribed customers</CardTitle></CardHeader>
+              <CardContent>
+                {data.customers.length === 0 ? (
+                  <EmptyState icon={<Users className="h-5 w-5" />} title="No customers yet" body="Subscribed users will appear here once webhooks land." />
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Customer</TableHead>
+                          <TableHead>Tier</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Renews</TableHead>
+                          {data.is_admin && <TableHead>Email</TableHead>}
+                          {data.is_admin && <TableHead>Stripe</TableHead>}
+                          <TableHead className="text-right">Updated</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {data.customers.map((c) => {
+                          const s = c.subscription;
+                          const statusVariant =
+                            s.status === "active" || s.status === "trialing" ? "default" :
+                            s.status === "past_due" ? "destructive" :
+                            s.status === "canceled" ? "outline" : "secondary";
+                          return (
+                            <TableRow key={s.id}>
+                              <TableCell className="text-xs">
+                                <Link to={`/admin/users/${c.user_id}`} className="font-medium hover:underline">
+                                  {c.display_name ?? c.user_id.slice(0, 8)}
+                                </Link>
+                                <div className="text-[10px] text-muted-foreground">
+                                  {c.country ?? "—"} · {c.roles.join(", ") || "no role"}
+                                </div>
+                              </TableCell>
+                              <TableCell><Badge variant="secondary" className="text-[10px]">{s.tier ?? "—"}</Badge></TableCell>
+                              <TableCell>
+                                <Badge variant={statusVariant} className="text-[10px]">{s.status}</Badge>
+                                {s.cancel_at_period_end && (
+                                  <div className="text-[10px] text-amber-600 mt-0.5">cancels at period end</div>
+                                )}
+                              </TableCell>
+                              <TableCell className="text-xs whitespace-nowrap">
+                                {s.current_period_end ? fmtDate(s.current_period_end) : "—"}
+                              </TableCell>
+                              {data.is_admin && <TableCell className="text-xs">{c.email ?? "—"}</TableCell>}
+                              {data.is_admin && (
+                                <TableCell className="text-[10px] font-mono text-muted-foreground">
+                                  {s.stripe_customer_id ?? "—"}
+                                </TableCell>
+                              )}
+                              <TableCell className="text-right text-xs whitespace-nowrap">{fmtDate(s.updated_at)}</TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+            {!data.is_admin && (
+              <p className="text-xs text-muted-foreground">Email and Stripe IDs are visible to admins only.</p>
+            )}
+          </TabsContent>
+
+          {/* PAYMENT HISTORY */}
+          <TabsContent value="payments">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Recent payment activity</CardTitle>
+                <p className="text-xs text-muted-foreground">Last 50 billing events synced from Stripe webhooks ({env}).</p>
+              </CardHeader>
+              <CardContent>
+                {data.payments.length === 0 ? (
+                  <EmptyState icon={<Wallet className="h-5 w-5" />} title="No payments yet" body="Successful payments and renewals will appear here once customers complete checkout." />
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>When</TableHead>
+                          <TableHead>Event</TableHead>
+                          <TableHead>Customer</TableHead>
+                          {data.is_admin && <TableHead className="text-right">Amount</TableHead>}
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {data.payments.map((p) => {
+                          const failed = p.event_type === "failed_payment";
+                          const renewed = p.event_type === "subscription_renewed";
+                          return (
+                            <TableRow key={p.id}>
+                              <TableCell className="text-xs whitespace-nowrap">{fmtDate(p.created_at)}</TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant={failed ? "destructive" : renewed ? "default" : "outline"}
+                                  className="text-[10px]"
+                                >{p.event_type}</Badge>
+                              </TableCell>
+                              <TableCell className="text-xs">
+                                {p.user_id ? (
+                                  <Link to={`/admin/users/${p.user_id}`} className="hover:underline">
+                                    {p.display_name ?? p.user_id.slice(0, 8)}
+                                  </Link>
+                                ) : "—"}
+                              </TableCell>
+                              {data.is_admin && (
+                                <TableCell className="text-right text-xs">{fmtMoney(p.amount_cents, p.currency)}</TableCell>
+                              )}
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+            {!data.is_admin && (
+              <p className="text-xs text-muted-foreground mt-2">Amounts are visible to admins only.</p>
+            )}
+          </TabsContent>
 
           {/* PRICING */}
           <TabsContent value="pricing" className="space-y-3">
