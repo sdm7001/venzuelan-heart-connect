@@ -65,22 +65,27 @@ export default function Pricing() {
   const navigate = useNavigate();
   const [currentTier, setCurrentTier] = useState<Tier | null>(null);
   const [loading, setLoading] = useState(false);
+  const [pendingChange, setPendingChange] = useState<{ tier: Tier; priceId: string } | null>(null);
+  const [changeLoading, setChangeLoading] = useState(false);
   const { openCheckout, checkoutElement, isOpen, closeCheckout } = useStripeCheckout();
 
-  useEffect(() => {
+  async function loadCurrentTier() {
     if (!user) return;
-    void (async () => {
-      const { data } = await supabase
-        .from("subscriptions")
-        .select("tier, status")
-        .eq("user_id", user.id)
-        .eq("environment", getStripeEnvironment())
-        .in("status", ["active", "trialing", "past_due"])
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (data) setCurrentTier(data.tier as Tier);
-    })();
+    const { data } = await supabase
+      .from("subscriptions")
+      .select("tier, status")
+      .eq("user_id", user.id)
+      .eq("environment", getStripeEnvironment())
+      .in("status", ["active", "trialing", "past_due"])
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    setCurrentTier((data?.tier as Tier) ?? null);
+  }
+
+  useEffect(() => {
+    void loadCurrentTier();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   async function handleManage() {
