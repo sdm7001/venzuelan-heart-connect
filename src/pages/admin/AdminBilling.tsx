@@ -181,7 +181,9 @@ export default function AdminBilling() {
 
       {data && (
         <Tabs defaultValue="pricing" className="space-y-4">
-          <TabsList>
+          <TabsList className="flex-wrap h-auto">
+            <TabsTrigger value="customers"><Users className="h-4 w-4 mr-1.5" />Customers</TabsTrigger>
+            <TabsTrigger value="payments"><Wallet className="h-4 w-4 mr-1.5" />Payment history</TabsTrigger>
             <TabsTrigger value="pricing"><CreditCard className="h-4 w-4 mr-1.5" />Pricing</TabsTrigger>
             <TabsTrigger value="sessions"><Receipt className="h-4 w-4 mr-1.5" />Checkout sessions</TabsTrigger>
             <TabsTrigger value="golive"><ShieldCheck className="h-4 w-4 mr-1.5" />Go-live</TabsTrigger>
