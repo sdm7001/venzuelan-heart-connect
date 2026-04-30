@@ -153,6 +153,7 @@ async function handleSubscriptionCreated(subscription: any, env: StripeEnv) {
     { ...ctx, tier },
   );
   await logBillingAudit(userId, "subscription_created", { ...ctx, tier });
+  await syncEntitlement(userId, env);
 }
 
 async function handleSubscriptionUpdated(subscription: any, env: StripeEnv) {
