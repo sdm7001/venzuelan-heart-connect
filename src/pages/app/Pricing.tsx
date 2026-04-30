@@ -4,6 +4,16 @@ import { Check, Loader2, Settings } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useAuth } from "@/auth/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { getStripeEnvironment, PRICE_IDS } from "@/lib/stripe";
@@ -12,6 +22,7 @@ import { PaymentTestModeBanner } from "@/components/payments/PaymentTestModeBann
 import { toast } from "sonner";
 
 type Tier = "level_1" | "level_2" | "premium";
+const TIER_RANK: Record<Tier, number> = { level_1: 1, level_2: 2, premium: 3 };
 
 const PLANS: Array<{
   tier: Tier;
@@ -54,22 +65,27 @@ export default function Pricing() {
   const navigate = useNavigate();
   const [currentTier, setCurrentTier] = useState<Tier | null>(null);
   const [loading, setLoading] = useState(false);
+  const [pendingChange, setPendingChange] = useState<{ tier: Tier; priceId: string } | null>(null);
+  const [changeLoading, setChangeLoading] = useState(false);
   const { openCheckout, checkoutElement, isOpen, closeCheckout } = useStripeCheckout();
 
-  useEffect(() => {
+  async function loadCurrentTier() {
     if (!user) return;
-    void (async () => {
-      const { data } = await supabase
-        .from("subscriptions")
-        .select("tier, status")
-        .eq("user_id", user.id)
-        .eq("environment", getStripeEnvironment())
-        .in("status", ["active", "trialing", "past_due"])
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (data) setCurrentTier(data.tier as Tier);
-    })();
+    const { data } = await supabase
+      .from("subscriptions")
+      .select("tier, status")
+      .eq("user_id", user.id)
+      .eq("environment", getStripeEnvironment())
+      .in("status", ["active", "trialing", "past_due"])
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    setCurrentTier((data?.tier as Tier) ?? null);
+  }
+
+  useEffect(() => {
+    void loadCurrentTier();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   async function handleManage() {
@@ -95,8 +111,10 @@ export default function Pricing() {
       window.location.href = "/auth";
       return;
     }
+    // Existing subscriber: route to in-app upgrade/downgrade flow with confirmation
     if (currentTier) {
-      toast.message("You already have an active subscription. Use Manage Subscription to change plans.");
+      if (currentTier === tier) return;
+      setPendingChange({ tier, priceId });
       return;
     }
     if (tier === "premium") {
@@ -109,6 +127,32 @@ export default function Pricing() {
       userId: user.id,
     });
   }
+
+  async function confirmChange() {
+    if (!pendingChange) return;
+    setChangeLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("change-subscription", {
+        body: {
+          newPriceId: pendingChange.priceId,
+          environment: getStripeEnvironment(),
+        },
+      });
+      if (error) throw new Error(error.message);
+      if (data?.error) throw new Error(data.error);
+      toast.success(data?.message ?? "Subscription change applied.");
+      setPendingChange(null);
+      await loadCurrentTier();
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setChangeLoading(false);
+    }
+  }
+
+  const isUpgrade = pendingChange && currentTier
+    ? TIER_RANK[pendingChange.tier] > TIER_RANK[currentTier]
+    : false;
 
   return (
     <>
@@ -168,7 +212,13 @@ export default function Pricing() {
                         disabled={isCurrent}
                         onClick={() => handleSelect(p.tier, p.priceId)}
                       >
-                        {isCurrent ? "Current plan" : currentTier ? "Change in portal" : "Choose plan"}
+                        {isCurrent
+                          ? "Current plan"
+                          : currentTier
+                            ? TIER_RANK[p.tier] > TIER_RANK[currentTier]
+                              ? "Upgrade"
+                              : "Downgrade"
+                            : "Choose plan"}
                       </Button>
                     </CardContent>
                   </Card>
@@ -182,6 +232,27 @@ export default function Pricing() {
           </p>
         </div>
       </main>
+
+      <AlertDialog open={!!pendingChange} onOpenChange={(open) => !open && !changeLoading && setPendingChange(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {isUpgrade ? "Upgrade your plan" : "Schedule a downgrade"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {isUpgrade
+                ? `You'll be charged a prorated amount for the rest of this billing period and your new ${pendingChange?.tier.replace("_", " ")} plan will be active immediately.`
+                : `Your ${currentTier?.replace("_", " ")} plan stays active until the end of this billing period. You'll then automatically switch to ${pendingChange?.tier.replace("_", " ")}. No charge today.`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={changeLoading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={(e) => { e.preventDefault(); void confirmChange(); }} disabled={changeLoading}>
+              {changeLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : isUpgrade ? "Confirm upgrade" : "Schedule downgrade"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
