@@ -280,6 +280,7 @@ async function handleInvoicePaymentSucceeded(invoice: any, env: StripeEnv) {
     meta,
   );
   await logBillingAudit(sub.user_id as string, "subscription_renewed", meta);
+  await syncEntitlement(sub.user_id as string, env);
 }
 
 async function handleInvoicePaymentFailed(invoice: any, env: StripeEnv) {
